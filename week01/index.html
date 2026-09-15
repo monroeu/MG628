@@ -359,10 +359,89 @@
     color:var(--ink-soft);
   }
   @media (max-width:880px){
-    footer{
-      grid-column:1;
-      max-width:none;
-    }
+    footer{grid-column:1; max-width:none;}
+  }
+
+
+  /* ---------- week / assignment header ---------- */
+  .assignment-header{
+    border-bottom:1px solid var(--rule);
+    background:rgba(251,249,241,.97);
+  }
+  .assignment-header-inner{
+    max-width:1100px;
+    margin:0 auto;
+    padding:16px 24px 18px;
+    display:grid;
+    grid-template-columns:auto 1fr;
+    gap:14px 26px;
+    align-items:center;
+  }
+  .home-link{
+    grid-row:1 / span 2;
+    align-self:start;
+    display:inline-block;
+    text-decoration:none;
+    border:1px solid var(--ink);
+    background:var(--white);
+    color:var(--ink);
+    padding:8px 11px;
+    font-family:var(--font-mono);
+    font-size:12px;
+    font-weight:600;
+    white-space:nowrap;
+  }
+  .home-link:hover{background:var(--ink); color:var(--white);}
+  .assignment-id{
+    font-family:var(--font-mono);
+    font-size:11px;
+    letter-spacing:.06em;
+    color:var(--teal);
+    text-transform:uppercase;
+    margin:0 0 3px;
+  }
+  .assignment-title{
+    font-family:var(--font-display);
+    font-size:24px;
+    line-height:1.15;
+    font-weight:600;
+    margin:0;
+  }
+  .assignment-subtitle{
+    margin:5px 0 0;
+    font-size:13.5px;
+    color:var(--ink-soft);
+  }
+  .assignment-resources{
+    grid-column:2;
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    margin-top:2px;
+  }
+  .assignment-resources a{
+    text-decoration:none;
+    border:1px solid var(--rule);
+    background:var(--white);
+    color:var(--ink);
+    padding:6px 9px;
+    font-family:var(--font-mono);
+    font-size:11.5px;
+  }
+  .assignment-resources a:hover{border-color:var(--amber); color:var(--amber);}
+  .assignment-note{
+    border:1px solid var(--rule);
+    border-left:4px solid var(--teal);
+    background:var(--white);
+    padding:14px 16px;
+    margin:22px 0 0;
+    max-width:660px;
+    font-size:14.5px;
+  }
+  @media (max-width:700px){
+    .assignment-header-inner{grid-template-columns:1fr;}
+    .home-link{grid-row:auto; width:fit-content;}
+    .assignment-resources{grid-column:1;}
   }
 
   .progress-fill{position:fixed; top:0; left:0; height:3px; background:var(--amber); z-index:50; width:0%; transition:width .1s linear;}
@@ -379,6 +458,22 @@
 </head>
 <body>
 
+<header class="assignment-header">
+  <div class="assignment-header-inner">
+    <a class="home-link" href="../" aria-label="Back to MG628 course home">← MG628 Course Home</a>
+    <div>
+      <p class="assignment-id">Week 1 interactive activity · supports the Weeks 1–2 assignment</p>
+      <h1 class="assignment-title">Order Quantity Decision Model</h1>
+      <p class="assignment-subtitle">Business Forecasting: Morning Brew Café · Healthcare Administration: Metro Community Flu Clinic</p>
+    </div>
+    <nav class="assignment-resources" aria-label="Week 1 assignment resources">
+      <a href="week01-assignment.pdf" target="_blank" rel="noopener">Assignment PDF</a>
+      <a href="data/muffin_shop_demand.csv" download>Business CSV</a>
+      <a href="data/healthcare_vaccine_demand.csv" download>Healthcare CSV</a>
+    </nav>
+  </div>
+</header>
+
 <a class="skip-link" href="#main-content">Skip to main content</a>
 <div class="progress-fill" id="progressFill" aria-hidden="true"></div>
 <div aria-live="polite" class="visually-hidden" id="liveAnnounce"></div>
@@ -386,7 +481,7 @@
 <div class="shell">
 
   <header class="hero">
-    <p class="kicker">MG628 — Data Analysis for Managerial Decisions</p>
+    <p class="kicker">MG628 — Data Analysis for Managerial Decision-Making</p>
     <h1>How many should you bake this morning?</h1>
     <p class="lede">A hands-on walkthrough of the order-quantity model behind your Weeks 1–2
     assignment. Move the sliders, watch the numbers move, then build the same
@@ -399,6 +494,11 @@
     <div style="margin:18px 0 6px;">
       <p style="font-family:var(--font-mono); font-size:12px; color:var(--ink-soft); margin:0 0 8px;">WHICH COURSE TRACK ARE YOU IN? (SETS THE NUMBERS BELOW)</p>
       <div id="hero-track-toggle"></div>
+    </div>
+    <div class="assignment-note">
+      <strong>Assignment alignment.</strong> This activity follows the attached Weeks 1–2 assignment:
+      model setup, scenario analysis, CSV frequency analysis, expected-profit optimization, Goal Seek,
+      underage/overage costs, and the healthcare ethical sensitivity questions.
     </div>
     <div class="hero-ticket" id="heroTicket" role="group" aria-label="Live model preview, updates as you use Section 3">
       <div class="row"><span id="ht-q-label">Bake (Q)</span><span id="ht-q">170 muffins</span></div>
@@ -723,7 +823,7 @@
       optimization step needs.</p>
 
       <div class="widget" id="w5">
-        <div class="widget-bar"><span>SAMPLE OF THE RAW LOG</span><span>illustrative — your CSV has 100 rows</span></div>
+        <div class="widget-bar"><span>SAMPLE OF THE RAW LOG</span><span>from the attached 100-row CSV</span></div>
         <div class="widget-body">
           <div id="s5-toggle" style="margin-bottom:18px;"></div>
           <div id="s5-sample"></div>
@@ -758,7 +858,7 @@
       <div class="exercise" id="ex5">
         <div class="exercise-bar"><span>EXERCISE 5 — REQUIRED FOR PARTICIPATION</span><span class="status" id="ex5-status">not started</span></div>
         <div class="exercise-body">
-          <label for="ex5-input">Using the probability table above, what is the probability that demand is 180 or fewer units? Answer as a percent (e.g., 42).</label>
+          <label for="ex5-input">Using the CSV frequency distribution above, what percentage of observed days had demand below 180 units (the 170s or lower)? Answer as a percent (e.g., 42).</label>
           <div class="exercise-row">
             <input type="number" id="ex5-input" style="max-width:140px;" aria-describedby="ex5-feedback"> <span aria-hidden="true">%</span>
           </div>
@@ -1096,7 +1196,7 @@
     </section>
 
     <p style="margin-top:44px;">
-    Built for MG628 — Data Analysis for Managerial Decisions. Exercise work stays
+    Built for MG628 — Data Analysis for Managerial Decision-Making. Exercise work stays
     in your browser until you choose Record participation. The authoritative submission
     is then stored by the instructor-controlled service, and Blackboard receives only a
     signed receipt that points to that record. This page remains a companion to the Excel
@@ -1134,9 +1234,17 @@ const TRACKS = {
     person:'customer', personPlural:'customers', verb:'bake', verbPast:'baked',
     F:40, c:1.2, p:3.5, v:1, Qdefault:170, Ddefault:180,
     candidates:[160,170,180,190,200],
+    // Assignment-provided optimization probabilities (used in Sections 06–07).
     demand:[{d:150,p:0.15},{d:170,p:0.25},{d:180,p:0.30},{d:190,p:0.20},{d:200,p:0.10}],
-    demandNote:'the assignment\'s given probability table',
-    rows:{inputs:'B5:B10', formulas:'B13:B17', dataTable:'A37:C41', underage:'B44:B46', probTable:'A28:B32'}
+    // Actual 100-day uploaded CSV grouped by tens (used in Section 05).
+    frequencyDemand:[
+      {d:145,p:0.08,label:'140–149'},{d:155,p:0.07,label:'150–159'},
+      {d:165,p:0.07,label:'160–169'},{d:175,p:0.24,label:'170–179'},
+      {d:185,p:0.26,label:'180–189'},{d:195,p:0.18,label:'190–199'},
+      {d:205,p:0.06,label:'200–209'},{d:215,p:0.04,label:'210–219'}
+    ],
+    demandNote:'the assignment-provided five-scenario probability table',
+    rows:{inputs:'B5:B10', formulas:'B13:B17', dataTable:'A37:C41', underage:'B44:B46', probTable:'A28:B35'}
   },
   health: {
     key:'health', label:'Healthcare Admin', placeLabel:'Flu Clinic', name:'Metro Community Flu Clinic',
@@ -1144,10 +1252,21 @@ const TRACKS = {
     person:'patient', personPlural:'patients', verb:'order', verbPast:'ordered',
     F:500, c:12, p:45, v:3, Qdefault:170, Ddefault:180,
     candidates:[150,160,170,180,190,200,210],
-    demand:[{d:144.5,p:3/99},{d:154.5,p:12/99},{d:164.5,p:14/99},{d:174.5,p:18/99},
-            {d:184.5,p:26/99},{d:194.5,p:18/99},{d:204.5,p:6/99},{d:214.5,p:2/99}],
-    demandNote:'a pivot table grouping 100 real days of clinic data into bins of 10',
-    rows:{inputs:'B5:B10', formulas:'B13:B17', dataTable:'A47:B53', underage:'B56:B58', probTable:'B28:C38'}
+    // Uploaded 100-day clinic CSV grouped by tens; used for frequency analysis and optimization.
+    demand:[
+      {d:145,p:0.06,label:'140–149'},{d:155,p:0.09,label:'150–159'},
+      {d:165,p:0.12,label:'160–169'},{d:175,p:0.29,label:'170–179'},
+      {d:185,p:0.25,label:'180–189'},{d:195,p:0.09,label:'190–199'},
+      {d:205,p:0.10,label:'200–209'}
+    ],
+    frequencyDemand:[
+      {d:145,p:0.06,label:'140–149'},{d:155,p:0.09,label:'150–159'},
+      {d:165,p:0.12,label:'160–169'},{d:175,p:0.29,label:'170–179'},
+      {d:185,p:0.25,label:'180–189'},{d:195,p:0.09,label:'190–199'},
+      {d:205,p:0.10,label:'200–209'}
+    ],
+    demandNote:'the uploaded 100-day clinic CSV grouped by tens',
+    rows:{inputs:'B5:B10', formulas:'B13:B17', dataTable:'A47:B53', underage:'B56:B58', probTable:'B28:C34'}
   }
 };
 let currentTrack = 'business';
@@ -1276,9 +1395,9 @@ const EXERCISE_DEFS = [
    excelFields:['ex4-profit-cell'], excelAnswers:()=>['B17'],
    summary:(v)=>`Profit at D=140 is ${v[0]}, at D=220 is ${v[1]}`},
   {id:'ex5', type:'numeric', fields:['ex5-input'], tol:[1.2],
-   answers:(track)=>[cumulativeAt(180, TRACKS[track])*100],
+   answers:(track)=>[frequencyBelow(180, TRACKS[track])*100],
    excelFields:['ex5-prob-range'], excelAnswers:(track)=>[TRACKS[track].rows.probTable],
-   summary:(v)=>`P(D ≤ 180) = ${v[0]}%`},
+   summary:(v)=>`Observed P(D < 180) = ${v[0]}%`},
   {id:'ex6', type:'numeric', fields:['ex6-q','ex6-ep'], tol:[5,15],
    answers:(track)=>{
      const t=TRACKS[track];
@@ -1672,6 +1791,12 @@ function cumulativeAt(x, track){
   let c=0; for(const row of t.demand){ if(row.d<=x) c+=row.p; } return c;
 }
 
+function frequencyBelow(x, track){
+  const t = typeof track==='string' ? TRACKS[track] : track;
+  const rows = t.frequencyDemand || t.demand;
+  let c=0; for(const row of rows){ if(row.d<x) c+=row.p; } return c;
+}
+
 // hero ticket (kept in sync from Section 03)
 function updateHero(Q,D,params){
   const t = TRACKS[currentTrack];
@@ -1891,13 +2016,15 @@ function updateHero(Q,D,params){
 (function(){
   const SAMPLE_ROWS = {
     business: {cols:['Date','Day','Foot traffic','Demand'], rows:[
-      ['…','Monday','High','192'], ['…','Tuesday','Medium','174'], ['…','Wednesday','Medium','168'],
-      ['…','Thursday','High','205'], ['…','Friday','Very High','215']
-    ], col:'Actual_Muffin_Demand'},
+      ['2024-09-01','Sunday','Medium','178'], ['2024-09-02','Monday','Medium','182'],
+      ['2024-09-03','Tuesday','Low','148'], ['2024-09-04','Wednesday','Medium','183'],
+      ['2024-09-05','Thursday','Medium','184']
+    ], col:'Actual_Muffin_Demand', file:'muffin_shop_demand.csv'},
     health: {cols:['Date','Weather','Marketing blast','Demand'], rows:[
-      ['…','Cloudy','No','197'], ['…','Sunny','No','180'], ['…','Cloudy','No','179'],
-      ['…','Rain','No','203'], ['…','Cloudy','No','196']
-    ], col:'Actual_Patient_Demand'}
+      ['2024-10-01','Cloudy','No','166'], ['2024-10-02','Cloudy','No','170'],
+      ['2024-10-03','Sunny','Yes','188'], ['2024-10-04','Cloudy','No','171'],
+      ['2024-10-05','Sunny','Yes','202']
+    ], col:'Actual_Patient_Demand', file:'healthcare_vaccine_demand.csv'}
   };
   function render(track){
     const t = TRACKS[track];
@@ -1908,16 +2035,16 @@ function updateHero(Q,D,params){
       <tr>${s.cols.map(()=>'<td class="addr">⋮</td>').join('')}</tr>
     </table>`;
     document.getElementById('s5-intro').textContent = track==='business'
-      ? `Grouped into bins of 10 and expressed as a share of all 100 days, that log turns into the probability table your assignment gives you for the optimization step:`
-      : `Grouped into bins of 10 from ${t.demandNote}, that log turns into the probability table used for the clinic's optimization step:`;
-    document.getElementById('s5-excel-text').innerHTML = `Insert a Pivot Table from the CSV → drag
-      <code>${s.col}</code> to Rows → right-click a value →
+      ? `The chart below is calculated from the attached ${s.file}: 100 observed days grouped by tens. In Section 06, use the five optimization probabilities supplied separately in the assignment (150=15%, 170=25%, 180=30%, 190=20%, 200=10%).`
+      : `The chart below is calculated from the attached ${s.file}: 100 clinic days grouped by tens. The healthcare assignment directs you to use these synthesized percentages as the demand probabilities for optimization.`;
+    document.getElementById('s5-excel-text').innerHTML = `Open <code>${s.file}</code> and insert a Pivot Table → drag
+      <code>${s.col}</code> to Rows → right-click a row value →
       <strong>Group…</strong> in steps of 10 → drag
-      <code>${s.col}</code> to Values → change the value field
-      setting to <strong>Show Values As → % of Column Total</strong>. Those
-      percentages are your demand probabilities.`;
+      <code>${s.col}</code> to Values → set it to <strong>% of Column Total</strong>.
+      Record the grouped demand levels and percentages in <span class="cell-ref">${t.rows.probTable}</span>.
+      ${track==='business' ? 'Keep this observed frequency table distinct from the five probability scenarios explicitly supplied by the assignment for the expected-profit optimization.' : 'Use these percentages as the clinic demand probabilities in the optimization model.'}`;
 
-    const DEMAND = t.demand;
+    const DEMAND = t.frequencyDemand || t.demand;
     const svgOld = document.getElementById('s5-chart');
     const W=640,H=220,padL=46,padB=34,padT=16;
     const maxP = Math.max(...DEMAND.map(r=>r.p));
@@ -1932,9 +2059,9 @@ function updateHero(Q,D,params){
       const y = H-padB-h;
       sHtml += `<rect x="${x}" y="${y}" width="${bw}" height="${h}" fill="var(--amber)"/>`;
       sHtml += `<text x="${x+bw/2}" y="${y-6}" text-anchor="middle">${Math.round(row.p*100)}%</text>`;
-      sHtml += `<text x="${x+bw/2}" y="${H-padB+16}" text-anchor="middle">${Math.round(row.d)}</text>`;
+      sHtml += `<text x="${x+bw/2}" y="${H-padB+16}" text-anchor="middle">${row.label || Math.round(row.d)}</text>`;
     });
-    sHtml += `<text x="${padL+ (W-padL-20)/2}" y="${H-6}" text-anchor="middle">demand level (grouped by 10s)</text>`;
+    sHtml += `<text x="${padL+ (W-padL-20)/2}" y="${H-6}" text-anchor="middle">observed demand bin (grouped by 10s)</text>`;
     sHtml += `</svg>`;
     svgOld.outerHTML = sHtml.replace('viewBox','id="s5-chart" viewBox');
   }
@@ -1955,12 +2082,14 @@ function updateHero(Q,D,params){
     Qr.min=min; Qr.max=max; Qr.step=step; Qr.value=t.Qdefault+10;
     Qr.setAttribute('aria-label', `Candidate order quantity, Q, in ${t.unitPlural}`);
     const lo=t.candidates[0], hi=t.candidates[t.candidates.length-1];
-    document.getElementById('s6-excel-text').innerHTML = `List the demand levels and probabilities from
-      <span class="cell-ref">${t.sheet==='Business_Model' ? 'A28:B32' : 'B28:C38'}</span>, compute profit-at-current-Q, and
-      sum probability × profit for Expected Profit. Then use a one-variable <strong>Data Table</strong>
-      (Data → What-If Analysis → Data Table) with candidate Q values
-      ${lo}–${hi} down a column to see all ${t.candidates.length} expected profits at once
-      without rebuilding the formula ${t.candidates.length} times.`;
+    document.getElementById('s6-excel-text').innerHTML = track==='business'
+      ? `For the expected-profit optimization, use the five probabilities supplied in the assignment:
+        150 (15%), 170 (25%), 180 (30%), 190 (20%), and 200 (10%). Compute profit at each demand level,
+        multiply by probability, and sum. Then use a one-variable <strong>Data Table</strong> with candidate Q values
+        ${lo}–${hi}. Record that candidate-Q table in <span class="cell-ref">${t.rows.dataTable}</span>.`
+      : `Use the demand-bin percentages synthesized from the clinic CSV in Section 05. Compute profit at each representative
+        demand bin, multiply by probability, and sum for Expected Profit. Then use a one-variable <strong>Data Table</strong>
+        with candidate Q values ${lo}–${hi}. Record that candidate-Q table in <span class="cell-ref">${t.rows.dataTable}</span>.`;
     render();
   }
   function render(){
