@@ -8,8 +8,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@400;500;600;700&family=Source+Sans+3:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root{
-    --paper:#EFEAD8;
-    --stripe:#E1E9DD;
+    --paper:#F3EEDF;
+    --stripe:#E7ECE3;
     --ink:#1E2A22;
     --ink-soft:#5B6459;
     --rule:#B9AF95;
@@ -339,6 +339,14 @@
   .exercise .feedback.incorrect{color:var(--danger); font-weight:600;}
   .exercise .feedback.saved{color:var(--ink-soft);}
   .char-count{font-family:var(--font-mono); font-size:11.5px; color:var(--ink-soft); text-align:right; margin-top:-4px; margin-bottom:8px;}
+  .excel-address-check{
+    margin:16px 0; padding:14px 16px; border:1px dashed var(--teal); background:var(--teal-soft);
+  }
+  .excel-address-check .mini-title{
+    font-family:var(--font-mono); font-size:12px; font-weight:600; color:var(--teal); margin:0 0 10px;
+  }
+  .excel-address-check p{font-size:14px; margin:0 0 12px;}
+  .excel-address-check input[type=text]{background:var(--white);}
 
   footer{
     grid-column:1/-1; max-width:760px; margin:0 auto; padding:60px 0 0;
@@ -519,6 +527,17 @@
           <label for="ex2-input">In your workbook, raise the fixed setup cost (F) noticeably — for example, to $65 on the Coffee Shop model or $700 on the Flu Clinic model — and leave Q and D at their forecast values. In your own words: why does this one-cell change ripple through every formula below it, and what does that tell you about how the breakeven demand from Section 08 would move?</label>
           <textarea id="ex2-input" aria-describedby="ex2-count ex2-feedback" placeholder="Type your explanation here…"></textarea>
           <div class="char-count" id="ex2-count">0 characters</div>
+          <div class="excel-address-check">
+            <p class="mini-title">EXCEL ADDRESS CHECK — REQUIRED</p>
+            <p>Name the cells/range from the workbook. You may enter <code>B5</code> or <code>$B$5</code>; absolute references are accepted.</p>
+            <div class="grid2">
+              <div><label for="ex2-range">Six-input block</label><input type="text" id="ex2-range" placeholder="e.g., B5:B10"></div>
+              <div><label for="ex2-fcell">Fixed setup cost (F)</label><input type="text" id="ex2-fcell" placeholder="cell address"></div>
+              <div><label for="ex2-qcell">Order quantity (Q)</label><input type="text" id="ex2-qcell" placeholder="cell address"></div>
+              <div><label for="ex2-dcell">Demand (D)</label><input type="text" id="ex2-dcell" placeholder="cell address"></div>
+            </div>
+          </div>
+          <div class="exercise-row"><button class="run" id="ex2-check" type="button">Check explanation + Excel addresses</button></div>
           <div class="feedback" id="ex2-feedback" aria-live="polite"></div>
         </div>
       </div>
@@ -597,8 +616,15 @@
               <input type="number" id="ex3-left" aria-describedby="ex3-feedback">
             </div>
           </div>
+          <div class="excel-address-check">
+            <p class="mini-title">EXCEL ADDRESS CHECK — REQUIRED</p>
+            <div class="grid2">
+              <div><label for="ex3-full-cell">Cell for Full-price sales</label><input type="text" id="ex3-full-cell" placeholder="cell address"></div>
+              <div><label for="ex3-left-cell">Cell for Discounted sales</label><input type="text" id="ex3-left-cell" placeholder="cell address"></div>
+            </div>
+          </div>
           <div class="exercise-row">
-            <button class="run" id="ex3-check" type="button">Check my answer</button>
+            <button class="run" id="ex3-check" type="button">Check numbers + Excel cells</button>
           </div>
           <div class="feedback" id="ex3-feedback" aria-live="polite"></div>
         </div>
@@ -664,8 +690,13 @@
               <input type="number" id="ex4-220" aria-describedby="ex4-feedback">
             </div>
           </div>
+          <div class="excel-address-check">
+            <p class="mini-title">EXCEL ADDRESS CHECK — REQUIRED</p>
+            <label for="ex4-profit-cell">Which workbook cell contains Daily Profit for both scenarios?</label>
+            <input type="text" id="ex4-profit-cell" placeholder="cell address">
+          </div>
           <div class="exercise-row">
-            <button class="run" id="ex4-check" type="button">Check my answer</button>
+            <button class="run" id="ex4-check" type="button">Check profits + Excel cell</button>
           </div>
           <div class="feedback" id="ex4-feedback" aria-live="polite"></div>
         </div>
@@ -719,8 +750,13 @@
           <label for="ex5-input">Using the probability table above, what is the probability that demand is 180 or fewer units? Answer as a percent (e.g., 42).</label>
           <div class="exercise-row">
             <input type="number" id="ex5-input" style="max-width:140px;" aria-describedby="ex5-feedback"> <span aria-hidden="true">%</span>
-            <button class="run" id="ex5-check" type="button">Check my answer</button>
           </div>
+          <div class="excel-address-check">
+            <p class="mini-title">EXCEL RANGE CHECK — REQUIRED</p>
+            <label for="ex5-prob-range">What range contains the demand/probability table for the track currently selected?</label>
+            <input type="text" id="ex5-prob-range" placeholder="range address">
+          </div>
+          <div class="exercise-row"><button class="run" id="ex5-check" type="button">Check probability + Excel range</button></div>
           <div class="feedback" id="ex5-feedback" aria-live="polite"></div>
         </div>
       </div>
@@ -783,8 +819,13 @@
               <input type="number" id="ex6-ep" aria-describedby="ex6-feedback">
             </div>
           </div>
+          <div class="excel-address-check">
+            <p class="mini-title">EXCEL RANGE CHECK — REQUIRED</p>
+            <label for="ex6-table-range">What workbook range contains the candidate-Q Data Table for the track currently selected?</label>
+            <input type="text" id="ex6-table-range" placeholder="range address">
+          </div>
           <div class="exercise-row">
-            <button class="run" id="ex6-check" type="button">Check my answer</button>
+            <button class="run" id="ex6-check" type="button">Check result + Excel range</button>
           </div>
           <div class="feedback" id="ex6-feedback" aria-live="polite"></div>
         </div>
@@ -844,8 +885,13 @@
           <label for="ex7-input">Using the sliders above, drop the discount price (v) to $0.50 and keep p and c at their defaults. What is the new critical ratio, as a percent to one decimal place?</label>
           <div class="exercise-row">
             <input type="number" step="0.1" id="ex7-input" style="max-width:140px;" aria-describedby="ex7-feedback"> <span aria-hidden="true">%</span>
-            <button class="run" id="ex7-check" type="button">Check my answer</button>
           </div>
+          <div class="excel-address-check">
+            <p class="mini-title">EXCEL RANGE CHECK — REQUIRED</p>
+            <label for="ex7-ratio-range">What range contains Cu, Co, and the Critical Ratio for the track currently selected?</label>
+            <input type="text" id="ex7-ratio-range" placeholder="range address">
+          </div>
+          <div class="exercise-row"><button class="run" id="ex7-check" type="button">Check ratio + Excel range</button></div>
           <div class="feedback" id="ex7-feedback" aria-live="polite"></div>
         </div>
       </div>
@@ -903,8 +949,15 @@
           <label for="ex8-input">Set Q to 200 and run Goal Seek. What breakeven demand does it converge on (nearest whole unit)?</label>
           <div class="exercise-row">
             <input type="number" id="ex8-input" style="max-width:140px;" aria-describedby="ex8-feedback">
-            <button class="run" id="ex8-check" type="button">Check my answer</button>
           </div>
+          <div class="excel-address-check">
+            <p class="mini-title">GOAL SEEK CELL CHECK — REQUIRED</p>
+            <div class="grid2">
+              <div><label for="ex8-set-cell">Goal Seek “Set cell”</label><input type="text" id="ex8-set-cell" placeholder="cell address"></div>
+              <div><label for="ex8-change-cell">Goal Seek “By changing cell”</label><input type="text" id="ex8-change-cell" placeholder="cell address"></div>
+            </div>
+          </div>
+          <div class="exercise-row"><button class="run" id="ex8-check" type="button">Check breakeven + Goal Seek cells</button></div>
           <div class="feedback" id="ex8-feedback" aria-live="polite"></div>
         </div>
       </div>
@@ -990,26 +1043,39 @@
   <footer>
     <section class="step" id="submit" style="border-top:none; padding-top:0;">
       <div class="step-head"><span class="step-num" aria-hidden="true">✓</span></div>
-      <h2>Turn in your work</h2>
-      <p>This page runs entirely in your browser — nothing you type is sent
-      anywhere automatically. When you've finished all nine exercises above,
-      fill in your name below and generate a submission summary, then paste
-      or upload it wherever your instructor's assignment normally goes.</p>
+      <h2>Record your participation</h2>
+      <p>Complete all nine exercises, then record your participation with the instructor-controlled
+      submission service. Your answers are stored in the instructor's authoritative record. After a
+      successful submission, this page creates a signed Blackboard receipt. Upload that receipt to
+      the Blackboard participation assignment. The receipt does not contain editable answers; it only
+      identifies the server-side record.</p>
       <p id="footerProgress" style="font-family:var(--font-mono); font-size:14px;">0 / 9 exercises completed.</p>
 
       <div class="widget" id="wSubmit">
-        <div class="widget-bar"><span>PREPARE YOUR SUBMISSION</span><span>nothing leaves your browser</span></div>
+        <div class="widget-bar"><span>PARTICIPATION SUBMISSION</span><span>authoritative record is instructor-controlled</span></div>
         <div class="widget-body">
-          <div class="control">
-            <label for="submit-name" style="font-weight:600; display:block; margin-bottom:6px;">Your name</label>
-            <input type="text" id="submit-name" style="width:100%; font-family:var(--font-body); font-size:15px; border:1px solid var(--ink); background:var(--paper); padding:9px 11px;">
+          <div class="grid2">
+            <div class="control">
+              <label for="submit-name" style="font-weight:600; display:block; margin-bottom:6px;">Your name</label>
+              <input type="text" id="submit-name" autocomplete="name" required style="width:100%; font-family:var(--font-body); font-size:15px; border:1px solid var(--ink); background:var(--paper); padding:9px 11px;">
+            </div>
+            <div class="control">
+              <label for="submit-email" style="font-weight:600; display:block; margin-bottom:6px;">School email</label>
+              <input type="email" id="submit-email" autocomplete="email" required placeholder="student@example.edu" style="width:100%; font-family:var(--font-body); font-size:15px; border:1px solid var(--ink); background:var(--paper); padding:9px 11px;">
+            </div>
           </div>
           <div class="presets">
-            <button class="run" id="submit-generate" type="button">Generate submission text</button>
-            <button class="chip" id="submit-copy" type="button" disabled>Copy to clipboard</button>
-            <button class="chip" id="submit-download" type="button" disabled>Download as .txt</button>
+            <button class="run" id="submit-direct" type="button">Record participation</button>
+            <button class="chip" id="submit-receipt" type="button" disabled>Download Blackboard receipt</button>
+            <button class="chip" id="submit-generate" type="button">Generate personal copy</button>
+            <button class="chip" id="submit-copy" type="button" disabled>Copy personal copy</button>
+            <button class="chip" id="submit-download" type="button" disabled>Download personal copy</button>
           </div>
           <div class="feedback" id="submit-feedback" aria-live="polite" style="margin-top:10px;"></div>
+          <div id="receiptPanel" hidden class="box health" style="margin-top:14px;">
+            <span class="tag">BLACKBOARD RECEIPT READY</span>
+            <p id="receiptText" style="margin-bottom:0;"></p>
+          </div>
           <div id="footerCode" hidden style="margin-top:14px;">
             <label for="submit-output" style="font-weight:600; display:block; margin-bottom:6px;">Your submission text</label>
             <textarea id="submit-output" readonly style="width:100%; min-height:220px; font-family:var(--font-mono); font-size:13px; border:1px solid var(--ink); background:var(--paper); padding:12px;"></textarea>
@@ -1019,16 +1085,24 @@
     </section>
 
     <p style="margin-top:44px;">
-    Built for MG628 — Data Analysis for Managerial Decisions. This page runs
-    entirely in your browser; nothing you enter is stored or submitted
-    automatically. It is a companion to the Excel workbook, not a replacement
-    for it — every section tells you exactly which cells to build next.
+    Built for MG628 — Data Analysis for Managerial Decisions. Exercise work stays
+    in your browser until you choose Record participation. The authoritative submission
+    is then stored by the instructor-controlled service, and Blackboard receives only a
+    signed receipt that points to that record. This page remains a companion to the Excel
+    workbook, not a replacement for it.
     </p>
   </footer>
 
 </div>
 
 <script>
+// ---------- instructor-controlled submission configuration ----------
+// Replace this URL with the deployed endpoint described in README_enhanced.md.
+// When left blank, direct submission is disabled and copy/download remains available.
+const SUBMISSION_ENDPOINT = 'https://script.google.com/macros/s/AKfycbwQPKinx6_BtRwflc3Ez3C-dwTXkiY_DBLjcOAuytadZlLz3mOVhifXmcN7q7hjux3rRw/exec';
+const COURSE_CODE = 'MG628';
+const ASSIGNMENT_CODE = 'ORDER_QUANTITY_WEEKS_1_2';
+
 // ---------- shared helpers ----------
 const fmt$ = n => (n<0?'-$':'$') + Math.abs(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
 const clamp = (n,a,b)=>Math.max(a,Math.min(b,n));
@@ -1175,9 +1249,12 @@ window.addEventListener('scroll', ()=>{
 // ---------- exercises (graded, required for participation) ----------
 const EXERCISE_DEFS = [
   {id:'ex1', type:'text', minLen:20},
-  {id:'ex2', type:'text', minLen:20},
+  {id:'ex2', type:'textExcel', minLen:20,
+   excelFields:['ex2-range','ex2-fcell','ex2-qcell','ex2-dcell'],
+   excelAnswers:()=>['B5:B10','B5','B9','B10']},
   {id:'ex3', type:'numeric', fields:['ex3-full','ex3-left'], tol:[0.5,0.5],
    answers:(track)=>[Math.min(150,200), Math.max(0,200-150)],
+   excelFields:['ex3-full-cell','ex3-left-cell'], excelAnswers:()=>['B13','B14'],
    summary:(v)=>`Full-price sales ${v[0]}, discounted sales ${v[1]}`},
   {id:'ex4', type:'numeric', fields:['ex4-140','ex4-220'], tol:[2,2],
    answers:(track)=>{
@@ -1185,9 +1262,11 @@ const EXERCISE_DEFS = [
      return [profitOf({F:t.F,c:t.c,p:t.p,v:t.v,Q,D:140}).profit,
              profitOf({F:t.F,c:t.c,p:t.p,v:t.v,Q,D:220}).profit];
    },
+   excelFields:['ex4-profit-cell'], excelAnswers:()=>['B17'],
    summary:(v)=>`Profit at D=140 is ${v[0]}, at D=220 is ${v[1]}`},
   {id:'ex5', type:'numeric', fields:['ex5-input'], tol:[1.2],
    answers:(track)=>[cumulativeAt(180, TRACKS[track])*100],
+   excelFields:['ex5-prob-range'], excelAnswers:(track)=>[TRACKS[track].rows.probTable],
    summary:(v)=>`P(D ≤ 180) = ${v[0]}%`},
   {id:'ex6', type:'numeric', fields:['ex6-q','ex6-ep'], tol:[5,15],
    answers:(track)=>{
@@ -1196,6 +1275,7 @@ const EXERCISE_DEFS = [
      const best = rows.reduce((a,b)=> b.ep>a.ep?b:a, rows[0]);
      return [best.q, best.ep];
    },
+   excelFields:['ex6-table-range'], excelAnswers:(track)=>[TRACKS[track].rows.dataTable],
    summary:(v)=>`Best Q = ${v[0]}, expected profit ${v[1]}`},
   {id:'ex7', type:'numeric', fields:['ex7-input'], tol:[0.6],
    answers:(track)=>{
@@ -1203,19 +1283,21 @@ const EXERCISE_DEFS = [
      const Cu=t.p-t.c, Co=t.c-0.5;
      return [Cu/(Cu+Co)*100];
    },
+   excelFields:['ex7-ratio-range'], excelAnswers:(track)=>[TRACKS[track].rows.underage],
    summary:(v)=>`Critical ratio = ${v[0]}%`},
   {id:'ex8', type:'numeric', fields:['ex8-input'], tol:[2],
    answers:(track)=>{
      const t=TRACKS[track], Q=200;
      return [(t.F+Q*(t.c-t.v))/(t.p-t.v)];
    },
+   excelFields:['ex8-set-cell','ex8-change-cell'], excelAnswers:()=>['B17','B10'],
    summary:(v)=>`Breakeven demand at Q=200 is ${v[0]}`},
   {id:'ex9', type:'text', minLen:40}
-];
-const exerciseState = {}; // id -> {done:bool, summary:string}
+]
+const exerciseState = {}; // id -> {done:bool, summary:string, raw:any}
 
-function markExerciseDone(id, summaryText){
-  exerciseState[id] = {done:true, summary:summaryText};
+function markExerciseDone(id, summaryText, rawAnswer=null, excelRefs=null){
+  exerciseState[id] = {done:true, summary:summaryText, raw:rawAnswer, excel:excelRefs};
   const status = document.getElementById(id+'-status');
   if(status){ status.textContent = 'complete'; status.classList.add('done'); }
   updateExerciseProgress();
@@ -1232,6 +1314,19 @@ function updateExerciseProgress(){
   if(footerP) footerP.textContent = `${doneCount} / ${EXERCISE_DEFS.length} exercises completed.`;
 }
 
+function normalizeExcelRef(value){
+  let x = String(value || '').trim().toUpperCase().replace(/\s+/g,'').replace(/\$/g,'');
+  if(x.includes('!')) x = x.split('!').pop();
+  return x;
+}
+function checkExcelRefs(def){
+  if(!def.excelFields || !def.excelFields.length) return {ok:true, values:[]};
+  const values = def.excelFields.map(id=>document.getElementById(id).value.trim());
+  const expected = def.excelAnswers(currentTrack);
+  const ok = values.every((v,i)=>normalizeExcelRef(v)===normalizeExcelRef(expected[i]));
+  return {ok, values, expected};
+}
+
 // text (reflective) exercises: "complete" once past a minimum length
 EXERCISE_DEFS.filter(d=>d.type==='text').forEach(def=>{
   const input = document.getElementById(def.id+'-input');
@@ -1242,7 +1337,7 @@ EXERCISE_DEFS.filter(d=>d.type==='text').forEach(def=>{
     const len = input.value.trim().length;
     if(count) count.textContent = len + ' characters';
     if(len >= def.minLen){
-      markExerciseDone(def.id, input.value.trim());
+      markExerciseDone(def.id, input.value.trim(), input.value.trim());
       feedback.textContent = 'Saved — this will be included in your submission.';
       feedback.className = 'feedback saved';
     } else {
@@ -1253,11 +1348,45 @@ EXERCISE_DEFS.filter(d=>d.type==='text').forEach(def=>{
   });
 });
 
+// Exercise 2 combines a written explanation with required Excel cell/range naming.
+EXERCISE_DEFS.filter(d=>d.type==='textExcel').forEach(def=>{
+  const input = document.getElementById(def.id+'-input');
+  const count = document.getElementById(def.id+'-count');
+  const feedback = document.getElementById(def.id+'-feedback');
+  const btn = document.getElementById(def.id+'-check');
+  input.addEventListener('input', ()=>{
+    if(count) count.textContent = input.value.trim().length + ' characters';
+    markExerciseIncomplete(def.id);
+  });
+  def.excelFields.forEach(id=>document.getElementById(id).addEventListener('input', ()=>markExerciseIncomplete(def.id)));
+  btn.addEventListener('click', ()=>{
+    const text = input.value.trim();
+    const refs = checkExcelRefs(def);
+    if(text.length < def.minLen){
+      feedback.textContent = `Write at least ${def.minLen} characters in your explanation, then try again.`;
+      feedback.className = 'feedback incorrect';
+      markExerciseIncomplete(def.id);
+      return;
+    }
+    if(!refs.ok){
+      feedback.textContent = 'Your explanation is long enough, but one or more Excel addresses are not correct. Check the workbook layout above and try again.';
+      feedback.className = 'feedback incorrect';
+      markExerciseIncomplete(def.id);
+      return;
+    }
+    const refSummary = refs.values.map(normalizeExcelRef).join(', ');
+    feedback.textContent = 'Correct — explanation and Excel addresses verified.';
+    feedback.className = 'feedback correct';
+    markExerciseDone(def.id, `${text} | Excel addresses: ${refSummary}`, text, refs.values.map(normalizeExcelRef));
+  });
+});
+
 // numeric (auto-graded) exercises: checked on button press, against the currently selected track
 EXERCISE_DEFS.filter(d=>d.type==='numeric').forEach(def=>{
   const btn = document.getElementById(def.id+'-check');
   const feedback = document.getElementById(def.id+'-feedback');
   if(!btn) return;
+  (def.excelFields || []).forEach(id=>document.getElementById(id).addEventListener('input', ()=>markExerciseIncomplete(def.id)));
   btn.addEventListener('click', ()=>{
     const values = def.fields.map(fid=>+document.getElementById(fid).value);
     if(values.some(v=>Number.isNaN(v))){
@@ -1267,13 +1396,19 @@ EXERCISE_DEFS.filter(d=>d.type==='numeric').forEach(def=>{
     }
     const correctAnswers = def.answers(currentTrack);
     const tol = def.tol;
-    const allCorrect = values.every((v,i)=> Math.abs(v-correctAnswers[i]) <= tol[i]);
-    if(allCorrect){
-      feedback.textContent = 'Correct — nice work.';
+    const numbersCorrect = values.every((v,i)=> Math.abs(v-correctAnswers[i]) <= tol[i]);
+    const refs = checkExcelRefs(def);
+    if(numbersCorrect && refs.ok){
+      const refText = refs.values.length ? ` | Excel: ${refs.values.map(normalizeExcelRef).join(', ')}` : '';
+      feedback.textContent = refs.values.length ? 'Correct — both the calculation and Excel address check are right.' : 'Correct — nice work.';
       feedback.className = 'feedback correct';
-      markExerciseDone(def.id, def.summary(values));
+      markExerciseDone(def.id, def.summary(values) + refText, values, refs.values.map(normalizeExcelRef));
+    } else if(numbersCorrect && !refs.ok){
+      feedback.textContent = 'Your calculation is correct, but the Excel cell/range address is not. Check the workbook layout and try again.';
+      feedback.className = 'feedback incorrect';
+      markExerciseIncomplete(def.id);
     } else {
-      feedback.textContent = 'Not quite — check your inputs above (and make sure you\'re reading them off the scenario currently selected) and try again.';
+      feedback.textContent = 'Not quite — check the calculation and the Excel address fields, then try again.';
       feedback.className = 'feedback incorrect';
       markExerciseIncomplete(def.id);
     }
@@ -1284,45 +1419,204 @@ updateExerciseProgress();
 
 // ---------- submission panel ----------
 (function(){
+  const directBtn = document.getElementById('submit-direct');
+  const receiptBtn = document.getElementById('submit-receipt');
   const genBtn = document.getElementById('submit-generate');
   const copyBtn = document.getElementById('submit-copy');
   const dlBtn = document.getElementById('submit-download');
   const nameInput = document.getElementById('submit-name');
+  const emailInput = document.getElementById('submit-email');
   const output = document.getElementById('submit-output');
   const footerCode = document.getElementById('footerCode');
   const feedback = document.getElementById('submit-feedback');
+  const receiptPanel = document.getElementById('receiptPanel');
+  const receiptText = document.getElementById('receiptText');
+  let signedReceipt = null;
 
-  function buildText(){
-    const name = nameInput.value.trim() || '(name not entered)';
-    const doneCount = EXERCISE_DEFS.filter(d=>exerciseState[d.id] && exerciseState[d.id].done).length;
-    let lines = [];
-    lines.push('MG628 — Order Quantity Tutorial — Submission');
-    lines.push('Name: ' + name);
-    lines.push('Scenario used: ' + TRACKS[currentTrack].name + ' (' + TRACKS[currentTrack].label + ')');
-    lines.push('Generated: ' + new Date().toLocaleString());
-    lines.push(`Exercises completed: ${doneCount} / ${EXERCISE_DEFS.length}`);
-    lines.push('');
+  function doneCount(){
+    return EXERCISE_DEFS.filter(d=>exerciseState[d.id] && exerciseState[d.id].done).length;
+  }
+
+  function makeSubmissionId(){
+    if(window.crypto && crypto.randomUUID) return crypto.randomUUID();
+    return 'sub-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2,10);
+  }
+
+  function answersObject(){
+    const answers = {};
     EXERCISE_DEFS.forEach((def,i)=>{
       const st = exerciseState[def.id];
-      lines.push(`Exercise ${i+1}: ${st && st.done ? 'COMPLETE' : 'not completed'}`);
-      lines.push(st && st.summary ? '  ' + st.summary.replace(/\n/g,'\n  ') : '  (no answer recorded)');
+      answers['exercise_' + (i+1)] = {
+        status: st && st.done ? 'COMPLETE' : 'NOT_COMPLETED',
+        answer: st && st.summary ? st.summary : '',
+        raw: st && st.raw !== undefined ? st.raw : null,
+        excel_refs: st && st.excel ? st.excel : []
+      };
+    });
+    return answers;
+  }
+
+  function buildPayload(){
+    const now = new Date();
+    return {
+      submission_id: makeSubmissionId(),
+      course: COURSE_CODE,
+      assignment: ASSIGNMENT_CODE,
+      student: {
+        name: nameInput.value.trim(),
+        email: emailInput.value.trim().toLowerCase()
+      },
+      submitted_at_iso: now.toISOString(),
+      submitted_at_local: now.toLocaleString(),
+      track_key: currentTrack,
+      track_label: TRACKS[currentTrack].label,
+      scenario: TRACKS[currentTrack].name,
+      exercises_completed: doneCount(),
+      exercises_total: EXERCISE_DEFS.length,
+      answers: answersObject(),
+      page_url: location.href,
+      user_agent: navigator.userAgent
+    };
+  }
+
+  function buildText(){
+    const payload = buildPayload();
+    let lines = [];
+    lines.push('MG628 — Order Quantity Tutorial — Personal Copy');
+    lines.push('Submission ID: ' + payload.submission_id);
+    lines.push('Name: ' + (payload.student.name || '(name not entered)'));
+    lines.push('Email: ' + (payload.student.email || '(email not entered)'));
+    lines.push('Scenario used: ' + payload.scenario + ' (' + payload.track_label + ')');
+    lines.push('Generated: ' + payload.submitted_at_local);
+    lines.push(`Exercises completed: ${payload.exercises_completed} / ${payload.exercises_total}`);
+    lines.push('');
+    Object.entries(payload.answers).forEach(([key,val],i)=>{
+      lines.push(`Exercise ${i+1}: ${val.status === 'COMPLETE' ? 'COMPLETE' : 'not completed'}`);
+      lines.push(val.answer ? '  ' + val.answer.replace(/\n/g,'\n  ') : '  (no answer recorded)');
       lines.push('');
     });
     return lines.join('\n');
   }
 
+  function validIdentity(){
+    if(!nameInput.value.trim()){
+      feedback.textContent = 'Enter your name before submitting.';
+      feedback.className = 'feedback incorrect';
+      nameInput.focus();
+      return false;
+    }
+    if(!emailInput.value.trim() || !emailInput.checkValidity()){
+      feedback.textContent = 'Enter a valid school email before submitting.';
+      feedback.className = 'feedback incorrect';
+      emailInput.focus();
+      return false;
+    }
+    return true;
+  }
+
+  if(!SUBMISSION_ENDPOINT){
+    directBtn.disabled = true;
+    directBtn.title = 'Direct submission has not yet been configured by the instructor.';
+    directBtn.textContent = 'Direct submission not configured';
+  }
+
+  directBtn.addEventListener('click', async ()=>{
+    if(!validIdentity()) return;
+    const count = doneCount();
+    if(count < EXERCISE_DEFS.length){
+      feedback.textContent = `Complete all ${EXERCISE_DEFS.length} exercises before direct submission. You currently have ${count} complete.`;
+      feedback.className = 'feedback incorrect';
+      return;
+    }
+    const payload = buildPayload();
+    directBtn.disabled = true;
+    directBtn.textContent = 'Submitting…';
+    feedback.textContent = 'Sending your completed work to the instructor…';
+    feedback.className = 'feedback';
+    try{
+      const resp = await fetch(SUBMISSION_ENDPOINT, {
+        method:'POST',
+        headers:{'Content-Type':'text/plain;charset=UTF-8'},
+        body:JSON.stringify(payload)
+      });
+      if(!resp.ok) throw new Error('HTTP ' + resp.status);
+      let result = {};
+      try{ result = await resp.json(); }catch(_){ }
+      const receipt = result.receipt_id || result.submission_id || payload.submission_id;
+      const code = result.verification_code || '';
+      const receivedAt = result.received_at_iso || new Date().toISOString();
+      if(!result.ok || !code) throw new Error(result.error || 'Server did not return a signed receipt.');
+      signedReceipt = {
+        receipt_id: receipt,
+        verification_code: code,
+        received_at_iso: receivedAt,
+        course: COURSE_CODE,
+        assignment: ASSIGNMENT_CODE,
+        student_name: payload.student.name,
+        student_email: payload.student.email
+      };
+      feedback.textContent = 'Participation recorded successfully. Download the signed receipt and upload it to Blackboard.';
+      feedback.className = 'feedback correct';
+      receiptText.innerHTML = `<strong>Receipt:</strong> <code>${receipt}</code><br><strong>Verification:</strong> <code>${code}</code><br><strong>Recorded:</strong> ${new Date(receivedAt).toLocaleString()}`;
+      receiptPanel.hidden = false;
+      receiptBtn.disabled = false;
+      document.getElementById('liveAnnounce').textContent = 'Participation recorded. Your signed Blackboard receipt is ready.';
+      directBtn.textContent = 'Participation recorded';
+      directBtn.disabled = true;
+    }catch(err){
+      feedback.textContent = 'Participation could not be recorded. Your answers are still in this browser. Try again or contact your instructor before leaving the page.';
+      feedback.className = 'feedback incorrect';
+      directBtn.textContent = 'Record participation';
+      directBtn.disabled = false;
+      console.error('Submission error', err);
+    }
+  });
+
+  receiptBtn.addEventListener('click', ()=>{
+    if(!signedReceipt) return;
+    const lines = [
+      'MG628 BLACKBOARD PARTICIPATION RECEIPT',
+      '--------------------------------------',
+      'Course: ' + signedReceipt.course,
+      'Assignment: ' + signedReceipt.assignment,
+      'Student: ' + signedReceipt.student_name,
+      'School email: ' + signedReceipt.student_email,
+      'Recorded by instructor service: ' + signedReceipt.received_at_iso,
+      'Receipt ID: ' + signedReceipt.receipt_id,
+      'Verification code: ' + signedReceipt.verification_code,
+      '',
+      'This receipt points to the instructor-controlled authoritative record.',
+      'It does not contain the student answers. Changing this file cannot change',
+      'the answers, completion status, or timestamp stored by the instructor service.',
+      'Upload this receipt to the Blackboard participation assignment.'
+    ];
+    const blob = new Blob([lines.join('\n')], {type:'text/plain'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    const safeName = (signedReceipt.student_name || 'student').replace(/[^a-z0-9]+/gi,'-').toLowerCase();
+    a.href = url;
+    a.download = `MG628-Blackboard-Receipt-${safeName}-${signedReceipt.receipt_id.slice(0,8)}.txt`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    feedback.textContent = 'Blackboard receipt downloaded. Upload that receipt to the participation assignment in Blackboard.';
+    feedback.className = 'feedback correct';
+  });
+
   genBtn.addEventListener('click', ()=>{
+    if(!validIdentity()) return;
     const text = buildText();
     output.value = text;
     footerCode.hidden = false;
     copyBtn.disabled = false;
     dlBtn.disabled = false;
-    const doneCount = EXERCISE_DEFS.filter(d=>exerciseState[d.id] && exerciseState[d.id].done).length;
-    if(doneCount < EXERCISE_DEFS.length){
-      feedback.textContent = `Generated with ${doneCount} of ${EXERCISE_DEFS.length} exercises complete — you can still submit, or go back and finish the rest first.`;
+    const count = doneCount();
+    if(count < EXERCISE_DEFS.length){
+      feedback.textContent = `Generated with ${count} of ${EXERCISE_DEFS.length} exercises complete — you can keep this as a backup, or go back and finish the rest first.`;
       feedback.className = 'feedback';
     } else {
-      feedback.textContent = 'All exercises complete. Copy or download below, then submit as your instructor asks.';
+      feedback.textContent = 'All exercises complete. Copy or download this backup, or use direct submission if your instructor has enabled it.';
       feedback.className = 'feedback correct';
     }
     document.getElementById('liveAnnounce').textContent = 'Submission text generated below.';
@@ -1344,8 +1638,8 @@ updateExerciseProgress();
   dlBtn.addEventListener('click', ()=>{
     const blob = new Blob([output.value], {type:'text/plain'});
     const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
     const safeName = (nameInput.value.trim() || 'submission').replace(/[^a-z0-9]+/gi,'-').toLowerCase();
+    const a = document.createElement('a');
     a.href = url;
     a.download = `mg628-order-quantity-${safeName}.txt`;
     document.body.appendChild(a);
