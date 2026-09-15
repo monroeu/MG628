@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MG628 — Data Analysis for Managerial Decision-Making</title>
+<meta name="description" content="MG628 course hub for Data Analysis for Managerial Decision-Making at Monroe University.">
+<style>
+:root{
+  --paper:#F3EEDF; --stripe:#E7ECE3; --ink:#1E2A22; --ink-soft:#5B6459;
+  --rule:#B9AF95; --amber:#8A4419; --teal:#2F6F63; --teal-soft:#D9E8E3;
+  --white:#FBF9F1; --shadow:0 12px 30px rgba(30,42,34,.10);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;color:var(--ink);
+  font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  background:repeating-linear-gradient(var(--paper),var(--paper) 26px,var(--stripe) 26px,var(--stripe) 52px);
+  line-height:1.65;
+}
+a{color:inherit}
+.skip{position:absolute;top:-60px;left:16px;background:var(--ink);color:white;padding:10px 14px;z-index:100}
+.skip:focus{top:12px}
+.topbar{background:rgba(251,249,241,.96);border-bottom:1px solid var(--rule);position:sticky;top:0;z-index:50;backdrop-filter:blur(8px)}
+.topbar-inner{max-width:1180px;margin:0 auto;padding:14px 24px;display:flex;justify-content:space-between;align-items:center;gap:24px}
+.brand{font-family:Georgia,"Times New Roman",serif;font-weight:700;font-size:20px;letter-spacing:.01em}
+.brand small{display:block;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:11px;color:var(--ink-soft);font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-top:2px}
+.topnav{display:flex;gap:18px;flex-wrap:wrap;font-size:14px}
+.topnav a{text-decoration:none;color:var(--ink-soft);font-weight:600}
+.topnav a:hover{color:var(--amber)}
+main{max-width:1180px;margin:0 auto;padding:56px 24px 100px}
+.hero{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(280px,.65fr);gap:54px;align-items:center;padding:42px 0 64px}
+.eyebrow{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);font-weight:700;margin:0 0 14px}
+h1,h2,h3{font-family:Georgia,"Times New Roman",serif;line-height:1.12}
+h1{font-size:clamp(42px,6vw,74px);margin:0 0 20px;max-width:11ch}
+.hero-lede{max-width:62ch;font-size:19px;margin:0 0 28px}
+.hero-actions{display:flex;flex-wrap:wrap;gap:12px}
+.btn{display:inline-block;text-decoration:none;border:1px solid var(--ink);padding:11px 16px;font-weight:700;font-size:14px;background:var(--white)}
+.btn.primary{background:var(--ink);color:white}
+.btn:hover{transform:translateY(-1px)}
+.portrait-card{background:var(--white);border:1px solid var(--rule);padding:16px;box-shadow:var(--shadow)}
+.portrait-card img{width:100%;aspect-ratio:4/5;object-fit:cover;object-position:center 28%;display:block;border:1px solid var(--rule)}
+.portrait-caption{padding:14px 4px 2px}
+.portrait-caption strong{display:block;font-family:Georgia,"Times New Roman",serif;font-size:22px}
+.portrait-caption span{color:var(--ink-soft);font-size:14px}
+.section{border-top:1px solid var(--rule);padding:64px 0 8px}
+.section h2{font-size:36px;margin:0 0 18px}
+.section-intro{color:var(--ink-soft);max-width:70ch;margin-bottom:28px}
+.professor-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.card{background:rgba(251,249,241,.95);border:1px solid var(--rule);padding:26px;box-shadow:0 4px 16px rgba(30,42,34,.05)}
+.card h3{margin:0 0 12px;font-size:23px}
+.card p:last-child{margin-bottom:0}
+.course-facts{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:22px}
+.fact{background:var(--teal-soft);border:1px solid rgba(47,111,99,.25);padding:18px}
+.fact b{display:block;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--teal);margin-bottom:6px}
+.weeks{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.week{background:var(--white);border:1px solid var(--rule);padding:20px;min-height:180px;display:flex;flex-direction:column;justify-content:space-between}
+.week.active{border:2px solid var(--amber);background:linear-gradient(180deg,var(--white),#fff8ef)}
+.week-num{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);font-weight:700}
+.week h3{font-size:21px;margin:10px 0 10px}
+.week p{color:var(--ink-soft);font-size:14px;margin:0 0 18px}
+.week .status{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--teal)}
+.week .status.soon{color:var(--ink-soft)}
+.week a{text-decoration:none;font-weight:700;color:var(--amber)}
+.objectives{columns:2;column-gap:42px;padding-left:20px}
+.objectives li{break-inside:avoid;margin-bottom:12px}
+footer{margin-top:80px;padding:28px 0 10px;border-top:1px solid var(--rule);color:var(--ink-soft);font-size:14px}
+@media (max-width:900px){
+  .hero{grid-template-columns:1fr}
+  .portrait-card{max-width:430px}
+  .professor-grid{grid-template-columns:1fr}
+  .course-facts{grid-template-columns:1fr}
+  .weeks{grid-template-columns:1fr 1fr}
+}
+@media (max-width:620px){
+  .topbar-inner{align-items:flex-start;flex-direction:column}
+  .topnav{gap:12px}
+  .weeks{grid-template-columns:1fr}
+  .objectives{columns:1}
+  main{padding-left:18px;padding-right:18px}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">MG628<small>Data Analysis for Managerial Decision-Making</small></div>
+    <nav class="topnav" aria-label="Course navigation">
+      <a href="#professor">Professor</a>
+      <a href="#course">Course</a>
+      <a href="#weeks">Weekly Activities</a>
+      <a href="#objectives">Learning Objectives</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <section class="hero">
+    <div>
+      <p class="eyebrow">Monroe University · King Graduate School</p>
+      <h1>Data Analysis for Managerial Decision-Making</h1>
+      <p class="hero-lede">
+        Welcome to MG628. This course focuses on using data, analytical tools,
+        statistical methods, visualization, and business intelligence to solve
+        organizational problems and support better managerial decisions.
+      </p>
+      <div class="hero-actions">
+        <a class="btn primary" href="#weeks">View Weekly Activities</a>
+        <a class="btn" href="#professor">Meet Your Professor</a>
+      </div>
+    </div>
+
+    <aside class="portrait-card" aria-label="Professor Fomba Kassoh">
+      <img src="assets/professor-fomba-kassoh.jpeg" alt="Professor Fomba Kassoh">
+      <div class="portrait-caption">
+        <strong>Professor Fomba Kassoh</strong>
+        <span>Instructor · MG628</span>
+      </div>
+    </aside>
+  </section>
+
+  <section class="section" id="professor">
+    <p class="eyebrow">Meet Your Professor</p>
+    <h2>Welcome to the course</h2>
+    <div class="professor-grid">
+      <article class="card">
+        <h3>Hello everyone</h3>
+        <p>My name is <strong>Professor Fomba Kassoh</strong>, and I will be your instructor for this course.</p>
+        <p>My academic and professional background spans <strong>Data Science, Artificial Intelligence, Business Analytics, Civil Engineering, Transportation, and Water Resources</strong>. In addition to teaching at <strong>Monroe University</strong>, I work in the transportation industry, where I manage technology and operational projects involving data, automated systems, and decision-making.</p>
+      </article>
+      <article class="card">
+        <h3>How we will learn</h3>
+        <p>My goal in this class is to help you go beyond simply learning concepts. I want you to understand how to <strong>apply data, analytical tools, and technology to solve real-world problems</strong>.</p>
+        <p>We will focus on practical skills that you can use in your academic work, your career, and everyday decision-making. I look forward to working with you and to a productive semester together.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="section" id="course">
+    <p class="eyebrow">Course Overview</p>
+    <h2>What MG628 is about</h2>
+    <p class="section-intro">
+      The course develops quantitative and analytical decision-making skills through Excel, Python, SQL,
+      data visualization, statistics, probability, modeling, and business intelligence. Students work
+      with real-world business and healthcare contexts and complete a culminating project.
+    </p>
+    <div class="course-facts">
+      <div class="fact"><b>Credits</b>3</div>
+      <div class="fact"><b>Prerequisite</b>KG 578 Business Analytics Foundations</div>
+      <div class="fact"><b>Core Tools</b>Excel · Python · SQL · Power BI · Tableau</div>
+    </div>
+  </section>
+
+  <section class="section" id="weeks">
+    <p class="eyebrow">Weekly Interactive Activities</p>
+    <h2>Your course activity hub</h2>
+    <p class="section-intro">Each weekly activity has its own page. Week 1 is available now; additional weeks will be published as the course progresses.</p>
+
+    <div class="weeks">
+      <article class="week active">
+        <div>
+          <div class="week-num">Week 1</div>
+          <h3>Introduction to Data-Driven Decision-Making</h3>
+          <p>Course overview, the role of data in business, analytical tools, expectations, and the first interactive modeling activity.</p>
+        </div>
+        <div><div class="status">Available now</div><a href="week01/">Open Week 1 →</a></div>
+      </article>
+
+      <article class="week"><div><div class="week-num">Week 2</div><h3>Data Structures and Business Data Sources</h3><p>Structured and unstructured data, databases, spreadsheets, APIs, and data-source mapping.</p></div><div class="status soon">Coming soon</div></article>
+      <article class="week"><div><div class="week-num">Week 3</div><h3>Data Cleaning and Preparation</h3><p>Data wrangling, missing values, consistency checks, Excel cleaning, and Python pandas.</p></div><div class="status soon">Coming soon</div></article>
+      <article class="week"><div><div class="week-num">Week 4</div><h3>Descriptive Analytics and Statistics</h3><p>Central tendency, dispersion, frequency analysis, Excel ToolPak, and Python summaries.</p></div><div class="status soon">Coming soon</div></article>
+      <article class="week"><div><div class="week-num">Week 5</div><h3>Data Visualization for Business Insights</h3><p>Effective visualizations, dashboard thinking, Tableau, Power BI, and storytelling with data.</p></div><div class="status soon">Coming soon</div></article>
+      <article class="week"><div><div class="week-num">Week 6</div><h3>Probability and Business Applications</h3><p>Probability, risk, expected value, simulations, probability trees, and Excel scenarios.</p></div><div class="status soon">Coming soon</div></article>
+      <article class="week"><div><div class="week-num">Week 7</div><h3>Inferential Statistics and Decision-Making</h3><p>Hypothesis testing, confidence intervals, p-values, t-tests, and A/B testing.</p></div><div class="status soon">Coming soon</div></article>
+      <article class="week"><div><div class="week-num">Week 8</div><h3>SQL for Business Analytics</h3><p>Relational data extraction, SQL commands, JOINs, filtering, and hands-on querying.</p></div><div class="status soon">Coming soon</div></article>
+      <article class="week"><div><div class="week-num">Week 9</div><h3>Regression and Predictive Modeling</h3><p>Linear and multiple regression, model interpretation, diagnostics, and predictive applications.</p></div><div class="status soon">Coming soon</div></article>
+      <article class="week"><div><div class="week-num">Week 10</div><h3>Forecasting with Time Series Data</h3><p>Trends, seasonality, moving averages, Python time series, and Power BI projections.</p></div><div class="status soon">Coming soon</div></article>
+      <article class="week"><div><div class="week-num">Week 11</div><h3>Dashboards and Executive Reporting</h3><p>Advanced dashboards, stakeholder communication, and executive decision support.</p></div><div class="status soon">Coming soon</div></article>
+      <article class="week"><div><div class="week-num">Week 12</div><h3>Ethical Data Use and Bias</h3><p>Ethical implications of data collection, algorithms, bias, and responsible analytics.</p></div><div class="status soon">Coming soon</div></article>
+      <article class="week"><div><div class="week-num">Week 13</div><h3>Capstone Project Presentations</h3><p>Student presentations, peer review, reflection, and application of course tools.</p></div><div class="status soon">Coming soon</div></article>
+      <article class="week"><div><div class="week-num">Week 14</div><h3>Final Course Project</h3><p>Final project completion, Career Journey Project Phase 3, and self-assessment.</p></div><div class="status soon">Coming soon</div></article>
+      <article class="week"><div><div class="week-num">Week 15</div><h3>Final Exam</h3><p>Final course assessment covering the major analytical concepts and tools from the semester.</p></div><div class="status soon">Coming soon</div></article>
+    </div>
+  </section>
+
+  <section class="section" id="objectives">
+    <p class="eyebrow">Learning Objectives</p>
+    <h2>What you should be able to do</h2>
+    <ul class="objectives">
+      <li>Demonstrate basic proficiency in Python for data manipulation and analysis.</li>
+      <li>Use data analysis tools and techniques to support business and organizational decisions.</li>
+      <li>Analyze data, identify patterns, and make informed decisions in different contexts.</li>
+      <li>Use critical thinking to evaluate information and communicate findings effectively.</li>
+      <li>Apply statistics, probability, and mathematical models to real-world business problems.</li>
+      <li>Gather, clean, analyze, and visualize data using Excel, SQL, Power BI, Tableau, and related tools.</li>
+      <li>Extract knowledge and insights from large datasets and communicate patterns, trends, and outliers.</li>
+    </ul>
+  </section>
+
+  <footer>MG628 · Data Analysis for Managerial Decision-Making · Monroe University</footer>
+</main>
+</body>
+</html>
