@@ -349,9 +349,20 @@
   .excel-address-check input[type=text]{background:var(--white);}
 
   footer{
-    grid-column:1/-1; max-width:760px; margin:0 auto; padding:60px 0 0;
+    grid-column:2;
+    width:100%;
+    max-width:760px;
+    margin:0;
+    padding:60px 0 0;
     border-top:1px solid var(--rule);
-    font-size:14.5px; color:var(--ink-soft);
+    font-size:14.5px;
+    color:var(--ink-soft);
+  }
+  @media (max-width:880px){
+    footer{
+      grid-column:1;
+      max-width:none;
+    }
   }
 
   .progress-fill{position:fixed; top:0; left:0; height:3px; background:var(--amber); z-index:50; width:0%; transition:width .1s linear;}
