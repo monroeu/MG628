@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Week 3 — Data Structures & Data Sources — MG628</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@400;500;600;700&family=Source+Sans+3:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--paper:#F3EEDF;--stripe:#E7ECE3;--ink:#1E2A22;--ink-soft:#5B6459;--rule:#B9AF95;--amber:#8A4419;--teal:#2F6F63;--teal-soft:#D9E8E3;--white:#FBF9F1;--danger:#8C332C;--font-display:'Zilla Slab',Georgia,serif;--font-body:'Source Sans 3',system-ui,sans-serif;--font-mono:'IBM Plex Mono','Courier New',monospace}
+*{box-sizing:border-box} html{scroll-behavior:smooth}
+body{margin:0;color:var(--ink);font-family:var(--font-body);font-size:17px;line-height:1.6;background:repeating-linear-gradient(var(--paper),var(--paper) 26px,var(--stripe) 26px,var(--stripe) 52px)}
+a{color:var(--amber)} code{font-family:var(--font-mono);background:#E6E0C8;padding:1px 5px;border-radius:2px}
+:focus-visible{outline:3px solid var(--teal);outline-offset:2px}.skip{position:absolute;top:-60px;left:10px;background:var(--ink);color:#fff;padding:8px 12px;z-index:100}.skip:focus{top:8px}.progress{position:fixed;top:0;left:0;height:3px;background:var(--amber);width:0;z-index:100}
+.assignment-header{border-bottom:1px solid var(--rule);background:rgba(251,249,241,.97)}.assignment-header-inner{max-width:1120px;margin:0 auto;padding:16px 24px;display:grid;grid-template-columns:auto 1fr;gap:12px 24px;align-items:center}
+.home-link{grid-row:1/span 2;text-decoration:none;border:1px solid var(--ink);background:var(--white);color:var(--ink);padding:8px 11px;font-family:var(--font-mono);font-size:12px;font-weight:600;align-self:start}.home-link:hover{background:var(--ink);color:#fff}
+.assignment-id{font:600 11px var(--font-mono);letter-spacing:.06em;color:var(--teal);text-transform:uppercase;margin:0}.assignment-title{font:600 25px/1.15 var(--font-display);margin:2px 0 0}.assignment-subtitle{margin:4px 0 0;font-size:13.5px;color:var(--ink-soft)}
+.resources{grid-column:2;display:flex;gap:8px;flex-wrap:wrap}.resources a{text-decoration:none;border:1px solid var(--rule);background:var(--white);color:var(--ink);padding:6px 9px;font:11.5px var(--font-mono)}.resources a:hover{color:var(--amber);border-color:var(--amber)}
+.shell{display:grid;grid-template-columns:230px minmax(0,780px);justify-content:center;gap:54px;max-width:1140px;margin:0 auto;padding:0 24px 100px}.hero{grid-column:1/-1;max-width:780px;margin:0 auto;padding:58px 0 36px}.kicker{font:13px var(--font-mono);color:var(--teal);margin:0 0 12px}.hero h1{font:600 clamp(38px,5vw,58px)/1.05 var(--font-display);max-width:15ch;margin:0 0 18px}.lede{font-size:19px;max-width:62ch}.note{border:1px solid var(--rule);border-left:4px solid var(--teal);background:var(--white);padding:15px 17px;margin:24px 0}
+.track-toggle{display:flex;border:1px solid var(--ink);width:fit-content;margin:18px 0}.track-toggle button{border:0;background:var(--white);padding:8px 15px;font:13px var(--font-mono);cursor:pointer}.track-toggle button+button{border-left:1px solid var(--ink)}.track-toggle button.active{background:var(--ink);color:#fff}
+.rail{position:sticky;top:20px;align-self:start;padding-top:62px}.rail-title{font:11px var(--font-mono);color:var(--ink-soft);letter-spacing:.04em}.rail ol{list-style:none;padding:0;margin:0}.rail a{display:flex;gap:10px;text-decoration:none;color:var(--ink-soft);padding:7px 5px;border-left:2px solid transparent;font-size:14.5px}.rail a.active{color:var(--amber);border-left-color:var(--amber);font-weight:600}.n{font:12px var(--font-mono);color:var(--rule);width:17px;flex:none}
+main{min-width:0}section.step{padding:58px 0 8px;border-top:1px solid var(--rule);scroll-margin-top:18px}.step-head{display:flex;gap:12px;align-items:baseline}.step-num{font:15px var(--font-mono);color:var(--rule)}
+h2{font:600 30px/1.15 var(--font-display);margin:4px 0 16px}h3{font:600 21px var(--font-display);margin:24px 0 10px}.box{border:1px solid var(--rule);background:var(--white);padding:18px 20px;margin:20px 0}.box.teal{border-left:4px solid var(--teal);background:var(--teal-soft)}.box.amber{border-left:4px solid var(--amber)}.tag{font:600 12px var(--font-mono);display:block;color:var(--teal);margin-bottom:7px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.card{border:1px solid var(--rule);background:var(--white);padding:16px}.card h3{margin-top:0}
+table{width:100%;border-collapse:collapse;background:var(--white);font-size:14px}th,td{border:1px solid var(--rule);padding:7px 8px;text-align:left;vertical-align:top}th{background:var(--ink);color:#fff}
+pre{white-space:pre-wrap;overflow:auto;background:#1e2a22;color:#f8f4e8;padding:16px;border:1px solid #111;font:13px/1.5 var(--font-mono)}
+.exercise{border:2px solid var(--ink);background:var(--white);margin:26px 0}.exercise-bar{display:flex;justify-content:space-between;background:var(--ink);color:#fff;padding:8px 14px;font:12px var(--font-mono)}.exercise-body{padding:18px 20px}label{display:block;font-weight:600;margin:7px 0}input,select,textarea{width:100%;padding:9px 10px;border:1px solid var(--ink);background:var(--paper);font:15px var(--font-body)}textarea{min-height:95px;resize:vertical}.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.run{background:var(--amber);border:1px solid var(--amber);color:#fff;padding:9px 14px;font:13px var(--font-mono);cursor:pointer}.chip{background:var(--white);border:1px solid var(--ink);padding:8px 11px;font:12px var(--font-mono);cursor:pointer}.feedback{min-height:1.4em;margin-top:8px;font-size:14px}.correct{color:var(--teal);font-weight:600}.incorrect{color:var(--danger);font-weight:600}.status.done{color:#BFE3C9}.muted{color:var(--ink-soft)}.mono{font-family:var(--font-mono)}.hidden{display:none!important}.review{border-bottom:1px dashed var(--rule);padding:11px 0}.review:last-child{border-bottom:0}
+footer{grid-column:2;width:100%;max-width:780px;padding:58px 0 0;border-top:1px solid var(--rule);color:var(--ink-soft)}
+@media(max-width:900px){.shell{grid-template-columns:1fr;gap:0;padding:0 18px 80px}.rail{display:none}footer{grid-column:1;max-width:none}}@media(max-width:700px){.assignment-header-inner{grid-template-columns:1fr}.home-link{grid-row:auto;width:fit-content}.resources{grid-column:1}.grid2,.grid3{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<a href="#main" class="skip">Skip to main content</a><div class="progress" id="progress"></div>
+<header class="assignment-header"><div class="assignment-header-inner">
+<a class="home-link" href="../">← MG628 Course Home</a>
+<div><p class="assignment-id">Week 3 Participation Activity</p><h1 class="assignment-title">Data Structures, Data Sources & Case Study Analysis</h1><p class="assignment-subtitle">Business: TPay Customer Feedback & Transaction Logs · Healthcare: XYZ Healthcare Systems Operations Audit</p></div>
+<nav class="resources" aria-label="Week 3 resources"><a href="week03-overview-learning-objectives.pdf" target="_blank">Week 3 Overview</a><a href="week03-case-study-assignment.pdf" target="_blank">Case Study Assignment</a><a href="data/business_transaction_logs.csv" download>Business CSV</a><a href="data/business_transaction_logs.json" download>Business JSON</a><a href="data/healthcare_supplier_audit.csv" download>Healthcare CSV</a><a href="data/healthcare_mobilepay_log.json" download>Healthcare JSON</a></nav>
+</div></header>
+
+<div class="shell">
+<header class="hero"><p class="kicker">MG628 — Data Analysis for Managerial Decision-Making</p><h1>What shape is your data?</h1>
+<p class="lede">This week moves from the value of information to the architecture behind it. You will distinguish structured, unstructured, and semi-structured data; choose appropriate organizational data sources; and then analyze a track-specific case study.</p>
+<div class="note"><strong>Choose your track.</strong> MBA students should use Business. MSHCA students should use Healthcare. MPA students may choose either track based on their area of focus. Your selection controls the required participation exercises below.</div>
+<div class="track-toggle" data-track-toggle><button type="button" data-track="business" class="active">Business / MPA</button><button type="button" data-track="health">Healthcare / MPA</button></div></header>
+
+<nav class="rail" aria-label="Section navigation"><p class="rail-title">WEEK 3 · SEVEN REQUIRED EXERCISES</p><ol>
+<li><a href="#s1"><span class="n">01</span>Data structure types</a></li><li><a href="#s2"><span class="n">02</span>Choosing a data source</a></li><li><a href="#s3"><span class="n">03</span>Case data</a></li><li><a href="#s4"><span class="n">04</span>Analysis</a></li><li><a href="#s5"><span class="n">05</span>Semi-structured logs</a></li><li><a href="#s6"><span class="n">06</span>Connecting evidence</a></li><li><a href="#s7"><span class="n">07</span>Managerial decision</a></li>
+</ol><p id="railProgress" class="mono muted">0 / 7 exercises complete</p></nav>
+
+<main id="main">
+<section class="step" id="s1"><div class="step-head"><span class="step-num">01</span></div><h2>Structured, unstructured, or semi-structured?</h2>
+<p>Managers should not treat all data as one thing. A relational table has a fixed schema. Human language has no fixed row-and-column structure. JSON sits between those extremes: it has recognizable keys and tags, but records can contain different fields.</p>
+<div class="grid3"><div class="card"><h3>Structured</h3><p>Organized into a predefined schema such as rows, columns, data types, and relationships.</p><p class="mono">Examples: SQL tables, billing records</p></div><div class="card"><h3>Unstructured</h3><p>Human-readable content without a fixed machine-oriented schema.</p><p class="mono">Examples: customer reviews, clinical notes</p></div><div class="card"><h3>Semi-Structured</h3><p>Uses keys, tags, or metadata, but does not require every record to have the same fields.</p><p class="mono">Examples: JSON, XML</p></div></div>
+<div class="exercise" id="ex1"><div class="exercise-bar"><span>EXERCISE 1 — REQUIRED</span><span class="status" id="ex1-status">not started</span></div><div class="exercise-body">
+<p>Classify each item.</p><div class="grid2">
+<div><label for="ex1-a">Customer review paragraph</label><select id="ex1-a"><option value="">Choose…</option><option>structured</option><option>unstructured</option><option>semi-structured</option></select></div>
+<div><label for="ex1-b">JSON transaction log</label><select id="ex1-b"><option value="">Choose…</option><option>structured</option><option>unstructured</option><option>semi-structured</option></select></div>
+<div><label for="ex1-c">Supplier table with fixed columns</label><select id="ex1-c"><option value="">Choose…</option><option>structured</option><option>unstructured</option><option>semi-structured</option></select></div>
+<div><label for="ex1-d">XML API response</label><select id="ex1-d"><option value="">Choose…</option><option>structured</option><option>unstructured</option><option>semi-structured</option></select></div></div>
+<button class="run" id="ex1-check">Check classifications</button><div class="feedback" id="ex1-feedback"></div></div></div></section>
+
+<section class="step" id="s2"><div class="step-head"><span class="step-num">02</span></div><h2>Choose the right data source for the managerial question</h2><p>The Week 3 overview compares databases, spreadsheets, and APIs. Their differences matter because data volume, integrity, collaboration, and timeliness change the right choice.</p>
+<table><tr><th>Source</th><th>Best fit</th><th>Typical format</th></tr><tr><td>Database</td><td>Large historical relational records; many concurrent users; strong integrity controls</td><td>Relational tables</td></tr><tr><td>Spreadsheet</td><td>Quick one-off analysis and simple modeling</td><td>.xlsx, .csv</td></tr><tr><td>API</td><td>Real-time retrieval and software-to-software connection</td><td>JSON, XML</td></tr></table>
+<div class="exercise" id="ex2"><div class="exercise-bar"><span>EXERCISE 2 — REQUIRED</span><span class="status" id="ex2-status">not started</span></div><div class="exercise-body"><div class="grid3">
+<div><label for="ex2-a">Store millions of historical claims with integrity constraints</label><select id="ex2-a"><option value="">Choose…</option><option value="database">Database</option><option value="spreadsheet">Spreadsheet</option><option value="api">API</option></select></div>
+<div><label for="ex2-b">Quick one-time what-if analysis</label><select id="ex2-b"><option value="">Choose…</option><option value="database">Database</option><option value="spreadsheet">Spreadsheet</option><option value="api">API</option></select></div>
+<div><label for="ex2-c">Pull live data from another application</label><select id="ex2-c"><option value="">Choose…</option><option value="database">Database</option><option value="spreadsheet">Spreadsheet</option><option value="api">API</option></select></div></div>
+<button class="run" id="ex2-check">Check source choices</button><div class="feedback" id="ex2-feedback"></div></div></div></section>
+
+<section class="step" id="s3"><div class="step-head"><span class="step-num">03</span></div><h2 id="s3-title">Business case: TPay customer feedback</h2>
+<div id="business-s3"><p>TPay needs to combine what customers <em>say</em> with what the system <em>does</em>. The ten reviews below are unstructured data.</p><div class="box"><div class="review"><strong>1.</strong> The app is fast and simple, but sometimes it crashes when I try to send money.</div><div class="review"><strong>2.</strong> Customer service takes too long to respond. I waited 3 days for help with a failed transaction.</div><div class="review"><strong>3.</strong> Very useful for paying my electricity bill, but I wish it supported more merchants.</div><div class="review"><strong>4.</strong> I don't trust it yet. I'm worried about my data security and privacy.</div><div class="review"><strong>5.</strong> Love it! Much faster than going to the bank. Saved me so much time.</div><div class="review"><strong>6.</strong> The bill payment feature is excellent, but the app freezes whenever I try to check my transaction history.</div><div class="review"><strong>7.</strong> I sent money to the wrong number and customer support helped me reverse it quickly. Great service!</div><div class="review"><strong>8.</strong> App interface is confusing. I accidentally paid twice for the same bill because the button didn't respond.</div><div class="review"><strong>9.</strong> Security features like PIN and fingerprint make me feel safe, but I wish there was two-factor authentication.</div><div class="review"><strong>10.</strong> Merchant payments work perfectly, but money transfers to other users fail about 30% of the time.</div></div>
+<div class="exercise"><div class="exercise-bar"><span>EXERCISE 3 — REQUIRED</span><span class="status" id="ex3-status">not started</span></div><div class="exercise-body"><p>Enter one review number that is a clear example of each theme.</p><div class="grid3">
+<div><label for="b3-tech">Technical Issues</label><input id="b3-tech" type="number" min="1" max="10"></div><div><label for="b3-service">Customer Service</label><input id="b3-service" type="number" min="1" max="10"></div><div><label for="b3-trust">Trust / Security</label><input id="b3-trust" type="number" min="1" max="10"></div></div><button class="run" id="b3-check">Check theme examples</button><div class="feedback" id="b3-feedback"></div></div></div></div>
+<div id="health-s3" class="hidden"><p>The healthcare case begins with a structured supplier-efficiency table. Two cycle-time values are missing.</p><table><tr><th>ID</th><th>Supplier</th><th>Category</th><th>Transaction</th><th>Finalization</th><th>Cycle Time</th></tr><tr><td>TXN-401</td><td>MedTech Solutions</td><td>Surgical Kits</td><td>Oct 01</td><td>Oct 05</td><td>4</td></tr><tr><td>TXN-402</td><td>Apex Pharma</td><td>Generic Drugs</td><td>Oct 02</td><td>Oct 18</td><td>?</td></tr><tr><td>TXN-403</td><td>Global PPE</td><td>Protective Gear</td><td>Oct 05</td><td>Oct 08</td><td>3</td></tr><tr><td>TXN-404</td><td>MedTech Solutions</td><td>Surgical Kits</td><td>Oct 10</td><td>Oct 14</td><td>4</td></tr><tr><td>TXN-405</td><td>Apex Pharma</td><td>Specialty Drugs</td><td>Oct 12</td><td>Nov 02</td><td>?</td></tr><tr><td>TXN-406</td><td>BioLink Lab</td><td>Lab Reagents</td><td>Oct 15</td><td>Oct 30</td><td>15</td></tr><tr><td>TXN-407</td><td>Global PPE</td><td>Protective Gear</td><td>Oct 20</td><td>Oct 22</td><td>2</td></tr></table>
+<div class="exercise"><div class="exercise-bar"><span>EXERCISE 3 — REQUIRED</span><span class="status" id="ex3h-status">not started</span></div><div class="exercise-body"><div class="grid2"><div><label for="h3-402">TXN-402 cycle time (days)</label><input id="h3-402" type="number"></div><div><label for="h3-405">TXN-405 cycle time (days)</label><input id="h3-405" type="number"></div></div><button class="run" id="h3-check">Check cycle times</button><div class="feedback" id="h3-feedback"></div></div></div></div>
+</section>
+
+<section class="step" id="s4"><div class="step-head"><span class="step-num">04</span></div><h2 id="s4-title">Business: sentiment check</h2>
+<div id="business-s4"><p>Sentiment coding turns unstructured language into a structured analytical variable. Use the assignment's Positive / Negative / Mixed labels.</p><div class="exercise"><div class="exercise-bar"><span>EXERCISE 4 — REQUIRED</span><span class="status" id="ex4-status">not started</span></div><div class="exercise-body"><div class="grid3">
+<div><label for="b4-r1">Review 1: fast/simple, but crashes</label><select id="b4-r1"><option value="">Choose…</option><option>positive</option><option>negative</option><option>mixed</option></select></div><div><label for="b4-r4">Review 4: distrust and privacy concern</label><select id="b4-r4"><option value="">Choose…</option><option>positive</option><option>negative</option><option>mixed</option></select></div><div><label for="b4-r5">Review 5: love it; faster than bank</label><select id="b4-r5"><option value="">Choose…</option><option>positive</option><option>negative</option><option>mixed</option></select></div></div><button class="run" id="b4-check">Check sentiments</button><div class="feedback" id="b4-feedback"></div></div></div></div>
+<div id="health-s4" class="hidden"><p>The assignment rates suppliers by cycle-time efficiency: High ≤ 4 days; Moderate 5–10; Low &gt; 10.</p><div class="exercise"><div class="exercise-bar"><span>EXERCISE 4 — REQUIRED</span><span class="status" id="ex4h-status">not started</span></div><div class="exercise-body"><div class="grid2">
+<div><label>MedTech Solutions</label><select id="h4-med"><option value="">Choose…</option><option value="high">High</option><option value="moderate">Moderate</option><option value="low">Low</option></select></div><div><label>Apex Pharma</label><select id="h4-apex"><option value="">Choose…</option><option value="high">High</option><option value="moderate">Moderate</option><option value="low">Low</option></select></div><div><label>Global PPE</label><select id="h4-ppe"><option value="">Choose…</option><option value="high">High</option><option value="moderate">Moderate</option><option value="low">Low</option></select></div><div><label>BioLink Lab</label><select id="h4-bio"><option value="">Choose…</option><option value="high">High</option><option value="moderate">Moderate</option><option value="low">Low</option></select></div></div><button class="run" id="h4-check">Check ratings</button><div class="feedback" id="h4-feedback"></div></div></div></div>
+</section>
+
+<section class="step" id="s5"><div class="step-head"><span class="step-num">05</span></div><h2 id="s5-title">Business: read the semi-structured transaction log</h2>
+<div id="business-s5"><p>The log has predictable keys such as <code>transaction_id</code>, <code>type</code>, <code>amount</code>, and <code>status</code>, while the <code>service</code> key appears only on some bill-payment records.</p><pre>[
+  {
+    "transaction_id": "TXN001",
+    "user_id": "U123",
+    "type": "money_transfer",
+    "amount": 500,
+    "status": "success",
+    "timestamp": "2024-01-15T09:23:45Z"
+  },
+  {
+    "transaction_id": "TXN002",
+    "user_id": "U456",
+    "type": "bill_payment",
+    "amount": 1200,
+    "status": "failed",
+    "timestamp": "2024-01-15T10:15:22Z",
+    "service": "electricity"
+  },
+  {
+    "transaction_id": "TXN003",
+    "user_id": "U789",
+    "type": "merchant_payment",
+    "amount": 850,
+    "status": "success",
+    "timestamp": "2024-01-15T11:42:18Z"
+  },
+  {
+    "transaction_id": "TXN004",
+    "user_id": "U234",
+    "type": "money_transfer",
+    "amount": 2000,
+    "status": "failed",
+    "timestamp": "2024-01-15T13:08:33Z"
+  }
+]</pre><div class="box teal"><span class="tag">LOG SUMMARY</span><p>There are 12 transactions total: 7 successes and 5 failures. Failed bill-payment services include electricity and phone.</p></div>
+<div class="exercise"><div class="exercise-bar"><span>EXERCISE 5 — REQUIRED</span><span class="status" id="ex5-status">not started</span></div><div class="exercise-body"><div class="grid2">
+<div><label for="b5-rate">Success rate (%)</label><input id="b5-rate" type="number" step="0.1"></div><div><label for="b5-service">Name one failed bill-payment service</label><input id="b5-service" type="text" placeholder="e.g., electricity"></div><div><label for="b5-statuskey">JSON key containing success/failed</label><input id="b5-statuskey" type="text"></div><div><label for="b5-servicekey">JSON key containing bill service name</label><input id="b5-servicekey" type="text"></div></div><button class="run" id="b5-check">Check log analysis</button><div class="feedback" id="b5-feedback"></div></div></div></div>
+<div id="health-s5" class="hidden"><p>The healthcare mobile-pay log is semi-structured JSON. The outer transaction succeeded at authentication, but the internal hospital synchronization failed.</p><pre>{
+  "transaction_id": "MOB-8821",
+  "status_code": "PENDING",
+  "payment_gateway": "Stripe",
+  "auth_status": "SUCCESS",
+  "processing_details": {
+    "gateway_confirmation": "Confirmed",
+    "internal_sync_status": "FAILED",
+    "error_log": "HIS_Handshake_Timeout"
+  }
+}</pre>
+<div class="exercise"><div class="exercise-bar"><span>EXERCISE 5 — REQUIRED</span><span class="status" id="ex5h-status">not started</span></div><div class="exercise-body"><div class="grid2"><div><label for="h5-sync-key">Key proving the internal sync status</label><input id="h5-sync-key" type="text"></div><div><label for="h5-sync-val">Its value</label><input id="h5-sync-val" type="text"></div><div><label for="h5-error-key">Key containing the technical error</label><input id="h5-error-key" type="text"></div><div><label for="h5-error-val">Exact error value</label><input id="h5-error-val" type="text"></div></div><button class="run" id="h5-check">Check JSON evidence</button><div class="feedback" id="h5-feedback"></div></div></div></div>
+</section>
+
+<section class="step" id="s6"><div class="step-head"><span class="step-num">06</span></div><h2 id="s6-title">Connect the evidence</h2>
+<div id="business-s6"><div class="box amber"><span class="tag">WHY TWO DATA TYPES?</span><p>Logs can tell TPay that a transaction failed. They cannot fully explain frustration, confusion, trust, or why customers might leave. The reviews add context the logs do not carry.</p></div><div class="exercise"><div class="exercise-bar"><span>EXERCISE 6 — REQUIRED</span><span class="status" id="ex6-status">not started</span></div><div class="exercise-body"><label for="b6-text">In at least 3 sentences, explain why TPay would make a poor decision if management looked only at transaction logs and ignored customer feedback. Cite at least one example from each dataset.</label><textarea id="b6-text"></textarea><button class="run" id="b6-check">Save analysis</button><div class="feedback" id="b6-feedback"></div></div></div></div>
+<div id="health-s6" class="hidden"><div class="box amber"><span class="tag">SUPPLIER RELIABILITY</span><p>The assignment asks you to interpret transaction patterns, not only one row. Consistent short cycle times suggest reliability; long or highly variable cycle times raise operational risk.</p></div><div class="exercise"><div class="exercise-bar"><span>EXERCISE 6 — REQUIRED</span><span class="status" id="ex6h-status">not started</span></div><div class="exercise-body"><div class="grid2"><div><label>MedTech Solutions</label><select id="h6-med"><option value="">Choose…</option><option value="reliable">Reliable</option><option value="unreliable">Unreliable</option><option value="inconsistent">Inconsistent</option></select></div><div><label>Apex Pharma</label><select id="h6-apex"><option value="">Choose…</option><option value="reliable">Reliable</option><option value="unreliable">Unreliable</option><option value="inconsistent">Inconsistent</option></select></div><div><label>Global PPE</label><select id="h6-ppe"><option value="">Choose…</option><option value="reliable">Reliable</option><option value="unreliable">Unreliable</option><option value="inconsistent">Inconsistent</option></select></div><div><label>BioLink Lab</label><select id="h6-bio"><option value="">Choose…</option><option value="reliable">Reliable</option><option value="unreliable">Unreliable</option><option value="inconsistent">Inconsistent</option></select></div></div><button class="run" id="h6-check">Check reliability ratings</button><div class="feedback" id="h6-feedback"></div></div></div></div>
+</section>
+
+<section class="step" id="s7"><div class="step-head"><span class="step-num">07</span></div><h2 id="s7-title">Make the managerial decision</h2>
+<div id="business-s7"><p>Your final task moves from analysis to management: prioritize a fix, explain how AI could help at scale, and select a North Star metric.</p><div class="exercise"><div class="exercise-bar"><span>EXERCISE 7 — REQUIRED</span><span class="status" id="ex7-status">not started</span></div><div class="exercise-body"><label for="b7-text">Write at least 4 sentences: (1) TPay's most urgent fix, (2) how a chatbot or sentiment tool could help with 10,000 complaints per day, and (3) the one KPI the CEO should check each morning and why.</label><textarea id="b7-text"></textarea><button class="run" id="b7-check">Save recommendation</button><div class="feedback" id="b7-feedback"></div></div></div></div>
+<div id="health-s7" class="hidden"><p>Use the supply-chain and mobile-pay evidence to make an operational decision that considers clinical risk, not only transaction speed.</p><div class="exercise"><div class="exercise-bar"><span>EXERCISE 7 — REQUIRED</span><span class="status" id="ex7h-status">not started</span></div><div class="exercise-body"><label for="h7-text">Write at least 4 sentences addressing: (1) whether you would prioritize Apex Pharma or BioLink Lab and why, (2) your first action when 50 patients receive incorrect late notices, and (3) a reasonable safety-buffer policy before an automated late notice is sent.</label><textarea id="h7-text"></textarea><button class="run" id="h7-check">Save recommendation</button><div class="feedback" id="h7-feedback"></div></div></div></div>
+</section>
+</main>
+
+<footer><section class="step" id="submit" style="border-top:0;padding-top:0"><h2>Record your Week 3 participation</h2><p>Complete all seven exercises for your selected track. The instructor-controlled service validates the objective items, records the authoritative submission, and returns a signed receipt for Blackboard.</p><p id="footerProgress" class="mono">0 / 7 exercises completed.</p><div class="box"><div class="grid2"><div><label for="student-name">Your name</label><input id="student-name" type="text" autocomplete="name"></div><div><label for="student-email">School email</label><input id="student-email" type="email" autocomplete="email"></div></div><div class="row" style="margin-top:14px"><button class="run" id="submit-direct">Record participation</button><button class="chip" id="download-receipt" disabled>Download Blackboard receipt</button></div><div class="feedback" id="submit-feedback"></div><div id="receipt-box" class="box teal hidden"></div></div></section><p style="margin-top:40px">MG628 · Week 3 · Data Structures and Data Sources</p></footer>
+</div>
+
+<script>
+const SUBMISSION_ENDPOINT = 'https://script.google.com/macros/s/AKfycbwQPKinx6_BtRwflc3Ez3C-dwTXkiY_DBLjcOAuytadZlLz3mOVhifXmcN7q7hjux3rRw/exec';
+const COURSE_CODE = 'MG628';
+const ASSIGNMENT_CODE = 'WEEK03_DATA_STRUCTURES_CASE_STUDY';
+const ACTIVITY_WEEK = 'Week 3';
+let currentTrack = 'business';
+const state = {};
+let signedReceipt = null;
+
+function setTrack(track){
+  currentTrack=track;
+  document.querySelectorAll('[data-track-toggle] button').forEach(b=>b.classList.toggle('active',b.dataset.track===track));
+  const business=track==='business';
+  ['s3','s4','s5','s6','s7'].forEach(n=>{document.getElementById('business-'+n).classList.toggle('hidden',!business);document.getElementById('health-'+n).classList.toggle('hidden',business)});
+  document.getElementById('s3-title').textContent=business?'Business case: TPay customer feedback':'Healthcare case: supplier efficiency audit';
+  document.getElementById('s4-title').textContent=business?'Business: sentiment check':'Healthcare: supplier efficiency ratings';
+  document.getElementById('s5-title').textContent=business?'Business: read the semi-structured transaction log':'Healthcare: read the mobile-pay JSON log';
+  document.getElementById('s6-title').textContent=business?'Connect the evidence':'Healthcare: supplier reliability';
+  document.getElementById('s7-title').textContent=business?'Make the managerial decision':'Healthcare: make the operational decision';
+  for(let i=3;i<=7;i++) delete state['exercise_'+i];
+  updateProgress();
+}
+document.querySelectorAll('[data-track-toggle] button').forEach(b=>b.addEventListener('click',()=>setTrack(b.dataset.track)));
+
+function mark(n,raw,summary){
+  state['exercise_'+n]={done:true,raw:raw,answer:summary,excel_refs:[]};
+  const id=n<=2?'ex'+n+'-status':(currentTrack==='business'?'ex'+n+'-status':'ex'+n+'h-status');
+  const el=document.getElementById(id);if(el){el.textContent='complete';el.classList.add('done')} updateProgress();
+}
+function clearMark(n){delete state['exercise_'+n];['ex'+n+'-status','ex'+n+'h-status'].forEach(id=>{const el=document.getElementById(id);if(el){el.textContent='not started';el.classList.remove('done')}});updateProgress()}
+function fb(id,msg,ok){const el=document.getElementById(id);el.textContent=msg;el.className='feedback '+(ok?'correct':'incorrect')}
+function updateProgress(){const count=Object.values(state).filter(x=>x&&x.done).length;document.getElementById('footerProgress').textContent=count+' / 7 exercises completed.';document.getElementById('railProgress').textContent=count+' / 7 exercises complete'}
+
+document.getElementById('ex1-check').onclick=()=>{const v=['ex1-a','ex1-b','ex1-c','ex1-d'].map(id=>document.getElementById(id).value);const a=['unstructured','semi-structured','structured','semi-structured'];const ok=v.every((x,i)=>x===a[i]);if(ok){mark(1,v,'Correctly classified the four data examples.');fb('ex1-feedback','Correct.',true)}else{clearMark(1);fb('ex1-feedback','Not yet. Revisit the definitions above.',false)}};
+document.getElementById('ex2-check').onclick=()=>{const v=['ex2-a','ex2-b','ex2-c'].map(id=>document.getElementById(id).value);const a=['database','spreadsheet','api'];const ok=v.every((x,i)=>x===a[i]);if(ok){mark(2,v,'Selected Database, Spreadsheet, and API for the appropriate use cases.');fb('ex2-feedback','Correct.',true)}else{clearMark(2);fb('ex2-feedback','Check the comparison table and try again.',false)}};
+
+document.getElementById('b3-check').onclick=()=>{const v=[+document.getElementById('b3-tech').value,+document.getElementById('b3-service').value,+document.getElementById('b3-trust').value];const ok=[1,6,8,10].includes(v[0])&&[2,7].includes(v[1])&&[4,9].includes(v[2]);if(ok){mark(3,v,'Theme examples: Technical #'+v[0]+', Service #'+v[1]+', Trust/Security #'+v[2]+'.');fb('b3-feedback','Good examples for all three themes.',true)}else{clearMark(3);fb('b3-feedback','One or more examples do not clearly match the requested theme.',false)}};
+document.getElementById('h3-check').onclick=()=>{const v=[+document.getElementById('h3-402').value,+document.getElementById('h3-405').value];const ok=v[0]===16&&v[1]===21;if(ok){mark(3,v,'TXN-402 = 16 days; TXN-405 = 21 days.');fb('h3-feedback','Correct.',true)}else{clearMark(3);fb('h3-feedback','Recalculate the calendar-day differences.',false)}};
+
+document.getElementById('b4-check').onclick=()=>{const v=['b4-r1','b4-r4','b4-r5'].map(id=>document.getElementById(id).value);const ok=v[0]==='mixed'&&v[1]==='negative'&&v[2]==='positive';if(ok){mark(4,v,'Review sentiments: #1 Mixed, #4 Negative, #5 Positive.');fb('b4-feedback','Correct.',true)}else{clearMark(4);fb('b4-feedback','Check whether each review contains praise, criticism, or both.',false)}};
+document.getElementById('h4-check').onclick=()=>{const v=['h4-med','h4-apex','h4-ppe','h4-bio'].map(id=>document.getElementById(id).value);const a=['high','low','high','low'];const ok=v.every((x,i)=>x===a[i]);if(ok){mark(4,v,'Efficiency: MedTech High; Apex Low; Global PPE High; BioLink Low.');fb('h4-feedback','Correct.',true)}else{clearMark(4);fb('h4-feedback','Use High ≤4 days, Moderate 5–10, Low >10.',false)}};
+
+function norm(s){return String(s||'').trim().toLowerCase()}
+document.getElementById('b5-check').onclick=()=>{const rate=+document.getElementById('b5-rate').value,service=norm(document.getElementById('b5-service').value),status=norm(document.getElementById('b5-statuskey').value),sk=norm(document.getElementById('b5-servicekey').value);const ok=Math.abs(rate-58.3)<=0.2&&['electricity','phone'].includes(service)&&status==='status'&&sk==='service';if(ok){mark(5,[rate,service,status,sk],'Success rate '+rate+'%; failed service '+service+'; keys status and service.');fb('b5-feedback','Correct.',true)}else{clearMark(5);fb('b5-feedback','Check all 12 transactions and use the exact JSON key names.',false)}};
+document.getElementById('h5-check').onclick=()=>{const v=['h5-sync-key','h5-sync-val','h5-error-key','h5-error-val'].map(id=>norm(document.getElementById(id).value));const ok=v[0]==='internal_sync_status'&&v[1]==='failed'&&v[2]==='error_log'&&v[3]==='his_handshake_timeout';if(ok){mark(5,v,'JSON evidence: internal_sync_status=FAILED; error_log=HIS_Handshake_Timeout.');fb('h5-feedback','Correct.',true)}else{clearMark(5);fb('h5-feedback','Use the exact key names and values shown in the JSON.',false)}};
+
+document.getElementById('b6-check').onclick=()=>{const t=document.getElementById('b6-text').value.trim();if(t.length>=90){mark(6,t,t);fb('b6-feedback','Saved.',true)}else{clearMark(6);fb('b6-feedback','Write at least 90 characters and cite evidence from both datasets.',false)}};
+document.getElementById('h6-check').onclick=()=>{const v=['h6-med','h6-apex','h6-ppe','h6-bio'].map(id=>document.getElementById(id).value);const a=['reliable','unreliable','reliable','unreliable'];const ok=v.every((x,i)=>x===a[i]);if(ok){mark(6,v,'Reliability: MedTech Reliable; Apex Unreliable; Global PPE Reliable; BioLink Unreliable.');fb('h6-feedback','Correct.',true)}else{clearMark(6);fb('h6-feedback','Use the reliability definitions from the assignment.',false)}};
+
+document.getElementById('b7-check').onclick=()=>{const t=document.getElementById('b7-text').value.trim();if(t.length>=140){mark(7,t,t);fb('b7-feedback','Recommendation saved.',true)}else{clearMark(7);fb('b7-feedback','Write a fuller recommendation of at least 140 characters.',false)}};
+document.getElementById('h7-check').onclick=()=>{const t=document.getElementById('h7-text').value.trim();if(t.length>=140){mark(7,t,t);fb('h7-feedback','Recommendation saved.',true)}else{clearMark(7);fb('h7-feedback','Write a fuller recommendation of at least 140 characters.',false)}};
+
+function buildAnswers(){const a={};for(let i=1;i<=7;i++)a['exercise_'+i]=state['exercise_'+i]||{status:'NOT_COMPLETED',answer:'',raw:null,excel_refs:[]};return a}
+function makeId(){return window.crypto&&crypto.randomUUID?crypto.randomUUID():'w3-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2)}
+document.getElementById('submit-direct').onclick=async()=>{const name=document.getElementById('student-name').value.trim(),email=document.getElementById('student-email').value.trim().toLowerCase(),f=document.getElementById('submit-feedback');if(!name||!/^\S+@\S+\.\S+$/.test(email)){f.textContent='Enter your name and a valid school email.';f.className='feedback incorrect';return}const count=Object.keys(state).length;if(count<7){f.textContent='Complete all 7 exercises first. You currently have '+count+' complete.';f.className='feedback incorrect';return}const payload={submission_id:makeId(),course:COURSE_CODE,assignment:ASSIGNMENT_CODE,activity_week:ACTIVITY_WEEK,student:{name:name,email:email},submitted_at_iso:new Date().toISOString(),submitted_at_local:new Date().toLocaleString(),track_key:currentTrack,track_label:currentTrack==='business'?'Business / MPA':'Healthcare / MPA',scenario:currentTrack==='business'?'TPay Customer Feedback & Transaction Analysis':'XYZ Healthcare Systems: Data-Driven Operations Audit',exercises_completed:7,exercises_total:7,answers:buildAnswers(),page_url:location.href,user_agent:navigator.userAgent};const btn=document.getElementById('submit-direct');btn.disabled=true;btn.textContent='Submitting…';try{const r=await fetch(SUBMISSION_ENDPOINT,{method:'POST',headers:{'Content-Type':'text/plain;charset=UTF-8'},body:JSON.stringify(payload)});const result=await r.json();if(!result.ok||!result.verification_code)throw new Error(result.error||'Submission rejected');signedReceipt={receipt_id:result.receipt_id,verification_code:result.verification_code,received_at_iso:result.received_at_iso,name:name,email:email,track:payload.track_label};f.textContent='Week 3 participation recorded. Download the Blackboard receipt.';f.className='feedback correct';const box=document.getElementById('receipt-box');box.classList.remove('hidden');box.innerHTML='<span class="tag">SIGNED RECEIPT READY</span><p><strong>Receipt:</strong> <code>'+signedReceipt.receipt_id+'</code><br><strong>Verification:</strong> <code>'+signedReceipt.verification_code+'</code><br><strong>Recorded:</strong> '+new Date(signedReceipt.received_at_iso).toLocaleString()+'</p>';document.getElementById('download-receipt').disabled=false;btn.textContent='Participation recorded'}catch(e){f.textContent='Submission could not be recorded. Your work is still in this browser. '+e.message;f.className='feedback incorrect';btn.disabled=false;btn.textContent='Record participation'}};
+document.getElementById('download-receipt').onclick=()=>{if(!signedReceipt)return;const txt=['MG628 BLACKBOARD PARTICIPATION RECEIPT','--------------------------------------','Activity: Week 3 — Data Structures & Data Sources','Assignment: '+ASSIGNMENT_CODE,'Student: '+signedReceipt.name,'School email: '+signedReceipt.email,'Track: '+signedReceipt.track,'Recorded: '+signedReceipt.received_at_iso,'Receipt ID: '+signedReceipt.receipt_id,'Verification code: '+signedReceipt.verification_code,'','This receipt identifies the instructor-controlled authoritative record. Upload it to Blackboard.'].join('\n');const blob=new Blob([txt],{type:'text/plain'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='MG628-Week03-Blackboard-Receipt.txt';a.click();URL.revokeObjectURL(url)};
+
+window.addEventListener('scroll',()=>{const d=document.documentElement,p=d.scrollTop/(d.scrollHeight-d.clientHeight)*100;document.getElementById('progress').style.width=p+'%';let cur='';document.querySelectorAll('section.step').forEach(s=>{if(s.getBoundingClientRect().top<130)cur=s.id});document.querySelectorAll('.rail a').forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+cur))},{passive:true});
+setTrack('business');updateProgress();
+</script>
+</body>
+</html>
