@@ -1,0 +1,8 @@
+Transaction ID,Supplier Name,Category,Trans. Date,Final. Date,Cycle Time (Days)
+TXN-401,MedTech Solutions,Surgical Kits,Oct 01,Oct 05,4
+TXN-402,Apex Pharma,Generic Drugs,Oct 02,Oct 18,
+TXN-403,Global PPE,Protective Gear,Oct 05,Oct 08,3
+TXN-404,MedTech Solutions,Surgical Kits,Oct 10,Oct 14,4
+TXN-405,Apex Pharma,Specialty Drugs,Oct 12,Nov 02,
+TXN-406,BioLink Lab,Lab Reagents,Oct 15,Oct 30,15
+TXN-407,Global PPE,Protective Gear,Oct 20,Oct 22,2

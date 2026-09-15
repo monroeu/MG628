@@ -1,0 +1,13 @@
+transaction_id,user_id,type,amount,status,timestamp,service
+TXN001,U123,money_transfer,500,success,2024-01-15T09:23:45Z,
+TXN002,U456,bill_payment,1200,failed,2024-01-15T10:15:22Z,electricity
+TXN003,U789,merchant_payment,850,success,2024-01-15T11:42:18Z,
+TXN004,U234,money_transfer,2000,failed,2024-01-15T13:08:33Z,
+TXN005,U567,bill_payment,800,success,2024-01-15T14:25:11Z,water
+TXN006,U890,merchant_payment,1500,success,2024-01-15T15:47:29Z,
+TXN007,U345,money_transfer,3500,failed,2024-01-15T16:19:55Z,
+TXN008,U678,bill_payment,950,success,2024-01-15T17:33:42Z,electricity
+TXN009,U901,merchant_payment,1200,success,2024-01-15T18:05:17Z,
+TXN010,U123,money_transfer,750,success,2024-01-15T19:22:08Z,
+TXN011,U456,bill_payment,1100,failed,2024-01-15T20:14:33Z,phone
+TXN012,U789,money_transfer,4000,failed,2024-01-15T21:38:26Z,

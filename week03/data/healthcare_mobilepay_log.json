@@ -1,0 +1,11 @@
+{
+  "transaction_id": "MOB-8821",
+  "status_code": "PENDING",
+  "payment_gateway": "Stripe",
+  "auth_status": "SUCCESS",
+  "processing_details": {
+    "gateway_confirmation": "Confirmed",
+    "internal_sync_status": "FAILED",
+    "error_log": "HIS_Handshake_Timeout"
+  }
+}

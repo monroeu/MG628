@@ -1,0 +1,102 @@
+[
+  {
+    "transaction_id": "TXN001",
+    "user_id": "U123",
+    "type": "money_transfer",
+    "amount": 500,
+    "status": "success",
+    "timestamp": "2024-01-15T09:23:45Z"
+  },
+  {
+    "transaction_id": "TXN002",
+    "user_id": "U456",
+    "type": "bill_payment",
+    "amount": 1200,
+    "status": "failed",
+    "timestamp": "2024-01-15T10:15:22Z",
+    "service": "electricity"
+  },
+  {
+    "transaction_id": "TXN003",
+    "user_id": "U789",
+    "type": "merchant_payment",
+    "amount": 850,
+    "status": "success",
+    "timestamp": "2024-01-15T11:42:18Z"
+  },
+  {
+    "transaction_id": "TXN004",
+    "user_id": "U234",
+    "type": "money_transfer",
+    "amount": 2000,
+    "status": "failed",
+    "timestamp": "2024-01-15T13:08:33Z"
+  },
+  {
+    "transaction_id": "TXN005",
+    "user_id": "U567",
+    "type": "bill_payment",
+    "amount": 800,
+    "status": "success",
+    "timestamp": "2024-01-15T14:25:11Z",
+    "service": "water"
+  },
+  {
+    "transaction_id": "TXN006",
+    "user_id": "U890",
+    "type": "merchant_payment",
+    "amount": 1500,
+    "status": "success",
+    "timestamp": "2024-01-15T15:47:29Z"
+  },
+  {
+    "transaction_id": "TXN007",
+    "user_id": "U345",
+    "type": "money_transfer",
+    "amount": 3500,
+    "status": "failed",
+    "timestamp": "2024-01-15T16:19:55Z"
+  },
+  {
+    "transaction_id": "TXN008",
+    "user_id": "U678",
+    "type": "bill_payment",
+    "amount": 950,
+    "status": "success",
+    "timestamp": "2024-01-15T17:33:42Z",
+    "service": "electricity"
+  },
+  {
+    "transaction_id": "TXN009",
+    "user_id": "U901",
+    "type": "merchant_payment",
+    "amount": 1200,
+    "status": "success",
+    "timestamp": "2024-01-15T18:05:17Z"
+  },
+  {
+    "transaction_id": "TXN010",
+    "user_id": "U123",
+    "type": "money_transfer",
+    "amount": 750,
+    "status": "success",
+    "timestamp": "2024-01-15T19:22:08Z"
+  },
+  {
+    "transaction_id": "TXN011",
+    "user_id": "U456",
+    "type": "bill_payment",
+    "amount": 1100,
+    "status": "failed",
+    "timestamp": "2024-01-15T20:14:33Z",
+    "service": "phone"
+  },
+  {
+    "transaction_id": "TXN012",
+    "user_id": "U789",
+    "type": "money_transfer",
+    "amount": 4000,
+    "status": "failed",
+    "timestamp": "2024-01-15T21:38:26Z"
+  }
+]
