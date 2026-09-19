@@ -1,3 +1,1859 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Order Quantity Problem — MG628</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@400;500;600;700&family=Source+Sans+3:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F3EEDF;
+    --stripe:#E7ECE3;
+    --ink:#1E2A22;
+    --ink-soft:#5B6459;
+    --rule:#B9AF95;
+    --amber:#8A4419;
+    --amber-soft:#F1DCC4;
+    --teal:#2F6F63;
+    --teal-soft:#D9E8E3;
+    --cell:#E6E0C8;
+    --white:#FBF9F1;
+    --danger:#8C332C;
+    --font-display:'Zilla Slab', Georgia, serif;
+    --font-body:'Source Sans 3', system-ui, sans-serif;
+    --font-mono:'IBM Plex Mono', 'Courier New', monospace;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *{animation-duration:0.001ms !important; transition-duration:0.001ms !important;}
+  }
+  :focus-visible{outline:3px solid var(--teal); outline-offset:2px;}
+  a:focus-visible, button:focus-visible, input:focus-visible, summary:focus-visible{
+    outline:3px solid var(--teal); outline-offset:2px;
+  }
+  .skip-link{
+    position:absolute; left:8px; top:-60px;
+    background:var(--ink); color:var(--white);
+    padding:10px 16px; z-index:100;
+    font-family:var(--font-mono); font-size:13px;
+    transition:top .15s;
+  }
+  .skip-link:focus{top:8px;}
+  .visually-hidden{
+    position:absolute; width:1px; height:1px; overflow:hidden;
+    clip:rect(0,0,0,0); white-space:nowrap; border:0; padding:0; margin:-1px;
+  }
+  body{
+    margin:0;
+    background:
+      repeating-linear-gradient(
+        var(--paper),
+        var(--paper) 26px,
+        var(--stripe) 26px,
+        var(--stripe) 52px
+      );
+    color:var(--ink);
+    font-family:var(--font-body);
+    font-size:17px;
+    line-height:1.6;
+  }
+  a{color:var(--amber);}
+  ::selection{background:var(--amber-soft);}
+
+  /* ---------- layout shell ---------- */
+  .shell{
+    display:grid;
+    grid-template-columns:220px minmax(0,760px);
+    justify-content:center;
+    gap:56px;
+    max-width:1100px;
+    margin:0 auto;
+    padding:0 24px 120px;
+  }
+  @media (max-width:880px){
+    .shell{grid-template-columns:1fr; gap:0; padding:0 18px 90px;}
+    .rail{display:none;}
+  }
+
+  /* ---------- sticky rail ---------- */
+  .rail{
+    position:sticky;
+    top:28px;
+    align-self:start;
+    padding-top:120px;
+  }
+  .rail-title{
+    font-family:var(--font-mono);
+    font-size:11px;
+    letter-spacing:.04em;
+    color:var(--ink-soft);
+    margin:0 0 10px 2px;
+  }
+  .rail ol{list-style:none; margin:0; padding:0;}
+  .rail li{margin:0;}
+  .rail a{
+    display:flex;
+    gap:10px;
+    align-items:baseline;
+    text-decoration:none;
+    color:var(--ink-soft);
+    font-size:14.5px;
+    padding:7px 2px;
+    border-left:2px solid transparent;
+    padding-left:10px;
+    transition:color .15s, border-color .15s;
+  }
+  .rail a .n{font-family:var(--font-mono); color:var(--rule); font-size:12px; width:16px; flex:none;}
+  .rail a:hover{color:var(--ink);}
+  .rail a.active{color:var(--amber); border-left-color:var(--amber); font-weight:600;}
+  .rail a.active .n{color:var(--amber);}
+  .core-mark{font-size:11px; color:var(--teal);}
+
+  /* ---------- hero ---------- */
+  .hero{
+    grid-column:1 / -1;
+    max-width:760px;
+    margin:0 auto;
+    padding:70px 0 40px;
+  }
+  .hero .kicker{
+    font-family:var(--font-mono);
+    font-size:13px;
+    color:var(--teal);
+    margin:0 0 14px;
+  }
+  .hero h1{
+    font-family:var(--font-display);
+    font-weight:600;
+    font-size:clamp(34px,5vw,52px);
+    line-height:1.08;
+    margin:0 0 20px;
+    max-width:15ch;
+  }
+  .hero p.lede{
+    font-size:19px;
+    max-width:56ch;
+    color:var(--ink);
+  }
+  .hero-ticket{
+    margin-top:36px;
+    border:1px solid var(--rule);
+    background:var(--white);
+    padding:22px 24px;
+    max-width:480px;
+    box-shadow:3px 3px 0 var(--rule);
+  }
+  .hero-ticket .row{
+    display:flex; justify-content:space-between;
+    font-family:var(--font-mono); font-size:14px;
+    padding:4px 0; border-bottom:1px dashed var(--rule);
+  }
+  .hero-ticket .row:last-child{border-bottom:none; padding-top:8px; font-weight:600;}
+  .hero-ticket .row span:first-child{color:var(--ink-soft);}
+
+  /* ---------- main column ---------- */
+  main{min-width:0;}
+  section.step{
+    padding:64px 0 8px;
+    border-top:1px solid var(--rule);
+    scroll-margin-top:24px;
+  }
+  section.step:first-of-type{border-top:none;}
+  .step-head{display:flex; gap:16px; align-items:baseline; margin-bottom:6px;}
+  .step-num{
+    font-family:var(--font-mono);
+    color:var(--rule);
+    font-size:15px;
+  }
+  .step-track{
+    font-family:var(--font-mono);
+    font-size:11px;
+    color:var(--teal);
+    border:1px solid var(--teal-soft);
+    background:var(--teal-soft);
+    padding:2px 7px;
+    border-radius:2px;
+  }
+  h2{
+    font-family:var(--font-display);
+    font-weight:600;
+    font-size:29px;
+    margin:2px 0 18px;
+  }
+  h3{font-family:var(--font-display); font-size:20px; font-weight:600; margin:28px 0 10px;}
+  p{margin:0 0 16px; max-width:66ch;}
+  ul,ol.plain{margin:0 0 16px; padding-left:22px; max-width:64ch;}
+  li{margin-bottom:6px;}
+  code{font-family:var(--font-mono); background:var(--cell); padding:1px 5px; border-radius:2px; font-size:.92em;}
+
+  /* ---------- callout boxes ---------- */
+  .box{
+    border:1px solid var(--rule);
+    padding:18px 20px;
+    margin:22px 0;
+    background:var(--white);
+  }
+  .box.why{border-left:4px solid var(--amber);}
+  .box.why .tag{color:var(--amber);}
+  .box.excel{border-left:4px solid var(--ink-soft); background:transparent;}
+  .box.excel .tag{color:var(--ink-soft);}
+  .box.health{border-left:4px solid var(--teal); background:var(--teal-soft);}
+  .box.health .tag{color:var(--teal);}
+  .box .tag{
+    display:block;
+    font-family:var(--font-mono);
+    font-size:12px;
+    letter-spacing:.02em;
+    margin-bottom:8px;
+    font-weight:600;
+  }
+  .box p:last-child{margin-bottom:0;}
+  .cell-ref{font-family:var(--font-mono); background:var(--amber-soft); padding:0 5px; border-radius:2px;}
+
+  /* ---------- widget shell ---------- */
+  .widget{
+    border:1px solid var(--ink);
+    background:var(--white);
+    margin:26px 0;
+  }
+  .widget-bar{
+    display:flex; justify-content:space-between; align-items:center;
+    background:var(--ink); color:var(--white);
+    font-family:var(--font-mono); font-size:12px;
+    padding:7px 14px;
+  }
+  .widget-body{padding:22px;}
+  @media (max-width:520px){.widget-body{padding:16px;}}
+
+  .control{margin-bottom:20px;}
+  .control:last-child{margin-bottom:0;}
+  .control-label{
+    display:flex; justify-content:space-between; align-items:baseline;
+    font-size:14.5px; margin-bottom:6px;
+  }
+  .control-label b{font-weight:600;}
+  .control-label .val{font-family:var(--font-mono); font-size:15px; color:var(--amber); font-weight:600;}
+  input[type=range]{
+    width:100%; -webkit-appearance:none; appearance:none;
+    height:6px; border-radius:3px; background:var(--cell);
+    outline:none;
+  }
+  input[type=range]::-webkit-slider-thumb{
+    -webkit-appearance:none; appearance:none;
+    width:18px; height:18px; border-radius:50%;
+    background:var(--amber); border:2px solid var(--white);
+    box-shadow:0 0 0 1px var(--amber); cursor:pointer;
+  }
+  input[type=range]::-moz-range-thumb{
+    width:18px; height:18px; border-radius:50%;
+    background:var(--amber); border:2px solid var(--white);
+    box-shadow:0 0 0 1px var(--amber); cursor:pointer;
+  }
+  .presets{display:flex; gap:8px; flex-wrap:wrap; margin-top:10px;}
+  button.chip{
+    font-family:var(--font-mono); font-size:12.5px;
+    background:var(--white); border:1px solid var(--ink); color:var(--ink);
+    padding:6px 11px; cursor:pointer;
+  }
+  button.chip:hover{background:var(--ink); color:var(--white);}
+  button.chip.active{background:var(--amber); border-color:var(--amber); color:var(--white);}
+  button.run{
+    font-family:var(--font-mono); font-size:13px;
+    background:var(--amber); border:1px solid var(--amber); color:var(--white);
+    padding:9px 16px; cursor:pointer;
+  }
+  button.run:hover{filter:brightness(1.08);}
+  button.run:disabled{opacity:.5; cursor:default;}
+
+  .grid2{display:grid; grid-template-columns:1fr 1fr; gap:22px;}
+  @media (max-width:640px){.grid2{grid-template-columns:1fr;}}
+
+  /* receipt tape */
+  .receipt{
+    font-family:var(--font-mono); font-size:14px;
+    background:var(--paper); border:1px dashed var(--rule);
+    padding:16px 18px;
+  }
+  .receipt .r{display:flex; justify-content:space-between; padding:3px 0;}
+  .receipt .r.total{border-top:1px solid var(--ink); margin-top:6px; padding-top:8px; font-weight:700;}
+  .receipt .r.sub .l{color:var(--ink-soft);}
+  .receipt .r.neg .v{color:var(--danger);}
+
+  /* mini spreadsheet */
+  .sheet{border:1px solid var(--ink); font-family:var(--font-mono); font-size:13.5px; width:100%; border-collapse:collapse;}
+  .sheet td, .sheet th{border:1px solid var(--rule); padding:6px 10px; text-align:left;}
+  .sheet th{background:var(--ink); color:var(--white); font-weight:500;}
+  .sheet td.addr{color:var(--ink-soft); background:var(--paper); width:34px;}
+  .sheet tr.best td{background:var(--amber-soft); font-weight:700;}
+  .sheet td.num{text-align:right; font-variant-numeric:tabular-nums;}
+
+  svg.chart{width:100%; height:auto; display:block;}
+  svg.chart .axis{stroke:var(--ink-soft); stroke-width:1;}
+  svg.chart .gridline{stroke:var(--rule); stroke-width:1; stroke-dasharray:2 3;}
+  svg.chart .curve{fill:none; stroke:var(--amber); stroke-width:2.5;}
+  svg.chart .curve2{fill:none; stroke:var(--teal); stroke-width:2.5; stroke-dasharray:5 4;}
+  svg.chart .pt{fill:var(--amber); stroke:var(--white); stroke-width:1.5;}
+  svg.chart text{font-family:var(--font-mono); font-size:10.5px; fill:var(--ink-soft);}
+  svg.chart .marker{stroke:var(--danger); stroke-width:1.5; stroke-dasharray:3 3;}
+
+  /* self-check */
+  .check{
+    margin:22px 0; border:1px solid var(--rule);
+  }
+  .check summary{
+    cursor:pointer; padding:13px 18px; font-weight:600;
+    font-family:var(--font-body); list-style:none;
+    display:flex; gap:10px; align-items:baseline;
+  }
+  .check summary::-webkit-details-marker{display:none;}
+  .check summary::before{content:"?"; font-family:var(--font-mono); color:var(--amber); border:1px solid var(--amber); border-radius:50%; width:18px; height:18px; display:inline-flex; align-items:center; justify-content:center; font-size:12px; flex:none;}
+  .check[open] summary::before{content:"✓"; background:var(--amber); color:var(--white);}
+  .check .a{padding:0 18px 16px 46px; color:var(--ink-soft);}
+  .check .a p{margin:0 0 10px;}
+
+  /* exercises (graded) */
+  .exercise{
+    margin:26px 0; border:2px solid var(--ink); background:var(--white);
+  }
+  .exercise-bar{
+    display:flex; justify-content:space-between; align-items:center;
+    background:var(--ink); color:var(--white);
+    font-family:var(--font-mono); font-size:12px; padding:8px 16px;
+  }
+  .exercise-bar .status{font-weight:600;}
+  .exercise-bar .status.done{color:#BFE3C9;}
+  .exercise-body{padding:18px 20px;}
+  .exercise label{display:block; font-weight:600; margin-bottom:8px; font-size:15px;}
+  .exercise input[type=text], .exercise input[type=number], .exercise textarea{
+    width:100%; font-family:var(--font-body); font-size:15px;
+    border:1px solid var(--ink); background:var(--paper);
+    padding:9px 11px; margin-bottom:10px;
+  }
+  .exercise textarea{min-height:80px; resize:vertical; font-family:var(--font-body);}
+  .exercise-row{display:flex; gap:10px; align-items:center; flex-wrap:wrap;}
+  .exercise .feedback{font-size:14px; margin-top:8px; min-height:1.4em;}
+  .exercise .feedback.correct{color:var(--teal); font-weight:600;}
+  .exercise .feedback.incorrect{color:var(--danger); font-weight:600;}
+  .exercise .feedback.saved{color:var(--ink-soft);}
+  .char-count{font-family:var(--font-mono); font-size:11.5px; color:var(--ink-soft); text-align:right; margin-top:-4px; margin-bottom:8px;}
+  .excel-address-check{
+    margin:16px 0; padding:14px 16px; border:1px dashed var(--teal); background:var(--teal-soft);
+  }
+  .excel-address-check .mini-title{
+    font-family:var(--font-mono); font-size:12px; font-weight:600; color:var(--teal); margin:0 0 10px;
+  }
+  .excel-address-check p{font-size:14px; margin:0 0 12px;}
+  .excel-address-check input[type=text]{background:var(--white);}
+
+  footer{
+    grid-column:1/-1; max-width:760px; margin:0 auto; padding:60px 0 0;
+    border-top:1px solid var(--rule);
+    font-size:14.5px; color:var(--ink-soft);
+  }
+
+  .progress-fill{position:fixed; top:0; left:0; height:3px; background:var(--amber); z-index:50; width:0%; transition:width .1s linear;}
+
+  .track-toggle{display:flex; gap:0; border:1px solid var(--ink); width:fit-content; margin:18px 0;}
+  .track-toggle button{
+    font-family:var(--font-mono); font-size:13px; padding:8px 16px;
+    background:var(--white); border:none; cursor:pointer; color:var(--ink);
+  }
+  .track-toggle button + button{border-left:1px solid var(--ink);}
+  .track-toggle button.active{background:var(--ink); color:var(--white);}
+  .track-toggle button.active.health{background:var(--teal);}
+
+  .course-topbar{position:sticky;top:0;z-index:45;background:rgba(251,249,241,.96);border-bottom:1px solid var(--rule);padding:8px 18px;display:flex;justify-content:space-between;gap:12px;align-items:center;font-family:var(--font-mono);font-size:12px;backdrop-filter:blur(6px)}
+  .course-topbar a{text-decoration:none;font-weight:600}.auth-panel{margin:22px 0;border:2px solid var(--teal);background:var(--white);padding:18px 20px;box-shadow:3px 3px 0 var(--teal-soft)}
+  .auth-panel h3{margin:0 0 8px}.auth-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.auth-grid .full{grid-column:1/-1}.auth-panel input{width:100%;font:inherit;border:1px solid var(--ink);background:var(--paper);padding:9px 11px}.auth-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.auth-status{font-family:var(--font-mono);font-size:12.5px;margin-top:10px;color:var(--ink-soft)}.auth-status.ok{color:var(--teal);font-weight:600}.auth-status.err{color:var(--danger);font-weight:600}.server-progress{margin-top:10px;padding:10px 12px;background:var(--teal-soft);border-left:4px solid var(--teal);font-family:var(--font-mono);font-size:12.5px}
+  @media(max-width:640px){.auth-grid{grid-template-columns:1fr}.auth-grid .full{grid-column:auto}.course-topbar{position:relative}}
+
+    .formula-list {
+      margin: 12px 0 8px;
+      display: grid;
+      gap: 7px;
+    }
+    .formula-line {
+      display: block;
+      line-height: 1.55;
+    }
+    .formula-note {
+      margin-top: 10px;
+    }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.4/dist/umd/supabase.min.js"></script>
+</head>
+<body>
+<div class="course-topbar"><a href="../../index.html" aria-label="Return to MG628 course home">← Course Home</a><span>MG628 · Interactive Participation</span></div>
+
+<a class="skip-link" href="#main-content">Skip to main content</a>
+<div class="progress-fill" id="progressFill" aria-hidden="true"></div>
+<div aria-live="polite" class="visually-hidden" id="liveAnnounce"></div>
+
+<div class="shell">
+
+  <header class="hero">
+    <p class="kicker">MG628 — Data Analysis for Managerial Decisions</p>
+    <h1>How many should you bake this morning?</h1>
+    <p class="lede">A hands-on walkthrough of the order-quantity model behind your Weeks 1–2
+    assignment. Move the sliders, watch the numbers move, then build the same
+    logic yourself in the workbook. Every section explains not just <em>how</em>
+    the formula works, but <em>why</em> it's the right formula for a manager to use.</p>
+    <p style="font-size:14.5px; color:var(--ink-soft); max-width:56ch;">Plan for
+    about 30 minutes start to finish. Short on time? Sections marked
+    <span class="core-mark" style="font-weight:600;">·core</span> in the menu —
+    03, 06, and 09 — carry the load-bearing ideas.</p>
+    <div style="margin:18px 0 6px;">
+      <p style="font-family:var(--font-mono); font-size:12px; color:var(--ink-soft); margin:0 0 8px;">WHICH COURSE TRACK ARE YOU IN? (SETS THE NUMBERS BELOW)</p>
+      <div id="hero-track-toggle"></div>
+    </div>
+
+    <div class="auth-panel" id="authPanel" aria-label="Student sign in and participation status">
+      <h3>Student participation login</h3>
+      <p style="margin-bottom:12px;">Sign in with the same school email listed on your class roster. Your section is assigned by the instructor roster; students cannot choose a different section.</p>
+      <div class="auth-grid" id="authFields">
+        <div><label for="auth-name"><strong>Full name</strong></label><input id="auth-name" type="text" autocomplete="name" placeholder="Your full name"></div>
+        <div><label for="auth-email"><strong>School email</strong></label><input id="auth-email" type="email" autocomplete="email" placeholder="your.email@monroeu.edu"></div>
+        <div class="full"><label for="auth-password"><strong>Password</strong></label><input id="auth-password" type="password" autocomplete="current-password" minlength="8" placeholder="At least 8 characters"></div>
+      </div>
+      <div class="auth-actions"><button class="run" id="auth-signin" type="button">Sign in</button><button class="chip" id="auth-signup" type="button">Create account</button><button class="chip" id="auth-signout" type="button" hidden>Sign out</button></div>
+      <div id="auth-status" class="auth-status" aria-live="polite">Sign in before completing required participation items so your work is recorded.</div>
+      <div id="server-progress" class="server-progress" hidden></div>
+    </div>
+    <div class="hero-ticket" id="heroTicket" role="group" aria-label="Live model preview, updates as you use Section 3">
+      <div class="row"><span id="ht-q-label">Bake (Q)</span><span id="ht-q">170 muffins</span></div>
+      <div class="row"><span>Demand (D)</span><span id="ht-d">180 customers</span></div>
+      <div class="row"><span>Today's profit</span><span id="ht-profit">$—</span></div>
+    </div>
+  </header>
+
+  <nav class="rail" aria-label="Section navigation">
+    <p class="rail-title" id="railTitle">NINE STEPS <span style="color:var(--ink-soft); font-weight:normal;">· ~30 min</span></p>
+    <ol id="railList" aria-labelledby="railTitle">
+      <li><a href="#s1"><span class="n" aria-hidden="true">01</span>The perishable problem</a></li>
+      <li><a href="#s2"><span class="n" aria-hidden="true">02</span>Naming your inputs</a></li>
+      <li><a href="#s3"><span class="n" aria-hidden="true">03</span>The capping logic <span class="core-mark">·core</span></a></li>
+      <li><a href="#s4"><span class="n" aria-hidden="true">04</span>Scenario analysis</a></li>
+      <li><a href="#s5"><span class="n" aria-hidden="true">05</span>Demand probabilities</a></li>
+      <li><a href="#s6"><span class="n" aria-hidden="true">06</span>Expected profit <span class="core-mark">·core</span></a></li>
+      <li><a href="#s7"><span class="n" aria-hidden="true">07</span>Underage &amp; overage</a></li>
+      <li><a href="#s8"><span class="n" aria-hidden="true">08</span>Finding breakeven</a></li>
+      <li><a href="#s9"><span class="n" aria-hidden="true">09</span>Beyond profit <span class="core-mark">·core</span></a></li>
+    </ol>
+    <p id="railProgress" style="font-family:var(--font-mono); font-size:11px; color:var(--ink-soft); margin-top:16px;">0 / 10 self-checks opened</p>
+    <div id="rail-track-toggle" style="margin-top:14px; transform:scale(0.85); transform-origin:left top;"></div>
+  </nav>
+
+  <main id="main-content" tabindex="-1">
+    <section class="step" id="s1">
+      <div class="step-head"><span class="step-num">01</span></div>
+      <h2>Why muffins behave like hospital beds</h2>
+      <p>Morning Brew Café throws out unsold muffins at the end of the day, and
+      turns away customers when it runs out. That combination — a product that
+      expires <em>and</em> a cost for not having enough of it — is called
+      <strong>perishable inventory</strong>. It shows up anywhere a manager has
+      to commit to a quantity before knowing exactly how much will be needed:
+      flu doses ordered before flu season, nurses scheduled before patients
+      arrive, hotel rooms held before the night's bookings are final.</p>
+      <p>Click each decision below to check whether it follows the same
+      logic as the muffin problem.</p>
+
+      <div class="widget" id="w1">
+        <div class="widget-bar"><span>CLASSIFY THE DECISION</span><span id="w1-score">0 / 4 checked</span></div>
+        <div class="widget-body">
+          <div id="w1-items"></div>
+        </div>
+      </div>
+
+      <div class="box why">
+        <span class="tag">WHY THIS MATTERS</span>
+        <p>Every "perishable" decision has the same two failure modes:
+        <strong>overcapacity</strong> (you bought/made more than anyone
+        wanted — waste) and <strong>undercapacity</strong> (you didn't have
+        enough — lost revenue, or worse). The whole point of this model is to
+        find the quantity that balances those two costs, not to eliminate
+        either one. There is no order quantity that avoids both risks at once
+        — accepting that is the first step to modeling it well.</p>
+      </div>
+
+      <details class="check">
+        <summary>Self-check: what makes a resource "perishable" in this sense?</summary>
+        <div class="a">
+          <p>It's not about spoilage in the literal sense — it's about
+          <strong>time-boxing</strong>. Once the window closes (2pm for
+          muffins, the appointment slot for an MRI, the shift for a nurse),
+          any unused capacity is gone for good and any unmet demand is lost
+          or delayed. Printer paper isn't perishable this way: unsold paper
+          just waits for tomorrow's demand.</p>
+        </div>
+      </details>
+
+      <div class="exercise" id="ex1">
+        <div class="exercise-bar"><span>EXERCISE 1 — REQUIRED FOR PARTICIPATION</span><span class="status" id="ex1-status">not started</span></div>
+        <div class="exercise-body">
+          <label for="ex1-input">Describe one perishable-inventory decision from your own life, work, or the news — something with a real overcapacity/undercapacity trade-off — and say what happens to unused capacity (its "salvage value").</label>
+          <textarea id="ex1-input" aria-describedby="ex1-count ex1-feedback" placeholder="e.g., A hotel holding rooms for a conference that under-books…"></textarea>
+          <div class="char-count" id="ex1-count">0 characters</div>
+          <div class="feedback" id="ex1-feedback" aria-live="polite"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="step" id="s2">
+      <div class="step-head"><span class="step-num">02</span></div>
+      <h2>Naming your inputs before you model anything</h2>
+      <p>Before any formula gets written, a good spreadsheet model puts every
+      number that could plausibly change into its own labeled cell — never
+      buried inside a formula. This is what lets you ask "what if the setup
+      cost were higher?" by editing one cell instead of rewriting formulas.</p>
+      <p>Try changing the values below and watch the mini-sheet update. These
+      six cells are the entire input side of your model.</p>
+
+      <div class="widget" id="w2">
+        <div class="widget-bar"><span>INPUTS</span><span id="s2-cellref">mirrors Business_Model!B5:B10</span></div>
+        <div class="widget-body">
+          <div id="s2-toggle" style="margin-bottom:18px;"></div>
+          <table class="sheet" style="margin-bottom:18px;">
+            <tr><th>cell</th><th>label</th><th>value</th></tr>
+            <tr><td class="addr">B5</td><td id="s2-lbl-F">Fixed daily setup cost (F)</td><td class="num" id="s2-F">$40.00</td></tr>
+            <tr><td class="addr">B6</td><td id="s2-lbl-c">Variable cost per muffin (c)</td><td class="num" id="s2-c">$1.20</td></tr>
+            <tr><td class="addr">B7</td><td id="s2-lbl-p">Full-price selling price (p)</td><td class="num" id="s2-p">$3.50</td></tr>
+            <tr><td class="addr">B8</td><td id="s2-lbl-v">Discount / salvage price (v)</td><td class="num" id="s2-v">$1.00</td></tr>
+            <tr><td class="addr">B9</td><td id="s2-lbl-Q">Muffins baked, decision (Q)</td><td class="num" id="s2-Q">170</td></tr>
+            <tr><td class="addr">B10</td><td id="s2-lbl-D">Demand today (D)</td><td class="num" id="s2-D">180</td></tr>
+          </table>
+          <div class="grid2">
+            <div class="control"><div class="control-label"><b>Fixed setup cost (F)</b><span class="val" id="s2-F-l">$40.00</span></div>
+              <input type="range" id="s2-F-r" aria-label="Fixed setup cost" min="0" max="120" step="5" value="40"></div>
+            <div class="control"><div class="control-label"><b>Variable cost (c)</b><span class="val" id="s2-c-l">$1.20</span></div>
+              <input type="range" id="s2-c-r" aria-label="Variable cost per muffin" min="0" max="3" step="0.1" value="1.2"></div>
+            <div class="control"><div class="control-label"><b>Full price (p)</b><span class="val" id="s2-p-l">$3.50</span></div>
+              <input type="range" id="s2-p-r" aria-label="Full price" min="1" max="6" step="0.1" value="3.5"></div>
+            <div class="control"><div class="control-label"><b>Discount price (v)</b><span class="val" id="s2-v-l">$1.00</span></div>
+              <input type="range" id="s2-v-r" aria-label="Discount price" min="0" max="3" step="0.1" value="1"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="box excel">
+        <span class="tag">BUILD THIS NEXT, IN EXCEL</span>
+        <p>In your workbook, put these six labels in column A and their
+        values in column B (cells <span class="cell-ref">B5:B10</span>).
+        Nothing gets typed as a raw number anywhere else in the sheet from
+        this point on — every formula below references these six cells.</p>
+      </div>
+
+      <details class="check">
+        <summary>Self-check: why not just type 40 directly into the profit formula?</summary>
+        <div class="a"><p>Because next week you'll want to ask "what if rent
+        goes up and the setup cost becomes $55?" If <code>40</code> is typed
+        into ten different formulas, you have to hunt down and fix all ten.
+        If it lives in <span class="cell-ref">B5</span>, you change one cell
+        and every formula that depends on it updates automatically.</p></div>
+      </details>
+
+      <div class="exercise" id="ex2">
+        <div class="exercise-bar"><span>EXERCISE 2 — REQUIRED FOR PARTICIPATION</span><span class="status" id="ex2-status">not started</span></div>
+        <div class="exercise-body">
+          <label for="ex2-input">In your workbook, raise the fixed setup cost (F) noticeably — for example, to $65 on the Coffee Shop model or $700 on the Flu Clinic model — and leave Q and D at their forecast values. In your own words: why does this one-cell change ripple through every formula below it, and what does that tell you about how the breakeven demand from Section 08 would move?</label>
+          <textarea id="ex2-input" aria-describedby="ex2-count ex2-feedback" placeholder="Type your explanation here…"></textarea>
+          <div class="char-count" id="ex2-count">0 characters</div>
+          <div class="excel-address-check">
+            <p class="mini-title">EXCEL ADDRESS CHECK — REQUIRED</p>
+            <p>Name the cells/range from the workbook. You may enter <code>B5</code> or <code>$B$5</code>; absolute references are accepted.</p>
+            <div class="grid2">
+              <div><label for="ex2-range">Six-input block</label><input type="text" id="ex2-range" placeholder="e.g., B5:B10"></div>
+              <div><label for="ex2-fcell">Fixed setup cost (F)</label><input type="text" id="ex2-fcell" placeholder="cell address"></div>
+              <div><label for="ex2-qcell">Order quantity (Q)</label><input type="text" id="ex2-qcell" placeholder="cell address"></div>
+              <div><label for="ex2-dcell">Demand (D)</label><input type="text" id="ex2-dcell" placeholder="cell address"></div>
+            </div>
+          </div>
+          <div class="exercise-row"><button class="run" id="ex2-check" type="button">Check explanation + Excel addresses</button></div>
+          <div class="feedback" id="ex2-feedback" aria-live="polite"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="step" id="s3">
+      <div class="step-head"><span class="step-num">03</span></div>
+      <h2>The two lines that run the whole model</h2>
+      <p>Everything downstream depends on two facts a manager already knows
+      intuitively: <strong>you can't sell more muffins than you baked</strong>,
+      and <strong>you can't sell more than customers actually want</strong>.
+      In Excel, "the smaller of two numbers" is <code>MIN()</code> and
+      "whatever's left over, but never negative" is <code>MAX(0, …)</code>.</p>
+
+      <div class="widget" id="w3">
+        <div class="widget-bar"><span>LIVE MODEL</span><span id="s3-cellref">Business_Model!B13:B17</span></div>
+        <div class="widget-body">
+          <div id="s3-toggle" style="margin-bottom:18px;"></div>
+          <div class="control">
+            <div class="control-label"><b id="s3-lbl-Q">Muffins baked (Q)</b><span class="val" id="s3-Q-l">170</span></div>
+            <input type="range" id="s3-Q-r" aria-label="Muffins baked, Q" min="100" max="260" step="5" value="170">
+          </div>
+          <div class="control">
+            <div class="control-label"><b id="s3-lbl-D">Demand today (D)</b><span class="val" id="s3-D-l">180</span></div>
+            <input type="range" id="s3-D-r" aria-label="Demand today, D" min="100" max="260" step="5" value="180">
+          </div>
+          <svg class="chart" id="s3-bar" viewBox="0 0 640 90"></svg>
+          <div class="grid2" style="margin-top:16px;">
+            <div class="receipt" id="s3-receipt" aria-live="polite"></div>
+            <div>
+              <p style="margin-top:0; font-size:14.5px;" id="s3-reading">Reading the bar above: the
+              amber segment is muffins sold at <b>$3.50</b>, the grey segment
+              is leftovers sold at <b>$1.00</b>. Drag D past Q and watch the
+              grey segment disappear — once demand exceeds supply, there's
+              nothing left to discount, only lost sales the model doesn't
+              show you (yet — that's Section 07).</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="box excel">
+        <span class="tag">BUILD THIS NEXT, IN EXCEL</span>
+        <div class="formula-list">
+          <div class="formula-line"><span class="cell-ref">B13</span> <code>=MIN($B$10,$B$9)</code> — Full-price sales</div>
+          <div class="formula-line"><span class="cell-ref">B14</span> <code>=MAX(0,$B$9-$B$10)</code> — Discounted sales</div>
+          <div class="formula-line"><span class="cell-ref">B15</span> <code>=B13*$B$7+B14*$B$8</code> — Total revenue</div>
+          <div class="formula-line"><span class="cell-ref">B16</span> <code>=$B$5+$B$9*$B$6</code> — Total cost</div>
+          <div class="formula-line"><span class="cell-ref">B17</span> <code>=B15-B16</code> — Daily profit</div>
+        </div>
+        <p class="formula-note">Use absolute references (<code>$</code>) on B5–B10 so you can copy
+        these formulas elsewhere without them shifting.</p>
+      </div>
+
+      <details class="check">
+        <summary>Self-check: Q=170, D=140 — how many muffins get sold at full price?</summary>
+        <div class="a"><p><code>MIN(140,170) = 140</code>. All 140 customers
+        get served, and the remaining <code>MAX(0,170-140)=30</code> muffins
+        go into the discount bin. Notice full-price sales is capped by
+        <em>demand</em> here, not by supply.</p></div>
+      </details>
+
+      <div class="exercise" id="ex3">
+        <div class="exercise-bar"><span>EXERCISE 3 — REQUIRED FOR PARTICIPATION</span><span class="status" id="ex3-status">not started</span></div>
+        <div class="exercise-body">
+          <p style="margin-top:0;">Set the model above to <strong>Q = 200</strong> and <strong>D = 150</strong>, then fill in what your workbook's formulas would compute:</p>
+          <div class="grid2">
+            <div>
+              <label for="ex3-full">Full-price sales</label>
+              <input type="number" id="ex3-full" aria-describedby="ex3-feedback">
+            </div>
+            <div>
+              <label for="ex3-left">Discounted sales</label>
+              <input type="number" id="ex3-left" aria-describedby="ex3-feedback">
+            </div>
+          </div>
+          <div class="excel-address-check">
+            <p class="mini-title">EXCEL ADDRESS CHECK — REQUIRED</p>
+            <div class="grid2">
+              <div><label for="ex3-full-cell">Cell for Full-price sales</label><input type="text" id="ex3-full-cell" placeholder="cell address"></div>
+              <div><label for="ex3-left-cell">Cell for Discounted sales</label><input type="text" id="ex3-left-cell" placeholder="cell address"></div>
+            </div>
+          </div>
+          <div class="exercise-row">
+            <button class="run" id="ex3-check" type="button">Check numbers + Excel cells</button>
+          </div>
+          <div class="feedback" id="ex3-feedback" aria-live="polite"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="step" id="s4">
+      <div class="step-head"><span class="step-num">04</span></div>
+      <h2>Why profit doesn't keep climbing forever</h2>
+      <p>Now hold the baking quantity fixed — the assignment asks you to fix
+      <strong>Q = 180</strong> — and vary only demand. Slide D from a slow
+      morning to a rush, and watch what the profit line actually does.</p>
+
+      <div class="widget" id="w4">
+        <div class="widget-bar"><span>SCENARIO ANALYSIS</span><span id="s4-cellref">Q held at 180</span></div>
+        <div class="widget-body">
+          <div id="s4-toggle" style="margin-bottom:18px;"></div>
+          <div class="control">
+            <div class="control-label"><b>Demand (D)</b><span class="val" id="s4-D-l">180</span></div>
+            <input type="range" id="s4-D-r" aria-label="Demand, D" min="100" max="260" step="5" value="180">
+          </div>
+          <div class="presets">
+            <button class="chip" data-d="140">D = 140 (slow morning)</button>
+            <button class="chip" data-d="220">D = 220 (rush)</button>
+            <button class="chip" data-d="180">D = 180 (as forecast)</button>
+          </div>
+          <svg class="chart" id="s4-chart" viewBox="0 0 640 260" style="margin-top:18px;"></svg>
+          <div class="receipt" id="s4-receipt" aria-live="polite" style="margin-top:14px;"></div>
+        </div>
+      </div>
+
+      <div class="box why">
+        <span class="tag">WHY THIS MATTERS — THE ASSIGNMENT'S OBSERVATION QUESTION</span>
+        <p>The line rises while D ≤ Q, because every extra customer buys one
+        more full-price muffin. The instant D passes Q, the line goes
+        <strong>flat</strong> — not down, flat — because there is nothing left
+        to sell no matter how many more customers show up. Revenue is capped
+        at <code>Q × p</code>, full stop. That flat ceiling is the cost of
+        <em>under</em>baking: every customer beyond Q is a sale you'll never
+        recover, even though your reported profit isn't falling.</p>
+      </div>
+
+      <details class="check">
+        <summary>Self-check: which of D=140 or D=220 gets the higher profit at Q=180 — and why isn't the gap bigger?</summary>
+        <div class="a"><p>D=220 wins ($374 vs $274) — more customers is still
+        better up to the point Q is exceeded, since 40 fewer muffins going to
+        the $1.00 discount bin is worth more than the sales you'd have gained.
+        But the gap is capped: no matter how far D climbs past 180, profit
+        stays at $374, because 180 is the most you baked.</p></div>
+      </details>
+
+      <div class="exercise" id="ex4">
+        <div class="exercise-bar"><span>EXERCISE 4 — REQUIRED FOR PARTICIPATION</span><span class="status" id="ex4-status">not started</span></div>
+        <div class="exercise-body">
+          <p style="margin-top:0;">With Q held at 180, use the slider to answer the assignment's own scenario question:</p>
+          <div class="grid2">
+            <div>
+              <label for="ex4-140">Profit when D = 140</label>
+              <input type="number" id="ex4-140" aria-describedby="ex4-feedback">
+            </div>
+            <div>
+              <label for="ex4-220">Profit when D = 220</label>
+              <input type="number" id="ex4-220" aria-describedby="ex4-feedback">
+            </div>
+          </div>
+          <div class="excel-address-check">
+            <p class="mini-title">EXCEL ADDRESS CHECK — REQUIRED</p>
+            <label for="ex4-profit-cell">Which workbook cell contains Daily Profit for both scenarios?</label>
+            <input type="text" id="ex4-profit-cell" placeholder="cell address">
+          </div>
+          <div class="exercise-row">
+            <button class="run" id="ex4-check" type="button">Check profits + Excel cell</button>
+          </div>
+          <div class="feedback" id="ex4-feedback" aria-live="polite"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="step" id="s5">
+      <div class="step-head"><span class="step-num">05</span></div>
+      <h2>Turning 100 days of data into a probability</h2>
+      <p>So far D has been a single guess. In reality you have history: 100
+      past days of muffin demand, some slow, some busy. A pivot table turns
+      that list into the "how often does each demand level happen" table the
+      optimization step needs.</p>
+
+      <div class="widget" id="w5">
+        <div class="widget-bar"><span>SAMPLE OF THE RAW LOG</span><span>illustrative — your CSV has 100 rows</span></div>
+        <div class="widget-body">
+          <div id="s5-toggle" style="margin-bottom:18px;"></div>
+          <div id="s5-sample"></div>
+          <p style="font-size:14.5px; margin-bottom:14px;" id="s5-intro">Grouped into bins
+          of 10 and expressed as a share of all 100 days, that log turns into
+          the probability table your assignment gives you for the
+          optimization step:</p>
+          <svg class="chart" id="s5-chart" viewBox="0 0 640 220"></svg>
+        </div>
+      </div>
+
+      <div class="box excel" id="s5-excel-box">
+        <span class="tag">BUILD THIS NEXT, IN EXCEL</span>
+        <p id="s5-excel-text">Insert a Pivot Table from the CSV → drag
+        <code>Actual_Muffin_Demand</code> to Rows → right-click a value →
+        <strong>Group…</strong> in steps of 10 → drag
+        <code>Actual_Muffin_Demand</code> to Values → change the value field
+        setting to <strong>Show Values As → % of Column Total</strong>. Those
+        percentages are your demand probabilities.</p>
+      </div>
+
+      <details class="check">
+        <summary>Self-check: why group into bins of 10 instead of using every exact value?</summary>
+        <div class="a"><p>With continuous-ish demand, almost every exact
+        value (161, 162, 163…) shows up once or not at all across 100 days,
+        which gives you a flat, useless "probability" of 1% each. Grouping
+        into bins gives you enough days per bin to see a real pattern —
+        while still being fine-grained enough to distinguish a slow day from
+        a rush.</p></div>
+      </details>
+
+      <div class="exercise" id="ex5">
+        <div class="exercise-bar"><span>EXERCISE 5 — REQUIRED FOR PARTICIPATION</span><span class="status" id="ex5-status">not started</span></div>
+        <div class="exercise-body">
+          <label for="ex5-input">Using the probability table above, what is the probability that demand is 180 or fewer units? Answer as a percent (e.g., 42).</label>
+          <div class="exercise-row">
+            <input type="number" id="ex5-input" style="max-width:140px;" aria-describedby="ex5-feedback"> <span aria-hidden="true">%</span>
+          </div>
+          <div class="excel-address-check">
+            <p class="mini-title">EXCEL RANGE CHECK — REQUIRED</p>
+            <label for="ex5-prob-range">What range contains the demand/probability table for the track currently selected?</label>
+            <input type="text" id="ex5-prob-range" placeholder="range address">
+          </div>
+          <div class="exercise-row"><button class="run" id="ex5-check" type="button">Check probability + Excel range</button></div>
+          <div class="feedback" id="ex5-feedback" aria-live="polite"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="step" id="s6">
+      <div class="step-head"><span class="step-num">06</span></div>
+      <h2>Weighting every outcome by how likely it is</h2>
+      <p><strong>Expected profit</strong> is just a probability-weighted
+      average: multiply the profit at each demand level by how often that
+      level happens, then add them up. Do that for a few candidate order
+      quantities and you can finally compare them on equal footing, instead
+      of guessing.</p>
+
+      <div class="widget" id="w6">
+        <div class="widget-bar"><span>DATA TABLE — CANDIDATE Q</span><span id="s6-cellref">Business_Model!A37:C41</span></div>
+        <div class="widget-body">
+          <div id="s6-toggle" style="margin-bottom:18px;"></div>
+          <div class="control">
+            <div class="control-label"><b>Try any Q</b><span class="val" id="s6-Q-l">180</span></div>
+            <input type="range" id="s6-Q-r" aria-label="Candidate order quantity, Q" min="140" max="220" step="5" value="180">
+          </div>
+          <table class="sheet" id="s6-table" aria-live="polite" style="margin:16px 0 18px;"></table>
+          <svg class="chart" id="s6-chart" viewBox="0 0 640 260"></svg>
+        </div>
+      </div>
+
+      <div class="box excel">
+        <span class="tag">BUILD THIS NEXT, IN EXCEL</span>
+        <p id="s6-excel-text">List the five demand levels and probabilities in
+        <span class="cell-ref">A28:B32</span>, compute profit-at-current-Q in
+        column C, multiply by probability in column D, and sum column D for
+        Expected Profit. Then use a one-variable <strong>Data Table</strong>
+        (Data → What-If Analysis → Data Table) with candidate Q values
+        160–200 down a column to see all five expected profits at once
+        without rebuilding the formula five times.</p>
+      </div>
+
+      <details class="check">
+        <summary>Self-check: among 160, 170, 180, 190, 200 — which Q maximizes expected profit, and is it necessarily the best possible Q?</summary>
+        <div class="a"><p>Q=200 wins among these five candidates — but expected
+        profit is still rising as Q approaches 200, barely edging out 190.
+        That's a hint the true optimum might sit above 200; the Data Table
+        only tells you the best of the candidates you typed in, not the best
+        of every possible Q. Section 07 gives you a way to find the real
+        optimum without checking every value by hand.</p></div>
+      </details>
+
+      <div class="exercise" id="ex6">
+        <div class="exercise-bar"><span>EXERCISE 6 — REQUIRED FOR PARTICIPATION</span><span class="status" id="ex6-status">not started</span></div>
+        <div class="exercise-body">
+          <p style="margin-top:0;">From the Data Table above:</p>
+          <div class="grid2">
+            <div>
+              <label for="ex6-q">Best candidate Q</label>
+              <input type="number" id="ex6-q" aria-describedby="ex6-feedback">
+            </div>
+            <div>
+              <label for="ex6-ep">Its expected profit ($, nearest dollar)</label>
+              <input type="number" id="ex6-ep" aria-describedby="ex6-feedback">
+            </div>
+          </div>
+          <div class="excel-address-check">
+            <p class="mini-title">EXCEL RANGE CHECK — REQUIRED</p>
+            <label for="ex6-table-range">What workbook range contains the candidate-Q Data Table for the track currently selected?</label>
+            <input type="text" id="ex6-table-range" placeholder="range address">
+          </div>
+          <div class="exercise-row">
+            <button class="run" id="ex6-check" type="button">Check result + Excel range</button>
+          </div>
+          <div class="feedback" id="ex6-feedback" aria-live="polite"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="step" id="s7">
+      <div class="step-head"><span class="step-num">07</span></div>
+      <h2>The formula that skips the trial and error</h2>
+      <p>Every unit you're short of demand costs you the margin you would
+      have earned — that's the <strong>cost of underage (Cu)</strong>. Every
+      unit you have left over costs you the difference between what you paid
+      and what you salvaged — the <strong>cost of overage (Co)</strong>. Their
+      ratio tells you exactly what percentile of the demand distribution to
+      bake for, with no trial and error at all.</p>
+
+      <div class="widget" id="w7">
+        <div class="widget-bar"><span>UNDERAGE / OVERAGE</span><span id="s7-cellref">Business_Model!B44:B46</span></div>
+        <div class="widget-body">
+          <div id="s7-toggle" style="margin-bottom:18px;"></div>
+          <div class="grid2">
+            <div class="control"><div class="control-label"><b>Full price (p)</b><span class="val" id="s7-p-l">$3.50</span></div>
+              <input type="range" id="s7-p-r" aria-label="Full price" min="1" max="6" step="0.1" value="3.5"></div>
+            <div class="control"><div class="control-label"><b>Variable cost (c)</b><span class="val" id="s7-c-l">$1.20</span></div>
+              <input type="range" id="s7-c-r" aria-label="Variable cost" min="0" max="3" step="0.1" value="1.2"></div>
+            <div class="control"><div class="control-label"><b>Discount price (v)</b><span class="val" id="s7-v-l">$1.00</span></div>
+              <input type="range" id="s7-v-r" aria-label="Discount price" min="0" max="3" step="0.1" value="1"></div>
+          </div>
+          <div class="receipt" id="s7-receipt" aria-live="polite" style="margin:16px 0;"></div>
+          <p style="font-size:14px; margin-bottom:8px;">Critical ratio, mapped onto the cumulative demand distribution:</p>
+          <svg class="chart" id="s7-gauge" viewBox="0 0 640 104"></svg>
+        </div>
+      </div>
+
+      <div class="box excel">
+        <span class="tag">BUILD THIS NEXT, IN EXCEL</span>
+        <div id="s7-excel-text">
+          <div class="formula-list">
+            <div class="formula-line"><span class="cell-ref">B44</span> <code>=B7-B6</code> — Cost of underage (Cu)</div>
+            <div class="formula-line"><span class="cell-ref">B45</span> <code>=B6-B8</code> — Cost of overage (Co)</div>
+            <div class="formula-line"><span class="cell-ref">B46</span> <code>=B44/(B44+B45)</code> — Critical Ratio</div>
+          </div>
+          <p class="formula-note">Choose Q so that the cumulative probability of demand at or below Q is just above this ratio.</p>
+        </div>
+      </div>
+
+      <details class="check">
+        <summary>Self-check: at the assignment's prices, the critical ratio is 0.92 — what does that mean in plain English?</summary>
+        <div class="a"><p>It means the ideal bake quantity is high enough
+        that demand falls at or below it 92% of the time — because
+        understocking a $2.30-margin muffin hurts a lot more than overstocking
+        a muffin that still salvages $1.00. With prices this lopsided, the
+        model deliberately accepts frequent, small leftovers to avoid rare,
+        expensive stockouts.</p></div>
+      </details>
+
+      <div class="exercise" id="ex7">
+        <div class="exercise-bar"><span>EXERCISE 7 — REQUIRED FOR PARTICIPATION</span><span class="status" id="ex7-status">not started</span></div>
+        <div class="exercise-body">
+          <label for="ex7-input">Using the sliders above, drop the discount price (v) to $0.50 and keep p and c at their defaults. What is the new critical ratio, as a percent to one decimal place?</label>
+          <div class="exercise-row">
+            <input type="number" step="0.1" id="ex7-input" style="max-width:140px;" aria-describedby="ex7-feedback"> <span aria-hidden="true">%</span>
+          </div>
+          <div class="excel-address-check">
+            <p class="mini-title">EXCEL RANGE CHECK — REQUIRED</p>
+            <label for="ex7-ratio-range">What range contains Cu, Co, and the Critical Ratio for the track currently selected?</label>
+            <input type="text" id="ex7-ratio-range" placeholder="range address">
+          </div>
+          <div class="exercise-row"><button class="run" id="ex7-check" type="button">Check ratio + Excel range</button></div>
+          <div class="feedback" id="ex7-feedback" aria-live="polite"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="step" id="s8">
+      <div class="step-head"><span class="step-num">08</span></div>
+      <h2>Working backward: how few sales can you survive on?</h2>
+      <p>Goal Seek answers a different question than everything above: not
+      "what's my profit at this demand," but "what's the <em>minimum</em>
+      demand I can survive on before I start losing money." Press run and
+      watch it search.</p>
+
+      <div class="widget" id="w8">
+        <div class="widget-bar"><span>GOAL SEEK</span><span id="s8-cellref">Set B17 to 0 by changing B10</span></div>
+        <div class="widget-body">
+          <div id="s8-toggle" style="margin-bottom:18px;"></div>
+          <div class="control">
+            <div class="control-label"><b id="s8-lbl-Q">Muffins baked (Q)</b><span class="val" id="s8-Q-l">170</span></div>
+            <input type="range" id="s8-Q-r" aria-label="Muffins baked, Q" min="120" max="220" step="5" value="170">
+          </div>
+          <div class="control">
+            <div class="control-label"><b>Demand — drag, or let Goal Seek find it</b><span class="val" id="s8-D-l">100</span></div>
+            <input type="range" id="s8-D-r" aria-label="Demand, D" min="0" max="220" step="1" value="100">
+          </div>
+          <button class="run" id="s8-run" type="button">Run Goal Seek</button>
+          <svg class="chart" id="s8-chart" viewBox="0 0 640 220" style="margin-top:16px;"></svg>
+          <div class="receipt" id="s8-receipt" aria-live="polite" style="margin-top:14px;"></div>
+        </div>
+      </div>
+
+      <div class="box excel">
+        <span class="tag">BUILD THIS NEXT, IN EXCEL</span>
+        <p>Data → What-If Analysis → Goal Seek. <strong>Set cell:</strong>
+        <span class="cell-ref">B17</span> &nbsp;<strong>To value:</strong> 0
+        &nbsp;<strong>By changing cell:</strong> <span class="cell-ref">B10</span>.
+        Excel iterates the same way the animation above does, just faster and
+        silently.</p>
+      </div>
+
+      <details class="check">
+        <summary>Self-check: at Q=170, why is the breakeven demand so low (about 30 muffins)?</summary>
+        <div class="a"><p>Because the margin on a full-price muffin ($2.30)
+        is large relative to the fixed cost ($40). You only need
+        <code>$40 ÷ $2.30 ≈ 17</code> muffins' worth of margin to cover setup,
+        plus a little more to offset the fact that unsold muffins still
+        salvage $1.00 rather than $0. Thin fixed costs and fat margins push
+        breakeven demand down — that relationship flips in the healthcare
+        version, next.</p></div>
+      </details>
+
+      <div class="exercise" id="ex8">
+        <div class="exercise-bar"><span>EXERCISE 8 — REQUIRED FOR PARTICIPATION</span><span class="status" id="ex8-status">not started</span></div>
+        <div class="exercise-body">
+          <label for="ex8-input">Set Q to 200 and run Goal Seek. What breakeven demand does it converge on (nearest whole unit)?</label>
+          <div class="exercise-row">
+            <input type="number" id="ex8-input" style="max-width:140px;" aria-describedby="ex8-feedback">
+          </div>
+          <div class="excel-address-check">
+            <p class="mini-title">GOAL SEEK CELL CHECK — REQUIRED</p>
+            <div class="grid2">
+              <div><label for="ex8-set-cell">Goal Seek “Set cell”</label><input type="text" id="ex8-set-cell" placeholder="cell address"></div>
+              <div><label for="ex8-change-cell">Goal Seek “By changing cell”</label><input type="text" id="ex8-change-cell" placeholder="cell address"></div>
+            </div>
+          </div>
+          <div class="exercise-row"><button class="run" id="ex8-check" type="button">Check breakeven + Goal Seek cells</button></div>
+          <div class="feedback" id="ex8-feedback" aria-live="polite"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="step" id="s9">
+      <div class="step-head"><span class="step-num">09</span></div>
+      <h2>The same math, higher stakes</h2>
+      <p>Swap the numbers and the exact same five formulas run a flu clinic
+      deciding how many vaccine doses to order. What changes is not the
+      model — it's what "leftover" and "stockout" actually cost.</p>
+
+      <div id="s9-toggle" role="group" aria-label="Choose a scenario"></div>
+
+      <div class="widget" id="w9">
+        <div class="widget-bar"><span id="s9-bar-label">MORNING BREW CAFÉ</span><span>same five formulas</span></div>
+        <div class="widget-body">
+          <table class="sheet" id="s9-table" aria-live="polite" style="margin-bottom:18px;"></table>
+          <div class="receipt" id="s9-receipt" aria-live="polite"></div>
+        </div>
+      </div>
+
+      <div class="box health">
+        <span class="tag">ETHICAL VS. FINANCIAL — TASK 2 OF THE ASSIGNMENT</span>
+        <p>Order 170 doses; 200 patients show up. The spreadsheet reports a
+        clean financial profit — revenue is simply capped at 170 sales,
+        exactly like the muffin model caps at Q. But 30 people who wanted a
+        flu shot didn't get one. Net Profit and Public Health point to
+        different order quantities here: maximizing Cu (the true social cost
+        of a missed vaccination — clinic visits, spread, lost workdays) would
+        push Q well above what maximizes revenue alone.</p>
+      </div>
+
+      <div class="grid2">
+        <div class="box why">
+          <span class="tag">A NON-PRICE LEVER FOR THE CAFÉ</span>
+          <p>Bundle day-old muffins into a discounted "yesterday's bake"
+          box, or take pre-orders for the next morning — both shrink the
+          leftover pile without touching price on fresh stock.</p>
+        </div><div class="box health">
+          <span class="tag">A NON-PRICE LEVER FOR THE CLINIC</span>
+          <p>Cross-train nurses so a quiet department can "float" staff to a
+          busy one, or route overflow patients to telehealth — both absorb a
+          demand spike without holding idle capacity on standby all season.</p>
+        </div>
+      </div>
+
+      <details class="check">
+        <summary>Self-check: is an empty hospital bed or a patient waiting in the hallway the more expensive kind of "wrong"?</summary>
+        <div class="a"><p>There's no single correct number — that's the point
+        of the question. An empty bed has a clear, bounded financial cost
+        (lost reimbursement for one night). A patient boarding in a hallway
+        has a cost that's harder to price: worse outcomes, staff strain, and
+        reputational damage that can suppress future demand in ways a
+        one-day profit model never captures. Naming that asymmetry out loud
+        is more important than picking a number for it.</p></div>
+      </details>
+
+      <details class="check">
+        <summary>Self-check: a 4-week MRI wait doesn't show up anywhere in this profit formula — where would you add it?</summary>
+        <div class="a"><p>It would show up as an inflated Cu: the true cost
+        of underage isn't just today's missed appointment, it's the
+        reputational and clinical cost of a growing waitlist. Modeling it
+        honestly usually means treating Cu as larger than the raw margin
+        suggests, which pushes the critical ratio — and the recommended
+        capacity — higher.</p></div>
+      </details>
+
+      <div class="exercise" id="ex9">
+        <div class="exercise-bar"><span>EXERCISE 9 — REQUIRED FOR PARTICIPATION</span><span class="status" id="ex9-status">not started</span></div>
+        <div class="exercise-body">
+          <label for="ex9-input">Using the toggle above, compare the Coffee Shop and Flu Clinic critical ratios. In 3–4 sentences: which one should tolerate more overstocking, and why? Then name one non-price strategy from this page (or your own idea) that fits your recommendation.</label>
+          <textarea id="ex9-input" aria-describedby="ex9-count ex9-feedback" placeholder="Type your answer here…"></textarea>
+          <div class="char-count" id="ex9-count">0 characters</div>
+          <div class="feedback" id="ex9-feedback" aria-live="polite"></div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <section class="step" id="submit" style="border-top:none; padding-top:0;">
+      <div class="step-head"><span class="step-num" aria-hidden="true">✓</span></div>
+      <h2>Record your participation</h2>
+      <p>Sign in above before beginning. As you open required self-checks and complete each exercise, your activity is saved to the instructor-controlled Supabase database. When finished, choose <strong>Record participation</strong> to verify the authoritative server record and generate your Blackboard receipt.</p>
+      <p id="footerProgress" style="font-family:var(--font-mono); font-size:14px;">0 / 9 exercises completed.</p>
+
+      <div class="widget" id="wSubmit">
+        <div class="widget-bar"><span>PARTICIPATION SUBMISSION</span><span>Supabase-backed · section and semester aware</span></div>
+        <div class="widget-body">
+          <div class="grid2">
+            <div class="control">
+              <label for="submit-name" style="font-weight:600; display:block; margin-bottom:6px;">Your name</label>
+              <input type="text" id="submit-name" autocomplete="name" required style="width:100%; font-family:var(--font-body); font-size:15px; border:1px solid var(--ink); background:var(--paper); padding:9px 11px;">
+            </div>
+            <div class="control">
+              <label for="submit-email" style="font-weight:600; display:block; margin-bottom:6px;">School email</label>
+              <input type="email" id="submit-email" autocomplete="email" required placeholder="student@example.edu" style="width:100%; font-family:var(--font-body); font-size:15px; border:1px solid var(--ink); background:var(--paper); padding:9px 11px;">
+            </div>
+          </div>
+          <div class="presets">
+            <button class="run" id="submit-direct" type="button">Record participation</button>
+            <button class="chip" id="submit-receipt" type="button" disabled>Download Blackboard receipt</button>
+            <button class="chip" id="submit-generate" type="button">Generate personal copy</button>
+            <button class="chip" id="submit-copy" type="button" disabled>Copy personal copy</button>
+            <button class="chip" id="submit-download" type="button" disabled>Download personal copy</button>
+          </div>
+          <div class="feedback" id="submit-feedback" aria-live="polite" style="margin-top:10px;"></div>
+          <div id="receiptPanel" hidden class="box health" style="margin-top:14px;">
+            <span class="tag">BLACKBOARD RECEIPT READY</span>
+            <p id="receiptText" style="margin-bottom:0;"></p>
+          </div>
+          <div id="footerCode" hidden style="margin-top:14px;">
+            <label for="submit-output" style="font-weight:600; display:block; margin-bottom:6px;">Your submission text</label>
+            <textarea id="submit-output" readonly style="width:100%; min-height:220px; font-family:var(--font-mono); font-size:13px; border:1px solid var(--ink); background:var(--paper); padding:12px;"></textarea>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <p style="margin-top:44px;">
+    Built for MG628 — Data Analysis for Managerial Decisions. Signed-in participation activity is stored automatically in Supabase and separated by academic term, course, and section. Blackboard receives a receipt that points to the authoritative server record. This page remains a companion to the Excel workbook, not a replacement for it.
+    </p>
+  </footer>
+
+</div>
+
+<script>
+// ---------- instructor-controlled submission configuration ----------
+// Replace this URL with the deployed endpoint described in README_enhanced.md.
+// When left blank, direct submission is disabled and copy/download remains available.
+const SUPABASE_URL = 'https://irnrjzeejalbbqdrbzmj.supabase.co';
+const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_aj2vpjfJrSMvjTxcKuC0pQ_pf7JbDo2';
+const COURSE_CODE = 'MG628';
+const ASSIGNMENT_CODE = 'ORDER_QUANTITY_WEEKS_1_2';
+const ASSIGNMENT_SLUG = 'order-quantity-weeks-1-2';
+const ASSIGNMENT_VERSION = 2;
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+let backendSession=null, backendOffering=null, backendCompletion=null, signedInUser=null;
+const participationSeenCards=new Set(), syncTimers=new Map();
+const SELF_CHECK_KEYS=['SELF-01','SELF-02','SELF-03','SELF-04','SELF-05','SELF-06','SELF-07','SELF-08','SELF-09A','SELF-09B'];
+async function invokeParticipation(body){const {data,error}=await sb.functions.invoke('participation-api',{body});if(error)throw error;if(data?.error)throw new Error(data.error);return data;}
+function setAuthStatus(message,kind=''){const el=document.getElementById('auth-status');if(!el)return;el.textContent=message;el.className='auth-status'+(kind?' '+kind:'');}
+function renderServerProgress(c){backendCompletion=c||backendCompletion;const el=document.getElementById('server-progress');if(!el)return;if(!backendCompletion){el.hidden=true;return;}el.hidden=false;el.innerHTML='Server record: <strong>'+String(backendCompletion.completion_percentage??0)+'%</strong> · self-checks '+String(backendCompletion.cards_completed??0)+'/'+String(backendCompletion.cards_required??0)+' · exercises '+(backendCompletion.worksheet_completed?'complete':'in progress')+' · reflection '+(backendCompletion.reflection_completed?'complete':'in progress')+' · status <strong>'+String(backendCompletion.status||'incomplete').toUpperCase()+'</strong>';}
+async function startBackendSession(){if(!signedInUser||!backendOffering)return;const r=await invokeParticipation({action:'start_session',offering_id:backendOffering.id,track:currentTrack});backendSession=r.session;backendCompletion=r.completion;renderServerProgress(r.completion);for(const key of participationSeenCards)await recordSelfCheck(key,true);if(typeof EXERCISE_DEFS!=='undefined')for(const d of EXERCISE_DEFS)if(exerciseState[d.id]?.done)await syncExerciseNow(d.id);}
+async function bootstrapStudent(){const {data:{user}}=await sb.auth.getUser();signedInUser=user||null;const signout=document.getElementById('auth-signout'),fields=document.getElementById('authFields');if(!user){backendSession=backendOffering=backendCompletion=null;if(signout)signout.hidden=true;if(fields)fields.hidden=false;setAuthStatus('Sign in before completing required participation items so your work is recorded.');renderServerProgress(null);return;}if(signout)signout.hidden=false;if(fields)fields.hidden=true;const em=document.getElementById('submit-email');if(em){em.value=user.email||'';em.readOnly=true;}const nm=document.getElementById('submit-name');if(nm&&!nm.value)nm.value=user.user_metadata?.full_name||'';setAuthStatus('Signed in. Matching your school email to the instructor roster…');try{const r=await invokeParticipation({action:'bootstrap'});const offering=(r.offerings||[]).find(o=>o.assignment?.slug===ASSIGNMENT_SLUG&&Number(o.assignment?.version)===ASSIGNMENT_VERSION);if(!offering){backendOffering=backendSession=null;setAuthStatus('Signed in, but this email is not rostered for a section that has this assignment. Contact your instructor if this is unexpected.','err');return;}backendOffering=offering;const enr=(r.enrollments||[]).find(e=>e.section_id===offering.section_id),sec=enr?.section;setAuthStatus('Roster verified: '+(sec?.course?.code||COURSE_CODE)+' '+(sec?.section_code||'')+' · '+(sec?.term?.name||'')+'. Starting your secure participation record…','ok');await startBackendSession();setAuthStatus('Participation recording is active for '+(sec?.course?.code||COURSE_CODE)+' '+(sec?.section_code||'')+' · '+(sec?.term?.name||'')+'.','ok');}catch(e){setAuthStatus(e.message||'Could not initialize participation recording.','err');console.error(e);}}
+async function recordSelfCheck(key,quiet=false){participationSeenCards.add(key);if(!backendSession)return;try{const r=await invokeParticipation({action:'card_opened',session_id:backendSession.id,card_key:key});renderServerProgress(r.completion);}catch(e){if(!quiet)setAuthStatus('A self-check could not be recorded. '+(e.message||''),'err');}}
+function scheduleExerciseSync(id){clearTimeout(syncTimers.get(id));syncTimers.set(id,setTimeout(()=>syncExerciseNow(id),500));}
+async function syncExerciseNow(id){if(!backendSession)return;const st=exerciseState[id],key=id.toUpperCase();try{const r=await invokeParticipation({action:'save_worksheet',session_id:backendSession.id,worksheet_key:key,response_text:st?.done?(st.summary||'Completed'):null,response_json:st?.done?{raw:st.raw??null,excel_refs:st.excel??[],summary:st.summary||'',track:currentTrack}:null});renderServerProgress(r.completion);}catch(e){setAuthStatus('Could not save '+key+' to the server: '+(e.message||e),'err');}}
+
+
+// ---------- shared helpers ----------
+const fmt$ = n => (n<0?'-$':'$') + Math.abs(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+const clamp = (n,a,b)=>Math.max(a,Math.min(b,n));
+
+function profitOf({F,c,p,v,Q,D}){
+  const full = Math.min(D,Q);
+  const left = Math.max(0,Q-D);
+  const revenue = full*p + left*v;
+  const cost = F + Q*c;
+  return {full,left,revenue,cost,profit:revenue-cost};
+}
+
+// ---------- track (major) configuration ----------
+const TRACKS = {
+  business: {
+    key:'business', label:'Business', placeLabel:'Coffee Shop', name:'Morning Brew Café',
+    sheet:'Business_Model', unit:'muffin', unitPlural:'muffins',
+    person:'customer', personPlural:'customers', verb:'bake', verbPast:'baked',
+    F:40, c:1.2, p:3.5, v:1, Qdefault:170, Ddefault:180,
+    candidates:[160,170,180,190,200],
+    demand:[{d:150,p:0.15},{d:170,p:0.25},{d:180,p:0.30},{d:190,p:0.20},{d:200,p:0.10}],
+    demandNote:'the assignment\'s given probability table',
+    rows:{inputs:'B5:B10', formulas:'B13:B17', dataTable:'A37:C41', underage:'B44:B46', probTable:'A28:B32'}
+  },
+  health: {
+    key:'health', label:'Healthcare Admin', placeLabel:'Flu Clinic', name:'Metro Community Flu Clinic',
+    sheet:'Healthcare_Model', unit:'dose', unitPlural:'doses',
+    person:'patient', personPlural:'patients', verb:'order', verbPast:'ordered',
+    F:500, c:12, p:45, v:3, Qdefault:170, Ddefault:180,
+    candidates:[150,160,170,180,190,200,210],
+    demand:[{d:144.5,p:3/99},{d:154.5,p:12/99},{d:164.5,p:14/99},{d:174.5,p:18/99},
+            {d:184.5,p:26/99},{d:194.5,p:18/99},{d:204.5,p:6/99},{d:214.5,p:2/99}],
+    demandNote:'a pivot table grouping 100 real days of clinic data into bins of 10',
+    rows:{inputs:'B5:B10', formulas:'B13:B17', dataTable:'A47:B53', underage:'B56:B58', probTable:'B28:C38'}
+  }
+};
+let currentTrack = 'business';
+const trackListeners = [];
+function onTrackChange(fn){ trackListeners.push(fn); }
+function setTrack(track){
+  if(track!==('business') && track!=='health') return;
+  currentTrack = track;
+  document.querySelectorAll('[data-track-toggle]').forEach(group=>{
+    group.querySelectorAll('button').forEach(b=>{
+      const active = b.dataset.track===track;
+      b.classList.toggle('active', active);
+      b.classList.toggle('health', track==='health' && active);
+      b.setAttribute('aria-pressed', String(active));
+    });
+  });
+  trackListeners.forEach(fn=>fn(track));
+  if(backendSession && signedInUser) startBackendSession().catch(e=>setAuthStatus(e.message||String(e),'err'));
+  document.getElementById('liveAnnounce').textContent = `Switched to the ${TRACKS[track].label} scenario. All sections now use ${TRACKS[track].name}'s numbers.`;
+}
+function trackToggleHTML(idSuffix){
+  return `<div class="track-toggle" data-track-toggle id="tt-${idSuffix}" role="group" aria-label="Choose your scenario">
+    <button type="button" data-track="business" class="${currentTrack==='business'?'active':''}" aria-pressed="${currentTrack==='business'}">Coffee Shop</button>
+    <button type="button" data-track="health" class="${currentTrack==='health'?'active':''} ${currentTrack==='health'?'health':''}" aria-pressed="${currentTrack==='health'}">Flu Clinic</button>
+  </div>`;
+}
+function wireTrackToggles(){
+  document.querySelectorAll('[data-track-toggle]').forEach(group=>{
+    if(group.dataset.wired) return;
+    group.dataset.wired = '1';
+    group.addEventListener('click', e=>{
+      const btn = e.target.closest('button'); if(!btn) return;
+      setTrack(btn.dataset.track);
+    });
+  });
+}
+
+// generic small SVG line chart
+function drawChart(svg, series, opts){
+  const W=640,H=260,padL=46,padR=18,padT=16,padB=32;
+  const {xMin,xMax,yMin,yMax,xTicks=5,yTicks=5,xLabel='',yLabel='',markerX=null,ariaLabel=''} = opts;
+  const xs = x => padL + (x-xMin)/(xMax-xMin)*(W-padL-padR);
+  const ys = y => H-padB - (y-yMin)/(yMax-yMin)*(H-padT-padB);
+  const labelAttr = ariaLabel ? `role="img" aria-label="${ariaLabel.replace(/"/g,'&quot;')}"` : 'aria-hidden="true"';
+  let s = `<svg class="chart" ${labelAttr} viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">`;
+  for(let i=0;i<=yTicks;i++){
+    const y = yMin + (yMax-yMin)*i/yTicks;
+    s += `<line class="gridline" x1="${padL}" x2="${W-padR}" y1="${ys(y)}" y2="${ys(y)}"/>`;
+    s += `<text x="4" y="${ys(y)+4}">${Math.round(y)}</text>`;
+  }
+  for(let i=0;i<=xTicks;i++){
+    const x = xMin + (xMax-xMin)*i/xTicks;
+    s += `<text x="${xs(x)-10}" y="${H-10}">${Math.round(x)}</text>`;
+  }
+  s += `<line class="axis" x1="${padL}" x2="${padL}" y1="${padT}" y2="${H-padB}"/>`;
+  s += `<line class="axis" x1="${padL}" x2="${W-padR}" y1="${H-padB}" y2="${H-padB}"/>`;
+  series.forEach((ser,i)=>{
+    const cls = i===0 ? 'curve' : 'curve2';
+    const d = ser.points.map((pt,j)=> (j===0?'M':'L') + xs(pt.x).toFixed(1) + ',' + ys(clamp(pt.y,yMin,yMax)).toFixed(1)).join(' ');
+    s += `<path class="${cls}" d="${d}"/>`;
+  });
+  if(markerX!==null){
+    s += `<line class="marker" x1="${xs(markerX)}" x2="${xs(markerX)}" y1="${padT}" y2="${H-padB}"/>`;
+  }
+  series.forEach(ser=>{
+    (ser.dots||[]).forEach(pt=>{
+      s += `<circle class="pt" cx="${xs(pt.x)}" cy="${ys(clamp(pt.y,yMin,yMax))}" r="4"/>`;
+    });
+  });
+  s += `</svg>`;
+  svg.innerHTML = s;
+}
+
+// scroll spy + progress bar
+const sections = ()=>document.querySelectorAll('section.step');
+window.addEventListener('scroll', ()=>{
+  const links = document.querySelectorAll('.rail a');
+  let current = null;
+  sections().forEach(sec=>{
+    const r = sec.getBoundingClientRect();
+    if(r.top < 140) current = sec.id;
+  });
+  links.forEach(a=>{
+    const isCurrent = a.getAttribute('href')==='#'+current;
+    a.classList.toggle('active', isCurrent);
+    if(isCurrent) a.setAttribute('aria-current','location'); else a.removeAttribute('aria-current');
+  });
+  const doc = document.documentElement;
+  const pct = (doc.scrollTop)/(doc.scrollHeight-doc.clientHeight)*100;
+  document.getElementById('progressFill').style.width = pct+'%';
+}, {passive:true});
+
+// self-check tracking — each first open is written to Supabase when signed in
+(function(){
+  const checks=document.querySelectorAll('details.check'),total=checks.length;
+  function update(){const p=document.getElementById('railProgress');if(p)p.textContent=participationSeenCards.size+' / '+total+' self-checks opened';}
+  checks.forEach((d,i)=>d.addEventListener('toggle',()=>{if(d.open){const key=SELF_CHECK_KEYS[i];if(key){participationSeenCards.add(key);recordSelfCheck(key).catch(()=>{});}update();}}));
+  update();
+})();
+
+// ---------- exercises (graded, required for participation) ----------
+const EXERCISE_DEFS = [
+  {id:'ex1', type:'text', minLen:20},
+  {id:'ex2', type:'textExcel', minLen:20,
+   excelFields:['ex2-range','ex2-fcell','ex2-qcell','ex2-dcell'],
+   excelAnswers:()=>['B5:B10','B5','B9','B10']},
+  {id:'ex3', type:'numeric', fields:['ex3-full','ex3-left'], tol:[0.5,0.5],
+   answers:(track)=>[Math.min(150,200), Math.max(0,200-150)],
+   excelFields:['ex3-full-cell','ex3-left-cell'], excelAnswers:()=>['B13','B14'],
+   summary:(v)=>`Full-price sales ${v[0]}, discounted sales ${v[1]}`},
+  {id:'ex4', type:'numeric', fields:['ex4-140','ex4-220'], tol:[2,2],
+   answers:(track)=>{
+     const t=TRACKS[track], Q=180;
+     return [profitOf({F:t.F,c:t.c,p:t.p,v:t.v,Q,D:140}).profit,
+             profitOf({F:t.F,c:t.c,p:t.p,v:t.v,Q,D:220}).profit];
+   },
+   excelFields:['ex4-profit-cell'], excelAnswers:()=>['B17'],
+   summary:(v)=>`Profit at D=140 is ${v[0]}, at D=220 is ${v[1]}`},
+  {id:'ex5', type:'numeric', fields:['ex5-input'], tol:[1.2],
+   answers:(track)=>[cumulativeAt(180, TRACKS[track])*100],
+   excelFields:['ex5-prob-range'], excelAnswers:(track)=>[TRACKS[track].rows.probTable],
+   summary:(v)=>`P(D ≤ 180) = ${v[0]}%`},
+  {id:'ex6', type:'numeric', fields:['ex6-q','ex6-ep'], tol:[5,15],
+   answers:(track)=>{
+     const t=TRACKS[track];
+     const rows = t.candidates.map(q=>({q, ep:expectedProfit(q,track)}));
+     const best = rows.reduce((a,b)=> b.ep>a.ep?b:a, rows[0]);
+     return [best.q, best.ep];
+   },
+   excelFields:['ex6-table-range'], excelAnswers:(track)=>[TRACKS[track].rows.dataTable],
+   summary:(v)=>`Best Q = ${v[0]}, expected profit ${v[1]}`},
+  {id:'ex7', type:'numeric', fields:['ex7-input'], tol:[0.6],
+   answers:(track)=>{
+     const t=TRACKS[track];
+     const Cu=t.p-t.c, Co=t.c-0.5;
+     return [Cu/(Cu+Co)*100];
+   },
+   excelFields:['ex7-ratio-range'], excelAnswers:(track)=>[TRACKS[track].rows.underage],
+   summary:(v)=>`Critical ratio = ${v[0]}%`},
+  {id:'ex8', type:'numeric', fields:['ex8-input'], tol:[2],
+   answers:(track)=>{
+     const t=TRACKS[track], Q=200;
+     return [(t.F+Q*(t.c-t.v))/(t.p-t.v)];
+   },
+   excelFields:['ex8-set-cell','ex8-change-cell'], excelAnswers:()=>['B17','B10'],
+   summary:(v)=>`Breakeven demand at Q=200 is ${v[0]}`},
+  {id:'ex9', type:'text', minLen:40}
+]
+const exerciseState = {}; // id -> {done:bool, summary:string, raw:any}
+
+function markExerciseDone(id, summaryText, rawAnswer=null, excelRefs=null){
+  exerciseState[id] = {done:true, summary:summaryText, raw:rawAnswer, excel:excelRefs};
+  const status = document.getElementById(id+'-status');
+  if(status){ status.textContent = 'complete'; status.classList.add('done'); }
+  updateExerciseProgress();
+  scheduleExerciseSync(id);
+}
+function markExerciseIncomplete(id){
+  if(exerciseState[id]) exerciseState[id].done = false;
+  const status = document.getElementById(id+'-status');
+  if(status){ status.textContent = 'not started'; status.classList.remove('done'); }
+  updateExerciseProgress();
+  scheduleExerciseSync(id);
+}
+function updateExerciseProgress(){
+  const doneCount = EXERCISE_DEFS.filter(d=>exerciseState[d.id] && exerciseState[d.id].done).length;
+  const footerP = document.getElementById('footerProgress');
+  if(footerP) footerP.textContent = `${doneCount} / ${EXERCISE_DEFS.length} exercises completed.`;
+}
+
+function normalizeExcelRef(value){
+  let x = String(value || '').trim().toUpperCase().replace(/\s+/g,'').replace(/\$/g,'');
+  if(x.includes('!')) x = x.split('!').pop();
+  return x;
+}
+function checkExcelRefs(def){
+  if(!def.excelFields || !def.excelFields.length) return {ok:true, values:[]};
+  const values = def.excelFields.map(id=>document.getElementById(id).value.trim());
+  const expected = def.excelAnswers(currentTrack);
+  const ok = values.every((v,i)=>normalizeExcelRef(v)===normalizeExcelRef(expected[i]));
+  return {ok, values, expected};
+}
+
+// text (reflective) exercises: "complete" once past a minimum length
+EXERCISE_DEFS.filter(d=>d.type==='text').forEach(def=>{
+  const input = document.getElementById(def.id+'-input');
+  const count = document.getElementById(def.id+'-count');
+  const feedback = document.getElementById(def.id+'-feedback');
+  if(!input) return;
+  input.addEventListener('input', ()=>{
+    const len = input.value.trim().length;
+    if(count) count.textContent = len + ' characters';
+    if(len >= def.minLen){
+      markExerciseDone(def.id, input.value.trim(), input.value.trim());
+      feedback.textContent = 'Saved — this will be included in your submission.';
+      feedback.className = 'feedback saved';
+    } else {
+      markExerciseIncomplete(def.id);
+      feedback.textContent = `Write a bit more (at least ${def.minLen} characters) to mark this complete.`;
+      feedback.className = 'feedback';
+    }
+  });
+});
+
+// Exercise 2 combines a written explanation with required Excel cell/range naming.
+EXERCISE_DEFS.filter(d=>d.type==='textExcel').forEach(def=>{
+  const input = document.getElementById(def.id+'-input');
+  const count = document.getElementById(def.id+'-count');
+  const feedback = document.getElementById(def.id+'-feedback');
+  const btn = document.getElementById(def.id+'-check');
+  input.addEventListener('input', ()=>{
+    if(count) count.textContent = input.value.trim().length + ' characters';
+    markExerciseIncomplete(def.id);
+  });
+  def.excelFields.forEach(id=>document.getElementById(id).addEventListener('input', ()=>markExerciseIncomplete(def.id)));
+  btn.addEventListener('click', ()=>{
+    const text = input.value.trim();
+    const refs = checkExcelRefs(def);
+    if(text.length < def.minLen){
+      feedback.textContent = `Write at least ${def.minLen} characters in your explanation, then try again.`;
+      feedback.className = 'feedback incorrect';
+      markExerciseIncomplete(def.id);
+      return;
+    }
+    if(!refs.ok){
+      feedback.textContent = 'Your explanation is long enough, but one or more Excel addresses are not correct. Check the workbook layout above and try again.';
+      feedback.className = 'feedback incorrect';
+      markExerciseIncomplete(def.id);
+      return;
+    }
+    const refSummary = refs.values.map(normalizeExcelRef).join(', ');
+    feedback.textContent = 'Correct — explanation and Excel addresses verified.';
+    feedback.className = 'feedback correct';
+    markExerciseDone(def.id, `${text} | Excel addresses: ${refSummary}`, text, refs.values.map(normalizeExcelRef));
+  });
+});
+
+// numeric (auto-graded) exercises: checked on button press, against the currently selected track
+EXERCISE_DEFS.filter(d=>d.type==='numeric').forEach(def=>{
+  const btn = document.getElementById(def.id+'-check');
+  const feedback = document.getElementById(def.id+'-feedback');
+  if(!btn) return;
+  (def.excelFields || []).forEach(id=>document.getElementById(id).addEventListener('input', ()=>markExerciseIncomplete(def.id)));
+  btn.addEventListener('click', ()=>{
+    const values = def.fields.map(fid=>+document.getElementById(fid).value);
+    if(values.some(v=>Number.isNaN(v))){
+      feedback.textContent = 'Fill in every box before checking.';
+      feedback.className = 'feedback incorrect';
+      return;
+    }
+    const correctAnswers = def.answers(currentTrack);
+    const tol = def.tol;
+    const numbersCorrect = values.every((v,i)=> Math.abs(v-correctAnswers[i]) <= tol[i]);
+    const refs = checkExcelRefs(def);
+    if(numbersCorrect && refs.ok){
+      const refText = refs.values.length ? ` | Excel: ${refs.values.map(normalizeExcelRef).join(', ')}` : '';
+      feedback.textContent = refs.values.length ? 'Correct — both the calculation and Excel address check are right.' : 'Correct — nice work.';
+      feedback.className = 'feedback correct';
+      markExerciseDone(def.id, def.summary(values) + refText, values, refs.values.map(normalizeExcelRef));
+    } else if(numbersCorrect && !refs.ok){
+      feedback.textContent = 'Your calculation is correct, but the Excel cell/range address is not. Check the workbook layout and try again.';
+      feedback.className = 'feedback incorrect';
+      markExerciseIncomplete(def.id);
+    } else {
+      feedback.textContent = 'Not quite — check the calculation and the Excel address fields, then try again.';
+      feedback.className = 'feedback incorrect';
+      markExerciseIncomplete(def.id);
+    }
+  });
+});
+
+updateExerciseProgress();
+
+// ---------- Supabase-backed submission / Blackboard receipt ----------
+(function(){
+  const directBtn=document.getElementById('submit-direct'),receiptBtn=document.getElementById('submit-receipt'),genBtn=document.getElementById('submit-generate'),copyBtn=document.getElementById('submit-copy'),dlBtn=document.getElementById('submit-download'),nameInput=document.getElementById('submit-name'),emailInput=document.getElementById('submit-email'),output=document.getElementById('submit-output'),footerCode=document.getElementById('footerCode'),feedback=document.getElementById('submit-feedback'),receiptPanel=document.getElementById('receiptPanel'),receiptText=document.getElementById('receiptText');
+  let signedReceipt=null;
+  const doneCount=()=>EXERCISE_DEFS.filter(d=>exerciseState[d.id]?.done).length;
+  function buildText(){let lines=['MG628 — Order Quantity Tutorial — Personal Copy','Name: '+(nameInput.value.trim()||'(name not entered)'),'Email: '+(emailInput.value.trim()||'(email not entered)'),'Scenario used: '+TRACKS[currentTrack].name+' ('+TRACKS[currentTrack].label+')','Generated: '+new Date().toLocaleString(),'Exercises completed: '+doneCount()+' / '+EXERCISE_DEFS.length,''];EXERCISE_DEFS.forEach((d,i)=>{const st=exerciseState[d.id];lines.push('Exercise '+(i+1)+': '+(st?.done?'COMPLETE':'not completed'));lines.push(st?.summary?'  '+st.summary.replace(/\n/g,'\n  '):'  (no answer recorded)');lines.push('');});return lines.join('\n');}
+  directBtn.addEventListener('click',async()=>{if(!signedInUser||!backendSession){feedback.textContent='Sign in at the top of the page and wait for your roster to be verified before recording participation.';feedback.className='feedback incorrect';return;}directBtn.disabled=true;directBtn.textContent='Verifying server record…';try{for(const d of EXERCISE_DEFS)await syncExerciseNow(d.id);for(const key of participationSeenCards)await recordSelfCheck(key,true);const r=await invokeParticipation({action:'recalculate_completion',session_id:backendSession.id});backendCompletion=r.completion;renderServerProgress(r.completion);if(r.completion.status!=='complete')throw new Error('Server record is '+r.completion.completion_percentage+'% complete. Open every required self-check and complete all nine exercises.');signedReceipt={session_id:backendSession.id,verification_code:r.completion.verification_code,received_at_iso:r.completion.completed_at||r.completion.calculated_at,course:COURSE_CODE,assignment:ASSIGNMENT_CODE,student_name:nameInput.value.trim()||signedInUser.user_metadata?.full_name||'',student_email:signedInUser.email||''};receiptText.innerHTML='<strong>Session:</strong> <code>'+signedReceipt.session_id+'</code><br><strong>Verification:</strong> <code>'+signedReceipt.verification_code+'</code><br><strong>Recorded:</strong> '+new Date(signedReceipt.received_at_iso).toLocaleString();receiptPanel.hidden=false;receiptBtn.disabled=false;feedback.textContent='Participation verified by Supabase. Download the Blackboard receipt below.';feedback.className='feedback correct';directBtn.textContent='Participation verified';}catch(e){feedback.textContent=e.message||String(e);feedback.className='feedback incorrect';directBtn.disabled=false;directBtn.textContent='Record participation';}});
+  receiptBtn.addEventListener('click',()=>{if(!signedReceipt)return;const lines=['MG628 BLACKBOARD PARTICIPATION RECEIPT','--------------------------------------','Course: '+signedReceipt.course,'Assignment: '+signedReceipt.assignment,'Student: '+signedReceipt.student_name,'School email: '+signedReceipt.student_email,'Server completion time: '+signedReceipt.received_at_iso,'Supabase session ID: '+signedReceipt.session_id,'Verification code: '+signedReceipt.verification_code,'','This receipt points to the instructor-controlled Supabase record.','Changing this file cannot change the server-side activity, completion status, or timestamp.'];const blob=new Blob([lines.join('\n')],{type:'text/plain'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='MG628-Blackboard-Receipt-'+(signedReceipt.student_name||'student').replace(/[^a-z0-9]+/gi,'-').toLowerCase()+'.txt';document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);});
+  genBtn.addEventListener('click',()=>{output.value=buildText();footerCode.hidden=false;copyBtn.disabled=false;dlBtn.disabled=false;feedback.textContent='Personal backup generated. The Supabase server record remains the authoritative participation record.';feedback.className='feedback';output.focus();});
+  copyBtn.addEventListener('click',async()=>{try{await navigator.clipboard.writeText(output.value);feedback.textContent='Copied to clipboard.';}catch(_){output.select();feedback.textContent='Text selected; use Ctrl/Cmd+C.';}});
+  dlBtn.addEventListener('click',()=>{const blob=new Blob([output.value],{type:'text/plain'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='mg628-order-quantity-'+(nameInput.value.trim()||'submission').replace(/[^a-z0-9]+/gi,'-').toLowerCase()+'.txt';document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);});
+})();
+
+// ---------- shared demand distribution (Section 05/06/07) ----------
+function expectedProfit(Q, track){
+  const t = typeof track==='string' ? TRACKS[track] : track;
+  return t.demand.reduce((sum, row)=> sum + row.p * profitOf({F:t.F,c:t.c,p:t.p,v:t.v, Q, D:row.d}).profit, 0);
+}
+function cumulativeAt(x, track){
+  const t = typeof track==='string' ? TRACKS[track] : track;
+  let c=0; for(const row of t.demand){ if(row.d<=x) c+=row.p; } return c;
+}
+
+// hero ticket (kept in sync from Section 03)
+function updateHero(Q,D,params){
+  const t = TRACKS[currentTrack];
+  document.getElementById('ht-q-label').textContent = `${t.verbPast[0].toUpperCase()+t.verbPast.slice(1)} (Q)`;
+  document.getElementById('ht-q').textContent = Q + ' ' + t.unitPlural;
+  document.getElementById('ht-d').textContent = D + ' ' + t.personPlural;
+  document.getElementById('ht-profit').textContent = fmt$(profitOf({...params,Q,D}).profit);
+}
+
+// ================= SECTION 1 =================
+(function(){
+  const items = [
+    {label:'Baking muffins for the morning rush', perishable:true,
+     why:'Unsold muffins lose most of their value by afternoon, and a sold-out case turns customers away.'},
+    {label:'Ordering flu vaccine doses for the season', perishable:true,
+     why:'Unused doses expire and are only partly refundable; a shortage means unvaccinated patients.'},
+    {label:'Scheduling nurses for a hospital shift', perishable:true,
+     why:'An idle nurse-hour can\'t be "saved" for tomorrow, and being short-staffed has real clinical cost.'},
+    {label:'Ordering printer paper for the office', perishable:false,
+     why:'Extra paper just sits in the closet until it\'s needed — no expiration, no urgency.'}
+  ];
+  const box = document.getElementById('w1-items');
+  let checked = 0;
+  items.forEach((it,i)=>{
+    const wrap = document.createElement('div');
+    wrap.style.cssText='border:1px solid var(--rule); margin-bottom:10px;';
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.id = `w1-btn-${i}`;
+    btn.setAttribute('aria-expanded','false');
+    btn.setAttribute('aria-controls', `w1-answer-${i}`);
+    btn.style.cssText='all:unset; box-sizing:border-box; display:flex; width:100%; cursor:pointer; padding:12px 16px; justify-content:space-between; align-items:center; gap:12px;';
+    btn.innerHTML = `<span>${it.label}</span><span aria-hidden="true" style="font-family:var(--font-mono); font-size:12px; color:var(--ink-soft); flex:none;">click to check</span>`;
+    const answer = document.createElement('div');
+    answer.id = `w1-answer-${i}`;
+    answer.hidden = true;
+    answer.setAttribute('role','region');
+    answer.setAttribute('aria-labelledby', btn.id);
+    answer.style.cssText='padding:0 16px 14px; font-size:14.5px; color:var(--ink-soft); border-top:1px solid var(--rule);';
+    answer.innerHTML = `<p style="margin:10px 0 0;"><strong style="color:${it.perishable?'var(--amber)':'var(--teal)'}">${it.perishable?'Perishable':'Not perishable'}</strong> — ${it.why}</p>`;
+    btn.addEventListener('click', ()=>{
+      const open = btn.getAttribute('aria-expanded') === 'true';
+      btn.setAttribute('aria-expanded', String(!open));
+      answer.hidden = open;
+      if(!open && !wrap.dataset.done){
+        wrap.dataset.done = '1';
+        checked = Math.min(items.length, checked+1);
+        document.getElementById('w1-score').textContent = checked+' / 4 checked';
+      }
+    });
+    wrap.appendChild(btn);
+    wrap.appendChild(answer);
+    box.appendChild(wrap);
+  });
+})();
+
+// ================= SECTION 2 =================
+(function(){
+  const F=document.getElementById('s2-F-r'), c=document.getElementById('s2-c-r'),
+        p=document.getElementById('s2-p-r'), v=document.getElementById('s2-v-r');
+  const SLIDER_RANGES = {
+    business: {F:[0,120,5], c:[0,3,0.1], p:[1,6,0.1], v:[0,3,0.1]},
+    health:   {F:[0,1000,25], c:[0,30,1], p:[10,80,1], v:[0,10,0.5]}
+  };
+  const LABELS = {
+    business: {F:'Fixed daily setup cost (F)', c:'Variable cost per muffin (c)', p:'Full-price selling price (p)',
+               v:'Discount / salvage price (v)', Q:'Muffins baked, decision (Q)', D:'Demand today (D)',
+               aF:'Fixed setup cost', ac:'Variable cost per muffin', ap:'Full price', av:'Discount price'},
+    health: {F:'Fixed daily setup cost (F)', c:'Variable cost per dose (c)', p:'Reimbursement per vaccination (p)',
+             v:'Salvage value per unused dose (v)', Q:'Doses ordered, decision (Q)', D:'Demand (patients arriving) (D)',
+             aF:'Fixed setup cost', ac:'Variable cost per dose', ap:'Reimbursement per vaccination', av:'Salvage value per unused dose'}
+  };
+  function applyTrack(track){
+    const t = TRACKS[track];
+    const ranges = SLIDER_RANGES[track];
+    const lab = LABELS[track];
+    document.getElementById('s2-cellref').textContent = `mirrors ${t.sheet}!${t.rows.inputs}`;
+    document.getElementById('s2-lbl-F').textContent = lab.F;
+    document.getElementById('s2-lbl-c').textContent = lab.c;
+    document.getElementById('s2-lbl-p').textContent = lab.p;
+    document.getElementById('s2-lbl-v').textContent = lab.v;
+    document.getElementById('s2-lbl-Q').textContent = lab.Q;
+    document.getElementById('s2-lbl-D').textContent = lab.D;
+    document.getElementById('s2-Q').textContent = t.Qdefault;
+    document.getElementById('s2-D').textContent = t.Ddefault;
+    [['F',F,t.F],['c',c,t.c],['p',p,t.p],['v',v,t.v]].forEach(([key,el,val])=>{
+      const [min,max,step] = ranges[key];
+      el.min=min; el.max=max; el.step=step; el.value=val;
+      el.setAttribute('aria-label', lab['a'+key]);
+    });
+    render();
+  }
+  function render(){
+    document.getElementById('s2-F').textContent = fmt$(+F.value);
+    document.getElementById('s2-F-l').textContent = fmt$(+F.value);
+    F.setAttribute('aria-valuetext', fmt$(+F.value));
+    document.getElementById('s2-c').textContent = fmt$(+c.value);
+    document.getElementById('s2-c-l').textContent = fmt$(+c.value);
+    c.setAttribute('aria-valuetext', fmt$(+c.value));
+    document.getElementById('s2-p').textContent = fmt$(+p.value);
+    document.getElementById('s2-p-l').textContent = fmt$(+p.value);
+    p.setAttribute('aria-valuetext', fmt$(+p.value));
+    document.getElementById('s2-v').textContent = fmt$(+v.value);
+    document.getElementById('s2-v-l').textContent = fmt$(+v.value);
+    v.setAttribute('aria-valuetext', fmt$(+v.value));
+  }
+  [F,c,p,v].forEach(el=>el.addEventListener('input', render));
+  document.getElementById('s2-toggle').innerHTML = trackToggleHTML('s2');
+  onTrackChange(applyTrack);
+  applyTrack(currentTrack);
+})();
+
+// ================= SECTION 3 =================
+(function(){
+  const Qr=document.getElementById('s3-Q-r'), Dr=document.getElementById('s3-D-r');
+  let params = {F:40,c:1.2,p:3.5,v:1};
+  function applyTrack(track){
+    const t = TRACKS[track];
+    params = {F:t.F,c:t.c,p:t.p,v:t.v};
+    document.getElementById('s3-cellref').textContent = `${t.sheet}!${t.rows.formulas}`;
+    document.getElementById('s3-lbl-Q').textContent = `${t.unitPlural[0].toUpperCase()+t.unitPlural.slice(1)} ${t.verbPast} (Q)`;
+    document.getElementById('s3-lbl-D').textContent = `Demand today (D)`;
+    Qr.setAttribute('aria-label', `${t.unitPlural} ${t.verbPast}, Q`);
+    document.getElementById('s3-reading').innerHTML = `Reading the bar above: the
+      amber segment is ${t.unitPlural} sold at <b>${fmt$(t.p)}</b>, the grey segment
+      is leftovers sold at <b>${fmt$(t.v)}</b>. Drag D past Q and watch the
+      grey segment disappear — once demand exceeds supply, there's
+      nothing left to discount, only lost sales the model doesn't
+      show you (yet — that's Section 07).`;
+    render();
+  }
+  function render(){
+    const t = TRACKS[currentTrack];
+    const Q=+Qr.value, D=+Dr.value;
+    document.getElementById('s3-Q-l').textContent=Q;
+    document.getElementById('s3-D-l').textContent=D;
+    Qr.setAttribute('aria-valuetext', Q+' '+t.unitPlural);
+    Dr.setAttribute('aria-valuetext', D+' '+t.personPlural);
+    const r = profitOf({...params,Q,D});
+    const maxScale = 280;
+    const wQ = 640*Math.min(Q/maxScale,1);
+    const wFull = 640*Math.min(r.full/maxScale,1);
+    const svg = document.getElementById('s3-bar');
+    svg.setAttribute('role','img');
+    svg.setAttribute('aria-label', `Of ${Q} ${t.unitPlural} ${t.verbPast}, ${r.full} sell at full price and ${r.left} are leftover, at a demand of ${D}.`);
+    svg.innerHTML = `
+      <rect x="0" y="20" width="640" height="34" fill="var(--cell)"/>
+      <rect x="0" y="20" width="${wFull}" height="34" fill="var(--amber)"/>
+      <rect x="${wFull}" y="20" width="${wQ-wFull}" height="34" fill="var(--ink-soft)"/>
+      <line x1="${640*Math.min(D/maxScale,1)}" x2="${640*Math.min(D/maxScale,1)}" y1="10" y2="64" stroke="var(--danger)" stroke-width="2"/>
+      <text x="${640*Math.min(D/maxScale,1)}" y="8" text-anchor="middle" fill="var(--danger)">D=${D}</text>
+      <text x="6" y="72" fill="var(--amber)">■ sold full price (${r.full})</text>
+      <text x="180" y="72" fill="var(--ink-soft)">■ leftover, discounted (${r.left})</text>
+    `;
+    document.getElementById('s3-receipt').innerHTML = `
+      <div class="r"><span>Full-price sales = MIN(${D},${Q})</span><span>${r.full}</span></div>
+      <div class="r"><span>Discounted sales = MAX(0,${Q}-${D})</span><span>${r.left}</span></div>
+      <div class="r sub"><span class="l">Total revenue</span><span>${fmt$(r.revenue)}</span></div>
+      <div class="r sub"><span class="l">Total cost</span><span>${fmt$(r.cost)}</span></div>
+      <div class="r total"><span>Daily profit</span><span>${fmt$(r.profit)}</span></div>
+    `;
+    updateHero(Q,D,params);
+  }
+  Qr.addEventListener('input', render);
+  Dr.addEventListener('input', render);
+  document.getElementById('s3-toggle').innerHTML = trackToggleHTML('s3');
+  onTrackChange(applyTrack);
+  applyTrack(currentTrack);
+})();
+
+// ================= SECTION 4 =================
+(function(){
+  const Dr = document.getElementById('s4-D-r');
+  let params = {F:40,c:1.2,p:3.5,v:1};
+  const Q = 180;
+  function applyTrack(track){
+    const t = TRACKS[track];
+    params = {F:t.F,c:t.c,p:t.p,v:t.v};
+    document.getElementById('s4-cellref').textContent = `Q held at ${Q} ${t.unitPlural}`;
+    Dr.setAttribute('aria-label', `Demand of ${t.personPlural}`);
+    render();
+  }
+  function render(){
+    const t = TRACKS[currentTrack];
+    const D = +Dr.value;
+    document.getElementById('s4-D-l').textContent = D;
+    Dr.setAttribute('aria-valuetext', D+' '+t.personPlural);
+    const pts = [];
+    for(let d=100; d<=260; d+=5){ pts.push({x:d, y:profitOf({...params,Q,D:d}).profit}); }
+    const cur = profitOf({...params,Q,D}).profit;
+    const startProfit = pts[0].y, plateauProfit = pts[pts.length-1].y;
+    const yVals = pts.map(pt=>pt.y);
+    const span = Math.max(...yVals) - Math.min(...yVals);
+    const pad = Math.max(span*0.08, 10);
+    const yMin = Math.min(...yVals) - pad, yMax = Math.max(...yVals) + pad;
+    drawChart(document.getElementById('s4-chart'), [
+      {points:pts, dots:[{x:D,y:cur}]}
+    ], {xMin:100,xMax:260,yMin,yMax,markerX:Q,
+        ariaLabel:`Line chart of daily profit versus demand, with ordering fixed at ${Q}. Profit rises from about ${fmt$(startProfit)} at demand 100 up to about ${fmt$(plateauProfit)} as demand approaches ${Q}, then stays flat at ${fmt$(plateauProfit)} for any demand above ${Q}, since sales can't exceed what was ${t.verbPast}. At the current demand of ${D}, profit is ${fmt$(cur)}.`});
+    document.getElementById('s4-receipt').innerHTML = `
+      <div class="r"><span>Demand (D)</span><span>${D}</span></div>
+      <div class="r"><span>${t.unitPlural[0].toUpperCase()+t.unitPlural.slice(1)} (Q, fixed)</span><span>${Q}</span></div>
+      <div class="r total"><span>Daily profit</span><span>${fmt$(cur)}</span></div>
+    `;
+    document.querySelectorAll('#w4 .chip').forEach(b=>b.classList.toggle('active', +b.dataset.d===D));
+  }
+  Dr.addEventListener('input', render);
+  document.querySelectorAll('#w4 .chip').forEach(b=>{
+    b.addEventListener('click', ()=>{ Dr.value=b.dataset.d; render(); });
+  });
+  document.getElementById('s4-toggle').innerHTML = trackToggleHTML('s4');
+  onTrackChange(applyTrack);
+  applyTrack(currentTrack);
+})();
+
+// ================= SECTION 5 =================
+(function(){
+  const SAMPLE_ROWS = {
+    business: {cols:['Date','Day','Foot traffic','Demand'], rows:[
+      ['…','Monday','High','192'], ['…','Tuesday','Medium','174'], ['…','Wednesday','Medium','168'],
+      ['…','Thursday','High','205'], ['…','Friday','Very High','215']
+    ], col:'Actual_Muffin_Demand'},
+    health: {cols:['Date','Weather','Marketing blast','Demand'], rows:[
+      ['…','Cloudy','No','197'], ['…','Sunny','No','180'], ['…','Cloudy','No','179'],
+      ['…','Rain','No','203'], ['…','Cloudy','No','196']
+    ], col:'Actual_Patient_Demand'}
+  };
+  function render(track){
+    const t = TRACKS[track];
+    const s = SAMPLE_ROWS[track];
+    document.getElementById('s5-sample').innerHTML = `<table class="sheet" style="margin-bottom:18px;">
+      <tr>${s.cols.map(c=>`<th>${c}</th>`).join('')}</tr>
+      ${s.rows.map(r=>`<tr>${r.map((v,i)=>`<td class="${i===r.length-1?'num':''}">${v}</td>`).join('')}</tr>`).join('')}
+      <tr>${s.cols.map(()=>'<td class="addr">⋮</td>').join('')}</tr>
+    </table>`;
+    document.getElementById('s5-intro').textContent = track==='business'
+      ? `Grouped into bins of 10 and expressed as a share of all 100 days, that log turns into the probability table your assignment gives you for the optimization step:`
+      : `Grouped into bins of 10 from ${t.demandNote}, that log turns into the probability table used for the clinic's optimization step:`;
+    document.getElementById('s5-excel-text').innerHTML = `Insert a Pivot Table from the CSV → drag
+      <code>${s.col}</code> to Rows → right-click a value →
+      <strong>Group…</strong> in steps of 10 → drag
+      <code>${s.col}</code> to Values → change the value field
+      setting to <strong>Show Values As → % of Column Total</strong>. Those
+      percentages are your demand probabilities.`;
+
+    const DEMAND = t.demand;
+    const svgOld = document.getElementById('s5-chart');
+    const W=640,H=220,padL=46,padB=34,padT=16;
+    const maxP = Math.max(...DEMAND.map(r=>r.p));
+    const bw = (W-padL-20)/DEMAND.length - (DEMAND.length>6 ? 8 : 16);
+    const summary = 'Bar chart of demand probabilities: ' + DEMAND.map(r=>`${Math.round(r.d)} ${t.unitPlural}, ${Math.round(r.p*100)}%`).join('; ') + '.';
+    let sHtml = `<svg class="chart" role="img" aria-label="${summary}" viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">`;
+    sHtml += `<line class="axis" x1="${padL}" x2="${padL}" y1="${padT}" y2="${H-padB}"/>`;
+    sHtml += `<line class="axis" x1="${padL}" x2="${W-10}" y1="${H-padB}" y2="${H-padB}"/>`;
+    DEMAND.forEach((row,i)=>{
+      const x = padL + 12 + i*(bw+(DEMAND.length>6?8:16));
+      const h = (row.p/maxP) * (H-padT-padB-20);
+      const y = H-padB-h;
+      sHtml += `<rect x="${x}" y="${y}" width="${bw}" height="${h}" fill="var(--amber)"/>`;
+      sHtml += `<text x="${x+bw/2}" y="${y-6}" text-anchor="middle">${Math.round(row.p*100)}%</text>`;
+      sHtml += `<text x="${x+bw/2}" y="${H-padB+16}" text-anchor="middle">${Math.round(row.d)}</text>`;
+    });
+    sHtml += `<text x="${padL+ (W-padL-20)/2}" y="${H-6}" text-anchor="middle">demand level (grouped by 10s)</text>`;
+    sHtml += `</svg>`;
+    svgOld.outerHTML = sHtml.replace('viewBox','id="s5-chart" viewBox');
+  }
+  document.getElementById('s5-toggle').innerHTML = trackToggleHTML('s5');
+  onTrackChange(render);
+  render(currentTrack);
+})();
+
+// ================= SECTION 6 =================
+(function(){
+  const Qr = document.getElementById('s6-Q-r');
+  const SLIDER_RANGE = {business:[140,220,5], health:[130,230,5]};
+  const CHART_RANGE = {business:[140,220], health:[130,230]};
+  function applyTrack(track){
+    const t = TRACKS[track];
+    document.getElementById('s6-cellref').textContent = `${t.sheet}!${t.rows.dataTable}`;
+    const [min,max,step] = SLIDER_RANGE[track];
+    Qr.min=min; Qr.max=max; Qr.step=step; Qr.value=t.Qdefault+10;
+    Qr.setAttribute('aria-label', `Candidate order quantity, Q, in ${t.unitPlural}`);
+    const lo=t.candidates[0], hi=t.candidates[t.candidates.length-1];
+    document.getElementById('s6-excel-text').innerHTML = `List the demand levels and probabilities from
+      <span class="cell-ref">${t.sheet==='Business_Model' ? 'A28:B32' : 'B28:C38'}</span>, compute profit-at-current-Q, and
+      sum probability × profit for Expected Profit. Then use a one-variable <strong>Data Table</strong>
+      (Data → What-If Analysis → Data Table) with candidate Q values
+      ${lo}–${hi} down a column to see all ${t.candidates.length} expected profits at once
+      without rebuilding the formula ${t.candidates.length} times.`;
+    render();
+  }
+  function render(){
+    const track = currentTrack, t = TRACKS[track];
+    const Q = +Qr.value;
+    document.getElementById('s6-Q-l').textContent = Q;
+    Qr.setAttribute('aria-valuetext', Q+' '+t.unitPlural);
+    const rows = t.candidates.map(q=>({q, ep:expectedProfit(q,track)}));
+    const best = rows.reduce((a,b)=> b.ep>a.ep?b:a, rows[0]);
+    let tbl = `<caption class="visually-hidden">Expected profit for each candidate order quantity, best highlighted</caption><tr><th scope="col">Candidate Q</th><th scope="col">Expected profit</th><th scope="col">Rank</th></tr>`;
+    const ranked = [...rows].sort((a,b)=>b.ep-a.ep);
+    rows.forEach(r=>{
+      const rank = ranked.findIndex(x=>x.q===r.q)+1;
+      tbl += `<tr class="${r.q===best.q?'best':''}"><th scope="row">${r.q}</th><td class="num">${fmt$(r.ep)}</td><td class="num">${rank}</td></tr>`;
+    });
+    document.getElementById('s6-table').innerHTML = tbl;
+    const [xMin,xMax] = CHART_RANGE[track];
+    const curveA = [];
+    for(let q=xMin; q<=xMax; q+=5){ curveA.push({x:q, y:expectedProfit(q,track)}); }
+    const yVals = curveA.map(p=>p.y);
+    const pad = (Math.max(...yVals)-Math.min(...yVals))*0.1 || 10;
+    drawChart(document.getElementById('s6-chart'), [
+      {points:curveA, dots: rows.map(r=>({x:r.q,y:r.ep}))}
+    ], {xMin,xMax,yMin:Math.min(...yVals)-pad,yMax:Math.max(...yVals)+pad,markerX:Q,
+        ariaLabel:`Line chart of expected profit versus candidate order quantity, peaking near ${best.q} ${t.unitPlural} at ${fmt$(best.ep)}. The dotted line marks your current choice of ${Q}, with expected profit ${fmt$(expectedProfit(Q,track))}.`});
+  }
+  Qr.addEventListener('input', render);
+  document.getElementById('s6-toggle').innerHTML = trackToggleHTML('s6');
+  onTrackChange(applyTrack);
+  applyTrack(currentTrack);
+})();
+
+// ================= SECTION 7 =================
+(function(){
+  const pr=document.getElementById('s7-p-r'), cr=document.getElementById('s7-c-r'), vr=document.getElementById('s7-v-r');
+  const SLIDER_RANGES = {
+    business: {p:[1,6,0.1], c:[0,3,0.1], v:[0,3,0.1]},
+    health:   {p:[10,80,1], c:[0,30,1], v:[0,10,0.5]}
+  };
+  function applyTrack(track){
+    const t = TRACKS[track];
+    const ranges = SLIDER_RANGES[track];
+    document.getElementById('s7-cellref').textContent = `${t.sheet}!${t.rows.underage}`;
+    const [r0,r1,r2] = t.rows.underage.split(/[!:]/).length ? t.rows.underage.split(':') : [];
+    const rowNums = t.rows.underage.match(/\d+/g).map(Number);
+    document.getElementById('s7-excel-text').innerHTML = `<div class="formula-list">
+      <div class="formula-line"><span class="cell-ref">B${rowNums[0]}</span> <code>=B7-B6</code> — Cost of underage (Cu)</div>
+      <div class="formula-line"><span class="cell-ref">B${rowNums[0]+1}</span> <code>=B6-B8</code> — Cost of overage (Co)</div>
+      <div class="formula-line"><span class="cell-ref">B${rowNums[0]+2}</span> <code>=B${rowNums[0]}/(B${rowNums[0]}+B${rowNums[0]+1})</code> — Critical Ratio</div>
+      </div><p class="formula-note">Choose Q so that the cumulative probability of demand at or below Q is just above this ratio.</p>`;
+    [['p',pr],['c',cr],['v',vr]].forEach(([key,el])=>{
+      const [min,max,step] = ranges[key];
+      el.min=min; el.max=max; el.step=step; el.value=t[key];
+    });
+    render();
+  }
+  function render(){
+    const t = TRACKS[currentTrack];
+    const p=+pr.value, c=+cr.value, v=+vr.value;
+    document.getElementById('s7-p-l').textContent = fmt$(p);
+    pr.setAttribute('aria-valuetext', fmt$(p));
+    document.getElementById('s7-c-l').textContent = fmt$(c);
+    cr.setAttribute('aria-valuetext', fmt$(c));
+    document.getElementById('s7-v-l').textContent = fmt$(v);
+    vr.setAttribute('aria-valuetext', fmt$(v));
+    const Cu = p-c, Co = c-v, CR = Cu/(Cu+Co);
+    document.getElementById('s7-receipt').innerHTML = `
+      <div class="r"><span>Cu = p − c</span><span>${fmt$(Cu)}</span></div>
+      <div class="r"><span>Co = c − v</span><span>${fmt$(Co)}</span></div>
+      <div class="r total"><span>Critical ratio = Cu / (Cu+Co)</span><span>${(CR*100).toFixed(1)}%</span></div>
+    `;
+    const W=640,H=104,padL=46,padR=18;
+    const xs = x => padL + x*(W-padL-padR);
+    const nearest = t.demand.find(row=>cumulativeAt(row.d,t)>=CR) || t.demand[t.demand.length-1];
+    const gaugeLabel = `Gauge showing a critical ratio of ${(CR*100).toFixed(0)}%, mapped against cumulative demand probability. The nearest demand level meeting or exceeding that ratio is ${Math.round(nearest.d)} ${t.unitPlural}.`;
+    let s = `<svg class="chart" role="img" aria-label="${gaugeLabel}" viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">`;
+    s += `<line x1="${padL}" x2="${W-padR}" y1="45" y2="45" stroke="var(--rule)" stroke-width="8"/>`;
+    let lastX = -999;
+    t.demand.forEach(row=>{
+      const cum = cumulativeAt(row.d,t);
+      const x = xs(cum);
+      const stagger = (x - lastX) < 26;
+      lastX = x;
+      s += `<line x1="${x}" x2="${x}" y1="35" y2="55" stroke="var(--ink)" stroke-width="1"/>`;
+      s += `<text x="${x}" y="${stagger ? 82 : 70}" text-anchor="middle">${Math.round(row.d)}</text>`;
+    });
+    s += `<line x1="${xs(CR)}" x2="${xs(CR)}" y1="20" y2="65" stroke="var(--amber)" stroke-width="2.5"/>`;
+    s += `<text x="${xs(CR)}" y="14" text-anchor="middle" fill="var(--amber)">critical ratio ${(CR*100).toFixed(0)}%</text>`;
+    s += `</svg>`;
+    document.getElementById('s7-gauge').outerHTML = s.replace('viewBox','id="s7-gauge" viewBox');
+  }
   [pr,cr,vr].forEach(el=>el.addEventListener('input', render));
   document.getElementById('s7-toggle').innerHTML = trackToggleHTML('s7');
   onTrackChange(applyTrack);
@@ -126,3 +1982,15 @@
   signup.addEventListener('click',async()=>{try{if(!name.value.trim())throw new Error('Enter your full name first.');if(password.value.length<8)throw new Error('Use a password of at least 8 characters.');setAuthStatus('Creating your account…');const {data,error}=await sb.auth.signUp({email:email.value.trim().toLowerCase(),password:password.value,options:{data:{full_name:name.value.trim()},emailRedirectTo:location.href.split('#')[0]}});if(error)throw error;if(data.session){await bootstrapStudent();}else setAuthStatus('Account created. Check your school email to confirm the account, then return here and sign in.','ok');}catch(e){setAuthStatus(e.message||String(e),'err');}});
   signout.addEventListener('click',async()=>{await sb.auth.signOut();await bootstrapStudent();});
   sb.auth.onAuthStateChange((_event,session)=>{signedInUser=session?.user||null;if(session?.user)setTimeout(()=>bootstrapStudent(),0);});
+  sb.auth.getSession().then(({data})=>{signedInUser=data.session?.user||null;if(signedInUser)bootstrapStudent();});
+})();
+
+// wire up every track toggle rendered above, and mount the hero/rail ones
+document.getElementById('hero-track-toggle').innerHTML = trackToggleHTML('hero');
+document.getElementById('rail-track-toggle').innerHTML = trackToggleHTML('rail');
+wireTrackToggles();
+
+</script>
+
+</body>
+</html>
