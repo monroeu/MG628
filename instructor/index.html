@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>MG628 Instructor Control Center</title>
 <meta name="robots" content="noindex,nofollow">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <style>
 :root{--ink:#17231d;--soft:#5d6a63;--paper:#f7f2e6;--band:#e7eee8;--rule:#b8b09c;--accent:#9a451d;--teal:#0d6b66;--danger:#9b2f22;--ok:#216e45;--white:#fffdf7}
 *{box-sizing:border-box}body{margin:0;color:var(--ink);background:repeating-linear-gradient(0deg,var(--paper) 0 23px,var(--band) 23px 46px);font-family:Georgia,'Times New Roman',serif;line-height:1.45}
@@ -21,9 +24,11 @@ table{width:100%;border-collapse:collapse;background:#fff}th,td{padding:9px 8px;
 <body>
 <div class="topbar"><a href="../">← Course Home</a><span class="mono">MG628 · Instructor Control Center</span></div>
 <div class="wrap">
-<section class="hero"><div class="mono">MONROE UNIVERSITY · PROFESSOR ACCESS</div><h1>Instructor Control Center</h1><p>Manage rosters, test student access, and review participation records by term, course, and section.</p></section>
+<section class="hero"><div class="mono">MONROE UNIVERSITY · PROFESSOR ACCESS</div><h1>Instructor Control Center</h1><p>Manage rosters, test student access, and review participation records by term, course, and section.</p><p class="mono muted">Build 2026-09-19.5</p></section>
 
-<section class="panel" id="loginPanel"><div class="panel-head"><span>Instructor sign in</span><span>Supabase Auth</span></div><div class="panel-body">
+<section class="panel" id="authCheck"><div class="panel-head"><span>Instructor access</span><span>Supabase Auth</span></div><div class="panel-body"><div class="notice">Checking your saved instructor session…</div></div></section>
+
+<section class="panel hidden" id="loginPanel"><div class="panel-head"><span>Instructor sign in</span><span>Supabase Auth</span></div><div class="panel-body">
 <div class="grid"><div class="span6"><label for="email">Email</label><input id="email" type="email" autocomplete="email" value="kassohf@gmail.com"></div><div class="span6"><label for="password">Password</label><input id="password" type="password" autocomplete="current-password"></div></div>
 <div class="toolbar"><button class="primary" id="signIn">Sign in</button><button id="forgot">Forgot password</button><button id="signOut" class="hidden">Sign out</button></div><div id="loginMsg" class="notice hidden"></div>
 </div></section>
@@ -111,12 +116,60 @@ const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 const API=SUPABASE_URL+'/functions/v1/instructor-api';
 let session=null, bootstrap=null, csvRows=[], csvFileName='';
 const $=id=>document.getElementById(id);
-function formatErr(e){if(e==null)return 'Unknown error';if(typeof e==='string')return e;if(e instanceof Error)return typeof e.message==='string'?e.message:formatErr(e.message);if(typeof e==='object'){if(typeof e.message==='string')return e.message;if(typeof e.error==='string')return e.error;try{return JSON.stringify(e)}catch{return String(e)}}return String(e)}
-function msg(id,text,type=''){const e=$(id);e.textContent=typeof text==='string'?text:formatErr(text);e.className='notice '+type;e.classList.remove('hidden')}
+function formatErr(e){
+  if(e==null)return 'Unknown error';
+  if(typeof e==='string')return e;
+  if(e instanceof Error)return formatErr(e.message);
+  if(typeof e==='object'){
+    if(e.error!==undefined)return formatErr(e.error);
+    if(e.message!==undefined)return formatErr(e.message);
+    if(e.context!==undefined)return formatErr(e.context);
+    try{return JSON.stringify(e)}catch{return String(e)}
+  }
+  return String(e)
+}
+function msg(id,text,type=''){const e=$(id);e.textContent=formatErr(text);e.className='notice '+type;e.classList.remove('hidden')}
 function clearMsg(id){$(id).classList.add('hidden')}
-async function api(action,payload={}){if(!session)throw new Error('Sign in required');const r=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+session.access_token},body:JSON.stringify({action,...payload})});let j={};try{j=await r.json()}catch{}if(!r.ok){const raw=j&&j.error!==undefined?j.error:j;const detail=typeof raw==='string'?raw:(raw&&raw.message?raw.message:JSON.stringify(raw));throw new Error(detail||('Request failed: '+r.status));}return j}
-async function init(){const {data}=await sb.auth.getSession();session=data.session;if(session)await loadApp();}
-async function loadApp(){try{bootstrap=await api('bootstrap');$('loginPanel').classList.add('hidden');$('app').classList.remove('hidden');$('signOut').classList.remove('hidden');$('who').textContent=(bootstrap.profile.full_name||bootstrap.profile.email)+' · '+bootstrap.profile.app_role.toUpperCase();renderAcademic();if(!bootstrap.sections.length)throw new Error('No sections are assigned to this instructor account.');await refreshAll();}catch(e){msg('loginMsg',formatErr(e),'error');await sb.auth.signOut();session=null}}
+async function api(action,payload={}){
+  if(!session)throw new Error('Sign in required');
+  const r=await fetch(API,{method:'POST',cache:'no-store',headers:{'Content-Type':'application/json','Authorization':'Bearer '+session.access_token},body:JSON.stringify({action,...payload})});
+  const raw=await r.text();
+  let j={};
+  if(raw){try{j=JSON.parse(raw)}catch{j={error:raw}}}
+  if(!r.ok){const detail=j&&j.error!==undefined?formatErr(j.error):formatErr(j);throw new Error(`Instructor API ${r.status}: ${detail}`)}
+  return j
+}
+function showLogin(message=''){
+  $('authCheck').classList.add('hidden');
+  $('app').classList.add('hidden');
+  $('loginPanel').classList.remove('hidden');
+  if(message)msg('loginMsg',message,'error');
+}
+async function init(){
+  $('authCheck').classList.remove('hidden');
+  $('loginPanel').classList.add('hidden');
+  $('app').classList.add('hidden');
+  const {data,error}=await sb.auth.getSession();
+  if(error){showLogin(error.message);return}
+  session=data.session;
+  if(!session){showLogin();return}
+  await loadApp();
+}
+async function loadApp(){
+  try{
+    bootstrap=await api('bootstrap');
+    $('authCheck').classList.add('hidden');
+    $('loginPanel').classList.add('hidden');
+    $('app').classList.remove('hidden');
+    $('signOut').classList.remove('hidden');
+    $('who').textContent=(bootstrap.profile.full_name||bootstrap.profile.email)+' · '+bootstrap.profile.app_role.toUpperCase();
+    renderAcademic();
+    if(!bootstrap.sections.length)throw new Error('No sections are assigned to this instructor account.');
+    await refreshAll();
+  }catch(e){
+    await sb.auth.signOut();session=null;showLogin(formatErr(e));
+  }
+}
 function sectionLabel(s){return `${s.term.name} · ${s.course.code}-${s.section_code}`}
 function selectedSection(){return (bootstrap?.sections||[]).find(s=>s.id===$('sectionSelect').value)||null}
 function renderAcademic(){const sel=$('sectionSelect'),keep=sel.value||localStorage.getItem('mg628InstructorSection')||'';sel.innerHTML='';const rows=(bootstrap.sections||[]).slice().sort((a,b)=>{const ad=a.term.start_date||'',bd=b.term.start_date||'';return bd.localeCompare(ad)||a.course.code.localeCompare(b.course.code)||a.section_code.localeCompare(b.section_code)});rows.forEach(s=>{const o=document.createElement('option');o.value=s.id;o.textContent=sectionLabel(s);sel.appendChild(o)});if(keep&&[...sel.options].some(o=>o.value===keep))sel.value=keep;else{const preferred=rows.find(s=>s.course.code==='MG628'&&s.section_code==='159W'&&s.term.code==='2026FA');if(preferred)sel.value=preferred.id}const cs=$('newSectionCourse'),ts=$('newSectionTerm');cs.innerHTML='';ts.innerHTML='';(bootstrap.courses||[]).forEach(c=>{const o=document.createElement('option');o.value=c.id;o.textContent=`${c.code} · ${c.title||''}`;cs.appendChild(o)});(bootstrap.terms||[]).forEach(t=>{const o=document.createElement('option');o.value=t.id;o.textContent=t.name;ts.appendChild(o)});renderExistingSections();updateRosterTarget()}
@@ -137,7 +190,7 @@ $('sectionSelect').onchange=()=>{localStorage.setItem('mg628InstructorSection',$
 document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>{document.querySelectorAll('.tabs button').forEach(x=>x.classList.toggle('active',x===b));document.querySelectorAll('.tabpage').forEach(p=>p.classList.add('hidden'));$('tab-'+b.dataset.tab).classList.remove('hidden')});
 function updateRosterTarget(){const sec=selectedSection();const el=$('rosterTarget');if(!el||!sec)return;el.textContent=`Managing roster for ${sectionLabel(sec)}${sec.campus?' · '+sec.campus:''}. Upload only the roster for this exact section.`}
 function csvTargetMismatch(){const sec=selectedSection();if(!sec||!csvFileName)return null;const n=csvFileName.toUpperCase();const m=n.match(/([A-Z]{2,})[-_ ]?(\d{3})[-_ ]?([0-9]{3}[A-Z])/);if(!m)return null;const fileCourse=(m[1]+m[2]).replace(/[^A-Z0-9]/g,'');const fileSection=m[3];const selectedCourse=String(sec.course.code||'').toUpperCase().replace(/[^A-Z0-9]/g,'');const selectedSection=String(sec.section_code||'').toUpperCase();if(fileCourse!==selectedCourse||fileSection!==selectedSection)return `This CSV appears to be for ${m[1]}-${m[2]}-${fileSection}, but you selected ${sectionLabel(sec)}. Choose the matching section before importing.`;return null}
-async function loadRoster(){const sid=$('sectionSelect').value;if(!sid)return;try{const r=await api('roster_list',{section_id:sid});$('statRoster').textContent=r.rows.length;$('statLinked').textContent=r.rows.filter(x=>x.linked_user_id).length;const tb=$('rosterBody');tb.innerHTML='';for(const x of r.rows){const tr=document.createElement('tr');const account=x.linked_user_id?'<span class="badge ok">linked</span>':'<span class="badge warn">not registered</span>';const test=x.is_test_account?' <span class="badge test">TEST</span>':'';tr.innerHTML=`<td>${esc(x.expected_full_name||'')}${test}</td><td class="small">${esc(x.email)}</td><td>${esc(x.institutional_id||'')}</td><td><span class="badge">${esc(x.roster_status)}</span></td><td>${account}</td><td>${x.enrollment?'<span class="badge '+(x.enrollment.status==='active'?'ok':'warn')+'">'+esc(x.enrollment.status)+'</span>':'—'}</td><td><button data-status="active" data-id="${x.id}">Activate</button> <button data-status="dropped" data-id="${x.id}">Drop</button></td>`;tb.appendChild(tr)}tb.querySelectorAll('button[data-status]').forEach(b=>b.onclick=async()=>{await api('roster_status',{section_id:sid,roster_id:b.dataset.id,roster_status:b.dataset.status});await loadRoster()});clearMsg('rosterMsg')}catch(e){msg('rosterMsg',formatErr(e),'error')}}
+async function loadRoster(){const sid=$('sectionSelect').value;if(!sid)return;clearMsg('rosterMsg');msg('rosterMsg','Loading roster…','');try{const r=await api('roster_list',{section_id:sid});if(!r||!Array.isArray(r.rows))throw new Error('Roster API returned an unexpected response.');$('statRoster').textContent=r.rows.length;$('statLinked').textContent=r.rows.filter(x=>x.linked_user_id).length;const tb=$('rosterBody');tb.innerHTML='';for(const x of r.rows){const tr=document.createElement('tr');const account=x.linked_user_id?'<span class="badge ok">linked</span>':'<span class="badge warn">not registered</span>';const test=x.is_test_account?' <span class="badge test">TEST</span>':'';tr.innerHTML=`<td>${esc(x.expected_full_name||'')}${test}</td><td class="small">${esc(x.email)}</td><td>${esc(x.institutional_id||'')}</td><td><span class="badge">${esc(x.roster_status)}</span></td><td>${account}</td><td>${x.enrollment?'<span class="badge '+(x.enrollment.status==='active'?'ok':'warn')+'">'+esc(x.enrollment.status)+'</span>':'—'}</td><td><button data-status="active" data-id="${x.id}">Activate</button> <button data-status="dropped" data-id="${x.id}">Drop</button></td>`;tb.appendChild(tr)}tb.querySelectorAll('button[data-status]').forEach(b=>b.onclick=async()=>{await api('roster_status',{section_id:sid,roster_id:b.dataset.id,roster_status:b.dataset.status});await loadRoster()});msg('rosterMsg',`Loaded ${r.rows.length} roster records for ${sectionLabel(selectedSection())}.`,'ok')}catch(e){$('statRoster').textContent='—';$('statLinked').textContent='—';msg('rosterMsg',formatErr(e),'error')}}
 $('addStudent').onclick=async()=>{try{await api('roster_upsert',{section_id:$('sectionSelect').value,email:$('studentEmail').value,expected_full_name:$('studentName').value,institutional_id:$('studentId').value,roster_status:$('studentStatus').value});msg('rosterMsg','Student saved.','ok');$('studentName').value='';$('studentEmail').value='';$('studentId').value='';await loadRoster()}catch(e){msg('rosterMsg',formatErr(e),'error')}};
 $('refreshRoster').onclick=loadRoster;
 $('csvFile').onchange=async e=>{const f=e.target.files[0];if(!f)return;csvFileName=f.name;const text=await f.text();csvRows=parseCsv(text);$('csvPreview').value=csvRows.slice(0,5).map(x=>JSON.stringify(x)).join('\n');const mismatch=csvTargetMismatch();$('importCsv').disabled=!csvRows.length||!!mismatch;if(mismatch)msg('rosterMsg',mismatch,'error');else if(csvRows.length)msg('rosterMsg',`Ready to import ${csvRows.length} students into ${sectionLabel(selectedSection())}.`,'ok')};
