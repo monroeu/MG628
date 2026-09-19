@@ -1,48 +1,31 @@
 # MG628 Instructor Control Center
 
-Deploy `index.html` to the GitHub repository folder:
+Upload `index.html` to `MG628/instructor/index.html` in the `monroeu/MG628` GitHub repository.
 
-`MG628/instructor/index.html`
+Live URL: `https://monroeu.github.io/MG628/instructor/`
 
-Expected public URL:
+## Academic Setup
+The Instructor Control Center now lets an admin create or update:
+- Courses
+- Academic terms
+- Sections
 
-`https://monroeu.github.io/MG628/instructor/`
+Section setup supports Monroe-style details: display code, campus, meeting day/time, section dates, room/location, seat capacity, seats available, waitlist count, and status.
 
-## What it does
-- Instructor/admin Supabase login
-- Term/course/section-aware roster management
-- Add/update one student
-- CSV bulk roster import
-- Activate/drop roster entries
-- Shows whether the student has registered a Supabase Auth account
-- Shows enrollment state
-- Server-verified participation results and CSV export
-- Reversible instructor test-student enrollment
+## MG628-159W
+Already created in Supabase:
+- MG-628-159W
+- Fall 2026
+- New Rochelle
+- Saturday 10:00 AM–1:00 PM
+- Section dates: 2026-09-09 through 2026-12-17
+- Room: TBD
+- Capacity: 25
+- Seats available: 11
+- Waitlist: 0
+- 14 roster students imported from the Monroe CSV
+- Week 1 participation offering published
 
-## CSV headers
-Recommended:
-
-`email,expected_full_name,institutional_id,roster_status`
-
-Accepted aliases include `name`, `full_name`, `student_name`, `student_id`, and `id`.
-
-## Security
-The browser contains only the Supabase publishable key. Privileged roster/results operations are handled by the JWT-protected `instructor-api` Edge Function, which verifies the caller's `profiles.app_role` and section authorization before using server credentials.
-
-## Monroe roster CSV format
-
-The importer accepts Monroe University roster exports directly with these columns:
-
-- Student Name
-- Student ID
-- Class Level
-- Preferred Email
-
-Mapping used by the system:
-
-- Student Name -> expected_full_name
-- Student ID -> institutional_id
-- Preferred Email -> email
-- Class Level is retained by the browser import parser but is not required for enrollment.
-
-No manual column renaming is required.
+## Roster import
+The CSV importer accepts Monroe exports directly with headers:
+`Student Name, Student ID, Class Level, Preferred Email`
