@@ -349,99 +349,9 @@
   .excel-address-check input[type=text]{background:var(--white);}
 
   footer{
-    grid-column:2;
-    width:100%;
-    max-width:760px;
-    margin:0;
-    padding:60px 0 0;
+    grid-column:1/-1; max-width:760px; margin:0 auto; padding:60px 0 0;
     border-top:1px solid var(--rule);
-    font-size:14.5px;
-    color:var(--ink-soft);
-  }
-  @media (max-width:880px){
-    footer{grid-column:1; max-width:none;}
-  }
-
-
-  /* ---------- week / assignment header ---------- */
-  .assignment-header{
-    border-bottom:1px solid var(--rule);
-    background:rgba(251,249,241,.97);
-  }
-  .assignment-header-inner{
-    max-width:1100px;
-    margin:0 auto;
-    padding:16px 24px 18px;
-    display:grid;
-    grid-template-columns:auto 1fr;
-    gap:14px 26px;
-    align-items:center;
-  }
-  .home-link{
-    grid-row:1 / span 2;
-    align-self:start;
-    display:inline-block;
-    text-decoration:none;
-    border:1px solid var(--ink);
-    background:var(--white);
-    color:var(--ink);
-    padding:8px 11px;
-    font-family:var(--font-mono);
-    font-size:12px;
-    font-weight:600;
-    white-space:nowrap;
-  }
-  .home-link:hover{background:var(--ink); color:var(--white);}
-  .assignment-id{
-    font-family:var(--font-mono);
-    font-size:11px;
-    letter-spacing:.06em;
-    color:var(--teal);
-    text-transform:uppercase;
-    margin:0 0 3px;
-  }
-  .assignment-title{
-    font-family:var(--font-display);
-    font-size:24px;
-    line-height:1.15;
-    font-weight:600;
-    margin:0;
-  }
-  .assignment-subtitle{
-    margin:5px 0 0;
-    font-size:13.5px;
-    color:var(--ink-soft);
-  }
-  .assignment-resources{
-    grid-column:2;
-    display:flex;
-    gap:8px;
-    flex-wrap:wrap;
-    margin-top:2px;
-  }
-  .assignment-resources a{
-    text-decoration:none;
-    border:1px solid var(--rule);
-    background:var(--white);
-    color:var(--ink);
-    padding:6px 9px;
-    font-family:var(--font-mono);
-    font-size:11.5px;
-  }
-  .assignment-resources a:hover{border-color:var(--amber); color:var(--amber);}
-  .assignment-note{
-    border:1px solid var(--rule);
-    border-left:4px solid var(--teal);
-    background:var(--white);
-    padding:14px 16px;
-    margin:22px 0 0;
-    max-width:660px;
-    font-size:14.5px;
-  }
-  @media (max-width:700px){
-    .assignment-header-inner{grid-template-columns:1fr;}
-    .home-link{grid-row:auto; width:fit-content;}
-    .assignment-resources{grid-column:1;}
+    font-size:14.5px; color:var(--ink-soft);
   }
 
   .progress-fill{position:fixed; top:0; left:0; height:3px; background:var(--amber); z-index:50; width:0%; transition:width .1s linear;}
@@ -454,25 +364,16 @@
   .track-toggle button + button{border-left:1px solid var(--ink);}
   .track-toggle button.active{background:var(--ink); color:var(--white);}
   .track-toggle button.active.health{background:var(--teal);}
+
+  .course-topbar{position:sticky;top:0;z-index:45;background:rgba(251,249,241,.96);border-bottom:1px solid var(--rule);padding:8px 18px;display:flex;justify-content:space-between;gap:12px;align-items:center;font-family:var(--font-mono);font-size:12px;backdrop-filter:blur(6px)}
+  .course-topbar a{text-decoration:none;font-weight:600}.auth-panel{margin:22px 0;border:2px solid var(--teal);background:var(--white);padding:18px 20px;box-shadow:3px 3px 0 var(--teal-soft)}
+  .auth-panel h3{margin:0 0 8px}.auth-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.auth-grid .full{grid-column:1/-1}.auth-panel input{width:100%;font:inherit;border:1px solid var(--ink);background:var(--paper);padding:9px 11px}.auth-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.auth-status{font-family:var(--font-mono);font-size:12.5px;margin-top:10px;color:var(--ink-soft)}.auth-status.ok{color:var(--teal);font-weight:600}.auth-status.err{color:var(--danger);font-weight:600}.server-progress{margin-top:10px;padding:10px 12px;background:var(--teal-soft);border-left:4px solid var(--teal);font-family:var(--font-mono);font-size:12.5px}
+  @media(max-width:640px){.auth-grid{grid-template-columns:1fr}.auth-grid .full{grid-column:auto}.course-topbar{position:relative}}
 </style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.4/dist/umd/supabase.min.js"></script>
 </head>
 <body>
-
-<header class="assignment-header">
-  <div class="assignment-header-inner">
-    <a class="home-link" href="../" aria-label="Back to MG628 course home">← MG628 Course Home</a>
-    <div>
-      <p class="assignment-id">Week 1 interactive activity · supports the Weeks 1–2 assignment</p>
-      <h1 class="assignment-title">Order Quantity Decision Model</h1>
-      <p class="assignment-subtitle">Business Forecasting: Morning Brew Café · Healthcare Administration: Metro Community Flu Clinic</p>
-    </div>
-    <nav class="assignment-resources" aria-label="Week 1 assignment resources">
-      <a href="week01-assignment.pdf" target="_blank" rel="noopener">Assignment PDF</a>
-      <a href="data/muffin_shop_demand.csv" download>Business CSV</a>
-      <a href="data/healthcare_vaccine_demand.csv" download>Healthcare CSV</a>
-    </nav>
-  </div>
-</header>
+<div class="course-topbar"><a href="../../index.html" aria-label="Return to MG628 course home">← Course Home</a><span>MG628 · Interactive Participation</span></div>
 
 <a class="skip-link" href="#main-content">Skip to main content</a>
 <div class="progress-fill" id="progressFill" aria-hidden="true"></div>
@@ -481,7 +382,7 @@
 <div class="shell">
 
   <header class="hero">
-    <p class="kicker">MG628 — Data Analysis for Managerial Decision-Making</p>
+    <p class="kicker">MG628 — Data Analysis for Managerial Decisions</p>
     <h1>How many should you bake this morning?</h1>
     <p class="lede">A hands-on walkthrough of the order-quantity model behind your Weeks 1–2
     assignment. Move the sliders, watch the numbers move, then build the same
@@ -495,10 +396,18 @@
       <p style="font-family:var(--font-mono); font-size:12px; color:var(--ink-soft); margin:0 0 8px;">WHICH COURSE TRACK ARE YOU IN? (SETS THE NUMBERS BELOW)</p>
       <div id="hero-track-toggle"></div>
     </div>
-    <div class="assignment-note">
-      <strong>Assignment alignment.</strong> This activity follows the attached Weeks 1–2 assignment:
-      model setup, scenario analysis, CSV frequency analysis, expected-profit optimization, Goal Seek,
-      underage/overage costs, and the healthcare ethical sensitivity questions.
+
+    <div class="auth-panel" id="authPanel" aria-label="Student sign in and participation status">
+      <h3>Student participation login</h3>
+      <p style="margin-bottom:12px;">Sign in with the same school email listed on your class roster. Your section is assigned by the instructor roster; students cannot choose a different section.</p>
+      <div class="auth-grid" id="authFields">
+        <div><label for="auth-name"><strong>Full name</strong></label><input id="auth-name" type="text" autocomplete="name" placeholder="Your full name"></div>
+        <div><label for="auth-email"><strong>School email</strong></label><input id="auth-email" type="email" autocomplete="email" placeholder="your.email@monroeu.edu"></div>
+        <div class="full"><label for="auth-password"><strong>Password</strong></label><input id="auth-password" type="password" autocomplete="current-password" minlength="8" placeholder="At least 8 characters"></div>
+      </div>
+      <div class="auth-actions"><button class="run" id="auth-signin" type="button">Sign in</button><button class="chip" id="auth-signup" type="button">Create account</button><button class="chip" id="auth-signout" type="button" hidden>Sign out</button></div>
+      <div id="auth-status" class="auth-status" aria-live="polite">Sign in before completing required participation items so your work is recorded.</div>
+      <div id="server-progress" class="server-progress" hidden></div>
     </div>
     <div class="hero-ticket" id="heroTicket" role="group" aria-label="Live model preview, updates as you use Section 3">
       <div class="row"><span id="ht-q-label">Bake (Q)</span><span id="ht-q">170 muffins</span></div>
@@ -823,7 +732,7 @@
       optimization step needs.</p>
 
       <div class="widget" id="w5">
-        <div class="widget-bar"><span>SAMPLE OF THE RAW LOG</span><span>from the attached 100-row CSV</span></div>
+        <div class="widget-bar"><span>SAMPLE OF THE RAW LOG</span><span>illustrative — your CSV has 100 rows</span></div>
         <div class="widget-body">
           <div id="s5-toggle" style="margin-bottom:18px;"></div>
           <div id="s5-sample"></div>
@@ -858,7 +767,7 @@
       <div class="exercise" id="ex5">
         <div class="exercise-bar"><span>EXERCISE 5 — REQUIRED FOR PARTICIPATION</span><span class="status" id="ex5-status">not started</span></div>
         <div class="exercise-body">
-          <label for="ex5-input">Using the CSV frequency distribution above, what percentage of observed days had demand below 180 units (the 170s or lower)? Answer as a percent (e.g., 42).</label>
+          <label for="ex5-input">Using the probability table above, what is the probability that demand is 180 or fewer units? Answer as a percent (e.g., 42).</label>
           <div class="exercise-row">
             <input type="number" id="ex5-input" style="max-width:140px;" aria-describedby="ex5-feedback"> <span aria-hidden="true">%</span>
           </div>
@@ -1108,8 +1017,7 @@
           <p>Bundle day-old muffins into a discounted "yesterday's bake"
           box, or take pre-orders for the next morning — both shrink the
           leftover pile without touching price on fresh stock.</p>
-        </div>
-        <div class="box health">
+        </div><div class="box health">
           <span class="tag">A NON-PRICE LEVER FOR THE CLINIC</span>
           <p>Cross-train nurses so a quiet department can "float" staff to a
           busy one, or route overflow patients to telehealth — both absorb a
@@ -1155,15 +1063,11 @@
     <section class="step" id="submit" style="border-top:none; padding-top:0;">
       <div class="step-head"><span class="step-num" aria-hidden="true">✓</span></div>
       <h2>Record your participation</h2>
-      <p>Complete all nine exercises, then record your participation with the instructor-controlled
-      submission service. Your answers are stored in the instructor's authoritative record. After a
-      successful submission, this page creates a signed Blackboard receipt. Upload that receipt to
-      the Blackboard participation assignment. The receipt does not contain editable answers; it only
-      identifies the server-side record.</p>
+      <p>Sign in above before beginning. As you open required self-checks and complete each exercise, your activity is saved to the instructor-controlled Supabase database. When finished, choose <strong>Record participation</strong> to verify the authoritative server record and generate your Blackboard receipt.</p>
       <p id="footerProgress" style="font-family:var(--font-mono); font-size:14px;">0 / 9 exercises completed.</p>
 
       <div class="widget" id="wSubmit">
-        <div class="widget-bar"><span>PARTICIPATION SUBMISSION</span><span>authoritative record is instructor-controlled</span></div>
+        <div class="widget-bar"><span>PARTICIPATION SUBMISSION</span><span>Supabase-backed · section and semester aware</span></div>
         <div class="widget-body">
           <div class="grid2">
             <div class="control">
@@ -1196,11 +1100,7 @@
     </section>
 
     <p style="margin-top:44px;">
-    Built for MG628 — Data Analysis for Managerial Decision-Making. Exercise work stays
-    in your browser until you choose Record participation. The authoritative submission
-    is then stored by the instructor-controlled service, and Blackboard receives only a
-    signed receipt that points to that record. This page remains a companion to the Excel
-    workbook, not a replacement for it.
+    Built for MG628 — Data Analysis for Managerial Decisions. Signed-in participation activity is stored automatically in Supabase and separated by academic term, course, and section. Blackboard receives a receipt that points to the authoritative server record. This page remains a companion to the Excel workbook, not a replacement for it.
     </p>
   </footer>
 
@@ -1210,9 +1110,25 @@
 // ---------- instructor-controlled submission configuration ----------
 // Replace this URL with the deployed endpoint described in README_enhanced.md.
 // When left blank, direct submission is disabled and copy/download remains available.
-const SUBMISSION_ENDPOINT = 'https://script.google.com/macros/s/AKfycbwQPKinx6_BtRwflc3Ez3C-dwTXkiY_DBLjcOAuytadZlLz3mOVhifXmcN7q7hjux3rRw/exec';
+const SUPABASE_URL = 'https://irnrjzeejalbbqdrbzmj.supabase.co';
+const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_aj2vpjfJrSMvjTxcKuC0pQ_pf7JbDo2';
 const COURSE_CODE = 'MG628';
 const ASSIGNMENT_CODE = 'ORDER_QUANTITY_WEEKS_1_2';
+const ASSIGNMENT_SLUG = 'order-quantity-weeks-1-2';
+const ASSIGNMENT_VERSION = 2;
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+let backendSession=null, backendOffering=null, backendCompletion=null, signedInUser=null;
+const participationSeenCards=new Set(), syncTimers=new Map();
+const SELF_CHECK_KEYS=['SELF-01','SELF-02','SELF-03','SELF-04','SELF-05','SELF-06','SELF-07','SELF-08','SELF-09A','SELF-09B'];
+async function invokeParticipation(body){const {data,error}=await sb.functions.invoke('participation-api',{body});if(error)throw error;if(data?.error)throw new Error(data.error);return data;}
+function setAuthStatus(message,kind=''){const el=document.getElementById('auth-status');if(!el)return;el.textContent=message;el.className='auth-status'+(kind?' '+kind:'');}
+function renderServerProgress(c){backendCompletion=c||backendCompletion;const el=document.getElementById('server-progress');if(!el)return;if(!backendCompletion){el.hidden=true;return;}el.hidden=false;el.innerHTML='Server record: <strong>'+String(backendCompletion.completion_percentage??0)+'%</strong> · self-checks '+String(backendCompletion.cards_completed??0)+'/'+String(backendCompletion.cards_required??0)+' · exercises '+(backendCompletion.worksheet_completed?'complete':'in progress')+' · reflection '+(backendCompletion.reflection_completed?'complete':'in progress')+' · status <strong>'+String(backendCompletion.status||'incomplete').toUpperCase()+'</strong>';}
+async function startBackendSession(){if(!signedInUser||!backendOffering)return;const r=await invokeParticipation({action:'start_session',offering_id:backendOffering.id,track:currentTrack});backendSession=r.session;backendCompletion=r.completion;renderServerProgress(r.completion);for(const key of participationSeenCards)await recordSelfCheck(key,true);if(typeof EXERCISE_DEFS!=='undefined')for(const d of EXERCISE_DEFS)if(exerciseState[d.id]?.done)await syncExerciseNow(d.id);}
+async function bootstrapStudent(){const {data:{user}}=await sb.auth.getUser();signedInUser=user||null;const signout=document.getElementById('auth-signout'),fields=document.getElementById('authFields');if(!user){backendSession=backendOffering=backendCompletion=null;if(signout)signout.hidden=true;if(fields)fields.hidden=false;setAuthStatus('Sign in before completing required participation items so your work is recorded.');renderServerProgress(null);return;}if(signout)signout.hidden=false;if(fields)fields.hidden=true;const em=document.getElementById('submit-email');if(em){em.value=user.email||'';em.readOnly=true;}const nm=document.getElementById('submit-name');if(nm&&!nm.value)nm.value=user.user_metadata?.full_name||'';setAuthStatus('Signed in. Matching your school email to the instructor roster…');try{const r=await invokeParticipation({action:'bootstrap'});const offering=(r.offerings||[]).find(o=>o.assignment?.slug===ASSIGNMENT_SLUG&&Number(o.assignment?.version)===ASSIGNMENT_VERSION);if(!offering){backendOffering=backendSession=null;setAuthStatus('Signed in, but this email is not rostered for a section that has this assignment. Contact your instructor if this is unexpected.','err');return;}backendOffering=offering;const enr=(r.enrollments||[]).find(e=>e.section_id===offering.section_id),sec=enr?.section;setAuthStatus('Roster verified: '+(sec?.course?.code||COURSE_CODE)+' '+(sec?.section_code||'')+' · '+(sec?.term?.name||'')+'. Starting your secure participation record…','ok');await startBackendSession();setAuthStatus('Participation recording is active for '+(sec?.course?.code||COURSE_CODE)+' '+(sec?.section_code||'')+' · '+(sec?.term?.name||'')+'.','ok');}catch(e){setAuthStatus(e.message||'Could not initialize participation recording.','err');console.error(e);}}
+async function recordSelfCheck(key,quiet=false){participationSeenCards.add(key);if(!backendSession)return;try{const r=await invokeParticipation({action:'card_opened',session_id:backendSession.id,card_key:key});renderServerProgress(r.completion);}catch(e){if(!quiet)setAuthStatus('A self-check could not be recorded. '+(e.message||''),'err');}}
+function scheduleExerciseSync(id){clearTimeout(syncTimers.get(id));syncTimers.set(id,setTimeout(()=>syncExerciseNow(id),500));}
+async function syncExerciseNow(id){if(!backendSession)return;const st=exerciseState[id],key=id.toUpperCase();try{const r=await invokeParticipation({action:'save_worksheet',session_id:backendSession.id,worksheet_key:key,response_text:st?.done?(st.summary||'Completed'):null,response_json:st?.done?{raw:st.raw??null,excel_refs:st.excel??[],summary:st.summary||'',track:currentTrack}:null});renderServerProgress(r.completion);}catch(e){setAuthStatus('Could not save '+key+' to the server: '+(e.message||e),'err');}}
+
 
 // ---------- shared helpers ----------
 const fmt$ = n => (n<0?'-$':'$') + Math.abs(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
@@ -1234,17 +1150,9 @@ const TRACKS = {
     person:'customer', personPlural:'customers', verb:'bake', verbPast:'baked',
     F:40, c:1.2, p:3.5, v:1, Qdefault:170, Ddefault:180,
     candidates:[160,170,180,190,200],
-    // Assignment-provided optimization probabilities (used in Sections 06–07).
     demand:[{d:150,p:0.15},{d:170,p:0.25},{d:180,p:0.30},{d:190,p:0.20},{d:200,p:0.10}],
-    // Actual 100-day uploaded CSV grouped by tens (used in Section 05).
-    frequencyDemand:[
-      {d:145,p:0.08,label:'140–149'},{d:155,p:0.07,label:'150–159'},
-      {d:165,p:0.07,label:'160–169'},{d:175,p:0.24,label:'170–179'},
-      {d:185,p:0.26,label:'180–189'},{d:195,p:0.18,label:'190–199'},
-      {d:205,p:0.06,label:'200–209'},{d:215,p:0.04,label:'210–219'}
-    ],
-    demandNote:'the assignment-provided five-scenario probability table',
-    rows:{inputs:'B5:B10', formulas:'B13:B17', dataTable:'A37:C41', underage:'B44:B46', probTable:'A28:B35'}
+    demandNote:'the assignment\'s given probability table',
+    rows:{inputs:'B5:B10', formulas:'B13:B17', dataTable:'A37:C41', underage:'B44:B46', probTable:'A28:B32'}
   },
   health: {
     key:'health', label:'Healthcare Admin', placeLabel:'Flu Clinic', name:'Metro Community Flu Clinic',
@@ -1252,21 +1160,10 @@ const TRACKS = {
     person:'patient', personPlural:'patients', verb:'order', verbPast:'ordered',
     F:500, c:12, p:45, v:3, Qdefault:170, Ddefault:180,
     candidates:[150,160,170,180,190,200,210],
-    // Uploaded 100-day clinic CSV grouped by tens; used for frequency analysis and optimization.
-    demand:[
-      {d:145,p:0.06,label:'140–149'},{d:155,p:0.09,label:'150–159'},
-      {d:165,p:0.12,label:'160–169'},{d:175,p:0.29,label:'170–179'},
-      {d:185,p:0.25,label:'180–189'},{d:195,p:0.09,label:'190–199'},
-      {d:205,p:0.10,label:'200–209'}
-    ],
-    frequencyDemand:[
-      {d:145,p:0.06,label:'140–149'},{d:155,p:0.09,label:'150–159'},
-      {d:165,p:0.12,label:'160–169'},{d:175,p:0.29,label:'170–179'},
-      {d:185,p:0.25,label:'180–189'},{d:195,p:0.09,label:'190–199'},
-      {d:205,p:0.10,label:'200–209'}
-    ],
-    demandNote:'the uploaded 100-day clinic CSV grouped by tens',
-    rows:{inputs:'B5:B10', formulas:'B13:B17', dataTable:'A47:B53', underage:'B56:B58', probTable:'B28:C34'}
+    demand:[{d:144.5,p:3/99},{d:154.5,p:12/99},{d:164.5,p:14/99},{d:174.5,p:18/99},
+            {d:184.5,p:26/99},{d:194.5,p:18/99},{d:204.5,p:6/99},{d:214.5,p:2/99}],
+    demandNote:'a pivot table grouping 100 real days of clinic data into bins of 10',
+    rows:{inputs:'B5:B10', formulas:'B13:B17', dataTable:'A47:B53', underage:'B56:B58', probTable:'B28:C38'}
   }
 };
 let currentTrack = 'business';
@@ -1284,6 +1181,7 @@ function setTrack(track){
     });
   });
   trackListeners.forEach(fn=>fn(track));
+  if(backendSession && signedInUser) startBackendSession().catch(e=>setAuthStatus(e.message||String(e),'err'));
   document.getElementById('liveAnnounce').textContent = `Switched to the ${TRACKS[track].label} scenario. All sections now use ${TRACKS[track].name}'s numbers.`;
 }
 function trackToggleHTML(idSuffix){
@@ -1358,21 +1256,11 @@ window.addEventListener('scroll', ()=>{
   document.getElementById('progressFill').style.width = pct+'%';
 }, {passive:true});
 
-// self-check tracking (formative, optional — shown in the rail only)
+// self-check tracking — each first open is written to Supabase when signed in
 (function(){
-  const checks = document.querySelectorAll('details.check');
-  const total = checks.length;
-  const seen = new Set();
-  function update(){
-    const railP = document.getElementById('railProgress');
-    if(railP) railP.textContent = `${seen.size} / ${total} self-checks opened`;
-  }
-  checks.forEach((d,i)=>{
-    d.addEventListener('toggle', ()=>{
-      if(d.open) seen.add(i);
-      update();
-    });
-  });
+  const checks=document.querySelectorAll('details.check'),total=checks.length;
+  function update(){const p=document.getElementById('railProgress');if(p)p.textContent=participationSeenCards.size+' / '+total+' self-checks opened';}
+  checks.forEach((d,i)=>d.addEventListener('toggle',()=>{if(d.open){const key=SELF_CHECK_KEYS[i];if(key){participationSeenCards.add(key);recordSelfCheck(key).catch(()=>{});}update();}}));
   update();
 })();
 
@@ -1395,9 +1283,9 @@ const EXERCISE_DEFS = [
    excelFields:['ex4-profit-cell'], excelAnswers:()=>['B17'],
    summary:(v)=>`Profit at D=140 is ${v[0]}, at D=220 is ${v[1]}`},
   {id:'ex5', type:'numeric', fields:['ex5-input'], tol:[1.2],
-   answers:(track)=>[frequencyBelow(180, TRACKS[track])*100],
+   answers:(track)=>[cumulativeAt(180, TRACKS[track])*100],
    excelFields:['ex5-prob-range'], excelAnswers:(track)=>[TRACKS[track].rows.probTable],
-   summary:(v)=>`Observed P(D < 180) = ${v[0]}%`},
+   summary:(v)=>`P(D ≤ 180) = ${v[0]}%`},
   {id:'ex6', type:'numeric', fields:['ex6-q','ex6-ep'], tol:[5,15],
    answers:(track)=>{
      const t=TRACKS[track];
@@ -1431,12 +1319,14 @@ function markExerciseDone(id, summaryText, rawAnswer=null, excelRefs=null){
   const status = document.getElementById(id+'-status');
   if(status){ status.textContent = 'complete'; status.classList.add('done'); }
   updateExerciseProgress();
+  scheduleExerciseSync(id);
 }
 function markExerciseIncomplete(id){
   if(exerciseState[id]) exerciseState[id].done = false;
   const status = document.getElementById(id+'-status');
   if(status){ status.textContent = 'not started'; status.classList.remove('done'); }
   updateExerciseProgress();
+  scheduleExerciseSync(id);
 }
 function updateExerciseProgress(){
   const doneCount = EXERCISE_DEFS.filter(d=>exerciseState[d.id] && exerciseState[d.id].done).length;
@@ -1547,238 +1437,17 @@ EXERCISE_DEFS.filter(d=>d.type==='numeric').forEach(def=>{
 
 updateExerciseProgress();
 
-// ---------- submission panel ----------
+// ---------- Supabase-backed submission / Blackboard receipt ----------
 (function(){
-  const directBtn = document.getElementById('submit-direct');
-  const receiptBtn = document.getElementById('submit-receipt');
-  const genBtn = document.getElementById('submit-generate');
-  const copyBtn = document.getElementById('submit-copy');
-  const dlBtn = document.getElementById('submit-download');
-  const nameInput = document.getElementById('submit-name');
-  const emailInput = document.getElementById('submit-email');
-  const output = document.getElementById('submit-output');
-  const footerCode = document.getElementById('footerCode');
-  const feedback = document.getElementById('submit-feedback');
-  const receiptPanel = document.getElementById('receiptPanel');
-  const receiptText = document.getElementById('receiptText');
-  let signedReceipt = null;
-
-  function doneCount(){
-    return EXERCISE_DEFS.filter(d=>exerciseState[d.id] && exerciseState[d.id].done).length;
-  }
-
-  function makeSubmissionId(){
-    if(window.crypto && crypto.randomUUID) return crypto.randomUUID();
-    return 'sub-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2,10);
-  }
-
-  function answersObject(){
-    const answers = {};
-    EXERCISE_DEFS.forEach((def,i)=>{
-      const st = exerciseState[def.id];
-      answers['exercise_' + (i+1)] = {
-        status: st && st.done ? 'COMPLETE' : 'NOT_COMPLETED',
-        answer: st && st.summary ? st.summary : '',
-        raw: st && st.raw !== undefined ? st.raw : null,
-        excel_refs: st && st.excel ? st.excel : []
-      };
-    });
-    return answers;
-  }
-
-  function buildPayload(){
-    const now = new Date();
-    return {
-      submission_id: makeSubmissionId(),
-      course: COURSE_CODE,
-      assignment: ASSIGNMENT_CODE,
-      student: {
-        name: nameInput.value.trim(),
-        email: emailInput.value.trim().toLowerCase()
-      },
-      submitted_at_iso: now.toISOString(),
-      submitted_at_local: now.toLocaleString(),
-      track_key: currentTrack,
-      track_label: TRACKS[currentTrack].label,
-      scenario: TRACKS[currentTrack].name,
-      exercises_completed: doneCount(),
-      exercises_total: EXERCISE_DEFS.length,
-      answers: answersObject(),
-      page_url: location.href,
-      user_agent: navigator.userAgent
-    };
-  }
-
-  function buildText(){
-    const payload = buildPayload();
-    let lines = [];
-    lines.push('MG628 — Order Quantity Tutorial — Personal Copy');
-    lines.push('Submission ID: ' + payload.submission_id);
-    lines.push('Name: ' + (payload.student.name || '(name not entered)'));
-    lines.push('Email: ' + (payload.student.email || '(email not entered)'));
-    lines.push('Scenario used: ' + payload.scenario + ' (' + payload.track_label + ')');
-    lines.push('Generated: ' + payload.submitted_at_local);
-    lines.push(`Exercises completed: ${payload.exercises_completed} / ${payload.exercises_total}`);
-    lines.push('');
-    Object.entries(payload.answers).forEach(([key,val],i)=>{
-      lines.push(`Exercise ${i+1}: ${val.status === 'COMPLETE' ? 'COMPLETE' : 'not completed'}`);
-      lines.push(val.answer ? '  ' + val.answer.replace(/\n/g,'\n  ') : '  (no answer recorded)');
-      lines.push('');
-    });
-    return lines.join('\n');
-  }
-
-  function validIdentity(){
-    if(!nameInput.value.trim()){
-      feedback.textContent = 'Enter your name before submitting.';
-      feedback.className = 'feedback incorrect';
-      nameInput.focus();
-      return false;
-    }
-    if(!emailInput.value.trim() || !emailInput.checkValidity()){
-      feedback.textContent = 'Enter a valid school email before submitting.';
-      feedback.className = 'feedback incorrect';
-      emailInput.focus();
-      return false;
-    }
-    return true;
-  }
-
-  if(!SUBMISSION_ENDPOINT){
-    directBtn.disabled = true;
-    directBtn.title = 'Direct submission has not yet been configured by the instructor.';
-    directBtn.textContent = 'Direct submission not configured';
-  }
-
-  directBtn.addEventListener('click', async ()=>{
-    if(!validIdentity()) return;
-    const count = doneCount();
-    if(count < EXERCISE_DEFS.length){
-      feedback.textContent = `Complete all ${EXERCISE_DEFS.length} exercises before direct submission. You currently have ${count} complete.`;
-      feedback.className = 'feedback incorrect';
-      return;
-    }
-    const payload = buildPayload();
-    directBtn.disabled = true;
-    directBtn.textContent = 'Submitting…';
-    feedback.textContent = 'Sending your completed work to the instructor…';
-    feedback.className = 'feedback';
-    try{
-      const resp = await fetch(SUBMISSION_ENDPOINT, {
-        method:'POST',
-        headers:{'Content-Type':'text/plain;charset=UTF-8'},
-        body:JSON.stringify(payload)
-      });
-      if(!resp.ok) throw new Error('HTTP ' + resp.status);
-      let result = {};
-      try{ result = await resp.json(); }catch(_){ }
-      const receipt = result.receipt_id || result.submission_id || payload.submission_id;
-      const code = result.verification_code || '';
-      const receivedAt = result.received_at_iso || new Date().toISOString();
-      if(!result.ok || !code) throw new Error(result.error || 'Server did not return a signed receipt.');
-      signedReceipt = {
-        receipt_id: receipt,
-        verification_code: code,
-        received_at_iso: receivedAt,
-        course: COURSE_CODE,
-        assignment: ASSIGNMENT_CODE,
-        student_name: payload.student.name,
-        student_email: payload.student.email
-      };
-      feedback.textContent = 'Participation recorded successfully. Download the signed receipt and upload it to Blackboard.';
-      feedback.className = 'feedback correct';
-      receiptText.innerHTML = `<strong>Receipt:</strong> <code>${receipt}</code><br><strong>Verification:</strong> <code>${code}</code><br><strong>Recorded:</strong> ${new Date(receivedAt).toLocaleString()}`;
-      receiptPanel.hidden = false;
-      receiptBtn.disabled = false;
-      document.getElementById('liveAnnounce').textContent = 'Participation recorded. Your signed Blackboard receipt is ready.';
-      directBtn.textContent = 'Participation recorded';
-      directBtn.disabled = true;
-    }catch(err){
-      feedback.textContent = 'Participation could not be recorded. Your answers are still in this browser. Try again or contact your instructor before leaving the page.';
-      feedback.className = 'feedback incorrect';
-      directBtn.textContent = 'Record participation';
-      directBtn.disabled = false;
-      console.error('Submission error', err);
-    }
-  });
-
-  receiptBtn.addEventListener('click', ()=>{
-    if(!signedReceipt) return;
-    const lines = [
-      'MG628 BLACKBOARD PARTICIPATION RECEIPT',
-      '--------------------------------------',
-      'Course: ' + signedReceipt.course,
-      'Assignment: ' + signedReceipt.assignment,
-      'Student: ' + signedReceipt.student_name,
-      'School email: ' + signedReceipt.student_email,
-      'Recorded by instructor service: ' + signedReceipt.received_at_iso,
-      'Receipt ID: ' + signedReceipt.receipt_id,
-      'Verification code: ' + signedReceipt.verification_code,
-      '',
-      'This receipt points to the instructor-controlled authoritative record.',
-      'It does not contain the student answers. Changing this file cannot change',
-      'the answers, completion status, or timestamp stored by the instructor service.',
-      'Upload this receipt to the Blackboard participation assignment.'
-    ];
-    const blob = new Blob([lines.join('\n')], {type:'text/plain'});
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    const safeName = (signedReceipt.student_name || 'student').replace(/[^a-z0-9]+/gi,'-').toLowerCase();
-    a.href = url;
-    a.download = `MG628-Blackboard-Receipt-${safeName}-${signedReceipt.receipt_id.slice(0,8)}.txt`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-    feedback.textContent = 'Blackboard receipt downloaded. Upload that receipt to the participation assignment in Blackboard.';
-    feedback.className = 'feedback correct';
-  });
-
-  genBtn.addEventListener('click', ()=>{
-    if(!validIdentity()) return;
-    const text = buildText();
-    output.value = text;
-    footerCode.hidden = false;
-    copyBtn.disabled = false;
-    dlBtn.disabled = false;
-    const count = doneCount();
-    if(count < EXERCISE_DEFS.length){
-      feedback.textContent = `Generated with ${count} of ${EXERCISE_DEFS.length} exercises complete — you can keep this as a backup, or go back and finish the rest first.`;
-      feedback.className = 'feedback';
-    } else {
-      feedback.textContent = 'All exercises complete. Copy or download this backup, or use direct submission if your instructor has enabled it.';
-      feedback.className = 'feedback correct';
-    }
-    document.getElementById('liveAnnounce').textContent = 'Submission text generated below.';
-    output.focus();
-  });
-
-  copyBtn.addEventListener('click', async ()=>{
-    try{
-      await navigator.clipboard.writeText(output.value);
-      feedback.textContent = 'Copied to clipboard.';
-      feedback.className = 'feedback correct';
-    }catch(e){
-      output.select();
-      feedback.textContent = 'Could not access the clipboard automatically — text is selected, use Ctrl/Cmd+C.';
-      feedback.className = 'feedback';
-    }
-  });
-
-  dlBtn.addEventListener('click', ()=>{
-    const blob = new Blob([output.value], {type:'text/plain'});
-    const url = URL.createObjectURL(blob);
-    const safeName = (nameInput.value.trim() || 'submission').replace(/[^a-z0-9]+/gi,'-').toLowerCase();
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `mg628-order-quantity-${safeName}.txt`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-    feedback.textContent = 'Downloaded.';
-    feedback.className = 'feedback correct';
-  });
+  const directBtn=document.getElementById('submit-direct'),receiptBtn=document.getElementById('submit-receipt'),genBtn=document.getElementById('submit-generate'),copyBtn=document.getElementById('submit-copy'),dlBtn=document.getElementById('submit-download'),nameInput=document.getElementById('submit-name'),emailInput=document.getElementById('submit-email'),output=document.getElementById('submit-output'),footerCode=document.getElementById('footerCode'),feedback=document.getElementById('submit-feedback'),receiptPanel=document.getElementById('receiptPanel'),receiptText=document.getElementById('receiptText');
+  let signedReceipt=null;
+  const doneCount=()=>EXERCISE_DEFS.filter(d=>exerciseState[d.id]?.done).length;
+  function buildText(){let lines=['MG628 — Order Quantity Tutorial — Personal Copy','Name: '+(nameInput.value.trim()||'(name not entered)'),'Email: '+(emailInput.value.trim()||'(email not entered)'),'Scenario used: '+TRACKS[currentTrack].name+' ('+TRACKS[currentTrack].label+')','Generated: '+new Date().toLocaleString(),'Exercises completed: '+doneCount()+' / '+EXERCISE_DEFS.length,''];EXERCISE_DEFS.forEach((d,i)=>{const st=exerciseState[d.id];lines.push('Exercise '+(i+1)+': '+(st?.done?'COMPLETE':'not completed'));lines.push(st?.summary?'  '+st.summary.replace(/\n/g,'\n  '):'  (no answer recorded)');lines.push('');});return lines.join('\n');}
+  directBtn.addEventListener('click',async()=>{if(!signedInUser||!backendSession){feedback.textContent='Sign in at the top of the page and wait for your roster to be verified before recording participation.';feedback.className='feedback incorrect';return;}directBtn.disabled=true;directBtn.textContent='Verifying server record…';try{for(const d of EXERCISE_DEFS)await syncExerciseNow(d.id);for(const key of participationSeenCards)await recordSelfCheck(key,true);const r=await invokeParticipation({action:'recalculate_completion',session_id:backendSession.id});backendCompletion=r.completion;renderServerProgress(r.completion);if(r.completion.status!=='complete')throw new Error('Server record is '+r.completion.completion_percentage+'% complete. Open every required self-check and complete all nine exercises.');signedReceipt={session_id:backendSession.id,verification_code:r.completion.verification_code,received_at_iso:r.completion.completed_at||r.completion.calculated_at,course:COURSE_CODE,assignment:ASSIGNMENT_CODE,student_name:nameInput.value.trim()||signedInUser.user_metadata?.full_name||'',student_email:signedInUser.email||''};receiptText.innerHTML='<strong>Session:</strong> <code>'+signedReceipt.session_id+'</code><br><strong>Verification:</strong> <code>'+signedReceipt.verification_code+'</code><br><strong>Recorded:</strong> '+new Date(signedReceipt.received_at_iso).toLocaleString();receiptPanel.hidden=false;receiptBtn.disabled=false;feedback.textContent='Participation verified by Supabase. Download the Blackboard receipt below.';feedback.className='feedback correct';directBtn.textContent='Participation verified';}catch(e){feedback.textContent=e.message||String(e);feedback.className='feedback incorrect';directBtn.disabled=false;directBtn.textContent='Record participation';}});
+  receiptBtn.addEventListener('click',()=>{if(!signedReceipt)return;const lines=['MG628 BLACKBOARD PARTICIPATION RECEIPT','--------------------------------------','Course: '+signedReceipt.course,'Assignment: '+signedReceipt.assignment,'Student: '+signedReceipt.student_name,'School email: '+signedReceipt.student_email,'Server completion time: '+signedReceipt.received_at_iso,'Supabase session ID: '+signedReceipt.session_id,'Verification code: '+signedReceipt.verification_code,'','This receipt points to the instructor-controlled Supabase record.','Changing this file cannot change the server-side activity, completion status, or timestamp.'];const blob=new Blob([lines.join('\n')],{type:'text/plain'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='MG628-Blackboard-Receipt-'+(signedReceipt.student_name||'student').replace(/[^a-z0-9]+/gi,'-').toLowerCase()+'.txt';document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);});
+  genBtn.addEventListener('click',()=>{output.value=buildText();footerCode.hidden=false;copyBtn.disabled=false;dlBtn.disabled=false;feedback.textContent='Personal backup generated. The Supabase server record remains the authoritative participation record.';feedback.className='feedback';output.focus();});
+  copyBtn.addEventListener('click',async()=>{try{await navigator.clipboard.writeText(output.value);feedback.textContent='Copied to clipboard.';}catch(_){output.select();feedback.textContent='Text selected; use Ctrl/Cmd+C.';}});
+  dlBtn.addEventListener('click',()=>{const blob=new Blob([output.value],{type:'text/plain'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='mg628-order-quantity-'+(nameInput.value.trim()||'submission').replace(/[^a-z0-9]+/gi,'-').toLowerCase()+'.txt';document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);});
 })();
 
 // ---------- shared demand distribution (Section 05/06/07) ----------
@@ -1789,12 +1458,6 @@ function expectedProfit(Q, track){
 function cumulativeAt(x, track){
   const t = typeof track==='string' ? TRACKS[track] : track;
   let c=0; for(const row of t.demand){ if(row.d<=x) c+=row.p; } return c;
-}
-
-function frequencyBelow(x, track){
-  const t = typeof track==='string' ? TRACKS[track] : track;
-  const rows = t.frequencyDemand || t.demand;
-  let c=0; for(const row of rows){ if(row.d<x) c+=row.p; } return c;
 }
 
 // hero ticket (kept in sync from Section 03)
@@ -2016,15 +1679,13 @@ function updateHero(Q,D,params){
 (function(){
   const SAMPLE_ROWS = {
     business: {cols:['Date','Day','Foot traffic','Demand'], rows:[
-      ['2024-09-01','Sunday','Medium','178'], ['2024-09-02','Monday','Medium','182'],
-      ['2024-09-03','Tuesday','Low','148'], ['2024-09-04','Wednesday','Medium','183'],
-      ['2024-09-05','Thursday','Medium','184']
-    ], col:'Actual_Muffin_Demand', file:'muffin_shop_demand.csv'},
+      ['…','Monday','High','192'], ['…','Tuesday','Medium','174'], ['…','Wednesday','Medium','168'],
+      ['…','Thursday','High','205'], ['…','Friday','Very High','215']
+    ], col:'Actual_Muffin_Demand'},
     health: {cols:['Date','Weather','Marketing blast','Demand'], rows:[
-      ['2024-10-01','Cloudy','No','166'], ['2024-10-02','Cloudy','No','170'],
-      ['2024-10-03','Sunny','Yes','188'], ['2024-10-04','Cloudy','No','171'],
-      ['2024-10-05','Sunny','Yes','202']
-    ], col:'Actual_Patient_Demand', file:'healthcare_vaccine_demand.csv'}
+      ['…','Cloudy','No','197'], ['…','Sunny','No','180'], ['…','Cloudy','No','179'],
+      ['…','Rain','No','203'], ['…','Cloudy','No','196']
+    ], col:'Actual_Patient_Demand'}
   };
   function render(track){
     const t = TRACKS[track];
@@ -2035,16 +1696,16 @@ function updateHero(Q,D,params){
       <tr>${s.cols.map(()=>'<td class="addr">⋮</td>').join('')}</tr>
     </table>`;
     document.getElementById('s5-intro').textContent = track==='business'
-      ? `The chart below is calculated from the attached ${s.file}: 100 observed days grouped by tens. In Section 06, use the five optimization probabilities supplied separately in the assignment (150=15%, 170=25%, 180=30%, 190=20%, 200=10%).`
-      : `The chart below is calculated from the attached ${s.file}: 100 clinic days grouped by tens. The healthcare assignment directs you to use these synthesized percentages as the demand probabilities for optimization.`;
-    document.getElementById('s5-excel-text').innerHTML = `Open <code>${s.file}</code> and insert a Pivot Table → drag
-      <code>${s.col}</code> to Rows → right-click a row value →
+      ? `Grouped into bins of 10 and expressed as a share of all 100 days, that log turns into the probability table your assignment gives you for the optimization step:`
+      : `Grouped into bins of 10 from ${t.demandNote}, that log turns into the probability table used for the clinic's optimization step:`;
+    document.getElementById('s5-excel-text').innerHTML = `Insert a Pivot Table from the CSV → drag
+      <code>${s.col}</code> to Rows → right-click a value →
       <strong>Group…</strong> in steps of 10 → drag
-      <code>${s.col}</code> to Values → set it to <strong>% of Column Total</strong>.
-      Record the grouped demand levels and percentages in <span class="cell-ref">${t.rows.probTable}</span>.
-      ${track==='business' ? 'Keep this observed frequency table distinct from the five probability scenarios explicitly supplied by the assignment for the expected-profit optimization.' : 'Use these percentages as the clinic demand probabilities in the optimization model.'}`;
+      <code>${s.col}</code> to Values → change the value field
+      setting to <strong>Show Values As → % of Column Total</strong>. Those
+      percentages are your demand probabilities.`;
 
-    const DEMAND = t.frequencyDemand || t.demand;
+    const DEMAND = t.demand;
     const svgOld = document.getElementById('s5-chart');
     const W=640,H=220,padL=46,padB=34,padT=16;
     const maxP = Math.max(...DEMAND.map(r=>r.p));
@@ -2059,9 +1720,9 @@ function updateHero(Q,D,params){
       const y = H-padB-h;
       sHtml += `<rect x="${x}" y="${y}" width="${bw}" height="${h}" fill="var(--amber)"/>`;
       sHtml += `<text x="${x+bw/2}" y="${y-6}" text-anchor="middle">${Math.round(row.p*100)}%</text>`;
-      sHtml += `<text x="${x+bw/2}" y="${H-padB+16}" text-anchor="middle">${row.label || Math.round(row.d)}</text>`;
+      sHtml += `<text x="${x+bw/2}" y="${H-padB+16}" text-anchor="middle">${Math.round(row.d)}</text>`;
     });
-    sHtml += `<text x="${padL+ (W-padL-20)/2}" y="${H-6}" text-anchor="middle">observed demand bin (grouped by 10s)</text>`;
+    sHtml += `<text x="${padL+ (W-padL-20)/2}" y="${H-6}" text-anchor="middle">demand level (grouped by 10s)</text>`;
     sHtml += `</svg>`;
     svgOld.outerHTML = sHtml.replace('viewBox','id="s5-chart" viewBox');
   }
@@ -2082,14 +1743,12 @@ function updateHero(Q,D,params){
     Qr.min=min; Qr.max=max; Qr.step=step; Qr.value=t.Qdefault+10;
     Qr.setAttribute('aria-label', `Candidate order quantity, Q, in ${t.unitPlural}`);
     const lo=t.candidates[0], hi=t.candidates[t.candidates.length-1];
-    document.getElementById('s6-excel-text').innerHTML = track==='business'
-      ? `For the expected-profit optimization, use the five probabilities supplied in the assignment:
-        150 (15%), 170 (25%), 180 (30%), 190 (20%), and 200 (10%). Compute profit at each demand level,
-        multiply by probability, and sum. Then use a one-variable <strong>Data Table</strong> with candidate Q values
-        ${lo}–${hi}. Record that candidate-Q table in <span class="cell-ref">${t.rows.dataTable}</span>.`
-      : `Use the demand-bin percentages synthesized from the clinic CSV in Section 05. Compute profit at each representative
-        demand bin, multiply by probability, and sum for Expected Profit. Then use a one-variable <strong>Data Table</strong>
-        with candidate Q values ${lo}–${hi}. Record that candidate-Q table in <span class="cell-ref">${t.rows.dataTable}</span>.`;
+    document.getElementById('s6-excel-text').innerHTML = `List the demand levels and probabilities from
+      <span class="cell-ref">${t.sheet==='Business_Model' ? 'A28:B32' : 'B28:C38'}</span>, compute profit-at-current-Q, and
+      sum probability × profit for Expected Profit. Then use a one-variable <strong>Data Table</strong>
+      (Data → What-If Analysis → Data Table) with candidate Q values
+      ${lo}–${hi} down a column to see all ${t.candidates.length} expected profits at once
+      without rebuilding the formula ${t.candidates.length} times.`;
     render();
   }
   function render(){
@@ -2137,8 +1796,7 @@ function updateHero(Q,D,params){
     const rowNums = t.rows.underage.match(/\d+/g).map(Number);
     document.getElementById('s7-excel-text').innerHTML = `<span class="cell-ref">B${rowNums[0]}</span> <code>=B7-B6</code> (Cu) &nbsp;·&nbsp;
       <span class="cell-ref">B${rowNums[0]+1}</span> <code>=B6-B8</code> (Co) &nbsp;·&nbsp;
-      <span class="cell-ref">B${rowNums[0]+2}</span> <code>=B${rowNums[0]}/(B${rowNums[0]}+B${rowNums[0]+1})</code>
-      (Critical Ratio). Choose Q so that the cumulative probability of
+      <span class="cell-ref">B${rowNums[0]+2}</span> <code>=B${rowNums[0]}/(B${rowNums[0]}+B${rowNums[0]+1})</code>(Critical Ratio). Choose Q so that the cumulative probability of
       demand at or below Q is just above this ratio.`;
     [['p',pr],['c',cr],['v',vr]].forEach(([key,el])=>{
       const [min,max,step] = ranges[key];
@@ -2299,6 +1957,17 @@ function updateHero(Q,D,params){
   document.getElementById('s9-toggle').innerHTML = trackToggleHTML('s9');
   onTrackChange(render);
   render(currentTrack);
+})();
+
+
+// ---------- Supabase authentication ----------
+(function(){
+  const name=document.getElementById('auth-name'),email=document.getElementById('auth-email'),password=document.getElementById('auth-password'),signin=document.getElementById('auth-signin'),signup=document.getElementById('auth-signup'),signout=document.getElementById('auth-signout');
+  signin.addEventListener('click',async()=>{try{setAuthStatus('Signing in…');const {error}=await sb.auth.signInWithPassword({email:email.value.trim().toLowerCase(),password:password.value});if(error)throw error;await bootstrapStudent();}catch(e){setAuthStatus(e.message||String(e),'err');}});
+  signup.addEventListener('click',async()=>{try{if(!name.value.trim())throw new Error('Enter your full name first.');if(password.value.length<8)throw new Error('Use a password of at least 8 characters.');setAuthStatus('Creating your account…');const {data,error}=await sb.auth.signUp({email:email.value.trim().toLowerCase(),password:password.value,options:{data:{full_name:name.value.trim()},emailRedirectTo:location.href.split('#')[0]}});if(error)throw error;if(data.session){await bootstrapStudent();}else setAuthStatus('Account created. Check your school email to confirm the account, then return here and sign in.','ok');}catch(e){setAuthStatus(e.message||String(e),'err');}});
+  signout.addEventListener('click',async()=>{await sb.auth.signOut();await bootstrapStudent();});
+  sb.auth.onAuthStateChange((_event,session)=>{signedInUser=session?.user||null;if(session?.user)setTimeout(()=>bootstrapStudent(),0);});
+  sb.auth.getSession().then(({data})=>{signedInUser=data.session?.user||null;if(signedInUser)bootstrapStudent();});
 })();
 
 // wire up every track toggle rendered above, and mount the hero/rail ones
