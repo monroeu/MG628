@@ -24,13 +24,13 @@ table{width:100%;border-collapse:collapse;background:#fff}th,td{padding:9px 8px;
 <body>
 <div class="topbar"><a href="../">← Course Home</a><span class="mono">MG628 · Instructor Control Center</span></div>
 <div class="wrap">
-<section class="hero"><div class="mono">MONROE UNIVERSITY · PROFESSOR ACCESS</div><h1>Instructor Control Center</h1><p>Manage rosters, test student access, and review participation records by term, course, and section.</p><p class="mono muted">Build 2026-09-19.5</p></section>
+<section class="hero"><div class="mono">MONROE UNIVERSITY · PROFESSOR ACCESS</div><h1>Instructor Control Center</h1><p>Manage rosters, test student access, and review participation records by term, course, and section.</p><p class="mono muted">Build 2026-09-19.6</p></section>
 
 <section class="panel" id="authCheck"><div class="panel-head"><span>Instructor access</span><span>Supabase Auth</span></div><div class="panel-body"><div class="notice">Checking your saved instructor session…</div></div></section>
 
 <section class="panel hidden" id="loginPanel"><div class="panel-head"><span>Instructor sign in</span><span>Supabase Auth</span></div><div class="panel-body">
 <div class="grid"><div class="span6"><label for="email">Email</label><input id="email" type="email" autocomplete="email" value="kassohf@gmail.com"></div><div class="span6"><label for="password">Password</label><input id="password" type="password" autocomplete="current-password"></div></div>
-<div class="toolbar"><button class="primary" id="signIn">Sign in</button><button id="forgot">Forgot password</button><button id="signOut" class="hidden">Sign out</button></div><div id="loginMsg" class="notice hidden"></div>
+<div class="toolbar"><button class="primary" id="signIn">Sign in</button><button id="forgot">Forgot password</button><div class="muted small" style="margin-top:10px">Sign-in is required each time you open the Instructor Control Center.</div><button id="signOut" class="hidden">Sign out</button></div><div id="loginMsg" class="notice hidden"></div>
 </div></section>
 
 <section id="app" class="hidden">
@@ -112,7 +112,7 @@ table{width:100%;border-collapse:collapse;background:#fff}th,td{padding:9px 8px;
 <script>
 const SUPABASE_URL='https://irnrjzeejalbbqdrbzmj.supabase.co';
 const SUPABASE_KEY='sb_publishable_aj2vpjfJrSMvjTxcKuC0pQ_pf7JbDo2';
-const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY,{auth:{persistSession:false,autoRefreshToken:true,detectSessionInUrl:false}});
 const API=SUPABASE_URL+'/functions/v1/instructor-api';
 let session=null, bootstrap=null, csvRows=[], csvFileName='';
 const $=id=>document.getElementById(id);
@@ -146,14 +146,14 @@ function showLogin(message=''){
   if(message)msg('loginMsg',message,'error');
 }
 async function init(){
-  $('authCheck').classList.remove('hidden');
-  $('loginPanel').classList.add('hidden');
+  // Instructor access is intentionally non-persistent. Every fresh page visit
+  // requires an explicit sign-in, even if another page on this site has a
+  // Supabase session. This avoids silently reopening the admin dashboard.
+  session=null;
+  $('authCheck').classList.add('hidden');
   $('app').classList.add('hidden');
-  const {data,error}=await sb.auth.getSession();
-  if(error){showLogin(error.message);return}
-  session=data.session;
-  if(!session){showLogin();return}
-  await loadApp();
+  $('loginPanel').classList.remove('hidden');
+  clearMsg('loginMsg');
 }
 async function loadApp(){
   try{
