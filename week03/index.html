@@ -369,6 +369,19 @@
   .course-topbar a{text-decoration:none;font-weight:600}.auth-panel{margin:22px 0;border:2px solid var(--teal);background:var(--white);padding:18px 20px;box-shadow:3px 3px 0 var(--teal-soft)}
   .auth-panel h3{margin:0 0 8px}.auth-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.auth-grid .full{grid-column:1/-1}.auth-panel input{width:100%;font:inherit;border:1px solid var(--ink);background:var(--paper);padding:9px 11px}.auth-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.auth-status{font-family:var(--font-mono);font-size:12.5px;margin-top:10px;color:var(--ink-soft)}.auth-status.ok{color:var(--teal);font-weight:600}.auth-status.err{color:var(--danger);font-weight:600}.server-progress{margin-top:10px;padding:10px 12px;background:var(--teal-soft);border-left:4px solid var(--teal);font-family:var(--font-mono);font-size:12.5px}
   @media(max-width:640px){.auth-grid{grid-template-columns:1fr}.auth-grid .full{grid-column:auto}.course-topbar{position:relative}}
+
+    .formula-list {
+      margin: 12px 0 8px;
+      display: grid;
+      gap: 7px;
+    }
+    .formula-line {
+      display: block;
+      line-height: 1.55;
+    }
+    .formula-note {
+      margin-top: 10px;
+    }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.4/dist/umd/supabase.min.js"></script>
 </head>
@@ -601,16 +614,14 @@
 
       <div class="box excel">
         <span class="tag">BUILD THIS NEXT, IN EXCEL</span>
-        <p><span class="cell-ref">B13</span> <code>=MIN($B$10,$B$9)</code> —
-        Full-price sales &nbsp;·&nbsp;
-        <span class="cell-ref">B14</span> <code>=MAX(0,$B$9-$B$10)</code> —
-        Discounted sales &nbsp;·&nbsp;
-        <span class="cell-ref">B15</span> <code>=B13*$B$7+B14*$B$8</code> —
-        Total revenue &nbsp;·&nbsp;
-        <span class="cell-ref">B16</span> <code>=$B$5+$B$9*$B$6</code> —
-        Total cost &nbsp;·&nbsp;
-        <span class="cell-ref">B17</span> <code>=B15-B16</code> — Daily profit.
-        Use absolute references (<code>$</code>) on B5–B10 so you can copy
+        <div class="formula-list">
+          <div class="formula-line"><span class="cell-ref">B13</span> <code>=MIN($B$10,$B$9)</code> — Full-price sales</div>
+          <div class="formula-line"><span class="cell-ref">B14</span> <code>=MAX(0,$B$9-$B$10)</code> — Discounted sales</div>
+          <div class="formula-line"><span class="cell-ref">B15</span> <code>=B13*$B$7+B14*$B$8</code> — Total revenue</div>
+          <div class="formula-line"><span class="cell-ref">B16</span> <code>=$B$5+$B$9*$B$6</code> — Total cost</div>
+          <div class="formula-line"><span class="cell-ref">B17</span> <code>=B15-B16</code> — Daily profit</div>
+        </div>
+        <p class="formula-note">Use absolute references (<code>$</code>) on B5–B10 so you can copy
         these formulas elsewhere without them shifting.</p>
       </div>
 
@@ -882,11 +893,14 @@
 
       <div class="box excel">
         <span class="tag">BUILD THIS NEXT, IN EXCEL</span>
-        <p id="s7-excel-text"><span class="cell-ref">B44</span> <code>=B7-B6</code> (Cu) &nbsp;·&nbsp;
-        <span class="cell-ref">B45</span> <code>=B6-B8</code> (Co) &nbsp;·&nbsp;
-        <span class="cell-ref">B46</span> <code>=B44/(B44+B45)</code>
-        (Critical Ratio). Choose Q so that the cumulative probability of
-        demand at or below Q is just above this ratio.</p>
+        <div id="s7-excel-text">
+          <div class="formula-list">
+            <div class="formula-line"><span class="cell-ref">B44</span> <code>=B7-B6</code> — Cost of underage (Cu)</div>
+            <div class="formula-line"><span class="cell-ref">B45</span> <code>=B6-B8</code> — Cost of overage (Co)</div>
+            <div class="formula-line"><span class="cell-ref">B46</span> <code>=B44/(B44+B45)</code> — Critical Ratio</div>
+          </div>
+          <p class="formula-note">Choose Q so that the cumulative probability of demand at or below Q is just above this ratio.</p>
+        </div>
       </div>
 
       <details class="check">
@@ -1124,7 +1138,35 @@ async function invokeParticipation(body){const {data,error}=await sb.functions.i
 function setAuthStatus(message,kind=''){const el=document.getElementById('auth-status');if(!el)return;el.textContent=message;el.className='auth-status'+(kind?' '+kind:'');}
 function renderServerProgress(c){backendCompletion=c||backendCompletion;const el=document.getElementById('server-progress');if(!el)return;if(!backendCompletion){el.hidden=true;return;}el.hidden=false;el.innerHTML='Server record: <strong>'+String(backendCompletion.completion_percentage??0)+'%</strong> · self-checks '+String(backendCompletion.cards_completed??0)+'/'+String(backendCompletion.cards_required??0)+' · exercises '+(backendCompletion.worksheet_completed?'complete':'in progress')+' · reflection '+(backendCompletion.reflection_completed?'complete':'in progress')+' · status <strong>'+String(backendCompletion.status||'incomplete').toUpperCase()+'</strong>';}
 async function startBackendSession(){if(!signedInUser||!backendOffering)return;const r=await invokeParticipation({action:'start_session',offering_id:backendOffering.id,track:currentTrack});backendSession=r.session;backendCompletion=r.completion;renderServerProgress(r.completion);for(const key of participationSeenCards)await recordSelfCheck(key,true);if(typeof EXERCISE_DEFS!=='undefined')for(const d of EXERCISE_DEFS)if(exerciseState[d.id]?.done)await syncExerciseNow(d.id);}
-async function bootstrapStudent(){const {data:{user}}=await sb.auth.getUser();signedInUser=user||null;const signout=document.getElementById('auth-signout'),fields=document.getElementById('authFields');if(!user){backendSession=backendOffering=backendCompletion=null;if(signout)signout.hidden=true;if(fields)fields.hidden=false;setAuthStatus('Sign in before completing required participation items so your work is recorded.');renderServerProgress(null);return;}if(signout)signout.hidden=false;if(fields)fields.hidden=true;const em=document.getElementById('submit-email');if(em){em.value=user.email||'';em.readOnly=true;}const nm=document.getElementById('submit-name');if(nm&&!nm.value)nm.value=user.user_metadata?.full_name||'';setAuthStatus('Signed in. Matching your school email to the instructor roster…');try{const r=await invokeParticipation({action:'bootstrap'});const offering=(r.offerings||[]).find(o=>o.assignment?.slug===ASSIGNMENT_SLUG&&Number(o.assignment?.version)===ASSIGNMENT_VERSION);if(!offering){backendOffering=backendSession=null;setAuthStatus('Signed in, but this email is not rostered for a section that has this assignment. Contact your instructor if this is unexpected.','err');return;}backendOffering=offering;const enr=(r.enrollments||[]).find(e=>e.section_id===offering.section_id),sec=enr?.section;setAuthStatus('Roster verified: '+(sec?.course?.code||COURSE_CODE)+' '+(sec?.section_code||'')+' · '+(sec?.term?.name||'')+'. Starting your secure participation record…','ok');await startBackendSession();setAuthStatus('Participation recording is active for '+(sec?.course?.code||COURSE_CODE)+' '+(sec?.section_code||'')+' · '+(sec?.term?.name||'')+'.','ok');}catch(e){setAuthStatus(e.message||'Could not initialize participation recording.','err');console.error(e);}}
+function restoreExerciseFromServer(item){
+  if(!item?.question_key)return;
+  const id=String(item.question_key).toLowerCase(),def=(typeof EXERCISE_DEFS!=='undefined'?EXERCISE_DEFS.find(d=>d.id===id):null);
+  if(!def)return;
+  const payload=item.response_json||{},raw=payload.raw??item.response_text??null,excel=Array.isArray(payload.excel_refs)?payload.excel_refs:[],summary=payload.summary||item.response_text||'Restored saved response';
+  if(def.type==='text'||def.type==='textExcel'){
+    const input=document.getElementById(id+'-input');if(input)input.value=typeof raw==='string'?raw:(item.response_text||'');
+    const count=document.getElementById(id+'-count');if(count&&input)count.textContent=input.value.trim().length+' characters';
+  }
+  if(def.type==='numeric'&&Array.isArray(raw))def.fields.forEach((fid,i)=>{const el=document.getElementById(fid);if(el&&raw[i]!==undefined&&raw[i]!==null)el.value=raw[i];});
+  (def.excelFields||[]).forEach((fid,i)=>{const el=document.getElementById(fid);if(el&&excel[i]!==undefined)el.value=excel[i];});
+  exerciseState[id]={done:true,summary,raw,excel};
+  const status=document.getElementById(id+'-status');if(status){status.textContent='complete';status.classList.add('done');}
+  const feedback=document.getElementById(id+'-feedback');if(feedback){feedback.textContent='Restored from your saved Supabase session.';feedback.className='feedback saved';}
+}
+async function resumeOrStartBackendSession(){
+  if(!signedInUser||!backendOffering)return;
+  const r=await invokeParticipation({action:'resume_session',offering_id:backendOffering.id});
+  if(!r.session){await startBackendSession();return false;}
+  backendSession=null;
+  if(r.session.track&&r.session.track!==currentTrack)setTrack(r.session.track);
+  backendSession=r.session;backendCompletion=r.completion;renderServerProgress(r.completion);
+  participationSeenCards.clear();for(const key of r.card_keys||[])participationSeenCards.add(key);
+  if(typeof exerciseState!=='undefined')for(const k of Object.keys(exerciseState))delete exerciseState[k];
+  for(const item of r.worksheet_responses||[])restoreExerciseFromServer(item);
+  updateExerciseProgress();
+  return true;
+}
+async function bootstrapStudent(){const {data:{user}}=await sb.auth.getUser();signedInUser=user||null;const signout=document.getElementById('auth-signout'),fields=document.getElementById('authFields');if(!user){backendSession=backendOffering=backendCompletion=null;if(signout)signout.hidden=true;if(fields)fields.hidden=false;setAuthStatus('Sign in before completing required participation items so your work is recorded.');renderServerProgress(null);return;}if(signout)signout.hidden=false;if(fields)fields.hidden=true;const em=document.getElementById('submit-email');if(em){em.value=user.email||'';em.readOnly=true;}const nm=document.getElementById('submit-name');if(nm&&!nm.value)nm.value=user.user_metadata?.full_name||'';setAuthStatus('Signed in. Matching your school email to the instructor roster…');try{const r=await invokeParticipation({action:'bootstrap'});const offering=(r.offerings||[]).find(o=>o.assignment?.slug===ASSIGNMENT_SLUG&&Number(o.assignment?.version)===ASSIGNMENT_VERSION);if(!offering){backendOffering=backendSession=null;setAuthStatus('Signed in, but this email is not rostered for a section that has this assignment. Contact your instructor if this is unexpected.','err');return;}backendOffering=offering;const enr=(r.enrollments||[]).find(e=>e.section_id===offering.section_id),sec=enr?.section;setAuthStatus('Roster verified: '+(sec?.course?.code||COURSE_CODE)+' '+(sec?.section_code||'')+' · '+(sec?.term?.name||'')+'. Checking for previously saved work…','ok');const resumed=await resumeOrStartBackendSession();setAuthStatus((resumed?'Saved work restored. ':'Participation recording started. ')+'Recording is active for '+(sec?.course?.code||COURSE_CODE)+' '+(sec?.section_code||'')+' · '+(sec?.term?.name||'')+'.','ok');}catch(e){setAuthStatus(e.message||'Could not initialize participation recording.','err');console.error(e);}}
 async function recordSelfCheck(key,quiet=false){participationSeenCards.add(key);if(!backendSession)return;try{const r=await invokeParticipation({action:'card_opened',session_id:backendSession.id,card_key:key});renderServerProgress(r.completion);}catch(e){if(!quiet)setAuthStatus('A self-check could not be recorded. '+(e.message||''),'err');}}
 function scheduleExerciseSync(id){clearTimeout(syncTimers.get(id));syncTimers.set(id,setTimeout(()=>syncExerciseNow(id),500));}
 async function syncExerciseNow(id){if(!backendSession)return;const st=exerciseState[id],key=id.toUpperCase();try{const r=await invokeParticipation({action:'save_worksheet',session_id:backendSession.id,worksheet_key:key,response_text:st?.done?(st.summary||'Completed'):null,response_json:st?.done?{raw:st.raw??null,excel_refs:st.excel??[],summary:st.summary||'',track:currentTrack}:null});renderServerProgress(r.completion);}catch(e){setAuthStatus('Could not save '+key+' to the server: '+(e.message||e),'err');}}
@@ -1794,10 +1836,11 @@ function updateHero(Q,D,params){
     document.getElementById('s7-cellref').textContent = `${t.sheet}!${t.rows.underage}`;
     const [r0,r1,r2] = t.rows.underage.split(/[!:]/).length ? t.rows.underage.split(':') : [];
     const rowNums = t.rows.underage.match(/\d+/g).map(Number);
-    document.getElementById('s7-excel-text').innerHTML = `<span class="cell-ref">B${rowNums[0]}</span> <code>=B7-B6</code> (Cu) &nbsp;·&nbsp;
-      <span class="cell-ref">B${rowNums[0]+1}</span> <code>=B6-B8</code> (Co) &nbsp;·&nbsp;
-      <span class="cell-ref">B${rowNums[0]+2}</span> <code>=B${rowNums[0]}/(B${rowNums[0]}+B${rowNums[0]+1})</code>(Critical Ratio). Choose Q so that the cumulative probability of
-      demand at or below Q is just above this ratio.`;
+    document.getElementById('s7-excel-text').innerHTML = `<div class="formula-list">
+      <div class="formula-line"><span class="cell-ref">B${rowNums[0]}</span> <code>=B7-B6</code> — Cost of underage (Cu)</div>
+      <div class="formula-line"><span class="cell-ref">B${rowNums[0]+1}</span> <code>=B6-B8</code> — Cost of overage (Co)</div>
+      <div class="formula-line"><span class="cell-ref">B${rowNums[0]+2}</span> <code>=B${rowNums[0]}/(B${rowNums[0]}+B${rowNums[0]+1})</code> — Critical Ratio</div>
+      </div><p class="formula-note">Choose Q so that the cumulative probability of demand at or below Q is just above this ratio.</p>`;
     [['p',pr],['c',cr],['v',vr]].forEach(([key,el])=>{
       const [min,max,step] = ranges[key];
       el.min=min; el.max=max; el.step=step; el.value=t[key];
