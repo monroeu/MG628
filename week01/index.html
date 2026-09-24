@@ -457,12 +457,49 @@ code{overflow-wrap:anywhere}
   .rail a:hover,button.chip:hover,button.run:hover{filter:none}
 }
 
+
+/* MG628 shared-style global navigation */
+.course-topbar{
+  position:sticky;top:0;z-index:60;
+  background:#0b4a3a;color:#fff;
+  border-bottom:2px solid #d9a441;
+  padding:0;display:block;
+  font-family:Arial,Helvetica,sans-serif;
+  font-size:14px;backdrop-filter:none;
+}
+.course-topbar .mg628-nav-inner{
+  width:min(1180px,94vw);margin:0 auto;min-height:52px;
+  display:flex;align-items:center;justify-content:space-between;gap:18px;
+}
+.course-topbar .mg628-brand{color:#fff;text-decoration:none;font-weight:800;letter-spacing:.02em;}
+.course-topbar .mg628-nav-links{display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+.course-topbar .mg628-nav-links a{
+  color:#fff;text-decoration:none;font-weight:700;padding:9px 12px;border-radius:6px;
+}
+.course-topbar .mg628-nav-links a:hover,.course-topbar .mg628-nav-links a:focus{background:rgba(255,255,255,.12);outline:none;}
+.course-topbar .mg628-nav-links a[aria-current="page"]{background:rgba(255,255,255,.16);box-shadow:inset 0 0 0 1px rgba(255,255,255,.16);}
+@media(max-width:640px){
+  .course-topbar{position:relative;}
+  .course-topbar .mg628-nav-inner{width:100%;padding:8px 12px;align-items:flex-start;flex-direction:column;gap:6px;}
+  .course-topbar .mg628-nav-links{width:100%;gap:4px;}
+  .course-topbar .mg628-nav-links a{padding:8px 9px;font-size:13px;}
+}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.4/dist/umd/supabase.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jspdf@4.2.1/dist/jspdf.umd.min.js"></script>
 </head>
 <body>
-<div class="course-topbar"><a href="/MG628/" aria-label="Return to MG628 course home">← Course Home</a><span>MG628 · Interactive Participation</span></div>
+<nav class="course-topbar" aria-label="MG628 course navigation">
+  <div class="mg628-nav-inner">
+    <a class="mg628-brand" href="/MG628/">MG628</a>
+    <div class="mg628-nav-links">
+      <a href="/MG628/">Home</a>
+      <a href="/MG628/week01/" aria-current="page">Weeks 1–2</a>
+      <a href="/MG628/week03/">Week 3</a>
+      <a href="/MG628/instructor/">Instructor</a>
+    </div>
+  </div>
+</nav>
 
 <a class="skip-link" href="#main-content">Skip to main content</a>
 <div class="progress-fill" id="progressFill" aria-hidden="true"></div>
