@@ -188,7 +188,25 @@ $('createCourse').onclick=async()=>{try{await api('create_course',{code:$('newCo
 $('createTerm').onclick=async()=>{try{await api('create_term',{code:$('newTermCode').value,name:$('newTermName').value,start_date:$('newTermStart').value,end_date:$('newTermEnd').value});msg('setupMsg','Academic term saved.','ok');await reloadBootstrap()}catch(e){msg('setupMsg',formatErr(e),'error')}};
 $('createSection').onclick=async()=>{try{await api('create_section',{course_id:$('newSectionCourse').value,term_id:$('newSectionTerm').value,section_code:$('newSectionCode').value,display_code:$('newSectionDisplay').value,title:$('newSectionTitle').value,campus:$('newSectionCampus').value,meeting_day:$('newSectionDay').value,start_time:$('newSectionStartTime').value,end_time:$('newSectionEndTime').value,section_start_date:$('newSectionStartDate').value,section_end_date:$('newSectionEndDate').value,location:$('newSectionLocation').value,seat_capacity:$('newSectionCapacity').value,seats_available:$('newSectionAvailable').value,waitlist_count:$('newSectionWaitlist').value,status:$('newSectionStatus').value});msg('setupMsg','Section saved and added to the section selector.','ok');await reloadBootstrap()}catch(e){msg('setupMsg',formatErr(e),'error')}};
 
-$('sectionSelect').onchange=()=>{localStorage.setItem('mg628InstructorSection',$('sectionSelect').value);updateRosterTarget();refreshAll()};
+$('sectionSelect').onchange=()=>{
+  localStorage.setItem('mg628InstructorSection',$('sectionSelect').value);
+  updateRosterTarget();
+
+  // Revalidate any CSV that is already loaded whenever the target section changes.
+  if(csvRows.length){
+    const mismatch=csvTargetMismatch();
+    $('importCsv').disabled=!csvRows.length||!!mismatch;
+    if(mismatch){
+      msg('rosterMsg',mismatch,'error');
+    }else{
+      msg('rosterMsg',`Ready to import ${csvRows.length} students into ${sectionLabel(selectedSection())}.`,'ok');
+    }
+  }else{
+    $('importCsv').disabled=true;
+  }
+
+  refreshAll();
+};
 document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>{document.querySelectorAll('.tabs button').forEach(x=>x.classList.toggle('active',x===b));document.querySelectorAll('.tabpage').forEach(p=>p.classList.add('hidden'));$('tab-'+b.dataset.tab).classList.remove('hidden')});
 function updateRosterTarget(){const sec=selectedSection();const el=$('rosterTarget');if(!el||!sec)return;el.textContent=`Managing roster for ${sectionLabel(sec)}${sec.campus?' · '+sec.campus:''}. Upload only the roster for this exact section.`}
 function csvTargetMismatch(){const sec=selectedSection();if(!sec||!csvFileName)return null;const n=csvFileName.toUpperCase();const m=n.match(/([A-Z]{2,})[-_ ]?(\d{3})[-_ ]?([0-9]{3}[A-Z])/);if(!m)return null;const fileCourse=(m[1]+m[2]).replace(/[^A-Z0-9]/g,'');const fileSection=m[3];const selectedCourse=String(sec.course.code||'').toUpperCase().replace(/[^A-Z0-9]/g,'');const selectedSection=String(sec.section_code||'').toUpperCase();if(fileCourse!==selectedCourse||fileSection!==selectedSection)return `This CSV appears to be for ${m[1]}-${m[2]}-${fileSection}, but you selected ${sectionLabel(sec)}. Choose the matching section before importing.`;return null}
