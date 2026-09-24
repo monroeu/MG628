@@ -24,7 +24,7 @@ table{width:100%;border-collapse:collapse;background:#fff}th,td{padding:9px 8px;
 <body>
 <div class="topbar"><a href="../">← Course Home</a><span class="mono">MG628 · Instructor Control Center</span></div>
 <div class="wrap">
-<section class="hero"><div class="mono">MONROE UNIVERSITY · PROFESSOR ACCESS</div><h1>Instructor Control Center</h1><p>Manage rosters, test student access, and review participation records by term, course, and section.</p><p class="mono muted">Build 2026-09-24.4</p></section>
+<section class="hero"><div class="mono">MONROE UNIVERSITY · PROFESSOR ACCESS</div><h1>Instructor Control Center</h1><p>Manage rosters, test student access, and review participation records by term, course, and section.</p><p class="mono muted">Build 2026-09-24.5</p></section>
 
 <section class="panel" id="authCheck"><div class="panel-head"><span>Instructor access</span><span>Supabase Auth</span></div><div class="panel-body"><div class="notice">Checking your saved instructor session…</div></div></section>
 
@@ -196,7 +196,7 @@ $('sectionSelect').onchange=()=>{
 };
 document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>{document.querySelectorAll('.tabs button').forEach(x=>x.classList.toggle('active',x===b));document.querySelectorAll('.tabpage').forEach(p=>p.classList.add('hidden'));$('tab-'+b.dataset.tab).classList.remove('hidden')});
 function updateRosterTarget(){const sec=selectedSection();const el=$('rosterTarget');if(!el||!sec)return;el.textContent=`Managing roster for ${sectionLabel(sec)}${sec.campus?' · '+sec.campus:''}. Upload only the roster for this exact section.`}
-function csvTargetMismatch(){const sec=selectedSection();if(!sec||!csvFileName)return null;const n=csvFileName.toUpperCase();const m=n.match(/([A-Z]{2,})[-_ ]?(\d{3})[-_ ]?([0-9]{3}[A-Z])/);if(!m)return null;const fileCourse=(m[1]+m[2]).replace(/[^A-Z0-9]/g,'');const fileSection=m[3];const selectedCourse=String(sec.course.code||'').toUpperCase().replace(/[^A-Z0-9]/g,'');const selectedSection=String(sec.section_code||'').toUpperCase();if(fileCourse!==selectedCourse||fileSection!==selectedSection)return `This CSV appears to be for ${m[1]}-${m[2]}-${fileSection}, but you selected ${sectionLabel(sec)}. Choose the matching section before importing.`;return null}
+function csvTargetMismatch(){const sec=selectedSection();if(!sec||!csvFileName)return null;const n=csvFileName.toUpperCase();const m=n.match(/([A-Z]{2,})[-_ ]?(\d{3})[-_ ]?([0-9]{3}[A-Z])/);if(!m)return null;const fileCourse=(m[1]+m[2]).replace(/[^A-Z0-9]/g,'');const fileSection=m[3];const selectedCourse=String(sec.course.code||'').toUpperCase().replace(/[^A-Z0-9]/g,'');const selectedSectionCode=String(sec.section_code||'').toUpperCase();if(fileCourse!==selectedCourse||fileSection!==selectedSectionCode)return `This CSV appears to be for ${m[1]}-${m[2]}-${fileSection}, but you selected ${sectionLabel(sec)}. Choose the matching section before importing.`;return null}
 function updateCsvImportState(announce=true){
   const btn=$('importCsv');
   const sec=selectedSection();
