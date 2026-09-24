@@ -215,5 +215,6 @@ async function finalize(){if(!backendSession)return setAuth('Sign in and begin t
 document.getElementById('generateBtn').onclick=finalize;document.getElementById('copyBtn').onclick=async()=>navigator.clipboard.writeText(document.getElementById('submissionOutput').textContent);document.getElementById('downloadBtn').onclick=()=>{const blob=new Blob([document.getElementById('submissionOutput').textContent],{type:'text/plain'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='MG628_Week3_Participation.txt';a.click();URL.revokeObjectURL(a.href)};
 function resetAll(){if(confirm('Clear only the visible browser state? Supabase-saved participation will remain and restore after sign-in.'))location.reload()}
 showTrack();showSlide();bootstrapStudent();
-</script></body>
+</script><script src="../assets/week-auto-activate.js" defer></script>
+</body>
 </html>
