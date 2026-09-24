@@ -24,7 +24,7 @@ table{width:100%;border-collapse:collapse;background:#fff}th,td{padding:9px 8px;
 <body>
 <div class="topbar"><a href="../">← Course Home</a><span class="mono">MG628 · Instructor Control Center</span></div>
 <div class="wrap">
-<section class="hero"><div class="mono">MONROE UNIVERSITY · PROFESSOR ACCESS</div><h1>Instructor Control Center</h1><p>Manage rosters, test student access, and review participation records by term, course, and section.</p><p class="mono muted">Build 2026-09-24.1</p></section>
+<section class="hero"><div class="mono">MONROE UNIVERSITY · PROFESSOR ACCESS</div><h1>Instructor Control Center</h1><p>Manage rosters, test student access, and review participation records by term, course, and section.</p><p class="mono muted">Build 2026-09-24.2</p></section>
 
 <section class="panel" id="authCheck"><div class="panel-head"><span>Instructor access</span><span>Supabase Auth</span></div><div class="panel-body"><div class="notice">Checking your saved instructor session…</div></div></section>
 
@@ -191,30 +191,39 @@ $('createSection').onclick=async()=>{try{await api('create_section',{course_id:$
 $('sectionSelect').onchange=()=>{
   localStorage.setItem('mg628InstructorSection',$('sectionSelect').value);
   updateRosterTarget();
-
-  // Revalidate any CSV that is already loaded whenever the target section changes.
-  if(csvRows.length){
-    const mismatch=csvTargetMismatch();
-    $('importCsv').disabled=!csvRows.length||!!mismatch;
-    if(mismatch){
-      msg('rosterMsg',mismatch,'error');
-    }else{
-      msg('rosterMsg',`Ready to import ${csvRows.length} students into ${sectionLabel(selectedSection())}.`,'ok');
-    }
-  }else{
-    $('importCsv').disabled=true;
-  }
-
+  updateCsvImportState();
   refreshAll();
 };
 document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>{document.querySelectorAll('.tabs button').forEach(x=>x.classList.toggle('active',x===b));document.querySelectorAll('.tabpage').forEach(p=>p.classList.add('hidden'));$('tab-'+b.dataset.tab).classList.remove('hidden')});
 function updateRosterTarget(){const sec=selectedSection();const el=$('rosterTarget');if(!el||!sec)return;el.textContent=`Managing roster for ${sectionLabel(sec)}${sec.campus?' · '+sec.campus:''}. Upload only the roster for this exact section.`}
 function csvTargetMismatch(){const sec=selectedSection();if(!sec||!csvFileName)return null;const n=csvFileName.toUpperCase();const m=n.match(/([A-Z]{2,})[-_ ]?(\d{3})[-_ ]?([0-9]{3}[A-Z])/);if(!m)return null;const fileCourse=(m[1]+m[2]).replace(/[^A-Z0-9]/g,'');const fileSection=m[3];const selectedCourse=String(sec.course.code||'').toUpperCase().replace(/[^A-Z0-9]/g,'');const selectedSection=String(sec.section_code||'').toUpperCase();if(fileCourse!==selectedCourse||fileSection!==selectedSection)return `This CSV appears to be for ${m[1]}-${m[2]}-${fileSection}, but you selected ${sectionLabel(sec)}. Choose the matching section before importing.`;return null}
+function updateCsvImportState(announce=true){
+  const btn=$('importCsv');
+  const sec=selectedSection();
+  if(!btn)return false;
+  const mismatch=csvRows.length?csvTargetMismatch():null;
+  const ready=!!sec&&csvRows.length>0&&!mismatch;
+  if(ready){
+    btn.disabled=false;
+    btn.removeAttribute('disabled');
+    btn.setAttribute('aria-disabled','false');
+  }else{
+    btn.disabled=true;
+    btn.setAttribute('disabled','disabled');
+    btn.setAttribute('aria-disabled','true');
+  }
+  if(announce){
+    if(mismatch)msg('rosterMsg',mismatch,'error');
+    else if(!sec)msg('rosterMsg','Choose a section before importing.','error');
+    else if(csvRows.length)msg('rosterMsg',`Ready to import ${csvRows.length} students into ${sectionLabel(sec)}. Click Import CSV.`,'ok');
+  }
+  return ready;
+}
 async function loadRoster(){const sid=$('sectionSelect').value;if(!sid)return;clearMsg('rosterMsg');msg('rosterMsg','Loading roster…','');try{const r=await api('roster_list',{section_id:sid});if(!r||!Array.isArray(r.rows))throw new Error('Roster API returned an unexpected response.');$('statRoster').textContent=r.rows.length;$('statLinked').textContent=r.rows.filter(x=>x.linked_user_id).length;const tb=$('rosterBody');tb.innerHTML='';for(const x of r.rows){const tr=document.createElement('tr');const account=x.linked_user_id?'<span class="badge ok">linked</span>':'<span class="badge warn">not registered</span>';const test=x.is_test_account?' <span class="badge test">TEST</span>':'';tr.innerHTML=`<td>${esc(x.expected_full_name||'')}${test}</td><td class="small">${esc(x.email)}</td><td>${esc(x.institutional_id||'')}</td><td><span class="badge">${esc(x.roster_status)}</span></td><td>${account}</td><td>${x.enrollment?'<span class="badge '+(x.enrollment.status==='active'?'ok':'warn')+'">'+esc(x.enrollment.status)+'</span>':'—'}</td><td><button data-status="active" data-id="${x.id}">Activate</button> <button data-status="dropped" data-id="${x.id}">Drop</button></td>`;tb.appendChild(tr)}tb.querySelectorAll('button[data-status]').forEach(b=>b.onclick=async()=>{await api('roster_status',{section_id:sid,roster_id:b.dataset.id,roster_status:b.dataset.status});await loadRoster()});msg('rosterMsg',`Loaded ${r.rows.length} roster records for ${sectionLabel(selectedSection())}.`,'ok')}catch(e){$('statRoster').textContent='—';$('statLinked').textContent='—';msg('rosterMsg',formatErr(e),'error')}}
 $('addStudent').onclick=async()=>{try{await api('roster_upsert',{section_id:$('sectionSelect').value,email:$('studentEmail').value,expected_full_name:$('studentName').value,institutional_id:$('studentId').value,roster_status:$('studentStatus').value});msg('rosterMsg','Student saved.','ok');$('studentName').value='';$('studentEmail').value='';$('studentId').value='';await loadRoster()}catch(e){msg('rosterMsg',formatErr(e),'error')}};
 $('refreshRoster').onclick=loadRoster;
-$('csvFile').onchange=async e=>{const f=e.target.files[0];if(!f)return;csvFileName=f.name;const text=await f.text();csvRows=parseCsv(text);$('csvPreview').value=csvRows.slice(0,5).map(x=>JSON.stringify(x)).join('\n');const mismatch=csvTargetMismatch();$('importCsv').disabled=!csvRows.length||!!mismatch;if(mismatch)msg('rosterMsg',mismatch,'error');else if(csvRows.length)msg('rosterMsg',`Ready to import ${csvRows.length} students into ${sectionLabel(selectedSection())}.`,'ok')};
-$('importCsv').onclick=async()=>{try{const mismatch=csvTargetMismatch();if(mismatch)throw new Error(mismatch);const sec=selectedSection();if(!sec)throw new Error('Choose a section first.');const r=await api('roster_bulk',{section_id:sec.id,rows:csvRows});msg('rosterMsg',`Imported ${r.count} roster rows into ${sectionLabel(sec)}.`,'ok');await loadRoster()}catch(e){msg('rosterMsg',formatErr(e),'error')}};
+$('csvFile').onchange=async e=>{const f=e.target.files[0];if(!f){csvRows=[];csvFileName='';$('csvPreview').value='';updateCsvImportState(false);return;}csvFileName=f.name;const text=await f.text();csvRows=parseCsv(text);$('csvPreview').value=csvRows.slice(0,5).map(x=>JSON.stringify(x)).join('\n');if(!csvRows.length){msg('rosterMsg','No valid student rows were found in this CSV. Check that the file includes a student email column.','error');updateCsvImportState(false);return;}updateCsvImportState(true)};
+$('importCsv').onclick=async()=>{try{if(!updateCsvImportState(false))throw new Error('The CSV is not ready for the selected section. Recheck the file and section.');const sec=selectedSection();const r=await api('roster_bulk',{section_id:sec.id,rows:csvRows});msg('rosterMsg',`Imported ${r.count} roster rows into ${sectionLabel(sec)}.`,'ok');await loadRoster()}catch(e){msg('rosterMsg',formatErr(e),'error')}};
 function parseCsv(text){const lines=text.replace(/^\uFEFF/,'').split(/\r?\n/).filter(x=>x.trim());if(lines.length<2)return[];const split=line=>{const out=[];let cur='',q=false;for(let i=0;i<line.length;i++){const c=line[i];if(c==='"'){if(q&&line[i+1]==='"'){cur+='"';i++}else q=!q}else if(c===','&&!q){out.push(cur.trim());cur=''}else cur+=c}out.push(cur.trim());return out};const h=split(lines[0]).map(x=>x.toLowerCase().trim().replace(/[^a-z0-9]+/g,'_').replace(/^_|_$/g,''));return lines.slice(1).map(line=>{const v=split(line),o={};h.forEach((k,i)=>o[k]=v[i]??'');o.expected_full_name=o.expected_full_name||o.full_name||o.name||o.student_name||'';o.institutional_id=o.institutional_id||o.student_id||o.id||'';o.email=o.email||o.preferred_email||o.school_email||o.student_email||'';o.class_level=o.class_level||'';return o}).filter(x=>x.email)}
 let lastResults=[];
 async function loadResults(){const sid=$('sectionSelect').value;if(!sid)return;try{const r=await api('results',{section_id:sid});renderOfferings(r.offerings||[],sid);const offerMap=new Map((r.offerings||[]).map(o=>[o.id,o]));const enrMap=new Map((r.enrollments||[]).map(e=>[e.id,e]));const rows=[];for(const s of r.sessions||[]){const e=enrMap.get(s.enrollment_id),o=offerMap.get(s.assignment_offering_id),c=Array.isArray(s.completion)?s.completion[0]:s.completion;if(!e||!o)continue;rows.push({student:e.profile.full_name||e.profile.email,email:e.profile.email,assignment:o.assignment.title,version:o.assignment.version,track:s.track||'',progress:c?c.completion_percentage:0,status:c?c.status:s.status,score:c?.score_percentage??'',verified:c?.verification_code||'',last:s.last_activity_at||''})}lastResults=rows;$('statComplete').textContent=rows.filter(x=>x.status==='complete'||x.status==='overridden').length;const tb=$('resultsBody');tb.innerHTML='';for(const x of rows){const tr=document.createElement('tr');tr.innerHTML=`<td>${esc(x.student)}<div class="muted small">${esc(x.email)}</div></td><td>${esc(x.assignment)} <span class="badge">v${x.version}</span></td><td>${esc(x.track)}</td><td>${x.progress}%</td><td><span class="badge ${x.status==='complete'?'ok':'warn'}">${esc(x.status)}</span></td><td>${x.score===''?'—':x.score+'%'}</td><td>${x.verified?'<span class="badge ok">yes</span>':'—'}</td><td class="small">${x.last?new Date(x.last).toLocaleString():'—'}</td>`;tb.appendChild(tr)}clearMsg('resultsMsg')}catch(e){msg('resultsMsg',formatErr(e),'error')}}
