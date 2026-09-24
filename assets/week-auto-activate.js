@@ -5,18 +5,26 @@
     folderPrefix: 'week',
     digits: 2,
     activeStatus: 'AVAILABLE NOW',
+    closedStatus: 'PARTICIPATION CLOSED',
+    scheduledStatus: 'OPENS LATER',
     inactiveStatus: 'COMING SOON',
     activeClass: 'is-available',
+    closedClass: 'is-closed',
+    scheduledClass: 'is-scheduled',
     inactiveClass: 'is-coming-soon',
     linkClass: 'auto-week-link',
     homeBase: new URL('./', document.baseURI),
+    statusEndpoint: 'https://irnrjzeejalbbqdrbzmj.supabase.co/functions/v1/course-participation-status',
+    refreshMs: 60000,
     specialLabels: {
       1: 'Open Weeks 1–2 →'
     }
   };
 
   const WEEK_RE = /^WEEKS?\s*(\d+)(?:\s*[–-]\s*(\d+))?\s*$/i;
-  const STATUS_RE = /^(COMING\s+SOON|AVAILABLE\s+NOW|CHECKING[.…]*)$/i;
+  const STATUS_RE = /^(COMING\s+SOON|AVAILABLE\s+NOW|PARTICIPATION\s+CLOSED|OPENS\s+LATER|CHECKING[.…]*)$/i;
+  let lastStatusMap = null;
+  let refreshTimer = null;
 
   function weekFolder(weekNumber) {
     return `${CONFIG.folderPrefix}${String(weekNumber).padStart(CONFIG.digits, '0')}`;
@@ -30,6 +38,20 @@
     return new URL(`${weekFolder(weekNumber)}/`, CONFIG.homeBase);
   }
 
+  function normalizePath(path) {
+    return String(path || '')
+      .replace(/^\/+/, '')
+      .replace(/\\/g, '/')
+      .replace(/\/+/g, '/')
+      .toLowerCase();
+  }
+
+  function folderFromPath(path) {
+    const normalized = normalizePath(path);
+    const match = normalized.match(/(?:^|\/)(week\d{2})(?:\/|$)/i);
+    return match ? match[1].toLowerCase() : null;
+  }
+
   async function exists(url) {
     try {
       let response = await fetch(url.href, {
@@ -38,7 +60,6 @@
         credentials: 'same-origin'
       });
 
-      // Fallback for hosts that do not support HEAD cleanly.
       if (response.status === 405 || response.status === 501) {
         response = await fetch(url.href, {
           method: 'GET',
@@ -48,8 +69,41 @@
       }
       return response.ok;
     } catch (error) {
-      console.warn('[MG628] Could not check weekly activity:', url.href, error);
-      return null; // Network error: preserve existing homepage state.
+      console.warn('[MG628] Could not check weekly HTML file:', url.href, error);
+      return null;
+    }
+  }
+
+  async function fetchPublicationStatus() {
+    try {
+      const response = await fetch(`${CONFIG.statusEndpoint}?t=${Date.now()}`, {
+        method: 'GET',
+        mode: 'cors',
+        cache: 'no-store',
+        credentials: 'omit',
+        headers: { 'Accept': 'application/json' }
+      });
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      const payload = await response.json();
+      if (!payload || !Array.isArray(payload.assignments)) throw new Error('Invalid status response');
+
+      const map = new Map();
+      for (const assignment of payload.assignments) {
+        const folder = folderFromPath(assignment.page_path);
+        if (!folder) continue;
+        map.set(folder, {
+          slug: assignment.slug || '',
+          title: assignment.title || '',
+          pagePath: normalizePath(assignment.page_path),
+          published: assignment.published === true,
+          status: assignment.status || (assignment.published ? 'available' : 'closed')
+        });
+      }
+      lastStatusMap = map;
+      return map;
+    } catch (error) {
+      console.warn('[MG628] Could not retrieve Supabase participation status:', error);
+      return null;
     }
   }
 
@@ -59,7 +113,6 @@
   }
 
   function findWeekLabelElements() {
-    // Prefer explicit data-week markup if it is added later.
     const explicit = [...document.querySelectorAll('[data-week]')]
       .map(card => {
         const week = Number(card.dataset.week);
@@ -99,7 +152,7 @@
     const nodes = [...card.querySelectorAll('span,p,small,strong,div')];
     return nodes.find(node => {
       const text = (node.textContent || '').trim();
-      return text.length <= 30 && STATUS_RE.test(text);
+      return text.length <= 40 && STATUS_RE.test(text);
     }) || null;
   }
 
@@ -135,10 +188,24 @@
     return link;
   }
 
+  function resetStateClasses(card) {
+    card.classList.remove(CONFIG.activeClass, CONFIG.closedClass, CONFIG.scheduledClass, CONFIG.inactiveClass);
+  }
+
+  function disableLink(card, week) {
+    const link = findOpenLink(card, week);
+    if (!link) return;
+    link.removeAttribute('href');
+    link.setAttribute('aria-disabled', 'true');
+    link.setAttribute('tabindex', '-1');
+    link.hidden = true;
+  }
+
   function setAvailable(card, week) {
+    resetStateClasses(card);
     card.classList.add(CONFIG.activeClass);
-    card.classList.remove(CONFIG.inactiveClass);
     card.dataset.available = 'true';
+    card.dataset.participationStatus = 'available';
 
     const status = ensureStatusElement(card);
     status.textContent = CONFIG.activeStatus;
@@ -152,43 +219,99 @@
     link.hidden = false;
   }
 
-  function setComingSoon(card, week) {
-    card.classList.add(CONFIG.inactiveClass);
-    card.classList.remove(CONFIG.activeClass);
+  function setClosed(card, week) {
+    resetStateClasses(card);
+    card.classList.add(CONFIG.closedClass);
     card.dataset.available = 'false';
+    card.dataset.participationStatus = 'closed';
+
+    const status = ensureStatusElement(card);
+    status.textContent = CONFIG.closedStatus;
+    status.setAttribute('aria-label', `Week ${week} participation closed`);
+    disableLink(card, week);
+  }
+
+  function setScheduled(card, week) {
+    resetStateClasses(card);
+    card.classList.add(CONFIG.scheduledClass);
+    card.dataset.available = 'false';
+    card.dataset.participationStatus = 'scheduled';
+
+    const status = ensureStatusElement(card);
+    status.textContent = CONFIG.scheduledStatus;
+    status.setAttribute('aria-label', `Week ${week} participation opens later`);
+    disableLink(card, week);
+  }
+
+  function setComingSoon(card, week) {
+    resetStateClasses(card);
+    card.classList.add(CONFIG.inactiveClass);
+    card.dataset.available = 'false';
+    card.dataset.participationStatus = 'coming-soon';
 
     const status = ensureStatusElement(card);
     status.textContent = CONFIG.inactiveStatus;
     status.setAttribute('aria-label', `Week ${week} coming soon`);
+    disableLink(card, week);
+  }
 
-    const link = findOpenLink(card, week);
-    if (link) {
-      link.removeAttribute('href');
-      link.setAttribute('aria-disabled', 'true');
-      link.setAttribute('tabindex', '-1');
-      link.hidden = true;
+  async function updateWeekCard(item, statusMap) {
+    const fileExists = await exists(weekIndexUrl(item.week));
+    if (fileExists === null) return;
+    if (fileExists === false) {
+      setComingSoon(item.card, item.week);
+      return;
     }
+
+    const folder = weekFolder(item.week).toLowerCase();
+    const backend = statusMap ? statusMap.get(folder) : null;
+
+    // Fail closed: an HTML file by itself never activates participation.
+    if (!backend) {
+      setComingSoon(item.card, item.week);
+      return;
+    }
+
+    if (backend.status === 'available' && backend.published) setAvailable(item.card, item.week);
+    else if (backend.status === 'scheduled' && backend.published) setScheduled(item.card, item.week);
+    else setClosed(item.card, item.week);
   }
 
-  async function activateWeekCard(item) {
-    const result = await exists(weekIndexUrl(item.week));
-    if (result === true) setAvailable(item.card, item.week);
-    else if (result === false) setComingSoon(item.card, item.week);
-    // null means a network error; preserve whatever was already on the page.
-  }
-
-  async function init() {
+  async function refresh() {
     const weekCards = findWeekLabelElements();
     if (!weekCards.length) {
       console.warn('[MG628] No weekly activity cards were found.');
       return;
     }
 
-    await Promise.all(weekCards.map(activateWeekCard));
+    const statusMap = await fetchPublicationStatus();
+    if (!statusMap) {
+      // Preserve current state if the status service is unavailable.
+      document.documentElement.dataset.weekStatusError = 'true';
+      return;
+    }
+
+    delete document.documentElement.dataset.weekStatusError;
+    await Promise.all(weekCards.map(item => updateWeekCard(item, statusMap)));
     document.documentElement.dataset.weekLinksChecked = 'true';
     window.dispatchEvent(new CustomEvent('mg628:week-links-updated', {
       detail: { weeksChecked: weekCards.map(x => x.week) }
     }));
+  }
+
+  function scheduleRefresh() {
+    if (refreshTimer) clearInterval(refreshTimer);
+    refreshTimer = setInterval(() => {
+      if (!document.hidden) refresh();
+    }, CONFIG.refreshMs);
+  }
+
+  function init() {
+    refresh();
+    scheduleRefresh();
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden) refresh();
+    });
   }
 
   if (document.readyState === 'loading') {
