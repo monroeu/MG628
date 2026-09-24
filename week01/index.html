@@ -1,11 +1,12 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Order Quantity Problem — MG628</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@400;500;600;700&family=Source+Sans+3:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>MG628 Weeks 1–2 Participation — Decision Models &amp; Order Quantity — MG628</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@400;500;600;700&amp;family=Source+Sans+3:wght@400;500;600&amp;family=IBM+Plex+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
 <style>
   :root{
     --paper:#F3EEDF;
@@ -369,743 +370,820 @@
   .course-topbar a{text-decoration:none;font-weight:600}.auth-panel{margin:22px 0;border:2px solid var(--teal);background:var(--white);padding:18px 20px;box-shadow:3px 3px 0 var(--teal-soft)}
   .auth-panel h3{margin:0 0 8px}.auth-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.auth-grid .full{grid-column:1/-1}.auth-panel input{width:100%;font:inherit;border:1px solid var(--ink);background:var(--paper);padding:9px 11px}.auth-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.auth-status{font-family:var(--font-mono);font-size:12.5px;margin-top:10px;color:var(--ink-soft)}.auth-status.ok{color:var(--teal);font-weight:600}.auth-status.err{color:var(--danger);font-weight:600}.server-progress{margin-top:10px;padding:10px 12px;background:var(--teal-soft);border-left:4px solid var(--teal);font-family:var(--font-mono);font-size:12.5px}
   @media(max-width:640px){.auth-grid{grid-template-columns:1fr}.auth-grid .full{grid-column:auto}.course-topbar{position:relative}}
+
+    .formula-list {
+      margin: 12px 0 8px;
+      display: grid;
+      gap: 7px;
+    }
+    .formula-line {
+      display: block;
+      line-height: 1.55;
+    }
+    .formula-note {
+      margin-top: 10px;
+    }
+
+/* REVISION 2026-09-24: flip cards, formula reasoning, and server-graded MC checkpoints */
+.study-round{margin:28px 0 46px}.study-round>h3{font-size:1.35rem;margin:0 0 8px}.study-round-intro{max-width:820px;color:#4e554f}.study-flip-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin:18px 0 24px}.study-flip{height:220px;perspective:1000px;cursor:pointer}.study-flip-inner{position:relative;width:100%;height:100%;transition:transform .5s;transform-style:preserve-3d}.study-flip.flipped .study-flip-inner{transform:rotateY(180deg)}.study-face{position:absolute;inset:0;backface-visibility:hidden;border:1px solid var(--line,#c9c1ae);padding:18px;background:#fffdf7;box-shadow:0 3px 10px rgba(0,0,0,.05);display:flex;flex-direction:column}.study-face small{font:700 11px/1.2 monospace;letter-spacing:.08em;color:#8c4b24}.study-face h3{margin:12px 0 8px;font-size:1.08rem}.study-face p{margin:0}.study-back{transform:rotateY(180deg);background:#eef4ed}.flip-hint{margin-top:auto;font:700 11px/1.2 monospace;color:#59625b}.mc-checkpoint{border:1px solid #c9c1ae;background:#faf8f0;padding:20px;margin:24px 0}.mc-checkpoint h3{margin-top:0}.mc-grid{display:grid;gap:14px}.mc-card{position:relative;border:1px solid #d8d2c4;background:#fff;padding:18px 18px 16px}.mc-number{position:absolute;right:12px;top:10px;font:700 11px monospace;color:#7f796d}.mc-card h4{margin:0 32px 12px 0;font-size:1rem}.mc-choices{display:grid;gap:7px}.mc-choice{display:flex;gap:8px;align-items:flex-start;padding:8px;border:1px solid #e1ddd2;background:#fff;cursor:pointer}.mc-choice:has(input:checked){border-color:#183c2d;background:#eef5f0}.mc-feedback{margin-top:10px;padding:8px 10px;border-left:3px solid #c0b8a5;background:#f7f5ef;font-size:.92rem}.mc-feedback.good{border-left-color:#2e6a47;background:#edf7f0}.mc-feedback.bad{border-left-color:#9b2c2c;background:#fff0f0}.formula-lab{border:2px solid #183c2d;background:#fffdf7;padding:22px;margin:24px 0}.formula-lab h3{margin-top:0}.formula-explain{border-top:1px solid #d8d2c4;padding:16px 0}.formula-explain:first-of-type{border-top:0}.formula-explain .formula-line{display:block;margin:6px 0 8px;padding:9px 10px;background:#f4efe3;border-left:4px solid #9b4a22}.formula-explain ul{margin:8px 0 0 22px}.name-guide{border:2px solid #9b4a22;background:#fff8ee;padding:20px;margin:18px 0}.name-guide ol{margin-left:20px}.name-map{width:100%;border-collapse:collapse;margin-top:12px}.name-map th,.name-map td{border:1px solid #d8d2c4;padding:8px;text-align:left}.name-map code{white-space:nowrap}
+
+
+/* MOBILE-FIRST UPGRADE 2026-09-24 */
+/* Base styles below target phones first; larger layouts expand with min-width queries. */
+html{-webkit-text-size-adjust:100%}
+body{font-size:16px;overflow-x:hidden}
+img,svg,video,canvas{max-width:100%;height:auto}
+.shell{display:grid;grid-template-columns:minmax(0,1fr);gap:0;width:100%;max-width:820px;margin:0 auto;padding:0 14px 76px}
+.rail{display:none}
+.hero{grid-column:auto;width:100%;padding:34px 0 26px}
+.hero h1{font-size:clamp(2rem,10vw,3rem);max-width:100%}
+.hero p.lede{font-size:1.05rem}
+.hero-ticket{width:100%;max-width:none;margin-top:24px;padding:16px;box-shadow:2px 2px 0 var(--rule)}
+.hero-ticket .row{gap:12px;align-items:flex-start}
+main{width:100%;min-width:0}
+section.step{padding:42px 0 6px;scroll-margin-top:14px}
+.step-head{gap:10px;flex-wrap:wrap}
+h2{font-size:1.65rem;line-height:1.15}
+h3{font-size:1.18rem;line-height:1.25}
+.box,.widget,.formula-lab,.name-guide,.mc-checkpoint{max-width:100%}
+.widget-body{padding:14px}
+.widget-bar{gap:10px;flex-wrap:wrap}
+.grid2,.auth-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:14px}
+.auth-grid .full{grid-column:auto}
+.auth-panel input,.auth-panel select,.auth-panel textarea,
+input[type=text],input[type=email],input[type=password],input[type=number],select,textarea{font-size:16px;min-height:44px}
+button,.btn,button.chip,button.run,.auth-actions button{min-height:44px;touch-action:manipulation}
+button.chip{padding:9px 12px}
+button.run{padding:10px 16px}
+.presets,.auth-actions{gap:9px}
+input[type=range]{height:10px}
+input[type=range]::-webkit-slider-thumb{width:24px;height:24px}
+input[type=range]::-moz-range-thumb{width:24px;height:24px}
+.study-flip-grid{grid-template-columns:minmax(0,1fr);gap:12px}
+.study-flip{height:210px;touch-action:manipulation}
+.study-face{padding:16px}
+.mc-checkpoint{padding:15px}
+.mc-card{padding:16px 13px 14px}
+.mc-choice{min-height:48px;padding:11px 10px;align-items:center;border-radius:6px;touch-action:manipulation}
+.mc-choice input{width:20px;height:20px;flex:0 0 auto}
+.formula-lab,.name-guide{padding:16px}
+.formula-explain .formula-line,.formula-line{overflow-x:auto;white-space:nowrap;-webkit-overflow-scrolling:touch;padding:10px}
+code{overflow-wrap:anywhere}
+.sheet,.name-map{display:block;width:100%;max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.sheet th,.sheet td,.name-map th,.name-map td{white-space:nowrap}
+.receipt .r{gap:12px}
+.course-topbar{position:relative}
+
+@media (min-width:480px){
+  .shell{padding-inline:20px}
+  .study-flip-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .hero-ticket{max-width:540px}
+}
+@media (min-width:641px){
+  body{font-size:17px}
+  .shell{padding-inline:24px;padding-bottom:96px}
+  .grid2,.auth-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}
+  .auth-grid .full{grid-column:1/-1}
+  .widget-body{padding:20px}
+  .mc-checkpoint{padding:20px}
+}
+@media (min-width:881px){
+  .shell{grid-template-columns:220px minmax(0,760px);justify-content:center;gap:56px;max-width:1100px;padding:0 24px 120px}
+  .rail{display:block;position:sticky;top:28px;align-self:start;padding-top:120px}
+  .hero{grid-column:1/-1;max-width:760px;padding:70px 0 40px}
+  section.step{padding-top:64px;scroll-margin-top:24px}
+  .study-flip-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media (hover:none){
+  .rail a:hover,button.chip:hover,button.run:hover{filter:none}
+}
+
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.4/dist/umd/supabase.min.js"></script>
-</head>
+<style>
+.section-sequence{display:inline-block;margin:0 0 10px;padding:5px 9px;border:1px solid #9b4a22;background:#fff8ee;color:#793716;font:800 11px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.09em}
+.section-review{margin-top:30px;padding-top:22px;border-top:3px solid #183c2d}.section-review>h3{margin:0 0 6px;color:#183c2d}.section-review-intro{margin:0 0 16px;color:#586057}.inline-checkpoint{margin-bottom:0}.lesson-section{scroll-margin-top:18px}
+</style></head>
 <body>
-<div class="course-topbar"><a href="../../index.html" aria-label="Return to MG628 course home">← Course Home</a><span>MG628 · Interactive Participation</span></div>
-
+<div class="course-topbar"><a aria-label="Return to MG628 course home" href="../../index.html">← Course Home</a><span>MG628 · Interactive Participation</span></div>
 <a class="skip-link" href="#main-content">Skip to main content</a>
-<div class="progress-fill" id="progressFill" aria-hidden="true"></div>
+<div aria-hidden="true" class="progress-fill" id="progressFill"></div>
 <div aria-live="polite" class="visually-hidden" id="liveAnnounce"></div>
-
 <div class="shell">
-
-  <header class="hero">
-    <p class="kicker">MG628 — Data Analysis for Managerial Decisions</p>
-    <h1>How many should you bake this morning?</h1>
-    <p class="lede">A hands-on walkthrough of the order-quantity model behind your Weeks 1–2
+<header class="hero">
+<p class="kicker">MG628 — Weeks 1–2 Participation</p>
+<h1>Decision Models: from analytics concepts to the order-quantity decision</h1>
+<p class="lede">A hands-on walkthrough of the order-quantity model behind your Weeks 1–2
     assignment. Move the sliders, watch the numbers move, then build the same
     logic yourself in the workbook. Every section explains not just <em>how</em>
     the formula works, but <em>why</em> it's the right formula for a manager to use.</p>
-    <p style="font-size:14.5px; color:var(--ink-soft); max-width:56ch;">Plan for
+<p style="font-size:14.5px; color:var(--ink-soft); max-width:56ch;">Plan for
     about 30 minutes start to finish. Short on time? Sections marked
     <span class="core-mark" style="font-weight:600;">·core</span> in the menu —
     03, 06, and 09 — carry the load-bearing ideas.</p>
-    <div style="margin:18px 0 6px;">
-      <p style="font-family:var(--font-mono); font-size:12px; color:var(--ink-soft); margin:0 0 8px;">WHICH COURSE TRACK ARE YOU IN? (SETS THE NUMBERS BELOW)</p>
-      <div id="hero-track-toggle"></div>
-    </div>
-
-    <div class="auth-panel" id="authPanel" aria-label="Student sign in and participation status">
-      <h3>Student participation login</h3>
-      <p style="margin-bottom:12px;">Sign in with the same school email listed on your class roster. Your section is assigned by the instructor roster; students cannot choose a different section.</p>
-      <div class="auth-grid" id="authFields">
-        <div><label for="auth-name"><strong>Full name</strong></label><input id="auth-name" type="text" autocomplete="name" placeholder="Your full name"></div>
-        <div><label for="auth-email"><strong>School email</strong></label><input id="auth-email" type="email" autocomplete="email" placeholder="your.email@monroeu.edu"></div>
-        <div class="full"><label for="auth-password"><strong>Password</strong></label><input id="auth-password" type="password" autocomplete="current-password" minlength="8" placeholder="At least 8 characters"></div>
-      </div>
-      <div class="auth-actions"><button class="run" id="auth-signin" type="button">Sign in</button><button class="chip" id="auth-signup" type="button">Create account</button><button class="chip" id="auth-signout" type="button" hidden>Sign out</button></div>
-      <div id="auth-status" class="auth-status" aria-live="polite">Sign in before completing required participation items so your work is recorded.</div>
-      <div id="server-progress" class="server-progress" hidden></div>
-    </div>
-    <div class="hero-ticket" id="heroTicket" role="group" aria-label="Live model preview, updates as you use Section 3">
-      <div class="row"><span id="ht-q-label">Bake (Q)</span><span id="ht-q">170 muffins</span></div>
-      <div class="row"><span>Demand (D)</span><span id="ht-d">180 customers</span></div>
-      <div class="row"><span>Today's profit</span><span id="ht-profit">$—</span></div>
-    </div>
-  </header>
-
-  <nav class="rail" aria-label="Section navigation">
-    <p class="rail-title" id="railTitle">NINE STEPS <span style="color:var(--ink-soft); font-weight:normal;">· ~30 min</span></p>
-    <ol id="railList" aria-labelledby="railTitle">
-      <li><a href="#s1"><span class="n" aria-hidden="true">01</span>The perishable problem</a></li>
-      <li><a href="#s2"><span class="n" aria-hidden="true">02</span>Naming your inputs</a></li>
-      <li><a href="#s3"><span class="n" aria-hidden="true">03</span>The capping logic <span class="core-mark">·core</span></a></li>
-      <li><a href="#s4"><span class="n" aria-hidden="true">04</span>Scenario analysis</a></li>
-      <li><a href="#s5"><span class="n" aria-hidden="true">05</span>Demand probabilities</a></li>
-      <li><a href="#s6"><span class="n" aria-hidden="true">06</span>Expected profit <span class="core-mark">·core</span></a></li>
-      <li><a href="#s7"><span class="n" aria-hidden="true">07</span>Underage &amp; overage</a></li>
-      <li><a href="#s8"><span class="n" aria-hidden="true">08</span>Finding breakeven</a></li>
-      <li><a href="#s9"><span class="n" aria-hidden="true">09</span>Beyond profit <span class="core-mark">·core</span></a></li>
-    </ol>
-    <p id="railProgress" style="font-family:var(--font-mono); font-size:11px; color:var(--ink-soft); margin-top:16px;">0 / 10 self-checks opened</p>
-    <div id="rail-track-toggle" style="margin-top:14px; transform:scale(0.85); transform-origin:left top;"></div>
-  </nav>
-
-  <main id="main-content" tabindex="-1">
-    <section class="step" id="s1">
-      <div class="step-head"><span class="step-num">01</span></div>
-      <h2>Why muffins behave like hospital beds</h2>
-      <p>Morning Brew Café throws out unsold muffins at the end of the day, and
+<div style="margin:18px 0 6px;">
+<p style="font-family:var(--font-mono); font-size:12px; color:var(--ink-soft); margin:0 0 8px;">WHICH COURSE TRACK ARE YOU IN? (SETS THE NUMBERS BELOW)</p>
+<div id="hero-track-toggle"></div>
+</div>
+<div aria-label="Student sign in and participation status" class="auth-panel" id="authPanel">
+<h3>Student participation login</h3>
+<p style="margin-bottom:12px;">Sign in with the same school email listed on your class roster. Your section is assigned by the instructor roster; students cannot choose a different section.</p>
+<div class="auth-grid" id="authFields">
+<div><label for="auth-name"><strong>Full name</strong></label><input autocomplete="name" id="auth-name" placeholder="Your full name" type="text"/></div>
+<div><label for="auth-email"><strong>School email</strong></label><input autocomplete="email" id="auth-email" placeholder="your.email@monroeu.edu" type="email"/></div>
+<div class="full"><label for="auth-password"><strong>Password</strong></label><input autocomplete="current-password" id="auth-password" minlength="8" placeholder="At least 8 characters" type="password"/></div>
+</div>
+<div class="auth-actions"><button class="run" id="auth-signin" type="button">Sign in</button><button class="chip" id="auth-signup" type="button">Create account</button><button class="chip" hidden="" id="auth-signout" type="button">Sign out</button></div>
+<div aria-live="polite" class="auth-status" id="auth-status">Sign in before completing required participation items so your work is recorded.</div>
+<div class="server-progress" hidden="" id="server-progress"></div>
+</div>
+<div aria-label="Live model preview, updates as you use Section 3" class="hero-ticket" id="heroTicket" role="group">
+<div class="row"><span id="ht-q-label">Bake (Q)</span><span id="ht-q">170 muffins</span></div>
+<div class="row"><span>Demand (D)</span><span id="ht-d">180 customers</span></div>
+<div class="row"><span>Today's profit</span><span id="ht-profit">$—</span></div>
+</div>
+</header>
+<nav aria-label="Section navigation" class="rail">
+<p class="rail-title" id="railTitle">LECTURE + NINE STEPS <span style="color:var(--ink-soft); font-weight:normal;">· ~30 min</span></p>
+<ol aria-labelledby="railTitle" id="railList">
+<li><a href="#lecture"><span aria-hidden="true" class="n">00</span>Lecture foundation</a></li>
+<li><a href="#s1"><span aria-hidden="true" class="n">01</span>The perishable problem</a></li>
+<li><a href="#s2"><span aria-hidden="true" class="n">02</span>Naming your inputs</a></li>
+<li><a href="#s3"><span aria-hidden="true" class="n">03</span>The capping logic <span class="core-mark">·core</span></a></li>
+<li><a href="#s4"><span aria-hidden="true" class="n">04</span>Scenario analysis</a></li>
+<li><a href="#s5"><span aria-hidden="true" class="n">05</span>Demand probabilities</a></li>
+<li><a href="#s6"><span aria-hidden="true" class="n">06</span>Expected profit <span class="core-mark">·core</span></a></li>
+<li><a href="#s7"><span aria-hidden="true" class="n">07</span>Underage &amp; overage</a></li>
+<li><a href="#s8"><span aria-hidden="true" class="n">08</span>Finding breakeven</a></li>
+<li><a href="#s9"><span aria-hidden="true" class="n">09</span>Beyond profit <span class="core-mark">·core</span></a></li>
+</ol>
+<p id="railProgress" style="font-family:var(--font-mono); font-size:11px; color:var(--ink-soft); margin-top:16px;">0 / 10 self-checks opened</p>
+<div id="rail-track-toggle" style="margin-top:14px; transform:scale(0.85); transform-origin:left top;"></div>
+</nav>
+<main id="main-content" tabindex="-1">
+<section class="step lesson-section" id="lecture">
+<div class="step-head"><span class="step-num">00</span></div>
+<div class="section-sequence">SECTION 1 OF 10</div><h2>Lecture foundation: how managers turn data into decisions</h2>
+<p>Your Week 1 lecture establishes the concepts that sit underneath the spreadsheet model. Read these first, then use the order-quantity exercise to apply them.</p>
+<div class="grid2">
+<div class="box why"><span class="tag">BUSINESS ANALYTICS</span><p><strong>Business Analytics</strong> is the methodical exploration of organizational data to produce actionable insight. The goal is not a chart; the goal is a better decision.</p></div>
+<div class="box why"><span class="tag">BI VS. ANALYTICS</span><p><strong>Business Intelligence (BI)</strong> asks what happened. <strong>Business Analytics</strong> goes further: why did it happen, what will happen next, and what should we do?</p></div>
+</div>
+<h3>The three pillars</h3>
+<div class="grid3">
+<div class="box"><span class="tag">DESCRIPTIVE</span><p><strong>What happened?</strong><br/>PivotTables, summary statistics, dashboards.</p></div>
+<div class="box"><span class="tag">PREDICTIVE</span><p><strong>What will happen?</strong><br/>Regression, forecasting, machine learning.</p></div>
+<div class="box"><span class="tag">PRESCRIPTIVE</span><p><strong>What should we do?</strong><br/>Optimization, simulation, decision models.</p></div>
+</div>
+<h3>DDDM: Question → Collection → Analysis → Interpretation → Action</h3>
+<p>The Data-Driven Decision-Making framework begins with a managerial question, gathers relevant evidence, analyzes it, translates results into a plain-language “so what,” then implements and measures the action.</p>
+<h3>BADIR: Business Objective → Analytics Approach → Data → Insights → Results</h3>
+<p>BADIR reinforces the same discipline: define the business objective first, choose the analytical approach, collect only relevant data, generate decision-ready insight, then act and measure results.</p>
+<h3>Why the order-quantity model belongs here</h3>
+<p>The muffin/vaccine assignment is a <strong>prescriptive decision model under uncertainty</strong>. Demand is uncertain, quantity is controllable, overage and underage create competing costs, and the spreadsheet helps management choose the best quantity within real-world constraints.</p>
+<div class="box excel">
+<span class="tag">CHOOSE THE RIGHT EXCEL TOOL</span>
+<p><strong>PivotTable</strong> — summarize historical demand.</p>
+<p><strong>Goal Seek</strong> — find the input that produces a target output, such as break-even profit.</p>
+<p><strong>Solver</strong> — optimize a decision variable subject to an objective and constraints.</p>
+<p><strong>Scenario Manager / What-If tools</strong> — compare alternative assumptions and demand conditions.</p>
+</div>
+<div class="section-review"><h3>Flip Cards — Review This Section</h3><p class="section-review-intro">Open the cards for this section, then complete its multiple-choice checkpoint before moving on.</p><div class="study-flip-grid"><div aria-label="Flip card: Business Analytics" class="study-flip" data-card-key="W12-F01" role="button" tabindex="0"><div class="study-flip-inner"><div class="study-face study-front"><small>FLIP CARD</small><h3>Business Analytics</h3><p>What is the central purpose?</p><span class="flip-hint">Click to reveal</span></div><div class="study-face study-back"><small>WHY IT MATTERS</small><p>Turn organizational data into actionable insight that supports a managerial decision.</p><span class="flip-hint">Click to return</span></div></div></div><div aria-label="Flip card: Business Intelligence" class="study-flip" data-card-key="W12-F02" role="button" tabindex="0"><div class="study-flip-inner"><div class="study-face study-front"><small>FLIP CARD</small><h3>Business Intelligence</h3><p>How is BI different?</p><span class="flip-hint">Click to reveal</span></div><div class="study-face study-back"><small>WHY IT MATTERS</small><p>BI mainly summarizes what happened through reports, dashboards, and scorecards; analytics goes further into why, what next, and what action.</p><span class="flip-hint">Click to return</span></div></div></div><div aria-label="Flip card: Descriptive Analytics" class="study-flip" data-card-key="W12-F03" role="button" tabindex="0"><div class="study-flip-inner"><div class="study-face study-front"><small>FLIP CARD</small><h3>Descriptive Analytics</h3><p>What question does it answer?</p><span class="flip-hint">Click to reveal</span></div><div class="study-face study-back"><small>WHY IT MATTERS</small><p>What happened? It summarizes historical performance with tools such as PivotTables, dashboards, and summary statistics.</p><span class="flip-hint">Click to return</span></div></div></div><div aria-label="Flip card: Predictive Analytics" class="study-flip" data-card-key="W12-F04" role="button" tabindex="0"><div class="study-flip-inner"><div class="study-face study-front"><small>FLIP CARD</small><h3>Predictive Analytics</h3><p>What question does it answer?</p><span class="flip-hint">Click to reveal</span></div><div class="study-face study-back"><small>WHY IT MATTERS</small><p>What is likely to happen? It uses historical patterns, regression, forecasting, or machine learning to estimate future outcomes.</p><span class="flip-hint">Click to return</span></div></div></div><div aria-label="Flip card: Prescriptive Analytics" class="study-flip" data-card-key="W12-F05" role="button" tabindex="0"><div class="study-flip-inner"><div class="study-face study-front"><small>FLIP CARD</small><h3>Prescriptive Analytics</h3><p>What question does it answer?</p><span class="flip-hint">Click to reveal</span></div><div class="study-face study-back"><small>WHY IT MATTERS</small><p>What should we do? It recommends an action using optimization, simulation, or decision models.</p><span class="flip-hint">Click to return</span></div></div></div><div aria-label="Flip card: DDDM" class="study-flip" data-card-key="W12-F06" role="button" tabindex="0"><div class="study-flip-inner"><div class="study-face study-front"><small>FLIP CARD</small><h3>DDDM</h3><p>What is the sequence?</p><span class="flip-hint">Click to reveal</span></div><div class="study-face study-back"><small>WHY IT MATTERS</small><p>Question → Collection → Analysis → Interpretation → Action. The last step includes measuring whether the decision worked.</p><span class="flip-hint">Click to return</span></div></div></div><div aria-label="Flip card: BADIR" class="study-flip" data-card-key="W12-F07" role="button" tabindex="0"><div class="study-flip-inner"><div class="study-face study-front"><small>FLIP CARD</small><h3>BADIR</h3><p>What does it stand for?</p><span class="flip-hint">Click to reveal</span></div><div class="study-face study-back"><small>WHY IT MATTERS</small><p>Business Objective → Analytics Approach → Data Collection → Insights Generation → Results Action.</p><span class="flip-hint">Click to return</span></div></div></div></div><div class="mc-checkpoint inline-checkpoint"><h3>Section 1 Multiple-Choice Checkpoint</h3><p>Answer these questions now while the lesson is fresh.</p><div class="mc-grid"><div class="mc-card" data-question-key="W12-MC05"><div class="mc-number">5</div><h4>Which analytics type answers “What should we do?”</h4><div class="mc-choices"><label class="mc-choice"><input name="w12-r1-5" type="radio" value="a"/> <span><strong>A.</strong> Descriptive</span></label><label class="mc-choice"><input name="w12-r1-5" type="radio" value="b"/> <span><strong>B.</strong> Predictive</span></label><label class="mc-choice"><input name="w12-r1-5" type="radio" value="c"/> <span><strong>C.</strong> Prescriptive</span></label><label class="mc-choice"><input name="w12-r1-5" type="radio" value="d"/> <span><strong>D.</strong> Diagnostic only</span></label></div><div aria-live="polite" class="mc-feedback">Choose an answer.</div></div><div class="mc-card" data-question-key="W12-MC06"><div class="mc-number">1</div><h4>In the DDDM process, what should happen after interpretation?</h4><div class="mc-choices"><label class="mc-choice"><input name="w12-r2-1" type="radio" value="a"/> <span><strong>A.</strong> Collect the same data again</span></label><label class="mc-choice"><input name="w12-r2-1" type="radio" value="b"/> <span><strong>B.</strong> Action and measurement</span></label><label class="mc-choice"><input name="w12-r2-1" type="radio" value="c"/> <span><strong>C.</strong> Delete the model</span></label><label class="mc-choice"><input name="w12-r2-1" type="radio" value="d"/> <span><strong>D.</strong> Stop because the analysis is complete</span></label></div><div aria-live="polite" class="mc-feedback">Choose an answer.</div></div></div></div></div></section>
+<section class="step lesson-section" id="s1">
+<div class="step-head"><span class="step-num">01</span></div>
+<div class="section-sequence">SECTION 2 OF 10</div><h2>Why muffins behave like hospital beds</h2>
+<p>Morning Brew Café throws out unsold muffins at the end of the day, and
       turns away customers when it runs out. That combination — a product that
       expires <em>and</em> a cost for not having enough of it — is called
       <strong>perishable inventory</strong>. It shows up anywhere a manager has
       to commit to a quantity before knowing exactly how much will be needed:
       flu doses ordered before flu season, nurses scheduled before patients
       arrive, hotel rooms held before the night's bookings are final.</p>
-      <p>Click each decision below to check whether it follows the same
+<p>Click each decision below to check whether it follows the same
       logic as the muffin problem.</p>
-
-      <div class="widget" id="w1">
-        <div class="widget-bar"><span>CLASSIFY THE DECISION</span><span id="w1-score">0 / 4 checked</span></div>
-        <div class="widget-body">
-          <div id="w1-items"></div>
-        </div>
-      </div>
-
-      <div class="box why">
-        <span class="tag">WHY THIS MATTERS</span>
-        <p>Every "perishable" decision has the same two failure modes:
+<div class="widget" id="w1">
+<div class="widget-bar"><span>CLASSIFY THE DECISION</span><span id="w1-score">0 / 4 checked</span></div>
+<div class="widget-body">
+<div id="w1-items"></div>
+</div>
+</div>
+<div class="box why">
+<span class="tag">WHY THIS MATTERS</span>
+<p>Every "perishable" decision has the same two failure modes:
         <strong>overcapacity</strong> (you bought/made more than anyone
         wanted — waste) and <strong>undercapacity</strong> (you didn't have
         enough — lost revenue, or worse). The whole point of this model is to
         find the quantity that balances those two costs, not to eliminate
         either one. There is no order quantity that avoids both risks at once
         — accepting that is the first step to modeling it well.</p>
-      </div>
-
-      <details class="check">
-        <summary>Self-check: what makes a resource "perishable" in this sense?</summary>
-        <div class="a">
-          <p>It's not about spoilage in the literal sense — it's about
+</div>
+<details class="check">
+<summary>Self-check: what makes a resource "perishable" in this sense?</summary>
+<div class="a">
+<p>It's not about spoilage in the literal sense — it's about
           <strong>time-boxing</strong>. Once the window closes (2pm for
           muffins, the appointment slot for an MRI, the shift for a nurse),
           any unused capacity is gone for good and any unmet demand is lost
           or delayed. Printer paper isn't perishable this way: unsold paper
           just waits for tomorrow's demand.</p>
-        </div>
-      </details>
-
-      <div class="exercise" id="ex1">
-        <div class="exercise-bar"><span>EXERCISE 1 — REQUIRED FOR PARTICIPATION</span><span class="status" id="ex1-status">not started</span></div>
-        <div class="exercise-body">
-          <label for="ex1-input">Describe one perishable-inventory decision from your own life, work, or the news — something with a real overcapacity/undercapacity trade-off — and say what happens to unused capacity (its "salvage value").</label>
-          <textarea id="ex1-input" aria-describedby="ex1-count ex1-feedback" placeholder="e.g., A hotel holding rooms for a conference that under-books…"></textarea>
-          <div class="char-count" id="ex1-count">0 characters</div>
-          <div class="feedback" id="ex1-feedback" aria-live="polite"></div>
-        </div>
-      </div>
-    </section>
-
-    <section class="step" id="s2">
-      <div class="step-head"><span class="step-num">02</span></div>
-      <h2>Naming your inputs before you model anything</h2>
-      <p>Before any formula gets written, a good spreadsheet model puts every
+</div>
+</details>
+<div class="exercise" id="ex1">
+<div class="exercise-bar"><span>EXERCISE 1 — REQUIRED FOR PARTICIPATION</span><span class="status" id="ex1-status">not started</span></div>
+<div class="exercise-body">
+<label for="ex1-input">Describe one perishable-inventory decision from your own life, work, or the news — something with a real overcapacity/undercapacity trade-off — and say what happens to unused capacity (its "salvage value").</label>
+<textarea aria-describedby="ex1-count ex1-feedback" id="ex1-input" placeholder="e.g., A hotel holding rooms for a conference that under-books…"></textarea>
+<div class="char-count" id="ex1-count">0 characters</div>
+<div aria-live="polite" class="feedback" id="ex1-feedback"></div>
+</div>
+</div>
+<div class="section-review"><h3>Flip Cards — Review This Section</h3><p class="section-review-intro">Open the cards for this section, then complete its multiple-choice checkpoint before moving on.</p><div class="study-flip-grid"><div aria-label="Flip card: Model" class="study-flip" data-card-key="W12-F08" role="button" tabindex="0"><div class="study-flip-inner"><div class="study-face study-front"><small>FLIP CARD</small><h3>Model</h3><p>What is a model?</p><span class="flip-hint">Click to reveal</span></div><div class="study-face study-back"><small>WHY IT MATTERS</small><p>A simplified representation of a real system that lets a manager test decisions before committing resources.</p><span class="flip-hint">Click to return</span></div></div></div><div aria-label="Flip card: Decision Variable" class="study-flip" data-card-key="W12-F09" role="button" tabindex="0"><div class="study-flip-inner"><div class="study-face study-front"><small>FLIP CARD</small><h3>Decision Variable</h3><p>What does management control?</p><span class="flip-hint">Click to reveal</span></div><div class="study-face study-back"><small>WHY IT MATTERS</small><p>A controllable input such as quantity baked, doses ordered, staff scheduled, or capacity reserved.</p><span class="flip-hint">Click to return</span></div></div></div><div aria-label="Flip card: Uncertain Variable" class="study-flip" data-card-key="W12-F10" role="button" tabindex="0"><div class="study-flip-inner"><div class="study-face study-front"><small>FLIP CARD</small><h3>Uncertain Variable</h3><p>What is outside management control?</p><span class="flip-hint">Click to reveal</span></div><div class="study-face study-back"><small>WHY IT MATTERS</small><p>A value such as demand that can vary even after management chooses capacity.</p><span class="flip-hint">Click to return</span></div></div></div><div aria-label="Flip card: Constraint" class="study-flip" data-card-key="W12-F11" role="button" tabindex="0"><div class="study-flip-inner"><div class="study-face study-front"><small>FLIP CARD</small><h3>Constraint</h3><p>Why does it matter?</p><span class="flip-hint">Click to reveal</span></div><div class="study-face study-back"><small>WHY IT MATTERS</small><p>A boundary such as budget, staffing, storage, safety, or capacity that limits feasible decisions.</p><span class="flip-hint">Click to return</span></div></div></div><div aria-label="Flip card: Scenario" class="study-flip" data-card-key="W12-F12" role="button" tabindex="0"><div class="study-flip-inner"><div class="study-face study-front"><small>FLIP CARD</small><h3>Scenario</h3><p>What does it represent?</p><span class="flip-hint">Click to reveal</span></div><div class="study-face study-back"><small>WHY IT MATTERS</small><p>A deliberate combination of assumptions such as low, expected, or high demand used to test model performance.</p><span class="flip-hint">Click to return</span></div></div></div><div aria-label="Flip card: Sensitivity Analysis" class="study-flip" data-card-key="W12-F13" role="button" tabindex="0"><div class="study-flip-inner"><div class="study-face study-front"><small>FLIP CARD</small><h3>Sensitivity Analysis</h3><p>Why change one assumption?</p><span class="flip-hint">Click to reveal</span></div><div class="study-face study-back"><small>WHY IT MATTERS</small><p>To learn how strongly the decision depends on that assumption and where management risk is concentrated.</p><span class="flip-hint">Click to return</span></div></div></div></div><div class="mc-checkpoint inline-checkpoint"><h3>Section 2 Multiple-Choice Checkpoint</h3><p>Answer these questions now while the lesson is fresh.</p><div class="mc-grid"><div class="mc-card" data-question-key="W12-MC15"><div class="mc-number">5</div><h4>Which statement best describes model validation?</h4><div class="mc-choices"><label class="mc-choice"><input name="w12-r3-5" type="radio" value="a"/> <span><strong>A.</strong> A spreadsheet is valid if Excel shows no error messages</span></label><label class="mc-choice"><input name="w12-r3-5" type="radio" value="b"/> <span><strong>B.</strong> Validation checks formulas, units, edge cases, reconciliations, and managerial reasonableness</span></label><label class="mc-choice"><input name="w12-r3-5" type="radio" value="c"/> <span><strong>C.</strong> Validation means using more colors</span></label><label class="mc-choice"><input name="w12-r3-5" type="radio" value="d"/> <span><strong>D.</strong> Validation is the same as forecasting</span></label></div><div aria-live="polite" class="mc-feedback">Choose an answer.</div></div></div></div></div></section>
+<section class="step lesson-section" id="s2">
+<div class="step-head"><span class="step-num">02</span></div>
+<div class="section-sequence">SECTION 3 OF 10</div><h2>Naming your inputs before you model anything</h2>
+<p>Before any formula gets written, a good spreadsheet model puts every
       number that could plausibly change into its own labeled cell — never
       buried inside a formula. This is what lets you ask "what if the setup
       cost were higher?" by editing one cell instead of rewriting formulas.</p>
-      <p>Try changing the values below and watch the mini-sheet update. These
+<p>Try changing the values below and watch the mini-sheet update. These
       six cells are the entire input side of your model.</p>
-
-      <div class="widget" id="w2">
-        <div class="widget-bar"><span>INPUTS</span><span id="s2-cellref">mirrors Business_Model!B5:B10</span></div>
-        <div class="widget-body">
-          <div id="s2-toggle" style="margin-bottom:18px;"></div>
-          <table class="sheet" style="margin-bottom:18px;">
-            <tr><th>cell</th><th>label</th><th>value</th></tr>
-            <tr><td class="addr">B5</td><td id="s2-lbl-F">Fixed daily setup cost (F)</td><td class="num" id="s2-F">$40.00</td></tr>
-            <tr><td class="addr">B6</td><td id="s2-lbl-c">Variable cost per muffin (c)</td><td class="num" id="s2-c">$1.20</td></tr>
-            <tr><td class="addr">B7</td><td id="s2-lbl-p">Full-price selling price (p)</td><td class="num" id="s2-p">$3.50</td></tr>
-            <tr><td class="addr">B8</td><td id="s2-lbl-v">Discount / salvage price (v)</td><td class="num" id="s2-v">$1.00</td></tr>
-            <tr><td class="addr">B9</td><td id="s2-lbl-Q">Muffins baked, decision (Q)</td><td class="num" id="s2-Q">170</td></tr>
-            <tr><td class="addr">B10</td><td id="s2-lbl-D">Demand today (D)</td><td class="num" id="s2-D">180</td></tr>
-          </table>
-          <div class="grid2">
-            <div class="control"><div class="control-label"><b>Fixed setup cost (F)</b><span class="val" id="s2-F-l">$40.00</span></div>
-              <input type="range" id="s2-F-r" aria-label="Fixed setup cost" min="0" max="120" step="5" value="40"></div>
-            <div class="control"><div class="control-label"><b>Variable cost (c)</b><span class="val" id="s2-c-l">$1.20</span></div>
-              <input type="range" id="s2-c-r" aria-label="Variable cost per muffin" min="0" max="3" step="0.1" value="1.2"></div>
-            <div class="control"><div class="control-label"><b>Full price (p)</b><span class="val" id="s2-p-l">$3.50</span></div>
-              <input type="range" id="s2-p-r" aria-label="Full price" min="1" max="6" step="0.1" value="3.5"></div>
-            <div class="control"><div class="control-label"><b>Discount price (v)</b><span class="val" id="s2-v-l">$1.00</span></div>
-              <input type="range" id="s2-v-r" aria-label="Discount price" min="0" max="3" step="0.1" value="1"></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="box excel">
-        <span class="tag">BUILD THIS NEXT, IN EXCEL</span>
-        <p>In your workbook, put these six labels in column A and their
+<div class="widget" id="w2">
+<div class="widget-bar"><span>INPUTS</span><span id="s2-cellref">mirrors Business_Model!B5:B10</span></div>
+<div class="widget-body">
+<div id="s2-toggle" style="margin-bottom:18px;"></div>
+<table class="sheet" style="margin-bottom:18px;">
+<tr><th>cell</th><th>label</th><th>value</th></tr>
+<tr><td class="addr">B5</td><td id="s2-lbl-F">Fixed daily setup cost (F)</td><td class="num" id="s2-F">$40.00</td></tr>
+<tr><td class="addr">B6</td><td id="s2-lbl-c">Variable cost per muffin (c)</td><td class="num" id="s2-c">$1.20</td></tr>
+<tr><td class="addr">B7</td><td id="s2-lbl-p">Full-price selling price (p)</td><td class="num" id="s2-p">$3.50</td></tr>
+<tr><td class="addr">B8</td><td id="s2-lbl-v">Discount / salvage price (v)</td><td class="num" id="s2-v">$1.00</td></tr>
+<tr><td class="addr">B9</td><td id="s2-lbl-Q">Muffins baked, decision (Q)</td><td class="num" id="s2-Q">170</td></tr>
+<tr><td class="addr">B10</td><td id="s2-lbl-D">Demand today (D)</td><td class="num" id="s2-D">180</td></tr>
+</table>
+<div class="grid2">
+<div class="control"><div class="control-label"><b>Fixed setup cost (F)</b><span class="val" id="s2-F-l">$40.00</span></div>
+<input aria-label="Fixed setup cost" id="s2-F-r" max="120" min="0" step="5" type="range" value="40"/></div>
+<div class="control"><div class="control-label"><b>Variable cost (c)</b><span class="val" id="s2-c-l">$1.20</span></div>
+<input aria-label="Variable cost per muffin" id="s2-c-r" max="3" min="0" step="0.1" type="range" value="1.2"/></div>
+<div class="control"><div class="control-label"><b>Full price (p)</b><span class="val" id="s2-p-l">$3.50</span></div>
+<input aria-label="Full price" id="s2-p-r" max="6" min="1" step="0.1" type="range" value="3.5"/></div>
+<div class="control"><div class="control-label"><b>Discount price (v)</b><span class="val" id="s2-v-l">$1.00</span></div>
+<input aria-label="Discount price" id="s2-v-r" max="3" min="0" step="0.1" type="range" value="1"/></div>
+</div>
+</div>
+</div>
+<div class="box excel">
+<span class="tag">BUILD THIS NEXT, IN EXCEL</span>
+<p>In your workbook, put these six labels in column A and their
         values in column B (cells <span class="cell-ref">B5:B10</span>).
         Nothing gets typed as a raw number anywhere else in the sheet from
         this point on — every formula below references these six cells.</p>
-      </div>
-
-      <details class="check">
-        <summary>Self-check: why not just type 40 directly into the profit formula?</summary>
-        <div class="a"><p>Because next week you'll want to ask "what if rent
+</div>
+<div class="name-guide" id="named-ranges-guide"><span class="tag">SPREADSHEET MODELING SKILL — NAME THE CELLS AND RANGES</span><h3>Do not make the reader translate B5, B6, and B9 in their head</h3><p>A cell address tells you <em>where</em> a value lives. A name tells you <em>what the value means</em>. That distinction is important in a managerial model because the formula itself should communicate the business logic.</p><h4>Method 1 — Name Box (fastest for one cell or one range)</h4><ol><li>Click the cell you want to name, for example <code>B5</code>.</li><li>Click the <strong>Name Box</strong> immediately to the left of the Formula Bar.</li><li>Type <code>FixedCost</code>.</li><li>Press <strong>Enter</strong>. Pressing Enter is required to commit the name.</li><li>Click another cell, then use the Name Box drop-down to return to <code>FixedCost</code>. Excel should select B5.</li></ol><h4>Method 2 — Formulas → Define Name / Name Manager</h4><ol><li>Select the cell or range.</li><li>Open <strong>Formulas → Define Name</strong> (or <strong>Name Manager → New</strong>).</li><li>Enter a descriptive name and confirm the <strong>Refers to</strong> address.</li><li>Use Name Manager later to audit, edit, or delete names.</li></ol><h4>Name the model inputs</h4><table class="name-map"><tr><th>Cell</th><th>Business name</th><th>Why the name helps</th></tr><tr><td>B5</td><td><code>FixedCost</code></td><td>The formula says exactly which cost is fixed.</td></tr><tr><td>B6</td><td><code>UnitCost</code></td><td>Identifies the per-unit variable cost.</td></tr><tr><td>B7</td><td><code>FullPrice</code></td><td>Distinguishes regular selling/reimbursement value from salvage.</td></tr><tr><td>B8</td><td><code>SalvagePrice</code></td><td>Shows the recovery value of excess units.</td></tr><tr><td>B9</td><td><code>QuantityBaked</code> / <code>DosesOrdered</code></td><td>Makes the managerial decision variable explicit.</td></tr><tr><td>B10</td><td><code>Demand</code> / <code>PatientDemand</code></td><td>Makes the uncertain variable explicit.</td></tr></table><h4>Name a multi-cell range</h4><p>Select the probability cells in your demand table, click the Name Box, type <code>DemandProbability</code>, and press Enter. Do the same for the corresponding profit cells and name that range <code>ScenarioProfit</code>.</p><p><strong>Naming rules:</strong> start with a letter; do not use spaces; use meaningful names; avoid names that look like cell references. Prefer <code>QuantityBaked</code> over <code>Q1</code> or <code>Input2</code>.</p><div class="formula-line"><code>=$B$5+($B$9*$B$6)</code> — technically valid, but the reader must translate addresses.</div><div class="formula-line"><code>=FixedCost+(QuantityBaked*UnitCost)</code> — the managerial logic is visible in the formula.</div></div>
+<details class="check">
+<summary>Self-check: why not just type 40 directly into the profit formula?</summary>
+<div class="a"><p>Because next week you'll want to ask "what if rent
         goes up and the setup cost becomes $55?" If <code>40</code> is typed
         into ten different formulas, you have to hunt down and fix all ten.
         If it lives in <span class="cell-ref">B5</span>, you change one cell
         and every formula that depends on it updates automatically.</p></div>
-      </details>
-
-      <div class="exercise" id="ex2">
-        <div class="exercise-bar"><span>EXERCISE 2 — REQUIRED FOR PARTICIPATION</span><span class="status" id="ex2-status">not started</span></div>
-        <div class="exercise-body">
-          <label for="ex2-input">In your workbook, raise the fixed setup cost (F) noticeably — for example, to $65 on the Coffee Shop model or $700 on the Flu Clinic model — and leave Q and D at their forecast values. In your own words: why does this one-cell change ripple through every formula below it, and what does that tell you about how the breakeven demand from Section 08 would move?</label>
-          <textarea id="ex2-input" aria-describedby="ex2-count ex2-feedback" placeholder="Type your explanation here…"></textarea>
-          <div class="char-count" id="ex2-count">0 characters</div>
-          <div class="excel-address-check">
-            <p class="mini-title">EXCEL ADDRESS CHECK — REQUIRED</p>
-            <p>Name the cells/range from the workbook. You may enter <code>B5</code> or <code>$B$5</code>; absolute references are accepted.</p>
-            <div class="grid2">
-              <div><label for="ex2-range">Six-input block</label><input type="text" id="ex2-range" placeholder="e.g., B5:B10"></div>
-              <div><label for="ex2-fcell">Fixed setup cost (F)</label><input type="text" id="ex2-fcell" placeholder="cell address"></div>
-              <div><label for="ex2-qcell">Order quantity (Q)</label><input type="text" id="ex2-qcell" placeholder="cell address"></div>
-              <div><label for="ex2-dcell">Demand (D)</label><input type="text" id="ex2-dcell" placeholder="cell address"></div>
-            </div>
-          </div>
-          <div class="exercise-row"><button class="run" id="ex2-check" type="button">Check explanation + Excel addresses</button></div>
-          <div class="feedback" id="ex2-feedback" aria-live="polite"></div>
-        </div>
-      </div>
-    </section>
-
-    <section class="step" id="s3">
-      <div class="step-head"><span class="step-num">03</span></div>
-      <h2>The two lines that run the whole model</h2>
-      <p>Everything downstream depends on two facts a manager already knows
+</details>
+<div class="exercise" id="ex2">
+<div class="exercise-bar"><span>EXERCISE 2 — REQUIRED FOR PARTICIPATION</span><span class="status" id="ex2-status">not started</span></div>
+<div class="exercise-body">
+<label for="ex2-input">In your workbook, raise the fixed setup cost (F) noticeably — for example, to $65 on the Coffee Shop model or $700 on the Flu Clinic model — and leave Q and D at their forecast values. In your own words: why does this one-cell change ripple through every formula below it, and what does that tell you about how the breakeven demand from Section 08 would move?</label>
+<textarea aria-describedby="ex2-count ex2-feedback" id="ex2-input" placeholder="Type your explanation here…"></textarea>
+<div class="char-count" id="ex2-count">0 characters</div>
+<div class="excel-address-check">
+<p class="mini-title">EXCEL ADDRESS CHECK — REQUIRED</p>
+<p>Name the cells/range from the workbook. You may enter <code>B5</code> or <code>$B$5</code>; absolute references are accepted.</p>
+<div class="grid2">
+<div><label for="ex2-range">Six-input block</label><input id="ex2-range" placeholder="e.g., B5:B10" type="text"/></div>
+<div><label for="ex2-fcell">Fixed setup cost (F)</label><input id="ex2-fcell" placeholder="cell address" type="text"/></div>
+<div><label for="ex2-qcell">Order quantity (Q)</label><input id="ex2-qcell" placeholder="cell address" type="text"/></div>
+<div><label for="ex2-dcell">Demand (D)</label><input id="ex2-dcell" placeholder="cell address" type="text"/></div>
+</div>
+</div>
+<div class="exercise-row"><button class="run" id="ex2-check" type="button">Check explanation + Excel addresses</button></div>
+<div aria-live="polite" class="feedback" id="ex2-feedback"></div>
+</div>
+</div>
+<div class="section-review"><h3>Flip Cards — Review This Section</h3><p class="section-review-intro">Open the cards for this section, then complete its multiple-choice checkpoint before moving on.</p><div class="study-flip-grid"><div aria-label="Flip card: Named Cell" class="study-flip" data-card-key="W12-F14" role="button" tabindex="0"><div class="study-flip-inner"><div class="study-face study-front"><small>FLIP CARD</small><h3>Named Cell</h3><p>Why name B5?</p><span class="flip-hint">Click to reveal</span></div><div class="study-face study-back"><small>WHY IT MATTERS</small><p>A name such as FixedCost communicates business meaning. A raw address like B5 tells you location, not purpose.</p><span class="flip-hint">Click to return</span></div></div></div><div aria-label="Flip card: Named Range" class="study-flip" data-card-key="W12-F15" role="button" tabindex="0"><div class="study-flip-inner"><div class="study-face study-front"><small>FLIP CARD</small><h3>Named Range</h3><p>Why name a block?</p><span class="flip-hint">Click to reveal</span></div><div class="study-face study-back"><small>WHY IT MATTERS</small><p>A range name such as DemandProbability makes functions like SUMPRODUCT readable, auditable, and reusable.</p><span class="flip-hint">Click to return</span></div></div></div><div aria-label="Flip card: Absolute Reference" class="study-flip" data-card-key="W12-F16" role="button" tabindex="0"><div class="study-flip-inner"><div class="study-face study-front"><small>FLIP CARD</small><h3>Absolute Reference</h3><p>What does $B$5 do?</p><span class="flip-hint">Click to reveal</span></div><div class="study-face study-back"><small>WHY IT MATTERS</small><p>It locks both row and column when a formula is copied, preventing a constant input reference from shifting.</p><span class="flip-hint">Click to return</span></div></div></div></div><div class="mc-checkpoint inline-checkpoint"><h3>Section 3 Multiple-Choice Checkpoint</h3><p>Answer these questions now while the lesson is fresh.</p><div class="mc-grid"><div class="mc-card" data-question-key="W12-MC03"><div class="mc-number">3</div><h4>What is the strongest reason to use a named cell such as FixedCost instead of B5 in a formula?</h4><div class="mc-choices"><label class="mc-choice"><input name="w12-r1-3" type="radio" value="a"/> <span><strong>A.</strong> Named cells make Excel calculate faster</span></label><label class="mc-choice"><input name="w12-r1-3" type="radio" value="b"/> <span><strong>B.</strong> Named cells communicate business meaning and improve auditability</span></label><label class="mc-choice"><input name="w12-r1-3" type="radio" value="c"/> <span><strong>C.</strong> Named cells remove the need for formulas</span></label><label class="mc-choice"><input name="w12-r1-3" type="radio" value="d"/> <span><strong>D.</strong> Named cells automatically create charts</span></label></div><div aria-live="polite" class="mc-feedback">Choose an answer.</div></div><div class="mc-card" data-question-key="W12-MC04"><div class="mc-number">4</div><h4>Which Excel reference keeps both the row and column fixed when copied?</h4><div class="mc-choices"><label class="mc-choice"><input name="w12-r1-4" type="radio" value="a"/> <span><strong>A.</strong> B5</span></label><label class="mc-choice"><input name="w12-r1-4" type="radio" value="b"/> <span><strong>B.</strong> $B5</span></label><label class="mc-choice"><input name="w12-r1-4" type="radio" value="c"/> <span><strong>C.</strong> B$5</span></label><label class="mc-choice"><input name="w12-r1-4" type="radio" value="d"/> <span><strong>D.</strong> $B$5</span></label></div><div aria-live="polite" class="mc-feedback">Choose an answer.</div></div></div></div></div></section>
+<section class="step lesson-section" id="s3">
+<div class="step-head"><span class="step-num">03</span></div>
+<div class="section-sequence">SECTION 4 OF 10</div><h2>The two lines that run the whole model</h2>
+<p>Everything downstream depends on two facts a manager already knows
       intuitively: <strong>you can't sell more muffins than you baked</strong>,
       and <strong>you can't sell more than customers actually want</strong>.
       In Excel, "the smaller of two numbers" is <code>MIN()</code> and
       "whatever's left over, but never negative" is <code>MAX(0, …)</code>.</p>
-
-      <div class="widget" id="w3">
-        <div class="widget-bar"><span>LIVE MODEL</span><span id="s3-cellref">Business_Model!B13:B17</span></div>
-        <div class="widget-body">
-          <div id="s3-toggle" style="margin-bottom:18px;"></div>
-          <div class="control">
-            <div class="control-label"><b id="s3-lbl-Q">Muffins baked (Q)</b><span class="val" id="s3-Q-l">170</span></div>
-            <input type="range" id="s3-Q-r" aria-label="Muffins baked, Q" min="100" max="260" step="5" value="170">
-          </div>
-          <div class="control">
-            <div class="control-label"><b id="s3-lbl-D">Demand today (D)</b><span class="val" id="s3-D-l">180</span></div>
-            <input type="range" id="s3-D-r" aria-label="Demand today, D" min="100" max="260" step="5" value="180">
-          </div>
-          <svg class="chart" id="s3-bar" viewBox="0 0 640 90"></svg>
-          <div class="grid2" style="margin-top:16px;">
-            <div class="receipt" id="s3-receipt" aria-live="polite"></div>
-            <div>
-              <p style="margin-top:0; font-size:14.5px;" id="s3-reading">Reading the bar above: the
+<div class="formula-lab" id="formula-reasoning-lab"><span class="tag">FORMULA-BY-FORMULA REASONING LAB</span><h3>Every formula should tell a managerial story</h3><p>Build the formula from the business rule, not from memorized cell addresses. Each formula below is on its own line and is followed by the reason it is written that way.</p>
+<div class="formula-explain"><strong>1. Full-price sales / Patients served</strong><div class="formula-line"><code>=MIN(Demand,QuantityBaked)</code></div><ul><li><code>Demand</code> is how many customers want the product.</li><li><code>QuantityBaked</code> is how many units are available.</li><li>You cannot sell more than either limit, so <code>MIN()</code> returns the feasible number sold.</li></ul></div>
+<div class="formula-explain"><strong>2. Leftovers / Unused doses</strong><div class="formula-line"><code>=MAX(0,QuantityBaked-Demand)</code></div><ul><li><code>QuantityBaked-Demand</code> calculates excess supply.</li><li>If demand is higher than supply, that subtraction becomes negative.</li><li>Negative leftovers are impossible, so <code>MAX(0,...)</code> floors the result at zero.</li></ul></div>
+<div class="formula-explain"><strong>3. Lost sales / Unmet demand</strong><div class="formula-line"><code>=MAX(0,Demand-QuantityBaked)</code></div><ul><li><code>Demand-QuantityBaked</code> measures demand that could not be served.</li><li>If supply exceeds demand, the subtraction becomes negative.</li><li><code>MAX(0,...)</code> prevents an impossible negative lost-sales value.</li></ul></div>
+<div class="formula-explain"><strong>4. Total revenue</strong><div class="formula-line"><code>=(FullPriceSales*FullPrice)+(Leftovers*SalvagePrice)</code></div><ul><li>Units sold normally earn <code>FullPrice</code>.</li><li>Excess units recover only <code>SalvagePrice</code>.</li><li>The two revenue streams must be calculated separately because their unit values differ, then added.</li></ul></div>
+<div class="formula-explain"><strong>5. Total cost</strong><div class="formula-line"><code>=FixedCost+(QuantityBaked*UnitCost)</code></div><ul><li><code>FixedCost</code> occurs once regardless of quantity.</li><li><code>QuantityBaked*UnitCost</code> is the variable cost that grows with the decision quantity.</li><li>Adding them gives total modeled operating cost.</li></ul></div>
+<div class="formula-explain"><strong>6. Daily profit</strong><div class="formula-line"><code>=TotalRevenue-TotalCost</code></div><ul><li>Profit is the residual after modeled costs are removed from modeled revenue.</li><li>This formula is intentionally simple because all detailed logic has already been built into Revenue and Cost.</li></ul></div>
+<div class="formula-explain"><strong>7. Expected profit</strong><div class="formula-line"><code>=SUMPRODUCT(DemandProbability,ScenarioProfit)</code></div><ul><li><code>DemandProbability</code> contains the probability of each demand scenario.</li><li><code>ScenarioProfit</code> contains the profit produced by that same scenario.</li><li><code>SUMPRODUCT</code> multiplies each matched pair and adds the weighted results—the probability-weighted average profit.</li></ul></div>
+<div class="formula-explain"><strong>8. Cost of underage (Cu)</strong><div class="formula-line"><code>=FullPrice-UnitCost</code></div><ul><li>If you are one unit short, you lose the contribution that unit could have earned.</li><li>The contribution is selling value minus the cost you would have incurred to provide the unit.</li></ul></div>
+<div class="formula-explain"><strong>9. Cost of overage (Co)</strong><div class="formula-line"><code>=UnitCost-SalvagePrice</code></div><ul><li>If you have one unit too many, you paid <code>UnitCost</code> but recover only <code>SalvagePrice</code>.</li><li>The difference is the economic penalty of overage.</li></ul></div>
+<div class="formula-explain"><strong>10. Critical ratio</strong><div class="formula-line"><code>=CostUnderage/(CostUnderage+CostOverage)</code></div><ul><li>The denominator represents the combined consequences of being one unit too low or too high.</li><li>The numerator gives the underage cost its share of that total.</li><li>A higher underage penalty therefore pushes the target service percentile—and usually the recommended quantity—upward.</li></ul></div>
+<div class="formula-explain"><strong>11. Absolute-reference version when named ranges are not used</strong><div class="formula-line"><code>=$B$5+($B$9*$B$6)</code></div><ul><li>The dollar signs lock both row and column when the formula is copied.</li><li>Use this when you must work with addresses, but prefer named cells in a teaching/managerial model because the names preserve meaning.</li></ul></div>
+</div>
+<div class="widget" id="w3">
+<div class="widget-bar"><span>LIVE MODEL</span><span id="s3-cellref">Business_Model!B13:B17</span></div>
+<div class="widget-body">
+<div id="s3-toggle" style="margin-bottom:18px;"></div>
+<div class="control">
+<div class="control-label"><b id="s3-lbl-Q">Muffins baked (Q)</b><span class="val" id="s3-Q-l">170</span></div>
+<input aria-label="Muffins baked, Q" id="s3-Q-r" max="260" min="100" step="5" type="range" value="170"/>
+</div>
+<div class="control">
+<div class="control-label"><b id="s3-lbl-D">Demand today (D)</b><span class="val" id="s3-D-l">180</span></div>
+<input aria-label="Demand today, D" id="s3-D-r" max="260" min="100" step="5" type="range" value="180"/>
+</div>
+<svg class="chart" id="s3-bar" viewbox="0 0 640 90"></svg>
+<div class="grid2" style="margin-top:16px;">
+<div aria-live="polite" class="receipt" id="s3-receipt"></div>
+<div>
+<p id="s3-reading" style="margin-top:0; font-size:14.5px;">Reading the bar above: the
               amber segment is muffins sold at <b>$3.50</b>, the grey segment
               is leftovers sold at <b>$1.00</b>. Drag D past Q and watch the
               grey segment disappear — once demand exceeds supply, there's
               nothing left to discount, only lost sales the model doesn't
               show you (yet — that's Section 07).</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="box excel">
-        <span class="tag">BUILD THIS NEXT, IN EXCEL</span>
-        <p><span class="cell-ref">B13</span> <code>=MIN($B$10,$B$9)</code> —
-        Full-price sales &nbsp;·&nbsp;
-        <span class="cell-ref">B14</span> <code>=MAX(0,$B$9-$B$10)</code> —
-        Discounted sales &nbsp;·&nbsp;
-        <span class="cell-ref">B15</span> <code>=B13*$B$7+B14*$B$8</code> —
-        Total revenue &nbsp;·&nbsp;
-        <span class="cell-ref">B16</span> <code>=$B$5+$B$9*$B$6</code> —
-        Total cost &nbsp;·&nbsp;
-        <span class="cell-ref">B17</span> <code>=B15-B16</code> — Daily profit.
-        Use absolute references (<code>$</code>) on B5–B10 so you can copy
+</div>
+</div>
+</div>
+</div>
+<div class="box excel">
+<span class="tag">BUILD THIS NEXT, IN EXCEL</span>
+<div class="formula-list">
+<div class="formula-line"><span class="cell-ref">B13</span> <code>=MIN($B$10,$B$9)</code> — Full-price sales</div>
+<div class="formula-line"><span class="cell-ref">B14</span> <code>=MAX(0,$B$9-$B$10)</code> — Discounted sales</div>
+<div class="formula-line"><span class="cell-ref">B15</span> <code>=B13*$B$7+B14*$B$8</code> — Total revenue</div>
+<div class="formula-line"><span class="cell-ref">B16</span> <code>=$B$5+$B$9*$B$6</code> — Total cost</div>
+<div class="formula-line"><span class="cell-ref">B17</span> <code>=B15-B16</code> — Daily profit</div>
+</div>
+<p class="formula-note">Use absolute references (<code>$</code>) on B5–B10 so you can copy
         these formulas elsewhere without them shifting.</p>
-      </div>
-
-      <details class="check">
-        <summary>Self-check: Q=170, D=140 — how many muffins get sold at full price?</summary>
-        <div class="a"><p><code>MIN(140,170) = 140</code>. All 140 customers
+</div>
+<details class="check">
+<summary>Self-check: Q=170, D=140 — how many muffins get sold at full price?</summary>
+<div class="a"><p><code>MIN(140,170) = 140</code>. All 140 customers
         get served, and the remaining <code>MAX(0,170-140)=30</code> muffins
         go into the discount bin. Notice full-price sales is capped by
         <em>demand</em> here, not by supply.</p></div>
-      </details>
-
-      <div class="exercise" id="ex3">
-        <div class="exercise-bar"><span>EXERCISE 3 — REQUIRED FOR PARTICIPATION</span><span class="status" id="ex3-status">not started</span></div>
-        <div class="exercise-body">
-          <p style="margin-top:0;">Set the model above to <strong>Q = 200</strong> and <strong>D = 150</strong>, then fill in what your workbook's formulas would compute:</p>
-          <div class="grid2">
-            <div>
-              <label for="ex3-full">Full-price sales</label>
-              <input type="number" id="ex3-full" aria-describedby="ex3-feedback">
-            </div>
-            <div>
-              <label for="ex3-left">Discounted sales</label>
-              <input type="number" id="ex3-left" aria-describedby="ex3-feedback">
-            </div>
-          </div>
-          <div class="excel-address-check">
-            <p class="mini-title">EXCEL ADDRESS CHECK — REQUIRED</p>
-            <div class="grid2">
-              <div><label for="ex3-full-cell">Cell for Full-price sales</label><input type="text" id="ex3-full-cell" placeholder="cell address"></div>
-              <div><label for="ex3-left-cell">Cell for Discounted sales</label><input type="text" id="ex3-left-cell" placeholder="cell address"></div>
-            </div>
-          </div>
-          <div class="exercise-row">
-            <button class="run" id="ex3-check" type="button">Check numbers + Excel cells</button>
-          </div>
-          <div class="feedback" id="ex3-feedback" aria-live="polite"></div>
-        </div>
-      </div>
-    </section>
-
-    <section class="step" id="s4">
-      <div class="step-head"><span class="step-num">04</span></div>
-      <h2>Why profit doesn't keep climbing forever</h2>
-      <p>Now hold the baking quantity fixed — the assignment asks you to fix
+</details>
+<div class="exercise" id="ex3">
+<div class="exercise-bar"><span>EXERCISE 3 — REQUIRED FOR PARTICIPATION</span><span class="status" id="ex3-status">not started</span></div>
+<div class="exercise-body">
+<p style="margin-top:0;">Set the model above to <strong>Q = 200</strong> and <strong>D = 150</strong>, then fill in what your workbook's formulas would compute:</p>
+<div class="grid2">
+<div>
+<label for="ex3-full">Full-price sales</label>
+<input aria-describedby="ex3-feedback" id="ex3-full" type="number"/>
+</div>
+<div>
+<label for="ex3-left">Discounted sales</label>
+<input aria-describedby="ex3-feedback" id="ex3-left" type="number"/>
+</div>
+</div>
+<div class="excel-address-check">
+<p class="mini-title">EXCEL ADDRESS CHECK — REQUIRED</p>
+<div class="grid2">
+<div><label for="ex3-full-cell">Cell for Full-price sales</label><input id="ex3-full-cell" placeholder="cell address" type="text"/></div>
+<div><label for="ex3-left-cell">Cell for Discounted sales</label><input id="ex3-left-cell" placeholder="cell address" type="text"/></div>
+</div>
+</div>
+<div class="exercise-row">
+<button class="run" id="ex3-check" type="button">Check numbers + Excel cells</button>
+</div>
+<div aria-live="polite" class="feedback" id="ex3-feedback"></div>
+</div>
+</div>
+<div class="section-review"><h3>Flip Cards — Review This Section</h3><p class="section-review-intro">Open the cards for this section, then complete its multiple-choice checkpoint before moving on.</p><div class="study-flip-grid"><div aria-label="Flip card: MIN" class="study-flip" data-card-key="W12-F17" role="button" tabindex="0"><div class="study-flip-inner"><div class="study-face study-front"><small>FLIP CARD</small><h3>MIN</h3><p>Why use MIN(Demand,QuantityBaked)?</p><span class="flip-hint">Click to reveal</span></div><div class="study-face study-back"><small>WHY IT MATTERS</small><p>Sales cannot exceed demand and cannot exceed available quantity, so actual full-price sales equal the smaller value.</p><span class="flip-hint">Click to return</span></div></div></div><div aria-label="Flip card: MAX for leftovers" class="study-flip" data-card-key="W12-F18" role="button" tabindex="0"><div class="study-flip-inner"><div class="study-face study-front"><small>FLIP CARD</small><h3>MAX for leftovers</h3><p>Why use MAX(0,QuantityBaked-Demand)?</p><span class="flip-hint">Click to reveal</span></div><div class="study-face study-back"><small>WHY IT MATTERS</small><p>Quantity minus demand measures excess units, while MAX with zero prevents an impossible negative leftover.</p><span class="flip-hint">Click to return</span></div></div></div><div aria-label="Flip card: MAX for lost sales" class="study-flip" data-card-key="W12-F19" role="button" tabindex="0"><div class="study-flip-inner"><div class="study-face study-front"><small>FLIP CARD</small><h3>MAX for lost sales</h3><p>Why use MAX(0,Demand-QuantityBaked)?</p><span class="flip-hint">Click to reveal</span></div><div class="study-face study-back"><small>WHY IT MATTERS</small><p>Demand minus quantity measures unmet demand, while MAX with zero prevents negative lost sales.</p><span class="flip-hint">Click to return</span></div></div></div></div><div class="mc-checkpoint inline-checkpoint"><h3>Section 4 Multiple-Choice Checkpoint</h3><p>Answer these questions now while the lesson is fresh.</p><div class="mc-grid"><div class="mc-card" data-question-key="W12-MC01"><div class="mc-number">1</div><h4>Which formula best represents actual units sold when demand is D and quantity available is Q?</h4><div class="mc-choices"><label class="mc-choice"><input name="w12-r1-1" type="radio" value="a"/> <span><strong>A.</strong> =MAX(D,Q)</span></label><label class="mc-choice"><input name="w12-r1-1" type="radio" value="b"/> <span><strong>B.</strong> =MIN(D,Q)</span></label><label class="mc-choice"><input name="w12-r1-1" type="radio" value="c"/> <span><strong>C.</strong> =D-Q</span></label><label class="mc-choice"><input name="w12-r1-1" type="radio" value="d"/> <span><strong>D.</strong> =Q-D</span></label></div><div aria-live="polite" class="mc-feedback">Choose an answer.</div></div><div class="mc-card" data-question-key="W12-MC02"><div class="mc-number">2</div><h4>Why is =MAX(0,Q-D) preferable to simply =Q-D for leftovers?</h4><div class="mc-choices"><label class="mc-choice"><input name="w12-r1-2" type="radio" value="a"/> <span><strong>A.</strong> It converts dollars to units</span></label><label class="mc-choice"><input name="w12-r1-2" type="radio" value="b"/> <span><strong>B.</strong> It prevents negative leftovers when demand exceeds supply</span></label><label class="mc-choice"><input name="w12-r1-2" type="radio" value="c"/> <span><strong>C.</strong> It forces demand to equal quantity</span></label><label class="mc-choice"><input name="w12-r1-2" type="radio" value="d"/> <span><strong>D.</strong> It calculates probability</span></label></div><div aria-live="polite" class="mc-feedback">Choose an answer.</div></div></div></div></div></section>
+<section class="step lesson-section" id="s4">
+<div class="step-head"><span class="step-num">04</span></div>
+<div class="section-sequence">SECTION 5 OF 10</div><h2>Why profit doesn't keep climbing forever</h2>
+<p>Now hold the baking quantity fixed — the assignment asks you to fix
       <strong>Q = 180</strong> — and vary only demand. Slide D from a slow
       morning to a rush, and watch what the profit line actually does.</p>
-
-      <div class="widget" id="w4">
-        <div class="widget-bar"><span>SCENARIO ANALYSIS</span><span id="s4-cellref">Q held at 180</span></div>
-        <div class="widget-body">
-          <div id="s4-toggle" style="margin-bottom:18px;"></div>
-          <div class="control">
-            <div class="control-label"><b>Demand (D)</b><span class="val" id="s4-D-l">180</span></div>
-            <input type="range" id="s4-D-r" aria-label="Demand, D" min="100" max="260" step="5" value="180">
-          </div>
-          <div class="presets">
-            <button class="chip" data-d="140">D = 140 (slow morning)</button>
-            <button class="chip" data-d="220">D = 220 (rush)</button>
-            <button class="chip" data-d="180">D = 180 (as forecast)</button>
-          </div>
-          <svg class="chart" id="s4-chart" viewBox="0 0 640 260" style="margin-top:18px;"></svg>
-          <div class="receipt" id="s4-receipt" aria-live="polite" style="margin-top:14px;"></div>
-        </div>
-      </div>
-
-      <div class="box why">
-        <span class="tag">WHY THIS MATTERS — THE ASSIGNMENT'S OBSERVATION QUESTION</span>
-        <p>The line rises while D ≤ Q, because every extra customer buys one
+<div class="widget" id="w4">
+<div class="widget-bar"><span>SCENARIO ANALYSIS</span><span id="s4-cellref">Q held at 180</span></div>
+<div class="widget-body">
+<div id="s4-toggle" style="margin-bottom:18px;"></div>
+<div class="control">
+<div class="control-label"><b>Demand (D)</b><span class="val" id="s4-D-l">180</span></div>
+<input aria-label="Demand, D" id="s4-D-r" max="260" min="100" step="5" type="range" value="180"/>
+</div>
+<div class="presets">
+<button class="chip" data-d="140">D = 140 (slow morning)</button>
+<button class="chip" data-d="220">D = 220 (rush)</button>
+<button class="chip" data-d="180">D = 180 (as forecast)</button>
+</div>
+<svg class="chart" id="s4-chart" style="margin-top:18px;" viewbox="0 0 640 260"></svg>
+<div aria-live="polite" class="receipt" id="s4-receipt" style="margin-top:14px;"></div>
+</div>
+</div>
+<div class="box why">
+<span class="tag">WHY THIS MATTERS — THE ASSIGNMENT'S OBSERVATION QUESTION</span>
+<p>The line rises while D ≤ Q, because every extra customer buys one
         more full-price muffin. The instant D passes Q, the line goes
         <strong>flat</strong> — not down, flat — because there is nothing left
         to sell no matter how many more customers show up. Revenue is capped
         at <code>Q × p</code>, full stop. That flat ceiling is the cost of
         <em>under</em>baking: every customer beyond Q is a sale you'll never
         recover, even though your reported profit isn't falling.</p>
-      </div>
-
-      <details class="check">
-        <summary>Self-check: which of D=140 or D=220 gets the higher profit at Q=180 — and why isn't the gap bigger?</summary>
-        <div class="a"><p>D=220 wins ($374 vs $274) — more customers is still
+</div>
+<details class="check">
+<summary>Self-check: which of D=140 or D=220 gets the higher profit at Q=180 — and why isn't the gap bigger?</summary>
+<div class="a"><p>D=220 wins ($374 vs $274) — more customers is still
         better up to the point Q is exceeded, since 40 fewer muffins going to
         the $1.00 discount bin is worth more than the sales you'd have gained.
         But the gap is capped: no matter how far D climbs past 180, profit
         stays at $374, because 180 is the most you baked.</p></div>
-      </details>
-
-      <div class="exercise" id="ex4">
-        <div class="exercise-bar"><span>EXERCISE 4 — REQUIRED FOR PARTICIPATION</span><span class="status" id="ex4-status">not started</span></div>
-        <div class="exercise-body">
-          <p style="margin-top:0;">With Q held at 180, use the slider to answer the assignment's own scenario question:</p>
-          <div class="grid2">
-            <div>
-              <label for="ex4-140">Profit when D = 140</label>
-              <input type="number" id="ex4-140" aria-describedby="ex4-feedback">
-            </div>
-            <div>
-              <label for="ex4-220">Profit when D = 220</label>
-              <input type="number" id="ex4-220" aria-describedby="ex4-feedback">
-            </div>
-          </div>
-          <div class="excel-address-check">
-            <p class="mini-title">EXCEL ADDRESS CHECK — REQUIRED</p>
-            <label for="ex4-profit-cell">Which workbook cell contains Daily Profit for both scenarios?</label>
-            <input type="text" id="ex4-profit-cell" placeholder="cell address">
-          </div>
-          <div class="exercise-row">
-            <button class="run" id="ex4-check" type="button">Check profits + Excel cell</button>
-          </div>
-          <div class="feedback" id="ex4-feedback" aria-live="polite"></div>
-        </div>
-      </div>
-    </section>
-
-    <section class="step" id="s5">
-      <div class="step-head"><span class="step-num">05</span></div>
-      <h2>Turning 100 days of data into a probability</h2>
-      <p>So far D has been a single guess. In reality you have history: 100
+</details>
+<div class="exercise" id="ex4">
+<div class="exercise-bar"><span>EXERCISE 4 — REQUIRED FOR PARTICIPATION</span><span class="status" id="ex4-status">not started</span></div>
+<div class="exercise-body">
+<p style="margin-top:0;">With Q held at 180, use the slider to answer the assignment's own scenario question:</p>
+<div class="grid2">
+<div>
+<label for="ex4-140">Profit when D = 140</label>
+<input aria-describedby="ex4-feedback" id="ex4-140" type="number"/>
+</div>
+<div>
+<label for="ex4-220">Profit when D = 220</label>
+<input aria-describedby="ex4-feedback" id="ex4-220" type="number"/>
+</div>
+</div>
+<div class="excel-address-check">
+<p class="mini-title">EXCEL ADDRESS CHECK — REQUIRED</p>
+<label for="ex4-profit-cell">Which workbook cell contains Daily Profit for both scenarios?</label>
+<input id="ex4-profit-cell" placeholder="cell address" type="text"/>
+</div>
+<div class="exercise-row">
+<button class="run" id="ex4-check" type="button">Check profits + Excel cell</button>
+</div>
+<div aria-live="polite" class="feedback" id="ex4-feedback"></div>
+</div>
+</div>
+<div class="section-review"><h3>Flip Cards — Review This Section</h3><p class="section-review-intro">Open the cards for this section, then complete its multiple-choice checkpoint before moving on.</p><div class="study-flip-grid"><div aria-label="Flip card: Revenue" class="study-flip" data-card-key="W12-F20" role="button" tabindex="0"><div class="study-flip-inner"><div class="study-face study-front"><small>FLIP CARD</small><h3>Revenue</h3><p>Why separate two revenue streams?</p><span class="flip-hint">Click to reveal</span></div><div class="study-face study-back"><small>WHY IT MATTERS</small><p>Full-price units and leftover units earn different prices, so total revenue must value each stream separately before adding them.</p><span class="flip-hint">Click to return</span></div></div></div><div aria-label="Flip card: Total Cost" class="study-flip" data-card-key="W12-F21" role="button" tabindex="0"><div class="study-flip-inner"><div class="study-face study-front"><small>FLIP CARD</small><h3>Total Cost</h3><p>Why FixedCost + Quantity×UnitCost?</p><span class="flip-hint">Click to reveal</span></div><div class="study-face study-back"><small>WHY IT MATTERS</small><p>Fixed cost occurs once regardless of quantity; unit cost scales with the quantity chosen.</p><span class="flip-hint">Click to return</span></div></div></div><div aria-label="Flip card: Profit" class="study-flip" data-card-key="W12-F22" role="button" tabindex="0"><div class="study-flip-inner"><div class="study-face study-front"><small>FLIP CARD</small><h3>Profit</h3><p>Why Revenue − Cost?</p><span class="flip-hint">Click to reveal</span></div><div class="study-face study-back"><small>WHY IT MATTERS</small><p>Profit is the residual after modeled operating costs are subtracted from modeled revenue.</p><span class="flip-hint">Click to return</span></div></div></div></div><div class="mc-checkpoint inline-checkpoint"><h3>Section 5 Multiple-Choice Checkpoint</h3><p>Answer these questions now while the lesson is fresh.</p><div class="mc-grid"><div class="mc-card" data-question-key="W12-MC07"><div class="mc-number">2</div><h4>Why is Total Cost written as FixedCost + QuantityBaked×UnitCost?</h4><div class="mc-choices"><label class="mc-choice"><input name="w12-r2-2" type="radio" value="a"/> <span><strong>A.</strong> Both cost components change with demand</span></label><label class="mc-choice"><input name="w12-r2-2" type="radio" value="b"/> <span><strong>B.</strong> Fixed cost occurs once while variable cost scales with quantity</span></label><label class="mc-choice"><input name="w12-r2-2" type="radio" value="c"/> <span><strong>C.</strong> It avoids using a decision variable</span></label><label class="mc-choice"><input name="w12-r2-2" type="radio" value="d"/> <span><strong>D.</strong> It calculates salvage revenue</span></label></div><div aria-live="polite" class="mc-feedback">Choose an answer.</div></div><div class="mc-card" data-question-key="W12-MC08"><div class="mc-number">3</div><h4>Why does total revenue use both FullPriceSales×FullPrice and Leftovers×SalvagePrice?</h4><div class="mc-choices"><label class="mc-choice"><input name="w12-r2-3" type="radio" value="a"/> <span><strong>A.</strong> To double-count leftovers</span></label><label class="mc-choice"><input name="w12-r2-3" type="radio" value="b"/> <span><strong>B.</strong> Because the two groups of units earn different prices</span></label><label class="mc-choice"><input name="w12-r2-3" type="radio" value="c"/> <span><strong>C.</strong> Because full-price sales are always zero</span></label><label class="mc-choice"><input name="w12-r2-3" type="radio" value="d"/> <span><strong>D.</strong> To calculate fixed cost</span></label></div><div aria-live="polite" class="mc-feedback">Choose an answer.</div></div></div></div></div></section>
+<section class="step lesson-section" id="s5">
+<div class="step-head"><span class="step-num">05</span></div>
+<div class="section-sequence">SECTION 6 OF 10</div><h2>Turning 100 days of data into a probability</h2>
+<p>So far D has been a single guess. In reality you have history: 100
       past days of muffin demand, some slow, some busy. A pivot table turns
       that list into the "how often does each demand level happen" table the
       optimization step needs.</p>
-
-      <div class="widget" id="w5">
-        <div class="widget-bar"><span>SAMPLE OF THE RAW LOG</span><span>illustrative — your CSV has 100 rows</span></div>
-        <div class="widget-body">
-          <div id="s5-toggle" style="margin-bottom:18px;"></div>
-          <div id="s5-sample"></div>
-          <p style="font-size:14.5px; margin-bottom:14px;" id="s5-intro">Grouped into bins
+<div class="widget" id="w5">
+<div class="widget-bar"><span>SAMPLE OF THE RAW LOG</span><span>illustrative — your CSV has 100 rows</span></div>
+<div class="widget-body">
+<div id="s5-toggle" style="margin-bottom:18px;"></div>
+<div id="s5-sample"></div>
+<p id="s5-intro" style="font-size:14.5px; margin-bottom:14px;">Grouped into bins
           of 10 and expressed as a share of all 100 days, that log turns into
           the probability table your assignment gives you for the
           optimization step:</p>
-          <svg class="chart" id="s5-chart" viewBox="0 0 640 220"></svg>
-        </div>
-      </div>
-
-      <div class="box excel" id="s5-excel-box">
-        <span class="tag">BUILD THIS NEXT, IN EXCEL</span>
-        <p id="s5-excel-text">Insert a Pivot Table from the CSV → drag
+<svg class="chart" id="s5-chart" viewbox="0 0 640 220"></svg>
+</div>
+</div>
+<div class="box excel" id="s5-excel-box">
+<span class="tag">BUILD THIS NEXT, IN EXCEL</span>
+<p id="s5-excel-text">Insert a Pivot Table from the CSV → drag
         <code>Actual_Muffin_Demand</code> to Rows → right-click a value →
         <strong>Group…</strong> in steps of 10 → drag
         <code>Actual_Muffin_Demand</code> to Values → change the value field
         setting to <strong>Show Values As → % of Column Total</strong>. Those
         percentages are your demand probabilities.</p>
-      </div>
-
-      <details class="check">
-        <summary>Self-check: why group into bins of 10 instead of using every exact value?</summary>
-        <div class="a"><p>With continuous-ish demand, almost every exact
+</div>
+<details class="check">
+<summary>Self-check: why group into bins of 10 instead of using every exact value?</summary>
+<div class="a"><p>With continuous-ish demand, almost every exact
         value (161, 162, 163…) shows up once or not at all across 100 days,
         which gives you a flat, useless "probability" of 1% each. Grouping
         into bins gives you enough days per bin to see a real pattern —
         while still being fine-grained enough to distinguish a slow day from
         a rush.</p></div>
-      </details>
-
-      <div class="exercise" id="ex5">
-        <div class="exercise-bar"><span>EXERCISE 5 — REQUIRED FOR PARTICIPATION</span><span class="status" id="ex5-status">not started</span></div>
-        <div class="exercise-body">
-          <label for="ex5-input">Using the probability table above, what is the probability that demand is 180 or fewer units? Answer as a percent (e.g., 42).</label>
-          <div class="exercise-row">
-            <input type="number" id="ex5-input" style="max-width:140px;" aria-describedby="ex5-feedback"> <span aria-hidden="true">%</span>
-          </div>
-          <div class="excel-address-check">
-            <p class="mini-title">EXCEL RANGE CHECK — REQUIRED</p>
-            <label for="ex5-prob-range">What range contains the demand/probability table for the track currently selected?</label>
-            <input type="text" id="ex5-prob-range" placeholder="range address">
-          </div>
-          <div class="exercise-row"><button class="run" id="ex5-check" type="button">Check probability + Excel range</button></div>
-          <div class="feedback" id="ex5-feedback" aria-live="polite"></div>
-        </div>
-      </div>
-    </section>
-
-    <section class="step" id="s6">
-      <div class="step-head"><span class="step-num">06</span></div>
-      <h2>Weighting every outcome by how likely it is</h2>
-      <p><strong>Expected profit</strong> is just a probability-weighted
+</details>
+<div class="exercise" id="ex5">
+<div class="exercise-bar"><span>EXERCISE 5 — REQUIRED FOR PARTICIPATION</span><span class="status" id="ex5-status">not started</span></div>
+<div class="exercise-body">
+<label for="ex5-input">Using the probability table above, what is the probability that demand is 180 or fewer units? Answer as a percent (e.g., 42).</label>
+<div class="exercise-row">
+<input aria-describedby="ex5-feedback" id="ex5-input" style="max-width:140px;" type="number"/> <span aria-hidden="true">%</span>
+</div>
+<div class="excel-address-check">
+<p class="mini-title">EXCEL RANGE CHECK — REQUIRED</p>
+<label for="ex5-prob-range">What range contains the demand/probability table for the track currently selected?</label>
+<input id="ex5-prob-range" placeholder="range address" type="text"/>
+</div>
+<div class="exercise-row"><button class="run" id="ex5-check" type="button">Check probability + Excel range</button></div>
+<div aria-live="polite" class="feedback" id="ex5-feedback"></div>
+</div>
+</div>
+<div class="section-review"><h3>Flip Cards — Review This Section</h3><p class="section-review-intro">Open the cards for this section, then complete its multiple-choice checkpoint before moving on.</p><div class="study-flip-grid"><div aria-label="Flip card: Probability Distribution" class="study-flip" data-card-key="W12-F23" role="button" tabindex="0"><div class="study-flip-inner"><div class="study-face study-front"><small>FLIP CARD</small><h3>Probability Distribution</h3><p>Why does it matter?</p><span class="flip-hint">Click to reveal</span></div><div class="study-face study-back"><small>WHY IT MATTERS</small><p>It converts historical demand frequencies into weights for possible future demand outcomes.</p><span class="flip-hint">Click to return</span></div></div></div></div><div class="mc-checkpoint inline-checkpoint"><h3>Section 6 Multiple-Choice Checkpoint</h3><p>Answer these questions now while the lesson is fresh.</p><div class="mc-grid"><div class="mc-card" data-question-key="W12-MC13"><div class="mc-number">3</div><h4>What does a PivotTable contribute to the demand model?</h4><div class="mc-choices"><label class="mc-choice"><input name="w12-r3-3" type="radio" value="a"/> <span><strong>A.</strong> It can summarize historical demand into frequencies or percentages</span></label><label class="mc-choice"><input name="w12-r3-3" type="radio" value="b"/> <span><strong>B.</strong> It automatically chooses the optimal quantity</span></label><label class="mc-choice"><input name="w12-r3-3" type="radio" value="c"/> <span><strong>C.</strong> It replaces all formulas</span></label><label class="mc-choice"><input name="w12-r3-3" type="radio" value="d"/> <span><strong>D.</strong> It guarantees future demand</span></label></div><div aria-live="polite" class="mc-feedback">Choose an answer.</div></div></div></div></div></section>
+<section class="step lesson-section" id="s6">
+<div class="step-head"><span class="step-num">06</span></div>
+<div class="section-sequence">SECTION 7 OF 10</div><h2>Weighting every outcome by how likely it is</h2>
+<p><strong>Expected profit</strong> is just a probability-weighted
       average: multiply the profit at each demand level by how often that
       level happens, then add them up. Do that for a few candidate order
       quantities and you can finally compare them on equal footing, instead
       of guessing.</p>
-
-      <div class="widget" id="w6">
-        <div class="widget-bar"><span>DATA TABLE — CANDIDATE Q</span><span id="s6-cellref">Business_Model!A37:C41</span></div>
-        <div class="widget-body">
-          <div id="s6-toggle" style="margin-bottom:18px;"></div>
-          <div class="control">
-            <div class="control-label"><b>Try any Q</b><span class="val" id="s6-Q-l">180</span></div>
-            <input type="range" id="s6-Q-r" aria-label="Candidate order quantity, Q" min="140" max="220" step="5" value="180">
-          </div>
-          <table class="sheet" id="s6-table" aria-live="polite" style="margin:16px 0 18px;"></table>
-          <svg class="chart" id="s6-chart" viewBox="0 0 640 260"></svg>
-        </div>
-      </div>
-
-      <div class="box excel">
-        <span class="tag">BUILD THIS NEXT, IN EXCEL</span>
-        <p id="s6-excel-text">List the five demand levels and probabilities in
+<div class="widget" id="w6">
+<div class="widget-bar"><span>DATA TABLE — CANDIDATE Q</span><span id="s6-cellref">Business_Model!A37:C41</span></div>
+<div class="widget-body">
+<div id="s6-toggle" style="margin-bottom:18px;"></div>
+<div class="control">
+<div class="control-label"><b>Try any Q</b><span class="val" id="s6-Q-l">180</span></div>
+<input aria-label="Candidate order quantity, Q" id="s6-Q-r" max="220" min="140" step="5" type="range" value="180"/>
+</div>
+<table aria-live="polite" class="sheet" id="s6-table" style="margin:16px 0 18px;"></table>
+<svg class="chart" id="s6-chart" viewbox="0 0 640 260"></svg>
+</div>
+</div>
+<div class="box excel">
+<span class="tag">BUILD THIS NEXT, IN EXCEL</span>
+<p id="s6-excel-text">List the five demand levels and probabilities in
         <span class="cell-ref">A28:B32</span>, compute profit-at-current-Q in
         column C, multiply by probability in column D, and sum column D for
         Expected Profit. Then use a one-variable <strong>Data Table</strong>
         (Data → What-If Analysis → Data Table) with candidate Q values
         160–200 down a column to see all five expected profits at once
         without rebuilding the formula five times.</p>
-      </div>
-
-      <details class="check">
-        <summary>Self-check: among 160, 170, 180, 190, 200 — which Q maximizes expected profit, and is it necessarily the best possible Q?</summary>
-        <div class="a"><p>Q=200 wins among these five candidates — but expected
+</div>
+<details class="check">
+<summary>Self-check: among 160, 170, 180, 190, 200 — which Q maximizes expected profit, and is it necessarily the best possible Q?</summary>
+<div class="a"><p>Q=200 wins among these five candidates — but expected
         profit is still rising as Q approaches 200, barely edging out 190.
         That's a hint the true optimum might sit above 200; the Data Table
         only tells you the best of the candidates you typed in, not the best
         of every possible Q. Section 07 gives you a way to find the real
         optimum without checking every value by hand.</p></div>
-      </details>
-
-      <div class="exercise" id="ex6">
-        <div class="exercise-bar"><span>EXERCISE 6 — REQUIRED FOR PARTICIPATION</span><span class="status" id="ex6-status">not started</span></div>
-        <div class="exercise-body">
-          <p style="margin-top:0;">From the Data Table above:</p>
-          <div class="grid2">
-            <div>
-              <label for="ex6-q">Best candidate Q</label>
-              <input type="number" id="ex6-q" aria-describedby="ex6-feedback">
-            </div>
-            <div>
-              <label for="ex6-ep">Its expected profit ($, nearest dollar)</label>
-              <input type="number" id="ex6-ep" aria-describedby="ex6-feedback">
-            </div>
-          </div>
-          <div class="excel-address-check">
-            <p class="mini-title">EXCEL RANGE CHECK — REQUIRED</p>
-            <label for="ex6-table-range">What workbook range contains the candidate-Q Data Table for the track currently selected?</label>
-            <input type="text" id="ex6-table-range" placeholder="range address">
-          </div>
-          <div class="exercise-row">
-            <button class="run" id="ex6-check" type="button">Check result + Excel range</button>
-          </div>
-          <div class="feedback" id="ex6-feedback" aria-live="polite"></div>
-        </div>
-      </div>
-    </section>
-
-    <section class="step" id="s7">
-      <div class="step-head"><span class="step-num">07</span></div>
-      <h2>The formula that skips the trial and error</h2>
-      <p>Every unit you're short of demand costs you the margin you would
+</details>
+<div class="exercise" id="ex6">
+<div class="exercise-bar"><span>EXERCISE 6 — REQUIRED FOR PARTICIPATION</span><span class="status" id="ex6-status">not started</span></div>
+<div class="exercise-body">
+<p style="margin-top:0;">From the Data Table above:</p>
+<div class="grid2">
+<div>
+<label for="ex6-q">Best candidate Q</label>
+<input aria-describedby="ex6-feedback" id="ex6-q" type="number"/>
+</div>
+<div>
+<label for="ex6-ep">Its expected profit ($, nearest dollar)</label>
+<input aria-describedby="ex6-feedback" id="ex6-ep" type="number"/>
+</div>
+</div>
+<div class="excel-address-check">
+<p class="mini-title">EXCEL RANGE CHECK — REQUIRED</p>
+<label for="ex6-table-range">What workbook range contains the candidate-Q Data Table for the track currently selected?</label>
+<input id="ex6-table-range" placeholder="range address" type="text"/>
+</div>
+<div class="exercise-row">
+<button class="run" id="ex6-check" type="button">Check result + Excel range</button>
+</div>
+<div aria-live="polite" class="feedback" id="ex6-feedback"></div>
+</div>
+</div>
+<div class="section-review"><h3>Flip Cards — Review This Section</h3><p class="section-review-intro">Open the cards for this section, then complete its multiple-choice checkpoint before moving on.</p><div class="study-flip-grid"><div aria-label="Flip card: Expected Profit" class="study-flip" data-card-key="W12-F24" role="button" tabindex="0"><div class="study-flip-inner"><div class="study-face study-front"><small>FLIP CARD</small><h3>Expected Profit</h3><p>Why SUMPRODUCT?</p><span class="flip-hint">Click to reveal</span></div><div class="study-face study-back"><small>WHY IT MATTERS</small><p>SUMPRODUCT multiplies each scenario profit by its probability and adds the weighted results.</p><span class="flip-hint">Click to return</span></div></div></div></div><div class="mc-checkpoint inline-checkpoint"><h3>Section 7 Multiple-Choice Checkpoint</h3><p>Answer these questions now while the lesson is fresh.</p><div class="mc-grid"><div class="mc-card" data-question-key="W12-MC09"><div class="mc-number">4</div><h4>What does SUMPRODUCT(DemandProbability,ScenarioProfit) compute?</h4><div class="mc-choices"><label class="mc-choice"><input name="w12-r2-4" type="radio" value="a"/> <span><strong>A.</strong> Maximum scenario profit</span></label><label class="mc-choice"><input name="w12-r2-4" type="radio" value="b"/> <span><strong>B.</strong> Expected profit across demand scenarios</span></label><label class="mc-choice"><input name="w12-r2-4" type="radio" value="c"/> <span><strong>C.</strong> Break-even demand</span></label><label class="mc-choice"><input name="w12-r2-4" type="radio" value="d"/> <span><strong>D.</strong> Total fixed cost</span></label></div><div aria-live="polite" class="mc-feedback">Choose an answer.</div></div></div></div></div></section>
+<section class="step lesson-section" id="s7">
+<div class="step-head"><span class="step-num">07</span></div>
+<div class="section-sequence">SECTION 8 OF 10</div><h2>The formula that skips the trial and error</h2>
+<p>Every unit you're short of demand costs you the margin you would
       have earned — that's the <strong>cost of underage (Cu)</strong>. Every
       unit you have left over costs you the difference between what you paid
       and what you salvaged — the <strong>cost of overage (Co)</strong>. Their
       ratio tells you exactly what percentile of the demand distribution to
       bake for, with no trial and error at all.</p>
-
-      <div class="widget" id="w7">
-        <div class="widget-bar"><span>UNDERAGE / OVERAGE</span><span id="s7-cellref">Business_Model!B44:B46</span></div>
-        <div class="widget-body">
-          <div id="s7-toggle" style="margin-bottom:18px;"></div>
-          <div class="grid2">
-            <div class="control"><div class="control-label"><b>Full price (p)</b><span class="val" id="s7-p-l">$3.50</span></div>
-              <input type="range" id="s7-p-r" aria-label="Full price" min="1" max="6" step="0.1" value="3.5"></div>
-            <div class="control"><div class="control-label"><b>Variable cost (c)</b><span class="val" id="s7-c-l">$1.20</span></div>
-              <input type="range" id="s7-c-r" aria-label="Variable cost" min="0" max="3" step="0.1" value="1.2"></div>
-            <div class="control"><div class="control-label"><b>Discount price (v)</b><span class="val" id="s7-v-l">$1.00</span></div>
-              <input type="range" id="s7-v-r" aria-label="Discount price" min="0" max="3" step="0.1" value="1"></div>
-          </div>
-          <div class="receipt" id="s7-receipt" aria-live="polite" style="margin:16px 0;"></div>
-          <p style="font-size:14px; margin-bottom:8px;">Critical ratio, mapped onto the cumulative demand distribution:</p>
-          <svg class="chart" id="s7-gauge" viewBox="0 0 640 104"></svg>
-        </div>
-      </div>
-
-      <div class="box excel">
-        <span class="tag">BUILD THIS NEXT, IN EXCEL</span>
-        <p id="s7-excel-text"><span class="cell-ref">B44</span> <code>=B7-B6</code> (Cu) &nbsp;·&nbsp;
-        <span class="cell-ref">B45</span> <code>=B6-B8</code> (Co) &nbsp;·&nbsp;
-        <span class="cell-ref">B46</span> <code>=B44/(B44+B45)</code>
-        (Critical Ratio). Choose Q so that the cumulative probability of
-        demand at or below Q is just above this ratio.</p>
-      </div>
-
-      <details class="check">
-        <summary>Self-check: at the assignment's prices, the critical ratio is 0.92 — what does that mean in plain English?</summary>
-        <div class="a"><p>It means the ideal bake quantity is high enough
+<div class="widget" id="w7">
+<div class="widget-bar"><span>UNDERAGE / OVERAGE</span><span id="s7-cellref">Business_Model!B44:B46</span></div>
+<div class="widget-body">
+<div id="s7-toggle" style="margin-bottom:18px;"></div>
+<div class="grid2">
+<div class="control"><div class="control-label"><b>Full price (p)</b><span class="val" id="s7-p-l">$3.50</span></div>
+<input aria-label="Full price" id="s7-p-r" max="6" min="1" step="0.1" type="range" value="3.5"/></div>
+<div class="control"><div class="control-label"><b>Variable cost (c)</b><span class="val" id="s7-c-l">$1.20</span></div>
+<input aria-label="Variable cost" id="s7-c-r" max="3" min="0" step="0.1" type="range" value="1.2"/></div>
+<div class="control"><div class="control-label"><b>Discount price (v)</b><span class="val" id="s7-v-l">$1.00</span></div>
+<input aria-label="Discount price" id="s7-v-r" max="3" min="0" step="0.1" type="range" value="1"/></div>
+</div>
+<div aria-live="polite" class="receipt" id="s7-receipt" style="margin:16px 0;"></div>
+<p style="font-size:14px; margin-bottom:8px;">Critical ratio, mapped onto the cumulative demand distribution:</p>
+<svg class="chart" id="s7-gauge" viewbox="0 0 640 104"></svg>
+</div>
+</div>
+<div class="box excel">
+<span class="tag">BUILD THIS NEXT, IN EXCEL</span>
+<div id="s7-excel-text">
+<div class="formula-list">
+<div class="formula-line"><span class="cell-ref">B44</span> <code>=B7-B6</code> — Cost of underage (Cu)</div>
+<div class="formula-line"><span class="cell-ref">B45</span> <code>=B6-B8</code> — Cost of overage (Co)</div>
+<div class="formula-line"><span class="cell-ref">B46</span> <code>=B44/(B44+B45)</code> — Critical Ratio</div>
+</div>
+<p class="formula-note">Choose Q so that the cumulative probability of demand at or below Q is just above this ratio.</p>
+</div>
+</div>
+<details class="check">
+<summary>Self-check: at the assignment's prices, the critical ratio is 0.92 — what does that mean in plain English?</summary>
+<div class="a"><p>It means the ideal bake quantity is high enough
         that demand falls at or below it 92% of the time — because
         understocking a $2.30-margin muffin hurts a lot more than overstocking
         a muffin that still salvages $1.00. With prices this lopsided, the
         model deliberately accepts frequent, small leftovers to avoid rare,
         expensive stockouts.</p></div>
-      </details>
-
-      <div class="exercise" id="ex7">
-        <div class="exercise-bar"><span>EXERCISE 7 — REQUIRED FOR PARTICIPATION</span><span class="status" id="ex7-status">not started</span></div>
-        <div class="exercise-body">
-          <label for="ex7-input">Using the sliders above, drop the discount price (v) to $0.50 and keep p and c at their defaults. What is the new critical ratio, as a percent to one decimal place?</label>
-          <div class="exercise-row">
-            <input type="number" step="0.1" id="ex7-input" style="max-width:140px;" aria-describedby="ex7-feedback"> <span aria-hidden="true">%</span>
-          </div>
-          <div class="excel-address-check">
-            <p class="mini-title">EXCEL RANGE CHECK — REQUIRED</p>
-            <label for="ex7-ratio-range">What range contains Cu, Co, and the Critical Ratio for the track currently selected?</label>
-            <input type="text" id="ex7-ratio-range" placeholder="range address">
-          </div>
-          <div class="exercise-row"><button class="run" id="ex7-check" type="button">Check ratio + Excel range</button></div>
-          <div class="feedback" id="ex7-feedback" aria-live="polite"></div>
-        </div>
-      </div>
-    </section>
-
-    <section class="step" id="s8">
-      <div class="step-head"><span class="step-num">08</span></div>
-      <h2>Working backward: how few sales can you survive on?</h2>
-      <p>Goal Seek answers a different question than everything above: not
+</details>
+<div class="exercise" id="ex7">
+<div class="exercise-bar"><span>EXERCISE 7 — REQUIRED FOR PARTICIPATION</span><span class="status" id="ex7-status">not started</span></div>
+<div class="exercise-body">
+<label for="ex7-input">Using the sliders above, drop the discount price (v) to $0.50 and keep p and c at their defaults. What is the new critical ratio, as a percent to one decimal place?</label>
+<div class="exercise-row">
+<input aria-describedby="ex7-feedback" id="ex7-input" step="0.1" style="max-width:140px;" type="number"/> <span aria-hidden="true">%</span>
+</div>
+<div class="excel-address-check">
+<p class="mini-title">EXCEL RANGE CHECK — REQUIRED</p>
+<label for="ex7-ratio-range">What range contains Cu, Co, and the Critical Ratio for the track currently selected?</label>
+<input id="ex7-ratio-range" placeholder="range address" type="text"/>
+</div>
+<div class="exercise-row"><button class="run" id="ex7-check" type="button">Check ratio + Excel range</button></div>
+<div aria-live="polite" class="feedback" id="ex7-feedback"></div>
+</div>
+</div>
+<div class="section-review"><h3>Flip Cards — Review This Section</h3><p class="section-review-intro">Open the cards for this section, then complete its multiple-choice checkpoint before moving on.</p><div class="study-flip-grid"><div aria-label="Flip card: Cost of Underage" class="study-flip" data-card-key="W12-F25" role="button" tabindex="0"><div class="study-flip-inner"><div class="study-face study-front"><small>FLIP CARD</small><h3>Cost of Underage</h3><p>What does it measure?</p><span class="flip-hint">Click to reveal</span></div><div class="study-face study-back"><small>WHY IT MATTERS</small><p>The opportunity cost of having one unit too few—typically contribution margin or service value lost.</p><span class="flip-hint">Click to return</span></div></div></div><div aria-label="Flip card: Cost of Overage" class="study-flip" data-card-key="W12-F26" role="button" tabindex="0"><div class="study-flip-inner"><div class="study-face study-front"><small>FLIP CARD</small><h3>Cost of Overage</h3><p>What does it measure?</p><span class="flip-hint">Click to reveal</span></div><div class="study-face study-back"><small>WHY IT MATTERS</small><p>The cost of having one unit too many—usually purchase/production cost minus salvage recovery.</p><span class="flip-hint">Click to return</span></div></div></div><div aria-label="Flip card: Critical Ratio" class="study-flip" data-card-key="W12-F27" role="button" tabindex="0"><div class="study-flip-inner"><div class="study-face study-front"><small>FLIP CARD</small><h3>Critical Ratio</h3><p>What does it balance?</p><span class="flip-hint">Click to reveal</span></div><div class="study-face study-back"><small>WHY IT MATTERS</small><p>It balances underage and overage costs to identify the demand percentile that should guide the quantity decision.</p><span class="flip-hint">Click to return</span></div></div></div></div><div class="mc-checkpoint inline-checkpoint"><h3>Section 8 Multiple-Choice Checkpoint</h3><p>Answer these questions now while the lesson is fresh.</p><div class="mc-grid"><div class="mc-card" data-question-key="W12-MC10"><div class="mc-number">5</div><h4>If the cost of underage rises while the cost of overage stays the same, what generally happens to the critical ratio?</h4><div class="mc-choices"><label class="mc-choice"><input name="w12-r2-5" type="radio" value="a"/> <span><strong>A.</strong> It rises</span></label><label class="mc-choice"><input name="w12-r2-5" type="radio" value="b"/> <span><strong>B.</strong> It falls to zero</span></label><label class="mc-choice"><input name="w12-r2-5" type="radio" value="c"/> <span><strong>C.</strong> It becomes negative</span></label><label class="mc-choice"><input name="w12-r2-5" type="radio" value="d"/> <span><strong>D.</strong> It does not change</span></label></div><div aria-live="polite" class="mc-feedback">Choose an answer.</div></div></div></div></div></section>
+<section class="step lesson-section" id="s8">
+<div class="step-head"><span class="step-num">08</span></div>
+<div class="section-sequence">SECTION 9 OF 10</div><h2>Working backward: how few sales can you survive on?</h2>
+<p>Goal Seek answers a different question than everything above: not
       "what's my profit at this demand," but "what's the <em>minimum</em>
       demand I can survive on before I start losing money." Press run and
       watch it search.</p>
-
-      <div class="widget" id="w8">
-        <div class="widget-bar"><span>GOAL SEEK</span><span id="s8-cellref">Set B17 to 0 by changing B10</span></div>
-        <div class="widget-body">
-          <div id="s8-toggle" style="margin-bottom:18px;"></div>
-          <div class="control">
-            <div class="control-label"><b id="s8-lbl-Q">Muffins baked (Q)</b><span class="val" id="s8-Q-l">170</span></div>
-            <input type="range" id="s8-Q-r" aria-label="Muffins baked, Q" min="120" max="220" step="5" value="170">
-          </div>
-          <div class="control">
-            <div class="control-label"><b>Demand — drag, or let Goal Seek find it</b><span class="val" id="s8-D-l">100</span></div>
-            <input type="range" id="s8-D-r" aria-label="Demand, D" min="0" max="220" step="1" value="100">
-          </div>
-          <button class="run" id="s8-run" type="button">Run Goal Seek</button>
-          <svg class="chart" id="s8-chart" viewBox="0 0 640 220" style="margin-top:16px;"></svg>
-          <div class="receipt" id="s8-receipt" aria-live="polite" style="margin-top:14px;"></div>
-        </div>
-      </div>
-
-      <div class="box excel">
-        <span class="tag">BUILD THIS NEXT, IN EXCEL</span>
-        <p>Data → What-If Analysis → Goal Seek. <strong>Set cell:</strong>
-        <span class="cell-ref">B17</span> &nbsp;<strong>To value:</strong> 0
-        &nbsp;<strong>By changing cell:</strong> <span class="cell-ref">B10</span>.
+<div class="widget" id="w8">
+<div class="widget-bar"><span>GOAL SEEK</span><span id="s8-cellref">Set B17 to 0 by changing B10</span></div>
+<div class="widget-body">
+<div id="s8-toggle" style="margin-bottom:18px;"></div>
+<div class="control">
+<div class="control-label"><b id="s8-lbl-Q">Muffins baked (Q)</b><span class="val" id="s8-Q-l">170</span></div>
+<input aria-label="Muffins baked, Q" id="s8-Q-r" max="220" min="120" step="5" type="range" value="170"/>
+</div>
+<div class="control">
+<div class="control-label"><b>Demand — drag, or let Goal Seek find it</b><span class="val" id="s8-D-l">100</span></div>
+<input aria-label="Demand, D" id="s8-D-r" max="220" min="0" step="1" type="range" value="100"/>
+</div>
+<button class="run" id="s8-run" type="button">Run Goal Seek</button>
+<svg class="chart" id="s8-chart" style="margin-top:16px;" viewbox="0 0 640 220"></svg>
+<div aria-live="polite" class="receipt" id="s8-receipt" style="margin-top:14px;"></div>
+</div>
+</div>
+<div class="box excel">
+<span class="tag">BUILD THIS NEXT, IN EXCEL</span>
+<p>Data → What-If Analysis → Goal Seek. <strong>Set cell:</strong>
+<span class="cell-ref">B17</span>  <strong>To value:</strong> 0
+         <strong>By changing cell:</strong> <span class="cell-ref">B10</span>.
         Excel iterates the same way the animation above does, just faster and
         silently.</p>
-      </div>
-
-      <details class="check">
-        <summary>Self-check: at Q=170, why is the breakeven demand so low (about 30 muffins)?</summary>
-        <div class="a"><p>Because the margin on a full-price muffin ($2.30)
+</div>
+<details class="check">
+<summary>Self-check: at Q=170, why is the breakeven demand so low (about 30 muffins)?</summary>
+<div class="a"><p>Because the margin on a full-price muffin ($2.30)
         is large relative to the fixed cost ($40). You only need
         <code>$40 ÷ $2.30 ≈ 17</code> muffins' worth of margin to cover setup,
         plus a little more to offset the fact that unsold muffins still
         salvage $1.00 rather than $0. Thin fixed costs and fat margins push
         breakeven demand down — that relationship flips in the healthcare
         version, next.</p></div>
-      </details>
-
-      <div class="exercise" id="ex8">
-        <div class="exercise-bar"><span>EXERCISE 8 — REQUIRED FOR PARTICIPATION</span><span class="status" id="ex8-status">not started</span></div>
-        <div class="exercise-body">
-          <label for="ex8-input">Set Q to 200 and run Goal Seek. What breakeven demand does it converge on (nearest whole unit)?</label>
-          <div class="exercise-row">
-            <input type="number" id="ex8-input" style="max-width:140px;" aria-describedby="ex8-feedback">
-          </div>
-          <div class="excel-address-check">
-            <p class="mini-title">GOAL SEEK CELL CHECK — REQUIRED</p>
-            <div class="grid2">
-              <div><label for="ex8-set-cell">Goal Seek “Set cell”</label><input type="text" id="ex8-set-cell" placeholder="cell address"></div>
-              <div><label for="ex8-change-cell">Goal Seek “By changing cell”</label><input type="text" id="ex8-change-cell" placeholder="cell address"></div>
-            </div>
-          </div>
-          <div class="exercise-row"><button class="run" id="ex8-check" type="button">Check breakeven + Goal Seek cells</button></div>
-          <div class="feedback" id="ex8-feedback" aria-live="polite"></div>
-        </div>
-      </div>
-    </section>
-
-    <section class="step" id="s9">
-      <div class="step-head"><span class="step-num">09</span></div>
-      <h2>The same math, higher stakes</h2>
-      <p>Swap the numbers and the exact same five formulas run a flu clinic
+</details>
+<div class="exercise" id="ex8">
+<div class="exercise-bar"><span>EXERCISE 8 — REQUIRED FOR PARTICIPATION</span><span class="status" id="ex8-status">not started</span></div>
+<div class="exercise-body">
+<label for="ex8-input">Set Q to 200 and run Goal Seek. What breakeven demand does it converge on (nearest whole unit)?</label>
+<div class="exercise-row">
+<input aria-describedby="ex8-feedback" id="ex8-input" style="max-width:140px;" type="number"/>
+</div>
+<div class="excel-address-check">
+<p class="mini-title">GOAL SEEK CELL CHECK — REQUIRED</p>
+<div class="grid2">
+<div><label for="ex8-set-cell">Goal Seek “Set cell”</label><input id="ex8-set-cell" placeholder="cell address" type="text"/></div>
+<div><label for="ex8-change-cell">Goal Seek “By changing cell”</label><input id="ex8-change-cell" placeholder="cell address" type="text"/></div>
+</div>
+</div>
+<div class="exercise-row"><button class="run" id="ex8-check" type="button">Check breakeven + Goal Seek cells</button></div>
+<div aria-live="polite" class="feedback" id="ex8-feedback"></div>
+</div>
+</div>
+<div class="section-review"><h3>Flip Cards — Review This Section</h3><p class="section-review-intro">Open the cards for this section, then complete its multiple-choice checkpoint before moving on.</p><div class="study-flip-grid"><div aria-label="Flip card: Goal Seek" class="study-flip" data-card-key="W12-F28" role="button" tabindex="0"><div class="study-flip-inner"><div class="study-face study-front"><small>FLIP CARD</small><h3>Goal Seek</h3><p>What does it solve?</p><span class="flip-hint">Click to reveal</span></div><div class="study-face study-back"><small>WHY IT MATTERS</small><p>It works backward from a target output, such as zero profit, to the one input value that produces that target.</p><span class="flip-hint">Click to return</span></div></div></div><div aria-label="Flip card: Solver" class="study-flip" data-card-key="W12-F29" role="button" tabindex="0"><div class="study-flip-inner"><div class="study-face study-front"><small>FLIP CARD</small><h3>Solver</h3><p>When should you use it?</p><span class="flip-hint">Click to reveal</span></div><div class="study-face study-back"><small>WHY IT MATTERS</small><p>Use Solver when the best decision must be found subject to one or more constraints and possibly several decision variables.</p><span class="flip-hint">Click to return</span></div></div></div></div><div class="mc-checkpoint inline-checkpoint"><h3>Section 9 Multiple-Choice Checkpoint</h3><p>Answer these questions now while the lesson is fresh.</p><div class="mc-grid"><div class="mc-card" data-question-key="W12-MC11"><div class="mc-number">1</div><h4>Which tool is best for finding the demand that makes profit exactly zero?</h4><div class="mc-choices"><label class="mc-choice"><input name="w12-r3-1" type="radio" value="a"/> <span><strong>A.</strong> PivotTable</span></label><label class="mc-choice"><input name="w12-r3-1" type="radio" value="b"/> <span><strong>B.</strong> Goal Seek</span></label><label class="mc-choice"><input name="w12-r3-1" type="radio" value="c"/> <span><strong>C.</strong> Chart filter</span></label><label class="mc-choice"><input name="w12-r3-1" type="radio" value="d"/> <span><strong>D.</strong> Conditional formatting</span></label></div><div aria-live="polite" class="mc-feedback">Choose an answer.</div></div><div class="mc-card" data-question-key="W12-MC12"><div class="mc-number">2</div><h4>Which tool is best for finding the optimal quantity subject to constraints?</h4><div class="mc-choices"><label class="mc-choice"><input name="w12-r3-2" type="radio" value="a"/> <span><strong>A.</strong> Solver</span></label><label class="mc-choice"><input name="w12-r3-2" type="radio" value="b"/> <span><strong>B.</strong> Spell Check</span></label><label class="mc-choice"><input name="w12-r3-2" type="radio" value="c"/> <span><strong>C.</strong> Sort</span></label><label class="mc-choice"><input name="w12-r3-2" type="radio" value="d"/> <span><strong>D.</strong> Freeze Panes</span></label></div><div aria-live="polite" class="mc-feedback">Choose an answer.</div></div></div></div></div></section>
+<section class="step lesson-section" id="s9">
+<div class="step-head"><span class="step-num">09</span></div>
+<div class="section-sequence">SECTION 10 OF 10</div><h2>The same math, higher stakes</h2>
+<p>Swap the numbers and the exact same five formulas run a flu clinic
       deciding how many vaccine doses to order. What changes is not the
       model — it's what "leftover" and "stockout" actually cost.</p>
-
-      <div id="s9-toggle" role="group" aria-label="Choose a scenario"></div>
-
-      <div class="widget" id="w9">
-        <div class="widget-bar"><span id="s9-bar-label">MORNING BREW CAFÉ</span><span>same five formulas</span></div>
-        <div class="widget-body">
-          <table class="sheet" id="s9-table" aria-live="polite" style="margin-bottom:18px;"></table>
-          <div class="receipt" id="s9-receipt" aria-live="polite"></div>
-        </div>
-      </div>
-
-      <div class="box health">
-        <span class="tag">ETHICAL VS. FINANCIAL — TASK 2 OF THE ASSIGNMENT</span>
-        <p>Order 170 doses; 200 patients show up. The spreadsheet reports a
+<div aria-label="Choose a scenario" id="s9-toggle" role="group"></div>
+<div class="widget" id="w9">
+<div class="widget-bar"><span id="s9-bar-label">MORNING BREW CAFÉ</span><span>same five formulas</span></div>
+<div class="widget-body">
+<table aria-live="polite" class="sheet" id="s9-table" style="margin-bottom:18px;"></table>
+<div aria-live="polite" class="receipt" id="s9-receipt"></div>
+</div>
+</div>
+<div class="box health">
+<span class="tag">ETHICAL VS. FINANCIAL — TASK 2 OF THE ASSIGNMENT</span>
+<p>Order 170 doses; 200 patients show up. The spreadsheet reports a
         clean financial profit — revenue is simply capped at 170 sales,
         exactly like the muffin model caps at Q. But 30 people who wanted a
         flu shot didn't get one. Net Profit and Public Health point to
         different order quantities here: maximizing Cu (the true social cost
         of a missed vaccination — clinic visits, spread, lost workdays) would
         push Q well above what maximizes revenue alone.</p>
-      </div>
-
-      <div class="grid2">
-        <div class="box why">
-          <span class="tag">A NON-PRICE LEVER FOR THE CAFÉ</span>
-          <p>Bundle day-old muffins into a discounted "yesterday's bake"
+</div>
+<div class="grid2">
+<div class="box why">
+<span class="tag">A NON-PRICE LEVER FOR THE CAFÉ</span>
+<p>Bundle day-old muffins into a discounted "yesterday's bake"
           box, or take pre-orders for the next morning — both shrink the
           leftover pile without touching price on fresh stock.</p>
-        </div><div class="box health">
-          <span class="tag">A NON-PRICE LEVER FOR THE CLINIC</span>
-          <p>Cross-train nurses so a quiet department can "float" staff to a
+</div><div class="box health">
+<span class="tag">A NON-PRICE LEVER FOR THE CLINIC</span>
+<p>Cross-train nurses so a quiet department can "float" staff to a
           busy one, or route overflow patients to telehealth — both absorb a
           demand spike without holding idle capacity on standby all season.</p>
-        </div>
-      </div>
-
-      <details class="check">
-        <summary>Self-check: is an empty hospital bed or a patient waiting in the hallway the more expensive kind of "wrong"?</summary>
-        <div class="a"><p>There's no single correct number — that's the point
+</div>
+</div>
+<details class="check">
+<summary>Self-check: is an empty hospital bed or a patient waiting in the hallway the more expensive kind of "wrong"?</summary>
+<div class="a"><p>There's no single correct number — that's the point
         of the question. An empty bed has a clear, bounded financial cost
         (lost reimbursement for one night). A patient boarding in a hallway
         has a cost that's harder to price: worse outcomes, staff strain, and
         reputational damage that can suppress future demand in ways a
         one-day profit model never captures. Naming that asymmetry out loud
         is more important than picking a number for it.</p></div>
-      </details>
-
-      <details class="check">
-        <summary>Self-check: a 4-week MRI wait doesn't show up anywhere in this profit formula — where would you add it?</summary>
-        <div class="a"><p>It would show up as an inflated Cu: the true cost
+</details>
+<details class="check">
+<summary>Self-check: a 4-week MRI wait doesn't show up anywhere in this profit formula — where would you add it?</summary>
+<div class="a"><p>It would show up as an inflated Cu: the true cost
         of underage isn't just today's missed appointment, it's the
         reputational and clinical cost of a growing waitlist. Modeling it
         honestly usually means treating Cu as larger than the raw margin
         suggests, which pushes the critical ratio — and the recommended
         capacity — higher.</p></div>
-      </details>
+</details>
+<div class="exercise" id="ex9">
+<div class="exercise-bar"><span>EXERCISE 9 — REQUIRED FOR PARTICIPATION</span><span class="status" id="ex9-status">not started</span></div>
+<div class="exercise-body">
+<label for="ex9-input">Using the toggle above, compare the Coffee Shop and Flu Clinic critical ratios. In 3–4 sentences: which one should tolerate more overstocking, and why? Then name one non-price strategy from this page (or your own idea) that fits your recommendation.</label>
+<textarea aria-describedby="ex9-count ex9-feedback" id="ex9-input" placeholder="Type your answer here…"></textarea>
+<div class="char-count" id="ex9-count">0 characters</div>
+<div aria-live="polite" class="feedback" id="ex9-feedback"></div>
+</div>
+</div>
+<div class="section-review"><h3>Flip Cards — Review This Section</h3><p class="section-review-intro">Open the cards for this section, then complete its multiple-choice checkpoint before moving on.</p><div class="study-flip-grid"><div aria-label="Flip card: Model Validation" class="study-flip" data-card-key="W12-F30" role="button" tabindex="0"><div class="study-flip-inner"><div class="study-face study-front"><small>FLIP CARD</small><h3>Model Validation</h3><p>How do you know the spreadsheet is trustworthy?</p><span class="flip-hint">Click to reveal</span></div><div class="study-face study-back"><small>WHY IT MATTERS</small><p>Test known cases and extreme values, reconcile totals, check units, audit formulas, and ask whether outputs make managerial sense.</p><span class="flip-hint">Click to return</span></div></div></div></div><div class="mc-checkpoint inline-checkpoint"><h3>Section 10 Multiple-Choice Checkpoint</h3><p>Answer these questions now while the lesson is fresh.</p><div class="mc-grid"><div class="mc-card" data-question-key="W12-MC14"><div class="mc-number">4</div><h4>Why can a financially optimal healthcare quantity still be managerially unacceptable?</h4><div class="mc-choices"><label class="mc-choice"><input name="w12-r3-4" type="radio" value="a"/> <span><strong>A.</strong> Healthcare has no costs</span></label><label class="mc-choice"><input name="w12-r3-4" type="radio" value="b"/> <span><strong>B.</strong> The model may omit service, ethical, safety, or patient-harm consequences</span></label><label class="mc-choice"><input name="w12-r3-4" type="radio" value="c"/> <span><strong>C.</strong> Healthcare cannot use spreadsheets</span></label><label class="mc-choice"><input name="w12-r3-4" type="radio" value="d"/> <span><strong>D.</strong> Demand is always known</span></label></div><div aria-live="polite" class="mc-feedback">Choose an answer.</div></div></div></div></div></section>
+</main>
+<footer>
 
-      <div class="exercise" id="ex9">
-        <div class="exercise-bar"><span>EXERCISE 9 — REQUIRED FOR PARTICIPATION</span><span class="status" id="ex9-status">not started</span></div>
-        <div class="exercise-body">
-          <label for="ex9-input">Using the toggle above, compare the Coffee Shop and Flu Clinic critical ratios. In 3–4 sentences: which one should tolerate more overstocking, and why? Then name one non-price strategy from this page (or your own idea) that fits your recommendation.</label>
-          <textarea id="ex9-input" aria-describedby="ex9-count ex9-feedback" placeholder="Type your answer here…"></textarea>
-          <div class="char-count" id="ex9-count">0 characters</div>
-          <div class="feedback" id="ex9-feedback" aria-live="polite"></div>
-        </div>
-      </div>
-    </section>
-
-  </main>
-
-  <footer>
-    <section class="step" id="submit" style="border-top:none; padding-top:0;">
-      <div class="step-head"><span class="step-num" aria-hidden="true">✓</span></div>
-      <h2>Record your participation</h2>
-      <p>Sign in above before beginning. As you open required self-checks and complete each exercise, your activity is saved to the instructor-controlled Supabase database. When finished, choose <strong>Record participation</strong> to verify the authoritative server record and generate your Blackboard receipt.</p>
-      <p id="footerProgress" style="font-family:var(--font-mono); font-size:14px;">0 / 9 exercises completed.</p>
-
-      <div class="widget" id="wSubmit">
-        <div class="widget-bar"><span>PARTICIPATION SUBMISSION</span><span>Supabase-backed · section and semester aware</span></div>
-        <div class="widget-body">
-          <div class="grid2">
-            <div class="control">
-              <label for="submit-name" style="font-weight:600; display:block; margin-bottom:6px;">Your name</label>
-              <input type="text" id="submit-name" autocomplete="name" required style="width:100%; font-family:var(--font-body); font-size:15px; border:1px solid var(--ink); background:var(--paper); padding:9px 11px;">
-            </div>
-            <div class="control">
-              <label for="submit-email" style="font-weight:600; display:block; margin-bottom:6px;">School email</label>
-              <input type="email" id="submit-email" autocomplete="email" required placeholder="student@example.edu" style="width:100%; font-family:var(--font-body); font-size:15px; border:1px solid var(--ink); background:var(--paper); padding:9px 11px;">
-            </div>
-          </div>
-          <div class="presets">
-            <button class="run" id="submit-direct" type="button">Record participation</button>
-            <button class="chip" id="submit-receipt" type="button" disabled>Download Blackboard receipt</button>
-            <button class="chip" id="submit-generate" type="button">Generate personal copy</button>
-            <button class="chip" id="submit-copy" type="button" disabled>Copy personal copy</button>
-            <button class="chip" id="submit-download" type="button" disabled>Download personal copy</button>
-          </div>
-          <div class="feedback" id="submit-feedback" aria-live="polite" style="margin-top:10px;"></div>
-          <div id="receiptPanel" hidden class="box health" style="margin-top:14px;">
-            <span class="tag">BLACKBOARD RECEIPT READY</span>
-            <p id="receiptText" style="margin-bottom:0;"></p>
-          </div>
-          <div id="footerCode" hidden style="margin-top:14px;">
-            <label for="submit-output" style="font-weight:600; display:block; margin-bottom:6px;">Your submission text</label>
-            <textarea id="submit-output" readonly style="width:100%; min-height:220px; font-family:var(--font-mono); font-size:13px; border:1px solid var(--ink); background:var(--paper); padding:12px;"></textarea>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <p style="margin-top:44px;">
+<section class="step" id="submit" style="border-top:none; padding-top:0;">
+<div class="step-head"><span aria-hidden="true" class="step-num">✓</span></div>
+<h2>Record your participation</h2>
+<p>Sign in above before beginning. As you open required self-checks and complete each exercise, your activity is saved to the instructor-controlled Supabase database. When finished, choose <strong>Record participation</strong> to verify the authoritative server record and generate your Blackboard receipt.</p>
+<p id="footerProgress" style="font-family:var(--font-mono); font-size:14px;">0 / 9 exercises completed.</p>
+<div class="widget" id="wSubmit">
+<div class="widget-bar"><span>PARTICIPATION SUBMISSION</span><span>Supabase-backed · section and semester aware</span></div>
+<div class="widget-body">
+<div class="grid2">
+<div class="control">
+<label for="submit-name" style="font-weight:600; display:block; margin-bottom:6px;">Your name</label>
+<input autocomplete="name" id="submit-name" required="" style="width:100%; font-family:var(--font-body); font-size:15px; border:1px solid var(--ink); background:var(--paper); padding:9px 11px;" type="text"/>
+</div>
+<div class="control">
+<label for="submit-email" style="font-weight:600; display:block; margin-bottom:6px;">School email</label>
+<input autocomplete="email" id="submit-email" placeholder="student@example.edu" required="" style="width:100%; font-family:var(--font-body); font-size:15px; border:1px solid var(--ink); background:var(--paper); padding:9px 11px;" type="email"/>
+</div>
+</div>
+<div class="presets">
+<button class="run" id="submit-direct" type="button">Record participation</button>
+<button class="chip" disabled="" id="submit-receipt" type="button">Download Blackboard receipt</button>
+<button class="chip" id="submit-generate" type="button">Generate personal copy</button>
+<button class="chip" disabled="" id="submit-copy" type="button">Copy personal copy</button>
+<button class="chip" disabled="" id="submit-download" type="button">Download personal copy</button>
+</div>
+<div aria-live="polite" class="feedback" id="submit-feedback" style="margin-top:10px;"></div>
+<div class="box health" hidden="" id="receiptPanel" style="margin-top:14px;">
+<span class="tag">BLACKBOARD RECEIPT READY</span>
+<p id="receiptText" style="margin-bottom:0;"></p>
+</div>
+<div hidden="" id="footerCode" style="margin-top:14px;">
+<label for="submit-output" style="font-weight:600; display:block; margin-bottom:6px;">Your submission text</label>
+<textarea id="submit-output" readonly="" style="width:100%; min-height:220px; font-family:var(--font-mono); font-size:13px; border:1px solid var(--ink); background:var(--paper); padding:12px;"></textarea>
+</div>
+</div>
+</div>
+</section>
+<p style="margin-top:44px;">
     Built for MG628 — Data Analysis for Managerial Decisions. Signed-in participation activity is stored automatically in Supabase and separated by academic term, course, and section. Blackboard receives a receipt that points to the authoritative server record. This page remains a companion to the Excel workbook, not a replacement for it.
     </p>
-  </footer>
-
+</footer>
 </div>
-
 <script>
 // ---------- instructor-controlled submission configuration ----------
 // Replace this URL with the deployed endpoint described in README_enhanced.md.
@@ -1122,13 +1200,50 @@ const participationSeenCards=new Set(), syncTimers=new Map();
 const SELF_CHECK_KEYS=['SELF-01','SELF-02','SELF-03','SELF-04','SELF-05','SELF-06','SELF-07','SELF-08','SELF-09A','SELF-09B'];
 async function invokeParticipation(body){const {data,error}=await sb.functions.invoke('participation-api',{body});if(error)throw error;if(data?.error)throw new Error(data.error);return data;}
 function setAuthStatus(message,kind=''){const el=document.getElementById('auth-status');if(!el)return;el.textContent=message;el.className='auth-status'+(kind?' '+kind:'');}
-function renderServerProgress(c){backendCompletion=c||backendCompletion;const el=document.getElementById('server-progress');if(!el)return;if(!backendCompletion){el.hidden=true;return;}el.hidden=false;el.innerHTML='Server record: <strong>'+String(backendCompletion.completion_percentage??0)+'%</strong> · self-checks '+String(backendCompletion.cards_completed??0)+'/'+String(backendCompletion.cards_required??0)+' · exercises '+(backendCompletion.worksheet_completed?'complete':'in progress')+' · reflection '+(backendCompletion.reflection_completed?'complete':'in progress')+' · status <strong>'+String(backendCompletion.status||'incomplete').toUpperCase()+'</strong>';}
+function renderServerProgress(c){backendCompletion=c||backendCompletion;const el=document.getElementById('server-progress');if(!el)return;if(!backendCompletion){el.hidden=true;return;}el.hidden=false;el.innerHTML='Server record: <strong>'+String(backendCompletion.completion_percentage??0)+'%</strong> · cards '+String(backendCompletion.cards_completed??0)+'/'+String(backendCompletion.cards_required??0)+' · MC '+String(backendCompletion.questions_answered??0)+'/'+String(backendCompletion.questions_required??0)+' ('+String(backendCompletion.questions_correct??0)+' correct) · exercises '+(backendCompletion.worksheet_completed?'complete':'in progress')+' · reflection '+(backendCompletion.reflection_completed?'complete':'in progress')+' · status <strong>'+String(backendCompletion.status||'incomplete').toUpperCase()+'</strong>';}
 async function startBackendSession(){if(!signedInUser||!backendOffering)return;const r=await invokeParticipation({action:'start_session',offering_id:backendOffering.id,track:currentTrack});backendSession=r.session;backendCompletion=r.completion;renderServerProgress(r.completion);for(const key of participationSeenCards)await recordSelfCheck(key,true);if(typeof EXERCISE_DEFS!=='undefined')for(const d of EXERCISE_DEFS)if(exerciseState[d.id]?.done)await syncExerciseNow(d.id);}
-async function bootstrapStudent(){const {data:{user}}=await sb.auth.getUser();signedInUser=user||null;const signout=document.getElementById('auth-signout'),fields=document.getElementById('authFields');if(!user){backendSession=backendOffering=backendCompletion=null;if(signout)signout.hidden=true;if(fields)fields.hidden=false;setAuthStatus('Sign in before completing required participation items so your work is recorded.');renderServerProgress(null);return;}if(signout)signout.hidden=false;if(fields)fields.hidden=true;const em=document.getElementById('submit-email');if(em){em.value=user.email||'';em.readOnly=true;}const nm=document.getElementById('submit-name');if(nm&&!nm.value)nm.value=user.user_metadata?.full_name||'';setAuthStatus('Signed in. Matching your school email to the instructor roster…');try{const r=await invokeParticipation({action:'bootstrap'});const offering=(r.offerings||[]).find(o=>o.assignment?.slug===ASSIGNMENT_SLUG&&Number(o.assignment?.version)===ASSIGNMENT_VERSION);if(!offering){backendOffering=backendSession=null;setAuthStatus('Signed in, but this email is not rostered for a section that has this assignment. Contact your instructor if this is unexpected.','err');return;}backendOffering=offering;const enr=(r.enrollments||[]).find(e=>e.section_id===offering.section_id),sec=enr?.section;setAuthStatus('Roster verified: '+(sec?.course?.code||COURSE_CODE)+' '+(sec?.section_code||'')+' · '+(sec?.term?.name||'')+'. Starting your secure participation record…','ok');await startBackendSession();setAuthStatus('Participation recording is active for '+(sec?.course?.code||COURSE_CODE)+' '+(sec?.section_code||'')+' · '+(sec?.term?.name||'')+'.','ok');}catch(e){setAuthStatus(e.message||'Could not initialize participation recording.','err');console.error(e);}}
+function restoreExerciseFromServer(item){
+  if(!item?.question_key)return;
+  const id=String(item.question_key).toLowerCase(),def=(typeof EXERCISE_DEFS!=='undefined'?EXERCISE_DEFS.find(d=>d.id===id):null);
+  if(!def)return;
+  const payload=item.response_json||{},raw=payload.raw??item.response_text??null,excel=Array.isArray(payload.excel_refs)?payload.excel_refs:[],summary=payload.summary||item.response_text||'Restored saved response';
+  if(def.type==='text'||def.type==='textExcel'){
+    const input=document.getElementById(id+'-input');if(input)input.value=typeof raw==='string'?raw:(item.response_text||'');
+    const count=document.getElementById(id+'-count');if(count&&input)count.textContent=input.value.trim().length+' characters';
+  }
+  if(def.type==='numeric'&&Array.isArray(raw))def.fields.forEach((fid,i)=>{const el=document.getElementById(fid);if(el&&raw[i]!==undefined&&raw[i]!==null)el.value=raw[i];});
+  (def.excelFields||[]).forEach((fid,i)=>{const el=document.getElementById(fid);if(el&&excel[i]!==undefined)el.value=excel[i];});
+  exerciseState[id]={done:true,summary,raw,excel};
+  const status=document.getElementById(id+'-status');if(status){status.textContent='complete';status.classList.add('done');}
+  const feedback=document.getElementById(id+'-feedback');if(feedback){feedback.textContent='Restored from your saved Supabase session.';feedback.className='feedback saved';}
+}
+async function resumeOrStartBackendSession(){
+  if(!signedInUser||!backendOffering)return;
+  const r=await invokeParticipation({action:'resume_session',offering_id:backendOffering.id});
+  if(!r.session){await startBackendSession();return false;}
+  backendSession=null;
+  if(r.session.track&&r.session.track!==currentTrack)setTrack(r.session.track);
+  backendSession=r.session;backendCompletion=r.completion;renderServerProgress(r.completion);
+  participationSeenCards.clear();for(const key of r.card_keys||[])participationSeenCards.add(key);
+  document.querySelectorAll('.study-flip[data-card-key]').forEach(c=>c.classList.toggle('flipped',participationSeenCards.has(c.dataset.cardKey)));
+  restoreKnowledgeResponses(r.knowledge_responses||[]);
+  if(typeof exerciseState!=='undefined')for(const k of Object.keys(exerciseState))delete exerciseState[k];
+  for(const item of r.worksheet_responses||[])restoreExerciseFromServer(item);
+  updateExerciseProgress();
+  return true;
+}
+async function bootstrapStudent(){const {data:{user}}=await sb.auth.getUser();signedInUser=user||null;const signout=document.getElementById('auth-signout'),fields=document.getElementById('authFields');if(!user){backendSession=backendOffering=backendCompletion=null;if(signout)signout.hidden=true;if(fields)fields.hidden=false;setAuthStatus('Sign in before completing required participation items so your work is recorded.');renderServerProgress(null);return;}if(signout)signout.hidden=false;if(fields)fields.hidden=true;const em=document.getElementById('submit-email');if(em){em.value=user.email||'';em.readOnly=true;}const nm=document.getElementById('submit-name');if(nm&&!nm.value)nm.value=user.user_metadata?.full_name||'';setAuthStatus('Signed in. Matching your school email to the instructor roster…');try{const r=await invokeParticipation({action:'bootstrap'});const offering=(r.offerings||[]).find(o=>o.assignment?.slug===ASSIGNMENT_SLUG&&Number(o.assignment?.version)===ASSIGNMENT_VERSION);if(!offering){backendOffering=backendSession=null;setAuthStatus('Signed in, but this email is not rostered for a section that has this assignment. Contact your instructor if this is unexpected.','err');return;}backendOffering=offering;const enr=(r.enrollments||[]).find(e=>e.section_id===offering.section_id),sec=enr?.section;setAuthStatus('Roster verified: '+(sec?.course?.code||COURSE_CODE)+' '+(sec?.section_code||'')+' · '+(sec?.term?.name||'')+'. Checking for previously saved work…','ok');const resumed=await resumeOrStartBackendSession();setAuthStatus((resumed?'Saved work restored. ':'Participation recording started. ')+'Recording is active for '+(sec?.course?.code||COURSE_CODE)+' '+(sec?.section_code||'')+' · '+(sec?.term?.name||'')+'.','ok');}catch(e){setAuthStatus(e.message||'Could not initialize participation recording.','err');console.error(e);}}
 async function recordSelfCheck(key,quiet=false){participationSeenCards.add(key);if(!backendSession)return;try{const r=await invokeParticipation({action:'card_opened',session_id:backendSession.id,card_key:key});renderServerProgress(r.completion);}catch(e){if(!quiet)setAuthStatus('A self-check could not be recorded. '+(e.message||''),'err');}}
 function scheduleExerciseSync(id){clearTimeout(syncTimers.get(id));syncTimers.set(id,setTimeout(()=>syncExerciseNow(id),500));}
 async function syncExerciseNow(id){if(!backendSession)return;const st=exerciseState[id],key=id.toUpperCase();try{const r=await invokeParticipation({action:'save_worksheet',session_id:backendSession.id,worksheet_key:key,response_text:st?.done?(st.summary||'Completed'):null,response_json:st?.done?{raw:st.raw??null,excel_refs:st.excel??[],summary:st.summary||'',track:currentTrack}:null});renderServerProgress(r.completion);}catch(e){setAuthStatus('Could not save '+key+' to the server: '+(e.message||e),'err');}}
 
+
+
+// ---------- true flip cards + server-graded MC checkpoints ----------
+function restoreKnowledgeResponses(rows){const latest=new Map((rows||[]).map(r=>[r.question_key,r]));document.querySelectorAll('.mc-card[data-question-key]').forEach(q=>{const r=latest.get(q.dataset.questionKey);if(!r)return;const v=(typeof r.selected_answer==='string'?r.selected_answer:String(r.selected_answer??''));const radio=q.querySelector(`input[value="${CSS.escape(v)}"]`);if(radio)radio.checked=true;const fb=q.querySelector('.mc-feedback');if(fb){fb.textContent=(r.is_correct?'Correct. ':'Saved answer restored. ')+'Your latest recorded attempt is '+r.attempt_no+'.';fb.className='mc-feedback '+(r.is_correct?'good':'bad')}})}
+async function answerKnowledge(q,radio){const fb=q.querySelector('.mc-feedback');if(!backendSession){fb.textContent='Sign in and wait for roster verification before answering.';fb.className='mc-feedback bad';return}radio.disabled=true;try{const r=await invokeParticipation({action:'answer_knowledge',session_id:backendSession.id,question_key:q.dataset.questionKey,selected_answer:radio.value});fb.textContent=(r.is_correct?'Correct. ':'Not yet. ')+(r.explanation||'');fb.className='mc-feedback '+(r.is_correct?'good':'bad');renderServerProgress(r.completion)}catch(e){fb.textContent=e.message||String(e);fb.className='mc-feedback bad'}finally{radio.disabled=false}}
+document.querySelectorAll('.study-flip[data-card-key]').forEach(c=>{const go=async()=>{c.classList.toggle('flipped');if(c.classList.contains('flipped'))await recordSelfCheck(c.dataset.cardKey)};c.addEventListener('click',go);c.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();go()}})});
+document.querySelectorAll('.mc-card[data-question-key] input[type=radio]').forEach(r=>r.addEventListener('change',()=>answerKnowledge(r.closest('.mc-card'),r)));
 
 // ---------- shared helpers ----------
 const fmt$ = n => (n<0?'-$':'$') + Math.abs(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
@@ -1443,7 +1558,7 @@ updateExerciseProgress();
   let signedReceipt=null;
   const doneCount=()=>EXERCISE_DEFS.filter(d=>exerciseState[d.id]?.done).length;
   function buildText(){let lines=['MG628 — Order Quantity Tutorial — Personal Copy','Name: '+(nameInput.value.trim()||'(name not entered)'),'Email: '+(emailInput.value.trim()||'(email not entered)'),'Scenario used: '+TRACKS[currentTrack].name+' ('+TRACKS[currentTrack].label+')','Generated: '+new Date().toLocaleString(),'Exercises completed: '+doneCount()+' / '+EXERCISE_DEFS.length,''];EXERCISE_DEFS.forEach((d,i)=>{const st=exerciseState[d.id];lines.push('Exercise '+(i+1)+': '+(st?.done?'COMPLETE':'not completed'));lines.push(st?.summary?'  '+st.summary.replace(/\n/g,'\n  '):'  (no answer recorded)');lines.push('');});return lines.join('\n');}
-  directBtn.addEventListener('click',async()=>{if(!signedInUser||!backendSession){feedback.textContent='Sign in at the top of the page and wait for your roster to be verified before recording participation.';feedback.className='feedback incorrect';return;}directBtn.disabled=true;directBtn.textContent='Verifying server record…';try{for(const d of EXERCISE_DEFS)await syncExerciseNow(d.id);for(const key of participationSeenCards)await recordSelfCheck(key,true);const r=await invokeParticipation({action:'recalculate_completion',session_id:backendSession.id});backendCompletion=r.completion;renderServerProgress(r.completion);if(r.completion.status!=='complete')throw new Error('Server record is '+r.completion.completion_percentage+'% complete. Open every required self-check and complete all nine exercises.');signedReceipt={session_id:backendSession.id,verification_code:r.completion.verification_code,received_at_iso:r.completion.completed_at||r.completion.calculated_at,course:COURSE_CODE,assignment:ASSIGNMENT_CODE,student_name:nameInput.value.trim()||signedInUser.user_metadata?.full_name||'',student_email:signedInUser.email||''};receiptText.innerHTML='<strong>Session:</strong> <code>'+signedReceipt.session_id+'</code><br><strong>Verification:</strong> <code>'+signedReceipt.verification_code+'</code><br><strong>Recorded:</strong> '+new Date(signedReceipt.received_at_iso).toLocaleString();receiptPanel.hidden=false;receiptBtn.disabled=false;feedback.textContent='Participation verified by Supabase. Download the Blackboard receipt below.';feedback.className='feedback correct';directBtn.textContent='Participation verified';}catch(e){feedback.textContent=e.message||String(e);feedback.className='feedback incorrect';directBtn.disabled=false;directBtn.textContent='Record participation';}});
+  directBtn.addEventListener('click',async()=>{if(!signedInUser||!backendSession){feedback.textContent='Sign in at the top of the page and wait for your roster to be verified before recording participation.';feedback.className='feedback incorrect';return;}directBtn.disabled=true;directBtn.textContent='Verifying server record…';try{for(const d of EXERCISE_DEFS)await syncExerciseNow(d.id);for(const key of participationSeenCards)await recordSelfCheck(key,true);const r=await invokeParticipation({action:'recalculate_completion',session_id:backendSession.id});backendCompletion=r.completion;renderServerProgress(r.completion);if(r.completion.status!=='complete')throw new Error('Server record is '+r.completion.completion_percentage+'% complete. Open every required card, answer every MC checkpoint, and complete all nine exercises.');signedReceipt={session_id:backendSession.id,verification_code:r.completion.verification_code,received_at_iso:r.completion.completed_at||r.completion.calculated_at,course:COURSE_CODE,assignment:ASSIGNMENT_CODE,student_name:nameInput.value.trim()||signedInUser.user_metadata?.full_name||'',student_email:signedInUser.email||''};receiptText.innerHTML='<strong>Session:</strong> <code>'+signedReceipt.session_id+'</code><br><strong>Verification:</strong> <code>'+signedReceipt.verification_code+'</code><br><strong>Recorded:</strong> '+new Date(signedReceipt.received_at_iso).toLocaleString();receiptPanel.hidden=false;receiptBtn.disabled=false;feedback.textContent='Participation verified by Supabase. Download the Blackboard receipt below.';feedback.className='feedback correct';directBtn.textContent='Participation verified';}catch(e){feedback.textContent=e.message||String(e);feedback.className='feedback incorrect';directBtn.disabled=false;directBtn.textContent='Record participation';}});
   receiptBtn.addEventListener('click',()=>{if(!signedReceipt)return;const lines=['MG628 BLACKBOARD PARTICIPATION RECEIPT','--------------------------------------','Course: '+signedReceipt.course,'Assignment: '+signedReceipt.assignment,'Student: '+signedReceipt.student_name,'School email: '+signedReceipt.student_email,'Server completion time: '+signedReceipt.received_at_iso,'Supabase session ID: '+signedReceipt.session_id,'Verification code: '+signedReceipt.verification_code,'','This receipt points to the instructor-controlled Supabase record.','Changing this file cannot change the server-side activity, completion status, or timestamp.'];const blob=new Blob([lines.join('\n')],{type:'text/plain'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='MG628-Blackboard-Receipt-'+(signedReceipt.student_name||'student').replace(/[^a-z0-9]+/gi,'-').toLowerCase()+'.txt';document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);});
   genBtn.addEventListener('click',()=>{output.value=buildText();footerCode.hidden=false;copyBtn.disabled=false;dlBtn.disabled=false;feedback.textContent='Personal backup generated. The Supabase server record remains the authoritative participation record.';feedback.className='feedback';output.focus();});
   copyBtn.addEventListener('click',async()=>{try{await navigator.clipboard.writeText(output.value);feedback.textContent='Copied to clipboard.';}catch(_){output.select();feedback.textContent='Text selected; use Ctrl/Cmd+C.';}});
@@ -1794,10 +1909,11 @@ function updateHero(Q,D,params){
     document.getElementById('s7-cellref').textContent = `${t.sheet}!${t.rows.underage}`;
     const [r0,r1,r2] = t.rows.underage.split(/[!:]/).length ? t.rows.underage.split(':') : [];
     const rowNums = t.rows.underage.match(/\d+/g).map(Number);
-    document.getElementById('s7-excel-text').innerHTML = `<span class="cell-ref">B${rowNums[0]}</span> <code>=B7-B6</code> (Cu) &nbsp;·&nbsp;
-      <span class="cell-ref">B${rowNums[0]+1}</span> <code>=B6-B8</code> (Co) &nbsp;·&nbsp;
-      <span class="cell-ref">B${rowNums[0]+2}</span> <code>=B${rowNums[0]}/(B${rowNums[0]}+B${rowNums[0]+1})</code>(Critical Ratio). Choose Q so that the cumulative probability of
-      demand at or below Q is just above this ratio.`;
+    document.getElementById('s7-excel-text').innerHTML = `<div class="formula-list">
+      <div class="formula-line"><span class="cell-ref">B${rowNums[0]}</span> <code>=B7-B6</code> — Cost of underage (Cu)</div>
+      <div class="formula-line"><span class="cell-ref">B${rowNums[0]+1}</span> <code>=B6-B8</code> — Cost of overage (Co)</div>
+      <div class="formula-line"><span class="cell-ref">B${rowNums[0]+2}</span> <code>=B${rowNums[0]}/(B${rowNums[0]}+B${rowNums[0]+1})</code> — Critical Ratio</div>
+      </div><p class="formula-note">Choose Q so that the cumulative probability of demand at or below Q is just above this ratio.</p>`;
     [['p',pr],['c',cr],['v',vr]].forEach(([key,el])=>{
       const [min,max,step] = ranges[key];
       el.min=min; el.max=max; el.step=step; el.value=t[key];
@@ -1976,6 +2092,5 @@ document.getElementById('rail-track-toggle').innerHTML = trackToggleHTML('rail')
 wireTrackToggles();
 
 </script>
-
 </body>
 </html>
