@@ -24,7 +24,7 @@ table{width:100%;border-collapse:collapse;background:#fff}th,td{padding:9px 8px;
 <body>
 <div class="topbar"><a href="../">← Course Home</a><span class="mono">MG628 · Instructor Control Center</span></div>
 <div class="wrap">
-<section class="hero"><div class="mono">MONROE UNIVERSITY · PROFESSOR ACCESS</div><h1>Instructor Control Center</h1><p>Manage rosters, test student access, and review participation records by term, course, and section.</p><p class="mono muted">Build 2026-09-24.3</p></section>
+<section class="hero"><div class="mono">MONROE UNIVERSITY · PROFESSOR ACCESS</div><h1>Instructor Control Center</h1><p>Manage rosters, test student access, and review participation records by term, course, and section.</p><p class="mono muted">Build 2026-09-24.4</p></section>
 
 <section class="panel" id="authCheck"><div class="panel-head"><span>Instructor access</span><span>Supabase Auth</span></div><div class="panel-body"><div class="notice">Checking your saved instructor session…</div></div></section>
 
@@ -98,7 +98,7 @@ table{width:100%;border-collapse:collapse;background:#fff}th,td{padding:9px 8px;
 <div class="grid"><div class="span3"><label>Student name</label><input id="studentName" placeholder="Jane Doe"></div><div class="span3"><label>School email</label><input id="studentEmail" type="email" placeholder="jane.doe@monroeu.edu"></div><div class="span3"><label>Student ID</label><input id="studentId" placeholder="Optional"></div><div class="span3"><label>Status</label><select id="studentStatus"><option value="invited">Invited</option><option value="active">Active</option><option value="dropped">Dropped</option><option value="withdrawn">Withdrawn</option></select></div></div>
 <div class="toolbar"><button class="accent" id="addStudent">Add / update student</button><button id="refreshRoster">Refresh roster</button></div>
 <hr style="border:0;border-top:1px solid var(--rule);margin:20px 0">
-<div class="grid"><div class="span8"><div class="dropzone"><b>CSV roster import</b><p class="muted">Accepted Monroe roster headers directly: Student Name, Student ID, Class Level, Preferred Email. Also accepts generic email/name/id/status headers.</p><input id="csvFile" type="file" accept=".csv,text/csv"></div></div><div class="span4"><label>Import preview</label><textarea id="csvPreview" rows="6" readonly placeholder="Choose a CSV file"></textarea><div class="toolbar"><button class="primary" id="importCsv" disabled>Import CSV</button></div></div></div>
+<div class="grid"><div class="span8"><div class="dropzone"><b>CSV roster import</b><p class="muted">Accepted Monroe roster headers directly: Student Name, Student ID, Class Level, Preferred Email. Also accepts generic email/name/id/status headers.</p><input id="csvFile" type="file" accept=".csv,text/csv"></div></div><div class="span4"><label>Import preview</label><textarea id="csvPreview" rows="6" readonly placeholder="Choose a CSV file"></textarea><div class="toolbar"><button class="primary" id="importCsv">Import CSV</button></div></div></div>
 <div id="rosterMsg" class="notice hidden"></div>
 <div class="scroll"><table><thead><tr><th>Name</th><th>Email</th><th>ID</th><th>Roster</th><th>Account</th><th>Enrollment</th><th>Actions</th></tr></thead><tbody id="rosterBody"></tbody></table></div>
 </div></section>
@@ -202,22 +202,19 @@ function updateCsvImportState(announce=true){
   const sec=selectedSection();
   if(!btn)return false;
   const mismatch=csvRows.length?csvTargetMismatch():null;
-  // The selected section is authoritative. Filename matching is advisory only.
   const ready=!!sec&&csvRows.length>0;
-  btn.disabled=!ready;
-  if(ready){
-    btn.removeAttribute('disabled');
-    btn.setAttribute('aria-disabled','false');
-  }else{
-    btn.setAttribute('disabled','disabled');
-    btn.setAttribute('aria-disabled','true');
-  }
+  // Keep the button clickable at all times. Validation happens when clicked.
+  btn.disabled=false;
+  btn.removeAttribute('disabled');
+  btn.setAttribute('aria-disabled','false');
   if(announce){
     if(!sec){
       msg('rosterMsg','Choose a section before importing.','error');
     }else if(csvRows.length){
       const warning=mismatch?` Filename warning: ${mismatch} The selected section will be used as the import target.`:'';
       msg('rosterMsg',`Ready to import ${csvRows.length} students into ${sectionLabel(sec)}. Click Import CSV.${warning}`,mismatch?'':'ok');
+    }else{
+      msg('rosterMsg','Choose a CSV file containing student email addresses.','');
     }
   }
   return ready;
