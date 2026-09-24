@@ -460,9 +460,11 @@ code{overflow-wrap:anywhere}
 
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.4/dist/umd/supabase.min.js"></script>
+<script src="../assets/student-participation-shell.js"></script>
 <style>
 .section-sequence{display:inline-block;margin:0 0 10px;padding:5px 9px;border:1px solid #9b4a22;background:#fff8ee;color:#793716;font:800 11px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.09em}
 .section-review{margin-top:30px;padding-top:22px;border-top:3px solid #183c2d}.section-review>h3{margin:0 0 6px;color:#183c2d}.section-review-intro{margin:0 0 16px;color:#586057}.inline-checkpoint{margin-bottom:0}.lesson-section{scroll-margin-top:18px}
+
 </style></head>
 <body>
 <div class="course-topbar"><a aria-label="Return to MG628 course home" href="../../index.html">← Course Home</a><span>MG628 · Interactive Participation</span></div>
@@ -1232,7 +1234,22 @@ async function resumeOrStartBackendSession(){
   updateExerciseProgress();
   return true;
 }
-async function bootstrapStudent(){const {data:{user}}=await sb.auth.getUser();signedInUser=user||null;const signout=document.getElementById('auth-signout'),fields=document.getElementById('authFields');if(!user){backendSession=backendOffering=backendCompletion=null;if(signout)signout.hidden=true;if(fields)fields.hidden=false;setAuthStatus('Sign in before completing required participation items so your work is recorded.');renderServerProgress(null);return;}if(signout)signout.hidden=false;if(fields)fields.hidden=true;const em=document.getElementById('submit-email');if(em){em.value=user.email||'';em.readOnly=true;}const nm=document.getElementById('submit-name');if(nm&&!nm.value)nm.value=user.user_metadata?.full_name||'';setAuthStatus('Signed in. Matching your school email to the instructor roster…');try{const r=await invokeParticipation({action:'bootstrap'});const offering=(r.offerings||[]).find(o=>o.assignment?.slug===ASSIGNMENT_SLUG&&Number(o.assignment?.version)===ASSIGNMENT_VERSION);if(!offering){backendOffering=backendSession=null;setAuthStatus('Signed in, but this email is not rostered for a section that has this assignment. Contact your instructor if this is unexpected.','err');return;}backendOffering=offering;const enr=(r.enrollments||[]).find(e=>e.section_id===offering.section_id),sec=enr?.section;setAuthStatus('Roster verified: '+(sec?.course?.code||COURSE_CODE)+' '+(sec?.section_code||'')+' · '+(sec?.term?.name||'')+'. Checking for previously saved work…','ok');const resumed=await resumeOrStartBackendSession();setAuthStatus((resumed?'Saved work restored. ':'Participation recording started. ')+'Recording is active for '+(sec?.course?.code||COURSE_CODE)+' '+(sec?.section_code||'')+' · '+(sec?.term?.name||'')+'.','ok');}catch(e){setAuthStatus(e.message||'Could not initialize participation recording.','err');console.error(e);}}
+const participationShell=MG628ParticipationShell.create({
+  client:sb,
+  api:invokeParticipation,
+  courseCode:COURSE_CODE,
+  assignmentSlug:ASSIGNMENT_SLUG,
+  assignmentVersion:ASSIGNMENT_VERSION,
+  setUser:u=>{signedInUser=u;},
+  setOffering:o=>{backendOffering=o;},
+  setStatus:setAuthStatus,
+  onSignedOut:()=>{backendSession=backendOffering=backendCompletion=null;renderServerProgress(null);},
+  onResolved:async({section})=>{
+    setAuthStatus('Roster verified: '+(section?.course?.code||COURSE_CODE)+' '+(section?.section_code||'')+' · '+(section?.term?.name||'')+'. Checking for previously saved work…','ok');
+    const resumed=await resumeOrStartBackendSession();
+    setAuthStatus((resumed?'Saved work restored. ':'Participation recording started. ')+'Recording is active for '+(section?.course?.code||COURSE_CODE)+' '+(section?.section_code||'')+' · '+(section?.term?.name||'')+'.','ok');
+  }
+});
 async function recordSelfCheck(key,quiet=false){participationSeenCards.add(key);if(!backendSession)return;try{const r=await invokeParticipation({action:'card_opened',session_id:backendSession.id,card_key:key});renderServerProgress(r.completion);}catch(e){if(!quiet)setAuthStatus('A self-check could not be recorded. '+(e.message||''),'err');}}
 function scheduleExerciseSync(id){clearTimeout(syncTimers.get(id));syncTimers.set(id,setTimeout(()=>syncExerciseNow(id),500));}
 async function syncExerciseNow(id){if(!backendSession)return;const st=exerciseState[id],key=id.toUpperCase();try{const r=await invokeParticipation({action:'save_worksheet',session_id:backendSession.id,worksheet_key:key,response_text:st?.done?(st.summary||'Completed'):null,response_json:st?.done?{raw:st.raw??null,excel_refs:st.excel??[],summary:st.summary||'',track:currentTrack}:null});renderServerProgress(r.completion);}catch(e){setAuthStatus('Could not save '+key+' to the server: '+(e.message||e),'err');}}
@@ -2076,15 +2093,6 @@ function updateHero(Q,D,params){
 })();
 
 
-// ---------- Supabase authentication ----------
-(function(){
-  const name=document.getElementById('auth-name'),email=document.getElementById('auth-email'),password=document.getElementById('auth-password'),signin=document.getElementById('auth-signin'),signup=document.getElementById('auth-signup'),signout=document.getElementById('auth-signout');
-  signin.addEventListener('click',async()=>{try{setAuthStatus('Signing in…');const {error}=await sb.auth.signInWithPassword({email:email.value.trim().toLowerCase(),password:password.value});if(error)throw error;await bootstrapStudent();}catch(e){setAuthStatus(e.message||String(e),'err');}});
-  signup.addEventListener('click',async()=>{try{if(!name.value.trim())throw new Error('Enter your full name first.');if(password.value.length<8)throw new Error('Use a password of at least 8 characters.');setAuthStatus('Creating your account…');const {data,error}=await sb.auth.signUp({email:email.value.trim().toLowerCase(),password:password.value,options:{data:{full_name:name.value.trim()},emailRedirectTo:location.href.split('#')[0]}});if(error)throw error;if(data.session){await bootstrapStudent();}else setAuthStatus('Account created. Check your school email to confirm the account, then return here and sign in.','ok');}catch(e){setAuthStatus(e.message||String(e),'err');}});
-  signout.addEventListener('click',async()=>{await sb.auth.signOut();await bootstrapStudent();});
-  sb.auth.onAuthStateChange((_event,session)=>{signedInUser=session?.user||null;if(session?.user)setTimeout(()=>bootstrapStudent(),0);});
-  sb.auth.getSession().then(({data})=>{signedInUser=data.session?.user||null;if(signedInUser)bootstrapStudent();});
-})();
 
 // wire up every track toggle rendered above, and mount the hero/rail ones
 document.getElementById('hero-track-toggle').innerHTML = trackToggleHTML('hero');
