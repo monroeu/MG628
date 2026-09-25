@@ -1,0 +1,13 @@
+Product,Region,Units Sold,Unit Price,Total Revenue,Customer Type,Discount (%)
+Laptop,North,30,900,27000,Retail,0
+Laptop,South,25,900,22500,Wholesale,5
+Laptop,West,20,900,18000,Online,10
+Phone,North,50,500,25000,Retail,0
+Phone,South,60,500,30000,Wholesale,15
+Phone,West,45,500,22500,Online,5
+Tablet,North,15,300,4500,Retail,10
+Tablet,South,20,300,6000,Wholesale,0
+Tablet,West,10,300,3000,Online,20
+Headphones,North,40,100,4000,Retail,5
+Headphones,South,35,100,3500,Wholesale,10
+Headphones,West,30,100,3000,Online,0
