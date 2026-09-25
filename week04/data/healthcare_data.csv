@@ -1,0 +1,8 @@
+Patient_ID,Admission_Date,Discharge_Date,Gender,Discharge_Reason,Cost
+P001,2023-01-10,2023-01-15,M,Recovered,5000
+P002,2023-01-12,2023-01-14,Female,,3200
+P003,2023-02-01,2023-01-28,F,Recovered,4500
+P004,2023-02-05,2023-02-10,Male,Transfer,6100
+P005,2023-03-01,2023-03-05,M,,2900
+P006,2023-03-10,2023-03-12,Female,Recovered,3400
+P001,2023-01-10,2023-01-15,M,Recovered,5000

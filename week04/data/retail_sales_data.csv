@@ -1,0 +1,8 @@
+Transaction_ID,Date,Region,Store_Type,Amount,Currency,Customer_Status
+T1001,2023-05-01,North East,Online,150.00,USD,Gold
+T1002,2023-05-01,NE,Brick-and-Mortar,75.50,USD,Silver
+T1003,2023-05-02,South,Online,200.00,GBP,Gold
+T1004,2023-05-02,West Coast,Brick-and-Mortar,120.00,USD,
+T1001,2023-05-01,North East,Online,150.00,USD,Gold
+T1005,2023-05-03,S. Region,Online,,USD,Silver
+T1006,2023-05-03,West Coast,Online,300.00,USD,Platinum
