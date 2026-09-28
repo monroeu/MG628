@@ -140,7 +140,7 @@
         <nav class="mg628-nav-links" id="mg628-nav-links" aria-label="MG628 course navigation">
           <a data-mg628-nav="home" href="${CONFIG.homeBase.href}">Home</a>
           <span id="mg628-dynamic-week-links" style="display:contents"></span>
-          <a data-mg628-nav="instructor" href="${new URL('instructor/', CONFIG.homeBase).href}">Instructor</a>
+          <a data-mg628-nav="instructor" href="/instructor/">Instructor</a>          
         </nav>
       </div>`;
     document.body.insertBefore(root, document.body.firstChild);
