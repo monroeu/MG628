@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="mg628-build" content="weeks12-week04-standard-2026-10-03.1">
 <title>MG628 Weeks 1–2 Participation — Decision Models & Order Quantity — MG628</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@400;500;600;700&family=Source+Sans+3:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -497,8 +498,53 @@ code{overflow-wrap:anywhere}
 .feedback.teaching-feedback{margin-top:12px;padding:12px 14px;border-radius:6px;line-height:1.55;font-weight:500}.feedback.teaching-feedback.correct{background:#eef9f3;border:1px solid #b9dec9;color:#155c39}.feedback.teaching-feedback.incorrect{background:#fff4f2;border:1px solid #efc3bc;color:#7c2d24}.feedback .answer-label{display:block;margin-bottom:5px;font-weight:800}.feedback .why-label{font-weight:800}.teaching-cycle{border:1px solid var(--rule);background:var(--white);padding:16px 18px;margin:18px 0}.teaching-cycle strong{color:var(--teal)}.teaching-cycle ol{margin:8px 0 0;padding-left:22px}.teaching-cycle li{margin-bottom:5px}.participation-locked{opacity:.72}.participation-locked::after{content:'Sign in above to submit required participation work.';display:block;margin-top:8px;font-family:var(--font-mono);font-size:11px;color:var(--danger)}
 @media(max-width:640px){.participation-status-strip{margin:0;border-left:0;border-right:0;gap:10px;padding:8px 12px}.participation-status-strip .metric span{font-size:8px}.participation-status-strip strong{font-size:12px}.saved-indicator{min-width:72px;font-size:10px}.central-identity-grid{grid-template-columns:1fr}.resume-strip{top:0;margin:0 10px}.auth-grid{grid-template-columns:1fr}}
 </style>
+
+<style id="w12-week04-standard-upgrade">
+body.lesson-locked .rail,
+body.lesson-locked main,
+body.lesson-locked footer,
+body.lesson-locked #heroTicket,
+body.lesson-locked #hero-track-toggle{display:none!important}
+.lesson-lock-banner{margin:14px 0 0;padding:12px 14px;border-left:4px solid var(--amber);background:#fff5e7;font-family:var(--font-mono);font-size:13px;font-weight:700}
+.lesson-lock-banner.unlocked{border-left-color:var(--teal);background:var(--teal-soft);color:#174f45}
+.practice-dashboard{margin:18px 0;border:2px solid var(--teal);background:#f5faf7;padding:15px 16px}
+.practice-dashboard h3{margin:0 0 6px}
+.practice-meter-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:10px}
+.practice-meter{border:1px solid var(--rule);background:var(--white);padding:10px;text-align:center;font-family:var(--font-mono)}
+.practice-meter strong{display:block;font-size:1.35rem;color:var(--teal)}
+.practice-lock{margin-top:10px;padding:9px 11px;border-left:4px solid var(--amber);background:#fff5e7;font-weight:700}
+.practice-lock.complete{border-left-color:var(--teal);background:var(--teal-soft);color:#174f45}
+.live-excel-grid{display:grid;gap:14px;margin-top:18px}
+.live-excel{border:1px solid var(--rule);background:var(--white)}
+.live-excel.passed{border-left:5px solid var(--teal)}
+.live-excel-head{display:flex;justify-content:space-between;gap:12px;padding:11px 13px;background:#f5f3ea;border-bottom:1px solid var(--rule)}
+.live-excel-head h3{margin:0;font-size:1.05rem}
+.live-excel-status{font-family:var(--font-mono);font-size:12px;color:var(--ink-soft);font-weight:700}
+.live-excel.passed .live-excel-status{color:var(--teal)}
+.live-excel-body{padding:14px}
+.exercise-context{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:10px 0 14px}
+.exercise-context>div{border:1px solid var(--rule);background:#fbfaf4;padding:9px}
+.exercise-context b{display:block;font-family:var(--font-mono);font-size:10px;color:var(--teal);text-transform:uppercase;letter-spacing:.04em;margin-bottom:3px}
+.live-excel input{width:100%;font:inherit;border:1px solid var(--ink);background:var(--paper);padding:9px 11px;margin:5px 0 10px}
+.live-excel input.formula-entry{font-family:var(--font-mono)}
+.live-excel-actions{display:flex;gap:8px;flex-wrap:wrap}
+.live-excel-feedback{margin-top:10px;padding:9px 11px;border-left:3px solid var(--rule);background:#f7f5ef}
+.live-excel-feedback.good{border-left-color:var(--teal);background:#eef8f4}
+.live-excel-feedback.bad{border-left-color:var(--danger);background:#fff1ef}
+.teach-debrief{margin-top:10px;border-left:4px solid var(--teal);background:#eef8f4;padding:10px 12px}
+.teach-debrief h4{margin:0 0 7px;color:#174f45}
+.teach-debrief p{margin:5px 0}
+.teach-debrief .watch{border-left:3px solid var(--amber);padding-left:8px}
+.teach-debrief .manager{border-left:3px solid #4a718c;padding-left:8px}
+.exercise .feedback .teach-debrief{color:var(--ink);font-weight:400}
+@media(max-width:640px){
+  .practice-meter-grid,.exercise-context{grid-template-columns:1fr}
+  .live-excel-head{display:block}.live-excel-status{display:block;margin-top:4px}
+}
+</style>
+
 </head>
-<body>
+<body class="lesson-locked">
 <nav class="course-topbar" aria-label="MG628 course navigation">
   <div class="mg628-nav-inner">
     <a class="mg628-brand" href="/MG628/">MG628</a>
@@ -574,6 +620,17 @@ code{overflow-wrap:anywhere}
       </div>
       <div id="server-progress" class="server-progress" hidden></div>
     </div>
+    <div id="lessonLockBanner" class="lesson-lock-banner">🔒 Sign in and start your roster-verified Weeks 1–2 session to unlock the lesson.</div>
+    <div class="practice-dashboard" id="practiceDashboard">
+      <h3>Required live-practice gate</h3>
+      <p>To finish Weeks 1–2, you must pass the embedded Excel practice and all nine applied decision-model exercises. Study cards and knowledge checks are also required by the server record.</p>
+      <div class="practice-meter-grid">
+        <div class="practice-meter">Embedded Excel<strong id="meterExcel">0/10</strong></div>
+        <div class="practice-meter">Applied exercises<strong id="meterApplied">0/9</strong></div>
+        <div class="practice-meter">Live practice total<strong id="meterTotal">0/19</strong></div>
+      </div>
+      <div class="practice-lock" id="practiceLock">🔒 19 required live exercises remaining.</div>
+    </div>
     <div class="hero-ticket" id="heroTicket" role="group" aria-label="Live model preview, updates as you use Section 3">
       <div class="row"><span id="ht-q-label">Bake (Q)</span><span id="ht-q">170 muffins</span></div>
       <div class="row"><span>Demand (D)</span><span id="ht-d">180 customers</span></div>
@@ -594,6 +651,7 @@ code{overflow-wrap:anywhere}
       <li><a href="#s7"><span class="n" aria-hidden="true">07</span>Underage &amp; overage</a></li>
       <li><a href="#s8"><span class="n" aria-hidden="true">08</span>Finding breakeven</a></li>
       <li><a href="#s9"><span class="n" aria-hidden="true">09</span>Beyond profit <span class="core-mark">·core</span></a></li>
+      <li><a href="#excel-live"><span class="n" aria-hidden="true">XL</span>Embedded Excel practice <span class="core-mark">·core</span></a></li>
     </ol>
     <p id="railProgress" style="font-family:var(--font-mono); font-size:11px; color:var(--ink-soft); margin-top:16px;">0 / 10 self-checks opened</p>
     <div id="rail-track-toggle" style="margin-top:14px; transform:scale(0.85); transform-origin:left top;"></div>
@@ -1267,6 +1325,15 @@ code{overflow-wrap:anywhere}
       </div>
     </section>
 
+
+    <section class="step" id="excel-live">
+      <div class="step-head"><span class="step-num">XL</span><span class="step-track">REQUIRED LIVE PRACTICE</span></div>
+      <h2>Embedded Excel Practice — build the model logic yourself</h2>
+      <p>The interactive widgets above show how the decision model behaves. This section checks whether you can write the spreadsheet logic yourself. Enter the Excel formula or configuration, enter the result you would see in Excel, and choose <strong>Check answer</strong>.</p>
+      <div class="box why"><span class="tag">LEARN → PRACTICE → VERIFY</span><p>A correct answer unlocks the explanation of why the formula works, a common modeling mistake, and the managerial meaning. A wrong answer gives a targeted hint without completing the requirement.</p></div>
+      <div id="excelLiveHost" class="live-excel-grid"></div>
+    </section>
+
   </main>
 
   <footer>
@@ -1330,7 +1397,7 @@ code{overflow-wrap:anywhere}
             </div>
           </div>
           <div class="presets">
-            <button class="run" id="submit-direct" type="button">Record participation</button>
+            <button class="run" id="submit-direct" type="button" disabled title="Complete all required live practice first.">Record participation</button>
             <button class="chip" id="submit-receipt" type="button" disabled>Download Blackboard Receipt PDF</button>
             <button class="chip" id="submit-generate" type="button">Generate personal copy</button>
             <button class="chip" id="submit-copy" type="button" disabled>Copy personal copy</button>
@@ -1399,6 +1466,119 @@ ex6:'A Data Table compares the candidate quantities you provide. “Best candida
 ex7:'Lower salvage value makes excess inventory more expensive, increasing Co. With Cu unchanged, Cu/(Cu+Co) falls, so the model becomes less willing to overstock.',
 ex8:'Goal Seek needs three parts: a formula output, a target value, and one changeable input. Here the output is Profit, the target is 0, and the input is Demand.'
 };
+
+const excelPassed=new Set();
+const excelAttempts=new Map();
+const EXCEL_LIVE_KEYS=['W12-XL01','W12-XL02','W12-XL03','W12-XL04','W12-XL05','W12-XL06','W12-XL07','W12-XL08','W12-XL09','W12-XL10'];
+
+function setLessonLock(unlocked){
+  document.body.classList.toggle('lesson-locked',!unlocked);
+  const b=document.getElementById('lessonLockBanner');
+  if(b){
+    b.className='lesson-lock-banner'+(unlocked?' unlocked':'');
+    b.textContent=unlocked
+      ? '✓ Roster verified. Weeks 1–2 lesson and required practice are unlocked.'
+      : '🔒 Sign in and start your roster-verified Weeks 1–2 session to unlock the lesson.';
+  }
+}
+function currentAppliedCount(){
+  return typeof EXERCISE_DEFS==='undefined'?0:EXERCISE_DEFS.filter(d=>exerciseState[d.id]?.done).length;
+}
+function livePracticeComplete(){return excelPassed.size===EXCEL_LIVE_KEYS.length && currentAppliedCount()===9}
+function refreshPracticeDashboard(){
+  const applied=currentAppliedCount(), total=excelPassed.size+applied, remaining=19-total;
+  const a=document.getElementById('meterExcel'),b=document.getElementById('meterApplied'),c=document.getElementById('meterTotal'),l=document.getElementById('practiceLock');
+  if(a)a.textContent=`${excelPassed.size}/10`;if(b)b.textContent=`${applied}/9`;if(c)c.textContent=`${total}/19`;
+  if(l){l.textContent=remaining===0?'✓ All required live practice has been passed.':`🔒 ${remaining} required live exercise${remaining===1?'':'s'} remaining.`;l.className='practice-lock'+(remaining===0?' complete':'')}
+  const btn=document.getElementById('submit-direct');if(btn){btn.disabled=!livePracticeComplete();btn.title=livePracticeComplete()?'Verify the authoritative server record':'Complete all 19 required live exercises first.'}
+}
+function normFormula(v){return String(v||'').toUpperCase().replace(/\s+/g,'').replace(/\$/g,'')}
+function numClose(v,target,tol=.02){const n=Number(String(v??'').replace(/,/g,''));return Number.isFinite(n)&&Math.abs(n-target)<=tol}
+function profitAt(t,Q,D){const sold=Math.min(D,Q),left=Math.max(0,Q-D);return sold*t.p+left*t.v-(t.F+Q*t.c)}
+function expectedProfit(t,Q){return t.demand.reduce((s,x)=>s+x.p*profitAt(t,Q,x.d),0)}
+function defaultExcelExpected(t){
+  const sold=Math.min(t.Ddefault,t.Qdefault),left=Math.max(0,t.Qdefault-t.Ddefault);
+  const revenue=sold*t.p+left*t.v,cost=t.F+t.Qdefault*t.c,profit=revenue-cost;
+  const cu=t.p-t.c,co=t.c-t.v,cr=cu/(cu+co);
+  return {sold,left,revenue,cost,profit,ep:expectedProfit(t,180),cu,co,cr};
+}
+function formulaMatches(v,accepted){
+  const x=normFormula(v);return accepted.some(a=>x===normFormula(a));
+}
+const EXCEL_LIVE_DEFS=[
+ {key:'W12-XL01',title:'Feasible full-price sales',stage:'Model logic',situation:'Management chooses quantity before actual demand is known. Sales cannot exceed either demand or available quantity.',why:'The formula must enforce both physical limits.',task:'Write the Excel formula for full-price sales using the named model inputs, then enter the result at the default Q and D.',accepted:['=MIN(Demand,QuantityBaked)','=MIN(QuantityBaked,Demand)','=MIN(B10,B9)','=MIN(B9,B10)'],expected:t=>defaultExcelExpected(t).sold,hint:'Use the function that returns the smaller of demand and available quantity.',concept:'MIN() converts the business rule “you cannot sell more than demand or supply” into a spreadsheet constraint.',mistake:'Do not use MAX(); that can create impossible sales greater than one of the two limits.',manager:'This is the first feasibility control in the model.'},
+ {key:'W12-XL02',title:'Leftovers without negative inventory',stage:'Model logic',situation:'If quantity exceeds demand, the excess can be salvaged. If demand exceeds quantity, leftovers must be zero—not negative.',why:'Physical quantities need a zero floor.',task:'Write the Excel formula for leftovers and enter the default result.',accepted:['=MAX(0,QuantityBaked-Demand)','=MAX(0,B9-B10)'],expected:t=>defaultExcelExpected(t).left,hint:'Subtract demand from quantity, then prevent the result from falling below zero.',concept:'MAX(0, …) converts an unrestricted subtraction into a physically valid inventory quantity.',mistake:'Using only Q−D can produce negative leftovers when demand is high.',manager:'Feasibility checks keep spreadsheet arithmetic aligned with real operations.'},
+ {key:'W12-XL03',title:'Two-stream revenue',stage:'Financial model',situation:'Regular sales earn full price while leftovers earn only salvage value.',why:'Different units earn different unit economics.',task:'Write the named-cell revenue formula and enter the default revenue.',accepted:['=(FullPriceSales*FullPrice)+(Leftovers*SalvagePrice)','=FullPriceSales*FullPrice+Leftovers*SalvagePrice'],expected:t=>defaultExcelExpected(t).revenue,hint:'Value full-price sales and leftover units separately, then add the two revenue streams.',concept:'Revenue must preserve the different prices attached to normal sales and salvage sales.',mistake:'Do not multiply all units by one price; that overstates or understates revenue.',manager:'Separating revenue streams makes the economics auditable.'},
+ {key:'W12-XL04',title:'Fixed + variable total cost',stage:'Financial model',situation:'The setup cost occurs once, while unit cost rises with the quantity management chooses.',why:'Fixed and variable costs respond differently to the decision.',task:'Write the named-cell total-cost formula and enter the default cost.',accepted:['=FixedCost+(QuantityBaked*UnitCost)','=FixedCost+QuantityBaked*UnitCost'],expected:t=>defaultExcelExpected(t).cost,hint:'Add the one-time fixed cost to quantity multiplied by unit cost.',concept:'Total cost separates the fixed burden from the quantity-driven variable burden.',mistake:'Do not multiply the fixed cost by quantity.',manager:'This formula lets managers see how a larger commitment raises cost even before demand is known.'},
+ {key:'W12-XL05',title:'Daily profit',stage:'Financial model',situation:'Management needs one outcome measure after revenue and cost have been modeled correctly.',why:'Profit is the residual after modeled costs are removed from modeled revenue.',task:'Write the profit formula and enter the default profit.',accepted:['=TotalRevenue-TotalCost','=B15-B16'],expected:t=>defaultExcelExpected(t).profit,hint:'Use the already-calculated revenue and total cost outputs.',concept:'Keeping Profit simple is good modeling: detailed logic belongs upstream in Revenue and Cost.',mistake:'Do not rebuild every revenue and cost component again inside Profit; duplicated logic is harder to audit.',manager:'A transparent dependency chain makes sensitivity analysis safer.'},
+ {key:'W12-XL06',title:'Probability-weighted expected profit',stage:'Decision under uncertainty',situation:'Demand has several possible outcomes, each with its own probability and profit.',why:'Managers need a comparable long-run value for each candidate quantity.',task:'Write the expected-profit formula and enter the expected profit for Q = 180.',accepted:['=SUMPRODUCT(DemandProbability,ScenarioProfit)','=SUMPRODUCT(ScenarioProfit,DemandProbability)'],expected:t=>expectedProfit(t,180),hint:'Multiply each scenario profit by its matching probability and add the weighted values.',concept:'SUMPRODUCT implements an expected value: a probability-weighted average across mutually exclusive scenarios.',mistake:'Do not average the scenario profits equally unless the probabilities are equal.',manager:'Expected profit allows candidate quantities to be compared on the same probability basis.'},
+ {key:'W12-XL07',title:'Cost of underage',stage:'Newsvendor economics',situation:'Being one unit short means losing the contribution that an additional unit could have earned.',why:'The stockout penalty is economic opportunity cost.',task:'Write the Cu formula and enter its value.',accepted:['=FullPrice-UnitCost','=B7-B6'],expected:t=>defaultExcelExpected(t).cu,hint:'Use selling value minus the unit cost that would have been incurred.',concept:'Cu measures the contribution lost when one unit of demand cannot be served.',mistake:'Do not use selling price alone; the avoided unit cost matters.',manager:'A larger Cu means stockouts are more expensive, pushing the target service level upward.'},
+ {key:'W12-XL08',title:'Cost of overage',stage:'Newsvendor economics',situation:'Being one unit too high means paying unit cost but recovering only salvage value.',why:'Overage cost is the unrecovered portion of unit cost.',task:'Write the Co formula and enter its value.',accepted:['=UnitCost-SalvagePrice','=B6-B8'],expected:t=>defaultExcelExpected(t).co,hint:'Subtract salvage recovery from unit cost.',concept:'Co measures the economic loss on one excess unit after salvage.',mistake:'Do not use the full unit cost if some salvage value is recovered.',manager:'Better salvage recovery reduces the penalty for ordering too much.'},
+ {key:'W12-XL09',title:'Critical ratio',stage:'Optimization',situation:'Management must balance the relative pain of one unit too few against one unit too many.',why:'The ratio maps those asymmetric costs into a target demand percentile.',task:'Write the critical-ratio formula and enter the result as a decimal.',accepted:['=CostUnderage/(CostUnderage+CostOverage)','=B44/(B44+B45)','=B56/(B56+B57)'],expected:t=>defaultExcelExpected(t).cr,hint:'Put Cu in the numerator and divide by Cu plus Co.',concept:'The critical ratio is Cu/(Cu+Co). More costly stockouts increase the percentile management should protect.',mistake:'Do not reverse Cu and Co; that changes the economic interpretation.',manager:'This turns qualitative risk asymmetry into a quantitative service target.'},
+ {key:'W12-XL10',title:'Goal Seek configuration',stage:'What-if analysis',situation:'Management wants the minimum demand that makes Daily Profit exactly zero.',why:'Goal Seek works backward from one target output to one input.',task:'Enter the Set cell, target value, and By changing cell for the workbook model.',goal:true,hint:'The output is Daily Profit, the target is zero, and the changing input is Demand.',concept:'Goal Seek solves one formula-output target by changing one input cell.',mistake:'Do not change Quantity when the question asks for break-even demand.',manager:'Break-even demand translates the model into an operating threshold management can monitor.'}
+];
+function excelTeachingHtml(d,expected){
+ return `<div class="teach-debrief"><h4>Teaching debrief</h4><p><strong>Why this is correct:</strong> ${d.concept}</p><p class="watch"><strong>Common mistake to avoid:</strong> ${d.mistake}</p><p class="manager"><strong>Managerial takeaway:</strong> ${d.manager}</p><p><strong>Verified checkpoint:</strong> ${expected}</p></div>`;
+}
+function renderExcelLive(){
+ const host=document.getElementById('excelLiveHost');if(!host||host.dataset.rendered==='1')return;host.dataset.rendered='1';
+ host.innerHTML=EXCEL_LIVE_DEFS.map((d,i)=>{
+   const inputs=d.goal
+    ? `<div class="grid2"><label>Set cell<input data-goal-set placeholder="B17"></label><label>To value<input data-goal-target type="number" step="any" placeholder="0"></label><label>By changing cell<input data-goal-change placeholder="B10"></label></div>`
+    : `<label>Excel formula<input class="formula-entry" data-xl-formula spellcheck="false" placeholder="Type the formula yourself"></label><label>Result<input data-xl-result type="number" step="any" placeholder="Enter the result"></label>`;
+   return `<article class="live-excel" data-xl-key="${d.key}"><div class="live-excel-head"><h3>${i+1}. ${d.title}</h3><span class="live-excel-status">Not complete</span></div><div class="live-excel-body"><div class="exercise-context"><div><b>Stage</b>${d.stage}</div><div><b>Situation</b>${d.situation}</div><div><b>Why a manager cares</b>${d.why}</div><div><b>Your task</b>${d.task}</div></div>${inputs}<div class="live-excel-actions"><button class="run xl-check" type="button">Check answer</button><button class="chip xl-clear" type="button">Clear</button></div><div class="live-excel-feedback">Complete the task first. A correct response unlocks the explanation and records the required pass.</div><div class="xl-debrief"></div></div></article>`;
+ }).join('');
+ host.querySelectorAll('[data-xl-key]').forEach(card=>{
+   const d=EXCEL_LIVE_DEFS.find(x=>x.key===card.dataset.xlKey);
+   card.querySelector('.xl-check').onclick=async()=>{
+     const fb=card.querySelector('.live-excel-feedback'),t=TRACKS[currentTrack],attempt=(excelAttempts.get(d.key)||0)+1;excelAttempts.set(d.key,attempt);
+     let ok=false,expected='';
+     if(d.goal){
+       const set=normalizeExcelRef(card.querySelector('[data-goal-set]').value),target=Number(card.querySelector('[data-goal-target]').value),change=normalizeExcelRef(card.querySelector('[data-goal-change]').value);
+       ok=set==='B17'&&target===0&&change==='B10';expected='Set B17 to 0 by changing B10';
+     }else{
+       const formula=card.querySelector('[data-xl-formula]').value,result=card.querySelector('[data-xl-result]').value,target=d.expected(t);
+       ok=formulaMatches(formula,d.accepted)&&numClose(result,target,d.key==='W12-XL06'?0.6:d.key==='W12-XL09'?0.002:0.02);
+       expected=Number(target).toLocaleString(undefined,{maximumFractionDigits:d.key==='W12-XL09'?4:2});
+     }
+     if(!ok){fb.innerHTML=`Not yet. <strong>Hint:</strong> ${d.hint}`;fb.className='live-excel-feedback bad';return}
+     if(!backendSession){fb.textContent='Correct locally, but the pass cannot be recorded until your roster-verified session is active.';fb.className='live-excel-feedback bad';return}
+     const r=await invokeParticipation({action:'save_worksheet',session_id:backendSession.id,worksheet_key:d.key,response_text:`PASSED|attempt=${attempt}|weeks12-excel|${new Date().toISOString()}`});
+     excelPassed.add(d.key);card.classList.add('passed');card.querySelector('.live-excel-status').textContent='Complete';
+     fb.textContent='Correct. This required Excel exercise has been recorded.';fb.className='live-excel-feedback good';
+     card.querySelector('.xl-debrief').innerHTML=excelTeachingHtml(d,expected);renderServerProgress(r.completion);standardMarkSaved();refreshPracticeDashboard();
+   };
+   card.querySelector('.xl-clear').onclick=()=>{card.querySelectorAll('input').forEach(x=>x.value='');const fb=card.querySelector('.live-excel-feedback');fb.textContent='Inputs cleared. Any previously recorded server pass remains saved.';fb.className='live-excel-feedback'};
+ });
+ restoreExcelCardStates();refreshPracticeDashboard();
+}
+function restoreExcelItem(item){if(item?.question_key&&EXCEL_LIVE_KEYS.includes(item.question_key)&&String(item.response_text||'').startsWith('PASSED'))excelPassed.add(item.question_key)}
+function restoreExcelCardStates(){
+ document.querySelectorAll('[data-xl-key]').forEach(card=>{if(excelPassed.has(card.dataset.xlKey)){const d=EXCEL_LIVE_DEFS.find(x=>x.key===card.dataset.xlKey),t=TRACKS[currentTrack],expected=d.goal?'Set B17 to 0 by changing B10':Number(d.expected(t)).toLocaleString(undefined,{maximumFractionDigits:d.key==='W12-XL09'?4:2});card.classList.add('passed');card.querySelector('.live-excel-status').textContent='Complete';const fb=card.querySelector('.live-excel-feedback');fb.textContent='Previously passed and restored from Supabase.';fb.className='live-excel-feedback good';card.querySelector('.xl-debrief').innerHTML=excelTeachingHtml(d,expected)}})
+}
+const EXERCISE_DEBRIEF={
+ ex1:{why:'A perishable decision loses unused capacity after a time window closes, so the overage/underage trade-off is real even when nothing physically spoils.',mistake:'Do not define perishability only as food spoilage; time-boxed capacity such as appointments and rooms can also expire.',manager:'Naming salvage value and unmet-demand consequences clarifies what management is actually trading off.'},
+ ex2:{why:'Changing FixedCost flows into TotalCost and therefore Profit across every scenario.',mistake:'Do not hard-code the old fixed cost inside downstream formulas.',manager:'A well-structured model lets one changed assumption propagate safely through the full decision chain.'},
+ ex3:{why:'MIN enforces the sales cap and MAX prevents impossible negative leftovers.',mistake:'Do not treat arithmetic output as automatically feasible; business constraints must be encoded explicitly.',manager:'Feasible formulas keep the spreadsheet aligned with actual operating limits.'},
+ ex4:{why:'Profit rises with demand only until supply becomes the binding constraint; after D exceeds Q, sales are capped.',mistake:'Do not assume more demand always means more realized revenue when capacity is fixed.',manager:'Lost demand beyond capacity is an opportunity the profit cell can hide unless you track unmet demand.'},
+ ex5:{why:'Cumulative probability adds every demand outcome at or below the threshold.',mistake:'Do not read the probability of one single demand bin as the cumulative probability.',manager:'Cumulative demand probability is what links historical uncertainty to the service percentile used in the quantity decision.'},
+ ex6:{why:'The Data Table compares the candidate quantities entered by the analyst on a common expected-profit basis.',mistake:'Do not confuse “best of the candidates” with proof of the global optimum.',manager:'Decision grids are useful screening tools; optimization may require checking a broader feasible range or Solver.'},
+ ex7:{why:'Lower salvage value raises overage cost, so the critical ratio falls when underage cost is unchanged.',mistake:'Do not infer the direction from intuition alone—trace the change through Co and then the ratio.',manager:'Better or worse recovery value can materially change the recommended service level.'},
+ ex8:{why:'Goal Seek sets one formula output to a target by changing one input—here Profit to zero by changing Demand.',mistake:'Do not swap the decision variable and uncertainty variable when interpreting a break-even question.',manager:'Break-even demand is an operating threshold, not necessarily the profit-maximizing quantity.'},
+ ex9:{why:'The mathematical structure transfers across sectors, but the consequences of underage and overage can differ dramatically.',mistake:'Do not treat a financially optimal healthcare quantity as automatically managerially or ethically acceptable.',manager:'Managers must supplement narrow financial outputs with service, safety, access, and reputational consequences.'}
+};
+function exerciseDebriefHtml(id){
+ const d=EXERCISE_DEBRIEF[id];if(!d)return'';
+ return `<div class="teach-debrief"><h4>Teaching debrief</h4><p><strong>Why this works:</strong> ${d.why}</p><p class="watch"><strong>Common mistake to avoid:</strong> ${d.mistake}</p><p class="manager"><strong>Managerial takeaway:</strong> ${d.manager}</p></div>`;
+}
+function attachExerciseTeachingObserver(){
+ document.querySelectorAll('.exercise .feedback').forEach(fb=>{
+   const id=fb.id.replace('-feedback','');
+   const add=()=>{if((fb.classList.contains('correct')||fb.classList.contains('saved'))&&!fb.querySelector('.teach-debrief'))fb.insertAdjacentHTML('beforeend',exerciseDebriefHtml(id));refreshPracticeDashboard()};
+   new MutationObserver(add).observe(fb,{childList:true,subtree:true,attributes:true,attributeFilter:['class']});add();
+ });
+}
+
 function standardMarkSaved(){const e=document.getElementById('stdSavedText');if(e){e.textContent='Saved to Supabase';e.classList.add('ok')}}
 function standardProgress(){
   const qAnswered=document.querySelectorAll('.mc-card[data-question-key][data-submitted="1"]').length;
@@ -1471,19 +1651,19 @@ async function resumeOrStartBackendSession(){
   document.querySelectorAll('.study-flip[data-card-key]').forEach(c=>c.classList.toggle('flipped',participationSeenCards.has(c.dataset.cardKey)));
   restoreKnowledgeResponses(r.knowledge_responses||[]);
   if(typeof exerciseState!=='undefined')for(const k of Object.keys(exerciseState))delete exerciseState[k];
-  for(const item of r.worksheet_responses||[])restoreExerciseFromServer(item);
+  excelPassed.clear();for(const item of r.worksheet_responses||[]){restoreExerciseFromServer(item);restoreExcelItem(item)};restoreExcelCardStates();
   updateExerciseProgress();
   return true;
 }
 async function bootstrapStudent(){
   const {data:{user}}=await sb.auth.getUser();signedInUser=user||null;const signout=document.getElementById('auth-signout'),fields=document.getElementById('authFields'),help=document.getElementById('accountHelp'),identity=document.getElementById('academic-identity');
-  if(!user){backendSession=backendOffering=backendCompletion=null;rosterVerified=false;if(signout)signout.hidden=true;if(fields)fields.hidden=false;if(help)help.hidden=false;if(identity)identity.hidden=true;setAuthStatus('Sign in before beginning. Work completed while signed out cannot be credited.');renderServerProgress(null);setParticipationGate(false);const saved=document.getElementById('stdSavedText');if(saved){saved.textContent='Not signed in';saved.classList.remove('ok')}return;}
+  if(!user){backendSession=backendOffering=backendCompletion=null;rosterVerified=false;setLessonLock(false);excelPassed.clear();refreshPracticeDashboard();if(signout)signout.hidden=true;if(fields)fields.hidden=false;if(help)help.hidden=false;if(identity)identity.hidden=true;setAuthStatus('Sign in before beginning. Work completed while signed out cannot be credited.');renderServerProgress(null);setParticipationGate(false);const saved=document.getElementById('stdSavedText');if(saved){saved.textContent='Not signed in';saved.classList.remove('ok')}return;}
   if(signout)signout.hidden=false;if(fields)fields.hidden=true;if(help)help.hidden=true;const em=document.getElementById('submit-email');if(em){em.value=user.email||'';em.readOnly=true;}const nm=document.getElementById('submit-name');if(nm){nm.value=user.user_metadata?.full_name||nm.value||'';nm.readOnly=true;}
   setAuthStatus('Signed in. Matching your Student ID to the instructor roster…');
   try{
     const r=await invokeParticipation({action:'bootstrap'});const offering=(r.offerings||[]).find(o=>o.assignment?.slug===ASSIGNMENT_SLUG&&Number(o.assignment?.version)===ASSIGNMENT_VERSION);
-    if(!offering){backendOffering=backendSession=null;rosterVerified=false;setParticipationGate(false);setAuthStatus('Signed in, but your roster does not currently have access to this MG628 assignment. Contact your instructor if this is unexpected.','err');return;}
-    backendOffering=offering;const enr=(r.enrollments||[]).find(e=>e.section_id===offering.section_id),sec=enr?.section;fillAcademicIdentity(enr,sec,user);rosterVerified=true;setParticipationGate(true);
+    if(!offering){backendOffering=backendSession=null;rosterVerified=false;setLessonLock(false);setParticipationGate(false);setAuthStatus('Signed in, but your roster does not currently have access to this MG628 assignment. Contact your instructor if this is unexpected.','err');return;}
+    backendOffering=offering;const enr=(r.enrollments||[]).find(e=>e.section_id===offering.section_id),sec=enr?.section;fillAcademicIdentity(enr,sec,user);rosterVerified=true;setParticipationGate(true);setLessonLock(true);
     setAuthStatus('Roster verified: '+(sec?.course?.code||COURSE_CODE)+' '+(sec?.section_code||'')+' · '+(sec?.term?.name||'')+'. Checking for previously saved work…','ok');const resumed=await resumeOrStartBackendSession();setAuthStatus((resumed?'Saved work restored. ':'Participation recording started. ')+'Recording is active for '+(sec?.course?.code||COURSE_CODE)+' '+(sec?.section_code||'')+' · '+(sec?.term?.name||'')+'.','ok');standardMarkSaved();standardProgress();setTimeout(offerResume,150);
   }catch(e){rosterVerified=false;setParticipationGate(false);setAuthStatus(e.message||'Could not initialize participation recording.','err');console.error(e);}
 }
@@ -1540,7 +1720,7 @@ const trackListeners = [];
 function onTrackChange(fn){ trackListeners.push(fn); }
 function setTrack(track){
   if(track!==('business') && track!=='health') return;
-  currentTrack = track;
+  currentTrack = track; if(typeof restoreExcelCardStates==='function'){restoreExcelCardStates();refreshPracticeDashboard();}
   document.querySelectorAll('[data-track-toggle]').forEach(group=>{
     group.querySelectorAll('button').forEach(b=>{
       const active = b.dataset.track===track;
@@ -1701,6 +1881,7 @@ function updateExerciseProgress(){
   const doneCount = EXERCISE_DEFS.filter(d=>exerciseState[d.id] && exerciseState[d.id].done).length;
   const footerP = document.getElementById('footerProgress');
   if(footerP) footerP.textContent = `${doneCount} / ${EXERCISE_DEFS.length} exercises completed.`;
+  refreshPracticeDashboard();
 }
 
 function normalizeExcelRef(value){
@@ -1812,7 +1993,7 @@ updateExerciseProgress();
   let signedReceipt=null;
   const doneCount=()=>EXERCISE_DEFS.filter(d=>exerciseState[d.id]?.done).length;
   function buildText(){let lines=['MG628 — Order Quantity Tutorial — Personal Copy','Name: '+(nameInput.value.trim()||'(name not entered)'),'Email: '+(emailInput.value.trim()||'(email not entered)'),'Scenario used: '+TRACKS[currentTrack].name+' ('+TRACKS[currentTrack].label+')','Generated: '+new Date().toLocaleString(),'Exercises completed: '+doneCount()+' / '+EXERCISE_DEFS.length,''];EXERCISE_DEFS.forEach((d,i)=>{const st=exerciseState[d.id];lines.push('Exercise '+(i+1)+': '+(st?.done?'COMPLETE':'not completed'));lines.push(st?.summary?'  '+st.summary.replace(/\n/g,'\n  '):'  (no answer recorded)');lines.push('');});return lines.join('\n');}
-  directBtn.addEventListener('click',async()=>{if(!signedInUser||!backendSession){feedback.textContent='Sign in at the top of the page and wait for your roster to be verified before recording participation.';feedback.className='feedback incorrect';return;}directBtn.disabled=true;directBtn.textContent='Verifying server record…';try{for(const d of EXERCISE_DEFS)await syncExerciseNow(d.id);for(const key of participationSeenCards)await recordSelfCheck(key,true);const r=await invokeParticipation({action:'recalculate_completion',session_id:backendSession.id});backendCompletion=r.completion;renderServerProgress(r.completion);if(r.completion.status!=='complete')throw new Error('Server record is '+r.completion.completion_percentage+'% complete. Open every required card, answer every MC checkpoint, and complete all nine exercises.');signedReceipt={session_id:backendSession.id,verification_code:r.completion.verification_code,received_at_iso:r.completion.completed_at||r.completion.calculated_at,course:COURSE_CODE,assignment:ASSIGNMENT_CODE,student_name:nameInput.value.trim()||signedInUser.user_metadata?.full_name||'',student_email:signedInUser.email||''};receiptText.innerHTML='<strong>Session:</strong> <code>'+signedReceipt.session_id+'</code><br><strong>Verification:</strong> <code>'+signedReceipt.verification_code+'</code><br><strong>Recorded:</strong> '+new Date(signedReceipt.received_at_iso).toLocaleString();receiptPanel.hidden=false;receiptBtn.disabled=false;feedback.textContent='Participation verified by Supabase. Download the Blackboard receipt below.';feedback.className='feedback correct';directBtn.textContent='Participation verified';}catch(e){feedback.textContent=e.message||String(e);feedback.className='feedback incorrect';directBtn.disabled=false;directBtn.textContent='Record participation';}});
+  directBtn.addEventListener('click',async()=>{if(!livePracticeComplete()){feedback.textContent='Complete all 10 embedded Excel exercises and all 9 applied exercises before recording participation.';feedback.className='feedback incorrect';return;}if(!signedInUser||!backendSession){feedback.textContent='Sign in at the top of the page and wait for your roster to be verified before recording participation.';feedback.className='feedback incorrect';return;}directBtn.disabled=true;directBtn.textContent='Verifying server record…';try{for(const d of EXERCISE_DEFS)await syncExerciseNow(d.id);for(const key of participationSeenCards)await recordSelfCheck(key,true);const r=await invokeParticipation({action:'recalculate_completion',session_id:backendSession.id});backendCompletion=r.completion;renderServerProgress(r.completion);if(r.completion.status!=='complete')throw new Error('Server record is '+r.completion.completion_percentage+'% complete. Open every required card, answer every MC checkpoint, pass all 10 embedded Excel exercises, and complete all nine applied exercises.');signedReceipt={session_id:backendSession.id,verification_code:r.completion.verification_code,received_at_iso:r.completion.completed_at||r.completion.calculated_at,course:COURSE_CODE,assignment:ASSIGNMENT_CODE,student_name:nameInput.value.trim()||signedInUser.user_metadata?.full_name||'',student_email:signedInUser.email||''};receiptText.innerHTML='<strong>Session:</strong> <code>'+signedReceipt.session_id+'</code><br><strong>Verification:</strong> <code>'+signedReceipt.verification_code+'</code><br><strong>Recorded:</strong> '+new Date(signedReceipt.received_at_iso).toLocaleString();receiptPanel.hidden=false;receiptBtn.disabled=false;feedback.textContent='Participation verified by Supabase. Download the Blackboard receipt below.';feedback.className='feedback correct';directBtn.textContent='Participation verified';}catch(e){feedback.textContent=e.message||String(e);feedback.className='feedback incorrect';directBtn.disabled=false;directBtn.textContent='Record participation';}});
   function pdfReady(){return !!(window.jspdf&&window.jspdf.jsPDF);}
   function safeFilePart(v){return String(v||'student').replace(/[^a-z0-9]+/gi,'-').replace(/^-+|-+$/g,'').toLowerCase()||'student';}
   function addWrapped(doc,text,x,y,maxWidth,lineHeight=5){
@@ -2384,7 +2565,7 @@ function updateHero(Q,D,params){
   signup.addEventListener('click',async()=>{if(signUpBusy)return;try{signUpBusy=true;signup.disabled=true;signup.textContent='Creating account…';setAuthStatus('Checking the instructor roster and creating your centralized student account…');const data=await centralizedStudentAuth('register');await applyCentralSession(data);}catch(e){setAuthStatus(e.message||String(e),'err')}finally{signUpBusy=false;signup.disabled=false;signup.textContent='Create account'}});
   signout.addEventListener('click',async()=>{await sb.auth.signOut();await bootstrapStudent();});
   sb.auth.onAuthStateChange((event,session)=>{signedInUser=session?.user||null;if(event==='SIGNED_IN'||event==='TOKEN_REFRESHED'||event==='USER_UPDATED'||event==='SIGNED_OUT')setTimeout(()=>bootstrapStudent(),0)});
-  setParticipationGate(false);sb.auth.getSession().then(({data})=>{signedInUser=data.session?.user||null;bootstrapStudent();});
+  setLessonLock(false);renderExcelLive();attachExerciseTeachingObserver();refreshPracticeDashboard();setParticipationGate(false);sb.auth.getSession().then(({data})=>{signedInUser=data.session?.user||null;bootstrapStudent();});
 })();
 
 // wire up every track toggle rendered above, and mount the hero/rail ones
