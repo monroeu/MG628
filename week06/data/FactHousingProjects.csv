@@ -1,0 +1,75 @@
+ProjectID,ProjectName,WardID,FundID,ProjectType,BudgetAllocated,BudgetSpent,UnitsTarget,UnitsCreated,StartDate,ExpectedEndDate,ActualEndDate,Status,ContractorName,ProjectManager
+P-1001,North Hills Homeownership Program #1,W-01,F-300,Homeownership Program,2320000,769236.96,11,3,2024-07-07,2025-05-03,,In Progress,Citywide Contractors,M. Garcia
+P-1002,North Hills Homeownership Program #2,W-01,F-300,Homeownership Program,3770000,2919772.15,18,13,2024-01-29,2024-11-24,,In Progress,Foundation Builders,S. Williams
+P-1003,North Hills Senior Housing #3,W-01,F-102,Senior Housing,4730000,295824.1,47,0,2024-10-16,2025-12-10,,Planning,Community Development Corp,M. Garcia
+P-1004,North Hills Transitional Housing #4,W-01,F-100,Transitional Housing,1290000,489033.72,25,9,2024-07-29,2025-01-25,,In Progress,Foundation Builders,D. Mitchell
+P-1005,North Hills Affordable Rental #5,W-01,F-102,Affordable Rental,3700000,619515.61,44,6,2024-08-10,2025-08-05,,In Progress,Neighborhood Development Group,M. Garcia
+P-1006,North Hills Senior Housing #6,W-01,F-101,Senior Housing,1140000,235068.92,11,2,2024-07-18,2025-09-11,,Delayed,Foundation Builders,D. Mitchell
+P-1007,North Hills Rehabilitation #7,W-01,F-301,Rehabilitation,3580000,495188.49,53,6,2024-09-08,2025-05-06,,In Progress,Community Development Corp,M. Garcia
+P-1008,North Hills Affordable Rental #8,W-01,F-300,Affordable Rental,4940000,2022824.72,59,21,2024-04-30,2025-04-25,,Delayed,Progressive Housing Co,R. Thompson
+P-1009,Riverside Emergency Shelter #9,W-02,F-102,Emergency Shelter,1000000,32414.64,25,0,2024-10-16,2025-02-13,,Planning,Urban Builders Inc,S. Williams
+P-1010,Riverside Emergency Shelter #10,W-02,F-102,Emergency Shelter,310000,28521.77,7,0,2024-10-03,2025-01-31,,In Progress,Citywide Contractors,M. Garcia
+P-1011,Riverside Homeownership Program #11,W-02,F-100,Homeownership Program,1560000,1613569.29,7,7,2023-11-12,2024-09-07,2024-09-23,Completed,Urban Builders Inc,K. Anderson
+P-1012,Riverside Mixed Use Development #12,W-02,F-300,Mixed Use Development,880000,470618.52,5,2,2023-09-08,2025-08-28,,In Progress,Sunrise Housing Partners,D. Mitchell
+P-1013,Riverside Emergency Shelter #13,W-02,F-201,Emergency Shelter,1380000,421461.61,34,9,2024-09-08,2025-01-06,,In Progress,Neighborhood Development Group,S. Williams
+P-1014,Central Core Rehabilitation #14,W-03,F-401,Rehabilitation,780000,813442.93,11,12,2023-07-29,2024-03-25,2024-03-28,Completed,Urban Builders Inc,R. Thompson
+P-1015,Central Core Senior Housing #15,W-03,F-201,Senior Housing,1320000,474320.73,13,4,2024-04-24,2025-06-18,,In Progress,Metro Construction LLC,S. Williams
+P-1016,Central Core Emergency Shelter #16,W-03,F-201,Emergency Shelter,1440000,1111981.84,36,24,2024-06-22,2024-10-20,,Delayed,Sunrise Housing Partners,M. Garcia
+P-1017,Central Core Senior Housing #17,W-03,F-102,Senior Housing,1270000,1072463.99,12,8,2023-10-04,2024-11-27,,In Progress,Sunrise Housing Partners,D. Mitchell
+P-1018,Central Core Homeownership Program #18,W-03,F-100,Homeownership Program,1180000,582875.26,5,2,2024-04-30,2025-02-24,,In Progress,Community Development Corp,L. Robinson
+P-1019,Central Core Homeownership Program #19,W-03,F-201,Homeownership Program,1740000,1753417.94,8,9,2023-07-08,2024-05-03,2024-05-07,Completed,Neighborhood Development Group,J. Martinez
+P-1020,Central Core Senior Housing #20,W-03,F-300,Senior Housing,1580000,760272.43,15,6,2024-02-23,2025-04-18,,In Progress,Foundation Builders,K. Anderson
+P-1021,East Heights Emergency Shelter #21,W-04,F-200,Emergency Shelter,2690000,1928401.81,67,44,2024-05-05,2024-09-02,,In Progress,Community Development Corp,J. Martinez
+P-1022,East Heights Affordable Rental #22,W-04,F-100,Affordable Rental,3380000,28631.66,40,0,2024-10-12,2025-10-07,,In Progress,Progressive Housing Co,L. Robinson
+P-1023,East Heights Emergency Shelter #23,W-04,F-401,Emergency Shelter,1110000,705146.51,27,13,2024-07-29,2024-11-26,,In Progress,Urban Builders Inc,J. Martinez
+P-1024,East Heights Transitional Housing #24,W-04,F-200,Transitional Housing,1020000,294545.19,20,5,2024-08-18,2025-02-14,,In Progress,Community Development Corp,M. Garcia
+P-1025,East Heights Rehabilitation #25,W-04,F-200,Rehabilitation,4420000,3573611.09,66,29,2023-08-22,2024-04-18,,In Progress,Sunrise Housing Partners,J. Martinez
+P-1026,East Heights Rehabilitation #26,W-04,F-301,Rehabilitation,2470000,2403071.99,37,38,2024-01-10,2024-09-06,2024-10-02,Completed,Sunrise Housing Partners,K. Anderson
+P-1027,Southgate Mixed Use Development #27,W-05,F-300,Mixed Use Development,1540000,545613.01,9,2,2023-12-30,2025-12-19,,Delayed,Sunrise Housing Partners,M. Garcia
+P-1028,Southgate Affordable Rental #28,W-05,F-200,Affordable Rental,780000,505193.79,9,5,2024-02-01,2025-01-26,,In Progress,Sunrise Housing Partners,A. Taylor
+P-1029,Southgate New Construction #29,W-05,F-101,New Construction,830000,398544.16,6,2,2024-01-11,2025-07-04,,In Progress,Foundation Builders,K. Anderson
+P-1030,Southgate Emergency Shelter #30,W-05,F-101,Emergency Shelter,1900000,1862497.82,47,43,2023-08-17,2023-12-15,2023-12-22,Completed,Neighborhood Development Group,K. Anderson
+P-1031,Westbrook Emergency Shelter #31,W-06,F-200,Emergency Shelter,2510000,1146391.68,62,25,2024-08-17,2024-12-15,,Delayed,Community Development Corp,S. Williams
+P-1032,Westbrook Transitional Housing #32,W-06,F-301,Transitional Housing,1860000,1654647.99,37,17,2023-10-06,2024-04-03,,Delayed,Citywide Contractors,M. Garcia
+P-1033,Westbrook Transitional Housing #33,W-06,F-200,Transitional Housing,1200000,1232879.65,24,23,2023-10-07,2024-04-04,2024-03-29,Completed,Urban Builders Inc,K. Anderson
+P-1034,Westbrook Emergency Shelter #34,W-06,F-201,Emergency Shelter,2120000,1106101.42,53,27,2024-08-04,2024-12-02,,In Progress,Sunrise Housing Partners,R. Thompson
+P-1035,Westbrook Mixed Use Development #35,W-06,F-400,Mixed Use Development,1080000,79974.71,6,0,2024-08-22,2026-08-12,,In Progress,Foundation Builders,D. Mitchell
+P-1036,Westbrook Affordable Rental #36,W-06,F-200,Affordable Rental,1900000,983452.67,22,9,2024-04-06,2025-04-01,,In Progress,Citywide Contractors,R. Thompson
+P-1037,Westbrook Mixed Use Development #37,W-06,F-301,Mixed Use Development,1410000,38159.22,8,0,2024-09-23,2026-09-13,,Delayed,Community Development Corp,R. Thompson
+P-1038,Harbor District Senior Housing #38,W-07,F-301,Senior Housing,1560000,1572685.07,15,15,2023-07-13,2024-09-05,2024-09-22,Completed,Metro Construction LLC,A. Taylor
+P-1039,Harbor District Emergency Shelter #39,W-07,F-201,Emergency Shelter,1660000,1413995.92,41,31,2024-06-29,2024-10-27,,In Progress,Progressive Housing Co,J. Martinez
+P-1040,Harbor District Mixed Use Development #40,W-07,F-102,Mixed Use Development,1290000,456049.61,7,2,2024-01-13,2026-01-02,,In Progress,Community Development Corp,S. Williams
+P-1041,Harbor District Mixed Use Development #41,W-07,F-201,Mixed Use Development,1330000,596022.33,7,3,2023-10-02,2025-09-21,,In Progress,Neighborhood Development Group,J. Martinez
+P-1042,Harbor District Mixed Use Development #42,W-07,F-100,Mixed Use Development,840000,120955.51,5,0,2024-06-27,2026-06-17,,In Progress,Sunrise Housing Partners,L. Robinson
+P-1043,University Heights Mixed Use Development #43,W-08,F-300,Mixed Use Development,1320000,581242.96,7,2,2023-11-28,2025-11-17,,In Progress,Sunrise Housing Partners,K. Anderson
+P-1044,University Heights Affordable Rental #44,W-08,F-400,Affordable Rental,830000,507794.44,9,7,2023-12-16,2024-12-10,,On Hold,Citywide Contractors,L. Robinson
+P-1045,University Heights Affordable Rental #45,W-08,F-400,Affordable Rental,620000,620447.13,7,6,2023-07-28,2024-07-22,2024-08-01,Completed,Citywide Contractors,A. Taylor
+P-1046,University Heights New Construction #46,W-08,F-102,New Construction,630000,456128.05,5,3,2023-08-21,2025-02-11,,In Progress,Community Development Corp,R. Thompson
+P-1047,University Heights Affordable Rental #47,W-08,F-300,Affordable Rental,330000,198727.09,5,2,2024-02-17,2025-02-11,,In Progress,Progressive Housing Co,L. Robinson
+P-1048,University Heights New Construction #48,W-08,F-400,New Construction,1840000,406819.61,14,2,2024-06-09,2025-12-01,,In Progress,Progressive Housing Co,M. Garcia
+P-1049,Oak Park Emergency Shelter #49,W-09,F-200,Emergency Shelter,1770000,1458134.22,44,22,2024-03-17,2024-07-15,,In Progress,Progressive Housing Co,M. Garcia
+P-1050,Oak Park New Construction #50,W-09,F-400,New Construction,4570000,307518.38,36,2,2024-09-03,2026-02-25,,In Progress,Urban Builders Inc,L. Robinson
+P-1051,Oak Park Affordable Rental #51,W-09,F-100,Affordable Rental,1390000,1140633.61,16,12,2023-12-15,2024-12-09,,In Progress,Citywide Contractors,D. Mitchell
+P-1052,Oak Park Transitional Housing #52,W-09,F-300,Transitional Housing,5000000,3423467.27,100,64,2024-05-23,2024-11-19,,Delayed,Neighborhood Development Group,R. Thompson
+P-1053,Oak Park Emergency Shelter #53,W-09,F-300,Emergency Shelter,2380000,1701967.81,59,29,2023-07-08,2023-11-05,,In Progress,Sunrise Housing Partners,M. Garcia
+P-1054,Oak Park Mixed Use Development #54,W-09,F-401,Mixed Use Development,1440000,707456.5,8,4,2023-09-18,2025-09-07,,In Progress,Foundation Builders,S. Williams
+P-1055,Oak Park Affordable Rental #55,W-09,F-200,Affordable Rental,2230000,2278926.64,26,26,2023-08-25,2024-08-19,2024-09-14,Completed,Neighborhood Development Group,A. Taylor
+P-1056,Oak Park Senior Housing #56,W-09,F-100,Senior Housing,1100000,303751.41,11,2,2024-06-11,2025-08-05,,In Progress,Progressive Housing Co,M. Garcia
+P-1057,Industrial Corridor Affordable Rental #57,W-10,F-400,Affordable Rental,1220000,1175725.94,14,15,2023-07-30,2024-07-24,2024-08-20,Completed,Progressive Housing Co,S. Williams
+P-1058,Industrial Corridor Rehabilitation #58,W-10,F-400,Rehabilitation,780000,668768.63,11,5,2023-07-02,2024-02-27,,Delayed,Sunrise Housing Partners,M. Garcia
+P-1059,Industrial Corridor Homeownership Program #59,W-10,F-100,Homeownership Program,1160000,555880.6,5,2,2024-05-14,2025-03-10,,In Progress,Neighborhood Development Group,K. Anderson
+P-1060,Lakefront Emergency Shelter #60,W-11,F-500,Emergency Shelter,2830000,2660677.42,70,72,2024-01-01,2024-04-30,2024-04-21,Completed,Community Development Corp,K. Anderson
+P-1061,Lakefront Transitional Housing #61,W-11,F-200,Transitional Housing,2810000,1692712.39,56,29,2024-06-14,2024-12-11,,In Progress,Urban Builders Inc,K. Anderson
+P-1062,Lakefront Mixed Use Development #62,W-11,F-200,Mixed Use Development,2030000,747373.87,12,4,2023-12-14,2025-12-03,,In Progress,Sunrise Housing Partners,R. Thompson
+P-1063,Lakefront Emergency Shelter #63,W-11,F-400,Emergency Shelter,4660000,4528916.22,116,115,2023-08-23,2023-12-21,2024-01-16,Completed,Progressive Housing Co,A. Taylor
+P-1064,Lakefront Affordable Rental #64,W-11,F-400,Affordable Rental,3480000,350597.45,41,3,2024-09-04,2025-08-30,,In Progress,Neighborhood Development Group,J. Martinez
+P-1065,Lakefront Homeownership Program #65,W-11,F-300,Homeownership Program,3870000,4053698.31,19,17,2023-07-23,2024-05-18,2024-06-13,Completed,Sunrise Housing Partners,D. Mitchell
+P-1066,Lakefront Homeownership Program #66,W-11,F-100,Homeownership Program,3700000,2377636.29,18,11,2024-03-22,2025-01-16,,Delayed,Foundation Builders,J. Martinez
+P-1067,Lakefront Senior Housing #67,W-11,F-300,Senior Housing,4800000,4007149.4,48,30,2023-10-13,2024-12-06,,In Progress,Progressive Housing Co,D. Mitchell
+P-1068,Lakefront Mixed Use Development #68,W-11,F-300,Mixed Use Development,3060000,804703.68,18,3,2024-03-14,2026-03-04,,In Progress,Metro Construction LLC,A. Taylor
+P-1069,Midtown Senior Housing #69,W-12,F-400,Senior Housing,1980000,607776.24,19,4,2024-05-25,2025-07-19,,In Progress,Foundation Builders,K. Anderson
+P-1070,Midtown Affordable Rental #70,W-12,F-200,Affordable Rental,1680000,481573.47,20,5,2024-06-27,2025-06-22,,In Progress,Progressive Housing Co,S. Williams
+P-1071,Midtown New Construction #71,W-12,F-300,New Construction,380000,186479.18,5,1,2024-01-29,2025-07-22,,In Progress,Urban Builders Inc,R. Thompson
+P-1072,Midtown Senior Housing #72,W-12,F-400,Senior Housing,470000,53576.17,5,0,2024-08-21,2025-10-15,,In Progress,Urban Builders Inc,M. Garcia
+P-1073,Midtown Homeownership Program #73,W-12,F-200,Homeownership Program,700000,545992.48,5,2,2024-03-01,2024-12-26,,In Progress,Citywide Contractors,J. Martinez
+P-1074,Midtown Rehabilitation #74,W-12,F-300,Rehabilitation,1990000,716561.65,29,8,2024-07-15,2025-03-12,,In Progress,Sunrise Housing Partners,A. Taylor
