@@ -1,0 +1,13 @@
+WardID,WardName,CouncilMember,Population,MedianIncome,PovertyRate,HomelessCount,VacantLots,NeighborhoodType
+W-01,North Hills,Alice Chen,52000,92000,6.2,85,12,Affluent Suburban
+W-02,Riverside,Marcus Johnson,38000,41000,22.5,340,67,Working Class
+W-03,Central Core,Maria Gonzalez,61000,35000,28.8,520,94,Low-Income Urban
+W-04,East Heights,David Park,29000,78000,8.1,62,8,Upper Middle Class
+W-05,Southgate,Tamika Williams,44000,38000,25.3,410,78,Low-Income Urban
+W-06,Westbrook,Robert Miller,35000,67000,11.2,95,22,Middle Class
+W-07,Harbor District,Jennifer Lee,27000,52000,14.8,180,45,Mixed Use Industrial
+W-08,University Heights,Dr. James Wright,48000,45000,19.5,220,31,Student/Young Professional
+W-09,Oak Park,Sarah Thompson,41000,85000,7.5,72,15,Affluent Suburban
+W-10,Industrial Corridor,Carlos Ramirez,22000,42000,21.0,290,112,Working Class
+W-11,Lakefront,Elizabeth Morgan,33000,105000,4.8,45,5,Affluent Urban
+W-12,Midtown,Anthony Davis,56000,48000,17.2,285,52,Mixed Income

@@ -1,0 +1,11 @@
+FundID,SourceName,Category,FiscalYear,TotalAvailable,MatchRequired,MatchPercent
+F-100,HUD Federal Grant,Federal,FY2024,18000000,Yes,25
+F-101,CDBG Block Grant,Federal,FY2024,8500000,No,0
+F-102,HOME Investment Partnership,Federal,FY2024,5200000,Yes,25
+F-200,City General Fund,Local,FY2024,12000000,No,0
+F-201,Housing Trust Fund,Local,FY2024,6500000,No,0
+F-300,Housing Bond Series A,Debt,FY2024,25000000,No,0
+F-301,Infrastructure Bond,Debt,FY2024,8000000,No,0
+F-400,Private Developer Partnership,Private,FY2024,15000000,Yes,50
+F-401,Nonprofit Foundation Grant,Private,FY2024,3500000,No,0
+F-500,State Housing Assistance,State,FY2024,9800000,Yes,15
