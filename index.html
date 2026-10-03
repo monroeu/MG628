@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="mg628-build" content="dynamic-week-catalog-2026-10-03.1">
 <title>MG628 — Data Analysis for Managerial Decision-Making</title>
 <meta name="description" content="MG628 course hub for Data Analysis for Managerial Decision-Making at Monroe University.">
 <style>
@@ -80,6 +81,10 @@ footer{margin-top:80px;padding:28px 0 10px;border-top:1px solid var(--rule);colo
   .objectives{columns:1}
   main{padding-left:18px;padding-right:18px}
 }
+
+.week-loading{grid-column:1/-1;padding:24px;border:1px dashed var(--rule);background:rgba(251,249,241,.78);color:var(--ink-soft)}
+.week-error{grid-column:1/-1;padding:18px;border:1px solid #c9b99a;background:#fff8ef;color:var(--ink-soft)}
+
 </style>
 </head>
 <body>
@@ -158,32 +163,10 @@ footer{margin-top:80px;padding:28px 0 10px;border-top:1px solid var(--rule);colo
   <section class="section" id="weeks">
     <p class="eyebrow">Weekly Interactive Activities</p>
     <h2>Your course activity hub</h2>
-    <p class="section-intro">Each weekly activity has its own page. Week 1 is available now; additional weeks will be published as the course progresses.</p>
+    <p class="section-intro">This hub reads each published weekly participation page directly. When a new week is published, its card appears here automatically.</p>
 
-    <div class="weeks">
-      <article class="week active">
-        <div>
-          <div class="week-num">Week 1</div>
-          <h3>Introduction to Data-Driven Decision-Making</h3>
-          <p>Course overview, the role of data in business, analytical tools, expectations, and the first interactive modeling activity.</p>
-        </div>
-        <div><div class="status">Available now</div><a href="week01/">Open Week 1 →</a></div>
-      </article>
-
-      <article class="week"><div><div class="week-num">Week 2</div><h3>Data Structures and Business Data Sources</h3><p>Structured and unstructured data, databases, spreadsheets, APIs, and data-source mapping.</p></div><div class="status soon">Coming soon</div></article>
-      <article class="week"><div><div class="week-num">Week 3</div><h3>Data Cleaning and Preparation</h3><p>Data wrangling, missing values, consistency checks, Excel cleaning, and Python pandas.</p></div><div class="status soon">Coming soon</div></article>
-      <article class="week"><div><div class="week-num">Week 4</div><h3>Descriptive Analytics and Statistics</h3><p>Central tendency, dispersion, frequency analysis, Excel ToolPak, and Python summaries.</p></div><div class="status soon">Coming soon</div></article>
-      <article class="week"><div><div class="week-num">Week 5</div><h3>Data Visualization for Business Insights</h3><p>Effective visualizations, dashboard thinking, Tableau, Power BI, and storytelling with data.</p></div><div class="status soon">Coming soon</div></article>
-      <article class="week"><div><div class="week-num">Week 6</div><h3>Probability and Business Applications</h3><p>Probability, risk, expected value, simulations, probability trees, and Excel scenarios.</p></div><div class="status soon">Coming soon</div></article>
-      <article class="week"><div><div class="week-num">Week 7</div><h3>Inferential Statistics and Decision-Making</h3><p>Hypothesis testing, confidence intervals, p-values, t-tests, and A/B testing.</p></div><div class="status soon">Coming soon</div></article>
-      <article class="week"><div><div class="week-num">Week 8</div><h3>SQL for Business Analytics</h3><p>Relational data extraction, SQL commands, JOINs, filtering, and hands-on querying.</p></div><div class="status soon">Coming soon</div></article>
-      <article class="week"><div><div class="week-num">Week 9</div><h3>Regression and Predictive Modeling</h3><p>Linear and multiple regression, model interpretation, diagnostics, and predictive applications.</p></div><div class="status soon">Coming soon</div></article>
-      <article class="week"><div><div class="week-num">Week 10</div><h3>Forecasting with Time Series Data</h3><p>Trends, seasonality, moving averages, Python time series, and Power BI projections.</p></div><div class="status soon">Coming soon</div></article>
-      <article class="week"><div><div class="week-num">Week 11</div><h3>Dashboards and Executive Reporting</h3><p>Advanced dashboards, stakeholder communication, and executive decision support.</p></div><div class="status soon">Coming soon</div></article>
-      <article class="week"><div><div class="week-num">Week 12</div><h3>Ethical Data Use and Bias</h3><p>Ethical implications of data collection, algorithms, bias, and responsible analytics.</p></div><div class="status soon">Coming soon</div></article>
-      <article class="week"><div><div class="week-num">Week 13</div><h3>Capstone Project Presentations</h3><p>Student presentations, peer review, reflection, and application of course tools.</p></div><div class="status soon">Coming soon</div></article>
-      <article class="week"><div><div class="week-num">Week 14</div><h3>Final Course Project</h3><p>Final project completion, Career Journey Project Phase 3, and self-assessment.</p></div><div class="status soon">Coming soon</div></article>
-      <article class="week"><div><div class="week-num">Week 15</div><h3>Final Exam</h3><p>Final course assessment covering the major analytical concepts and tools from the semester.</p></div><div class="status soon">Coming soon</div></article>
+    <div class="weeks" id="weeksGrid" aria-live="polite">
+      <div class="week-loading">Loading published weekly activities…</div>
     </div>
   </section>
 
@@ -203,6 +186,157 @@ footer{margin-top:80px;padding:28px 0 10px;border-top:1px solid var(--rule);colo
 
   <footer>MG628 · Data Analysis for Managerial Decision-Making · Monroe University</footer>
 </main>
+  
+<script id="dynamic-week-catalog">
+(() => {
+  const grid = document.getElementById('weeksGrid');
+  if (!grid) return;
+
+  // Probe the standard MG628 week folders. A folder is treated as published only
+  // when its index page returns successfully from this same GitHub Pages site.
+  const candidates = Array.from({length: 15}, (_, i) =>
+    `week${String(i + 1).padStart(2, '0')}/`
+  );
+
+  const stripCoursePrefix = (title) => {
+    let t = (title || '').trim();
+    t = t.replace(/^MG628\s*/i, '');
+    t = t.replace(/^Week\s*\d+\s*(Participation)?\s*[—–:-]\s*/i, '');
+    t = t.replace(/^Weeks?\s*\d+(?:\s*[–-]\s*\d+)?\s*(Participation)?\s*[—–:-]\s*/i, '');
+    t = t.replace(/\s*[—–|-]\s*MG628.*$/i, '');
+    return t.trim();
+  };
+
+  const text = (el) => (el?.textContent || '').replace(/\s+/g, ' ').trim();
+
+  function inferLabel(doc, url) {
+    const h1 = text(doc.querySelector('h1'));
+    const m1 = h1.match(/\bWeeks?\s+\d+(?:\s*[–-]\s*\d+)?/i);
+    if (m1) return m1[0].replace('-', '–');
+
+    const title = doc.title || '';
+    const m2 = title.match(/\bWeeks?\s+\d+(?:\s*[–-]\s*\d+)?/i);
+    if (m2) return m2[0].replace('-', '–');
+
+    const m3 = url.match(/week(\d{2})/i);
+    return m3 ? `Week ${Number(m3[1])}` : 'Week';
+  }
+
+  function inferTitle(doc) {
+    const meta = doc.querySelector('meta[name="week-title"]')?.content?.trim();
+    if (meta) return meta;
+
+    const h1 = text(doc.querySelector('h1'));
+    const cleanedH1 = stripCoursePrefix(h1);
+    if (cleanedH1 && cleanedH1.toLowerCase() !== 'start here') return cleanedH1;
+
+    return stripCoursePrefix(doc.title) || 'Weekly Participation';
+  }
+
+  function inferDescription(doc) {
+    const direct =
+      doc.querySelector('meta[name="week-description"]')?.content?.trim() ||
+      doc.querySelector('meta[name="description"]')?.content?.trim();
+    if (direct) return direct;
+
+    // Prefer the actual instructional introduction on the page.
+    const lead =
+      doc.querySelector('.lead') ||
+      doc.querySelector('header p') ||
+      doc.querySelector('main p');
+    const s = text(lead);
+    if (s) return s.length > 220 ? s.slice(0, 217).trimEnd() + '…' : s;
+
+    return 'Interactive MG628 participation activity.';
+  }
+
+  function orderValue(label, url) {
+    const nums = (label.match(/\d+/g) || []).map(Number);
+    if (nums.length) return nums[0];
+    const m = url.match(/week(\d{2})/i);
+    return m ? Number(m[1]) : 999;
+  }
+
+  async function inspectWeek(url) {
+    try {
+      const response = await fetch(url, { cache: 'no-store' });
+      if (!response.ok) return null;
+
+      const raw = await response.text();
+      if (!/<html[\s>]/i.test(raw)) return null;
+
+      const doc = new DOMParser().parseFromString(raw, 'text/html');
+
+      // Allow a weekly page to explicitly hide itself from the hub.
+      if ((doc.querySelector('meta[name="course-hub-visible"]')?.content || '').toLowerCase() === 'false') {
+        return null;
+      }
+
+      const label = inferLabel(doc, url);
+      return {
+        label,
+        title: inferTitle(doc),
+        description: inferDescription(doc),
+        href: url,
+        order: orderValue(label, url)
+      };
+    } catch {
+      return null;
+    }
+  }
+
+  function renderCard(item) {
+    const article = document.createElement('article');
+    article.className = 'week active';
+
+    const top = document.createElement('div');
+
+    const num = document.createElement('div');
+    num.className = 'week-num';
+    num.textContent = item.label;
+
+    const h3 = document.createElement('h3');
+    h3.textContent = item.title;
+
+    const p = document.createElement('p');
+    p.textContent = item.description;
+
+    top.append(num, h3, p);
+
+    const bottom = document.createElement('div');
+    const status = document.createElement('div');
+    status.className = 'status';
+    status.textContent = 'Available now';
+
+    const a = document.createElement('a');
+    a.href = item.href;
+    a.textContent = `Open ${item.label} →`;
+
+    bottom.append(status, a);
+    article.append(top, bottom);
+    return article;
+  }
+
+  (async () => {
+    const found = (await Promise.all(candidates.map(inspectWeek)))
+      .filter(Boolean)
+      .sort((a, b) => a.order - b.order || a.label.localeCompare(b.label));
+
+    grid.replaceChildren();
+
+    if (!found.length) {
+      const empty = document.createElement('div');
+      empty.className = 'week-error';
+      empty.textContent = 'No published weekly activities were found.';
+      grid.appendChild(empty);
+      return;
+    }
+
+    found.forEach(item => grid.appendChild(renderCard(item)));
+  })();
+})();
+</script>
+
   <script src="assets/week-auto-activate.js" defer></script>
 </body>
 </html>
