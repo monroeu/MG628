@@ -490,6 +490,12 @@ code{overflow-wrap:anywhere}
   .course-topbar .mg628-nav-links{width:100%;gap:4px;}
   .course-topbar .mg628-nav-links a{padding:8px 9px;font-size:13px;}
 }
+
+  .ai-coach-card{margin-top:10px;padding:12px 14px;border:1px solid var(--teal);background:var(--teal-soft);border-radius:6px;line-height:1.5}
+  .ai-coach-card .ai-head{font-weight:800;color:var(--teal);margin-bottom:5px}
+  .ai-coach-card .ai-label{font-weight:800}
+  .ai-coach-card .ai-retry{margin-top:7px;font-style:italic}
+  .ai-coach-pending{color:var(--ink-soft);font-family:var(--font-mono);font-size:12px;margin-top:8px}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.4/dist/umd/supabase.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jspdf@4.2.1/dist/jspdf.umd.min.js"></script>
@@ -503,7 +509,7 @@ code{overflow-wrap:anywhere}
 .feedback.teaching-feedback{margin-top:12px;padding:12px 14px;border-radius:6px;line-height:1.55;font-weight:500}.feedback.teaching-feedback.correct{background:#eef9f3;border:1px solid #b9dec9;color:#155c39}.feedback.teaching-feedback.incorrect{background:#fff4f2;border:1px solid #efc3bc;color:#7c2d24}.feedback .answer-label{display:block;margin-bottom:5px;font-weight:800}.feedback .why-label{font-weight:800}.teaching-cycle{border:1px solid var(--rule);background:var(--white);padding:16px 18px;margin:18px 0}.teaching-cycle strong{color:var(--teal)}.teaching-cycle ol{margin:8px 0 0;padding-left:22px}.teaching-cycle li{margin-bottom:5px}.participation-locked{opacity:.72}.participation-locked::after{content:'Sign in above to submit required participation work.';display:block;margin-top:8px;font-family:var(--font-mono);font-size:11px;color:var(--danger)}
 @media(max-width:640px){.participation-status-strip{margin:0;border-left:0;border-right:0;gap:10px;padding:8px 12px}.participation-status-strip .metric span{font-size:8px}.participation-status-strip strong{font-size:12px}.saved-indicator{min-width:72px;font-size:10px}.central-identity-grid{grid-template-columns:1fr}.resume-strip{top:0;margin:0 10px}.auth-grid{grid-template-columns:1fr}}
 </style>
-<!-- Build: week01-content-rubric-validation-2026-10-05.1 -->
+<!-- Build: week01-ai-teaching-layer-2026-10-05.1 -->
 </head>
 <body>
 <nav class="course-topbar" aria-label="MG628 course navigation">
@@ -1470,6 +1476,28 @@ function offerResume(){if(!signedInUser)return;const raw=localStorage.getItem('m
 window.addEventListener('scroll',()=>{clearTimeout(scrollSaveTimer);scrollSaveTimer=setTimeout(()=>{if(signedInUser)localStorage.setItem('mg628:w12:scroll:'+signedInUser.id,JSON.stringify({y:window.scrollY,at:Date.now()}))},400)},{passive:true});
 
 async function invokeParticipation(body){const {data,error}=await sb.functions.invoke('participation-api',{body});if(error)throw error;if(data?.error)throw new Error(data.error);return data;}
+function escapeAiHtml(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));}
+function renderAiTeaching(ai){
+  if(!ai||ai.available===false)return '';
+  const parts=[];
+  if(ai.headline)parts.push('<div class="ai-head">'+escapeAiHtml(ai.headline)+'</div>');
+  if(ai.explanation)parts.push('<div><span class="ai-label">Why:</span> '+escapeAiHtml(ai.explanation)+'</div>');
+  if(ai.correct_reasoning)parts.push('<div><span class="ai-label">Correct reasoning:</span> '+escapeAiHtml(ai.correct_reasoning)+'</div>');
+  if(ai.managerial_takeaway)parts.push('<div><span class="ai-label">Managerial takeaway:</span> '+escapeAiHtml(ai.managerial_takeaway)+'</div>');
+  if(ai.retry_prompt)parts.push('<div class="ai-retry"><span class="ai-label">Try next:</span> '+escapeAiHtml(ai.retry_prompt)+'</div>');
+  return parts.length?'<div class="ai-coach-card">'+parts.join('')+'</div>':'';
+}
+async function requestAiTeaching({mode='deterministic',questionKey,questionText,studentAnswer,deterministicCorrect=null,correctAnswer=''}){
+  if(!backendSession||!rosterVerified)return null;
+  try{
+    const r=await invokeParticipation({action:'ai_feedback',session_id:backendSession.id,mode,question_key:questionKey,question_text:String(questionText||'').slice(0,1400),student_answer:String(studentAnswer||'').slice(0,2800),deterministic_correct:deterministicCorrect,correct_answer:String(correctAnswer||'').slice(0,1600)});
+    return r?.ai||null;
+  }catch(e){
+    console.info('AI teaching feedback unavailable; using built-in feedback.',e);
+    return null;
+  }
+}
+function exercisePromptText(id){const box=document.getElementById(id);if(!box)return '';const label=box.querySelector('label');if(label)return label.textContent.trim();const p=box.querySelector('.exercise-body p');return p?p.textContent.trim():'';}
 function setAuthStatus(message,kind=''){const el=document.getElementById('auth-status');if(!el)return;el.textContent=message;el.className='auth-status'+(kind?' '+kind:'');}
 function renderServerProgress(c){backendCompletion=c||backendCompletion;const el=document.getElementById('server-progress');if(!el)return;if(!backendCompletion){el.hidden=true;standardProgress();return;}el.hidden=false;el.innerHTML='Server record: <strong>'+String(backendCompletion.completion_percentage??0)+'%</strong> · learning checks '+String(backendCompletion.cards_completed??backendCompletion.study_cards_completed??0)+'/'+String(backendCompletion.cards_required??backendCompletion.study_cards_required??STANDARD_TOTAL_CARDS)+' · MC '+String(backendCompletion.questions_answered??0)+'/'+String(backendCompletion.questions_required??STANDARD_TOTAL_QUESTIONS)+' ('+String(backendCompletion.questions_correct??0)+' first-attempt correct) · exercises '+(backendCompletion.worksheet_completed?'complete':'in progress')+' · reflection '+(backendCompletion.reflection_completed?'complete':'in progress')+' · status <strong>'+String(backendCompletion.status||'incomplete').toUpperCase()+'</strong>';standardProgress();}
 async function startBackendSession(){if(!signedInUser||!backendOffering)return;const r=await invokeParticipation({action:'start_session',offering_id:backendOffering.id,track:currentTrack});backendSession=r.session;backendCompletion=r.completion;renderServerProgress(r.completion);for(const key of participationSeenCards)await recordSelfCheck(key,true);if(typeof EXERCISE_DEFS!=='undefined')for(const d of EXERCISE_DEFS)if(exerciseState[d.id]?.done)await syncExerciseNow(d.id);}
@@ -1532,7 +1560,27 @@ function ensureMcCheckButton(q){
   return btn;
 }
 function restoreKnowledgeResponses(rows){const latest=new Map((rows||[]).map(r=>[r.question_key,r]));document.querySelectorAll('.mc-card[data-question-key]').forEach(q=>{const btn=ensureMcCheckButton(q);const r=latest.get(q.dataset.questionKey);if(!r)return;const v=String(r.selected_answer??'').toLowerCase();const radio=q.querySelector(`input[value="${CSS.escape(v)}"]`);if(radio)radio.checked=true;q.dataset.submitted='1';q.querySelectorAll('input[type=radio]').forEach(x=>x.disabled=true);btn.disabled=true;btn.textContent='Checked';const fb=q.querySelector('.mc-feedback');if(fb){fb.innerHTML=teachingFeedbackHtml(q,r);fb.className='mc-feedback teaching-feedback '+(r.is_correct?'correct':'incorrect')}});standardProgress();}
-async function answerKnowledge(q,radio){const fb=q.querySelector('.mc-feedback'),btn=ensureMcCheckButton(q);if(q.dataset.submitted==='1')return;if(!backendSession||!rosterVerified){fb.textContent='Sign in and wait for roster verification before answering.';fb.className='mc-feedback incorrect';return}q.querySelectorAll('input[type=radio]').forEach(x=>x.disabled=true);btn.disabled=true;btn.textContent='Checking…';try{const r=await invokeParticipation({action:'answer_knowledge',session_id:backendSession.id,question_key:q.dataset.questionKey,selected_answer:radio.value});const saved={...r,selected_answer:r.selected_answer??radio.value,correct_answer:r.correct_answer??TEACHING_FEEDBACK[q.dataset.questionKey]?.correct};q.dataset.submitted='1';fb.innerHTML=teachingFeedbackHtml(q,saved);fb.className='mc-feedback teaching-feedback '+(r.is_correct?'correct':'incorrect');btn.textContent='Checked';renderServerProgress(r.completion);standardMarkSaved()}catch(e){q.querySelectorAll('input[type=radio]').forEach(x=>x.disabled=false);btn.disabled=false;btn.textContent='Check Answer';fb.textContent='Your answer was not recorded, so the question remains unlocked. '+(e.message||String(e));fb.className='mc-feedback incorrect'}finally{standardProgress()}}
+async function answerKnowledge(q,radio){
+  const fb=q.querySelector('.mc-feedback'),btn=ensureMcCheckButton(q);
+  if(q.dataset.submitted==='1')return;
+  if(!backendSession||!rosterVerified){fb.textContent='Sign in and wait for roster verification before answering.';fb.className='mc-feedback incorrect';return}
+  q.querySelectorAll('input[type=radio]').forEach(x=>x.disabled=true);btn.disabled=true;btn.textContent='Checking…';
+  try{
+    const r=await invokeParticipation({action:'answer_knowledge',session_id:backendSession.id,question_key:q.dataset.questionKey,selected_answer:radio.value});
+    const saved={...r,selected_answer:r.selected_answer??radio.value,correct_answer:r.correct_answer??TEACHING_FEEDBACK[q.dataset.questionKey]?.correct};
+    q.dataset.submitted='1';
+    fb.innerHTML=teachingFeedbackHtml(q,saved)+'<div class="ai-coach-pending">Preparing personalized teaching feedback…</div>';
+    fb.className='mc-feedback teaching-feedback '+(r.is_correct?'correct':'incorrect');
+    btn.textContent='Checked';renderServerProgress(r.completion);standardMarkSaved();
+    const choices=[...q.querySelectorAll('.mc-choice')];
+    const selectedLabel=choices.find(x=>x.querySelector('input')?.value===String(saved.selected_answer))?.textContent.trim()||String(saved.selected_answer||'');
+    const correctLabel=choices.find(x=>x.querySelector('input')?.value===String(saved.correct_answer))?.textContent.trim()||String(saved.correct_answer||'');
+    const ai=await requestAiTeaching({mode:'deterministic',questionKey:q.dataset.questionKey,questionText:q.querySelector('h4')?.textContent||'',studentAnswer:selectedLabel,deterministicCorrect:!!r.is_correct,correctAnswer:correctLabel+' — '+(TEACHING_FEEDBACK[q.dataset.questionKey]?.why||r.explanation||'')});
+    const aiHtml=renderAiTeaching(ai);
+    fb.innerHTML=teachingFeedbackHtml(q,saved)+(aiHtml||'');
+  }catch(e){q.querySelectorAll('input[type=radio]').forEach(x=>x.disabled=false);btn.disabled=false;btn.textContent='Check Answer';fb.textContent='Your answer was not recorded, so the question remains unlocked. '+(e.message||String(e));fb.className='mc-feedback incorrect'}
+  finally{standardProgress()}
+}
 document.querySelectorAll('.study-flip[data-card-key]').forEach(c=>{const go=async()=>{c.classList.toggle('flipped');if(c.classList.contains('flipped'))await recordSelfCheck(c.dataset.cardKey)};c.addEventListener('click',go);c.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();go()}})});
 document.querySelectorAll('.mc-card[data-question-key]').forEach(q=>{
   const btn=ensureMcCheckButton(q);
@@ -1843,7 +1891,7 @@ const TEXT_RUBRICS={
       {name:'a specific perishable inventory or time-limited capacity decision', terms:['inventory','muffin','food','meal','bread','produce','flower','hotel','room','flight','airline','seat','ticket','vaccine','dose','clinic','appointment','mri','nurse','staff','hospital bed','bed','capacity','reservation','rental','event seat','parking','shift','fresh product']},
       {name:'what happens when there is too much capacity or inventory', terms:['too much','overcapacity','overstock','excess','leftover','unused','unsold','idle','empty','vacant','waste','wasted','spoil','spoils','expired','expires']},
       {name:'what happens when there is too little capacity or inventory', terms:['too little','undercapacity','understock','shortage','stockout','not enough','run out','runs out','missed sale','lost sale','turn away','turned away','unmet demand','wait','waiting','delay','cannot serve','can\'t serve']},
-      {name:'what happens to unused capacity or its salvage value', terms:['salvage','discount','discounted','resell','resale','donate','donated','throw away','discard','waste','lost','zero value','no value','partial recovery','unused capacity','expires','expire','gone for good']}
+      {name:'what happens to unused capacity or its salvage value', custom:t=>hasAny(t,['salvage','discount','discounted','resell','resale','donate','donated','throw away','discard','waste','lost','zero value','no value','no money','earn no money','earns no money','earns nothing','no revenue','earns no revenue','cannot earn revenue','can\'t earn revenue','cannot be sold later','can\'t be sold later','partial recovery','unused capacity','unused seat','unused seats','empty seat','empty seats','expires','expire','gone for good']) || (hasAny(t,['flight','airline','seat','seats']) && hasAny(t,['empty','unused']) && hasAny(t,['money','revenue','lost','gone','cannot sell','can\'t sell']))}
     ],
     success:'Meets requirements — you identified a perishable decision and addressed the overcapacity, undercapacity, and unused-capacity/salvage-value parts of the question.'
   },
@@ -1895,91 +1943,59 @@ EXERCISE_DEFS.filter(d=>d.type==='text').forEach(def=>{
   if(!input||!btn)return;
   const rubric=TEXT_RUBRICS[def.id];
   input.addEventListener('input',()=>{
-    const len=input.value.trim().length;
-    if(count)count.textContent=len+' characters';
-    markExerciseIncomplete(def.id);
-    feedback.textContent='When ready, press Check Answer. This response is checked against the required ideas, not just its length.';
-    feedback.className='feedback';
+    const len=input.value.trim().length;if(count)count.textContent=len+' characters';markExerciseIncomplete(def.id);
+    feedback.textContent='When ready, press Check Answer. Your response will be evaluated for the required ideas, not exact wording.';feedback.className='feedback';
   });
-  btn.addEventListener('click',()=>{
+  btn.addEventListener('click',async()=>{
     const text=input.value.trim();
-    const result=evaluateRubric(text,rubric||{minLen:def.minLen||20,criteria:[]});
-    feedback.textContent=rubricFeedback(result,rubric||{});
-    feedback.className='feedback '+(result.ok?'correct':'incorrect');
-    if(!result.ok){markExerciseIncomplete(def.id);return;}
-    markExerciseDone(def.id,text,text);
+    if(obviousNonAnswer(text)){feedback.textContent='Needs revision — this looks like a test/non-answer rather than a response to the question.';feedback.className='feedback incorrect';markExerciseIncomplete(def.id);return;}
+    btn.disabled=true;btn.textContent='Checking…';feedback.innerHTML='<span class="ai-coach-pending">Evaluating your reasoning…</span>';feedback.className='feedback';
+    const ai=await requestAiTeaching({mode:'rubric',questionKey:def.id.toUpperCase(),questionText:exercisePromptText(def.id),studentAnswer:text});
+    let ok, message;
+    if(ai&&ai.available!==false&&typeof ai.meets_requirements==='boolean'){ok=ai.meets_requirements;message=renderAiTeaching(ai);}
+    else{const result=evaluateRubric(text,rubric||{minLen:def.minLen||20,criteria:[]});ok=result.ok;message=rubricFeedback(result,rubric||{});}
+    feedback.innerHTML=message;feedback.className='feedback '+(ok?'correct':'incorrect');
+    if(ok)markExerciseDone(def.id,text,text);else markExerciseIncomplete(def.id);
+    btn.disabled=false;btn.textContent='Check Answer';
   });
 });
 
 // Exercise 2 combines a rubric-checked written explanation with required Excel cell/range naming.
 EXERCISE_DEFS.filter(d=>d.type==='textExcel').forEach(def=>{
-  const input=document.getElementById(def.id+'-input');
-  const count=document.getElementById(def.id+'-count');
-  const feedback=document.getElementById(def.id+'-feedback');
-  const btn=document.getElementById(def.id+'-check');
-  input.addEventListener('input',()=>{
-    if(count)count.textContent=input.value.trim().length+' characters';
-    markExerciseIncomplete(def.id);
-    feedback.textContent='When ready, press Check Answer. Your explanation and the Excel addresses will both be checked.';
-    feedback.className='feedback';
-  });
+  const input=document.getElementById(def.id+'-input'),count=document.getElementById(def.id+'-count'),feedback=document.getElementById(def.id+'-feedback'),btn=document.getElementById(def.id+'-check');
+  input.addEventListener('input',()=>{if(count)count.textContent=input.value.trim().length+' characters';markExerciseIncomplete(def.id);feedback.textContent='When ready, press Check Answer. Your explanation and the Excel addresses will both be checked.';feedback.className='feedback';});
   def.excelFields.forEach(id=>document.getElementById(id).addEventListener('input',()=>markExerciseIncomplete(def.id)));
-  btn.addEventListener('click',()=>{
-    const text=input.value.trim();
-    const content=evaluateRubric(text,EX2_RUBRIC);
-    const refs=checkExcelRefs(def);
-    if(!content.ok){
-      feedback.textContent=rubricFeedback(content,EX2_RUBRIC);
-      feedback.className='feedback incorrect';
-      markExerciseIncomplete(def.id);
-      return;
-    }
-    if(!refs.ok){
-      const wrong=[];
-      refs.values.forEach((v,i)=>{if(normalizeExcelRef(v)!==normalizeExcelRef(refs.expected[i]))wrong.push(def.excelFields[i]);});
-      feedback.textContent='Your explanation meets the content requirements, but one or more Excel addresses are not correct. Recheck the six-input block, Fixed Cost, Q, and Demand addresses, then try again.';
-      feedback.className='feedback incorrect';
-      markExerciseIncomplete(def.id);
-      return;
-    }
-    const refSummary=refs.values.map(normalizeExcelRef).join(', ');
-    feedback.textContent='Meets requirements — explanation and Excel addresses verified. '+EX2_RUBRIC.success;
-    feedback.className='feedback correct';
-    markExerciseDone(def.id,`${text} | Excel addresses: ${refSummary}`,text,refs.values.map(normalizeExcelRef));
+  btn.addEventListener('click',async()=>{
+    const text=input.value.trim(),refs=checkExcelRefs(def);
+    if(obviousNonAnswer(text)){feedback.textContent='Needs revision — enter a substantive explanation before checking.';feedback.className='feedback incorrect';markExerciseIncomplete(def.id);return;}
+    btn.disabled=true;btn.textContent='Checking…';feedback.innerHTML='<span class="ai-coach-pending">Evaluating your explanation…</span>';feedback.className='feedback';
+    const ai=await requestAiTeaching({mode:'rubric',questionKey:'EX2',questionText:exercisePromptText(def.id),studentAnswer:text});
+    let contentOk, contentHtml;
+    if(ai&&ai.available!==false&&typeof ai.meets_requirements==='boolean'){contentOk=ai.meets_requirements;contentHtml=renderAiTeaching(ai);}
+    else{const local=evaluateRubric(text,EX2_RUBRIC);contentOk=local.ok;contentHtml=rubricFeedback(local,EX2_RUBRIC);}
+    if(!contentOk){feedback.innerHTML=contentHtml;feedback.className='feedback incorrect';markExerciseIncomplete(def.id);}
+    else if(!refs.ok){feedback.innerHTML=contentHtml+'<div class="ai-coach-card"><div class="ai-head">Excel check needs revision</div><div>Your explanation is acceptable, but one or more Excel addresses are incorrect. Recheck B5:B10, Fixed Cost, Q, and Demand.</div></div>';feedback.className='feedback incorrect';markExerciseIncomplete(def.id);}
+    else{const refSummary=refs.values.map(normalizeExcelRef).join(', ');feedback.innerHTML=contentHtml+'<div class="ai-coach-card"><div class="ai-head">Excel references verified</div><div>The explanation and all required workbook addresses are correct.</div></div>';feedback.className='feedback correct';markExerciseDone(def.id,`${text} | Excel addresses: ${refSummary}`,text,refs.values.map(normalizeExcelRef));}
+    btn.disabled=false;btn.textContent='Check Answer';
   });
 });
 
 // numeric (auto-graded) exercises: checked on button press, against the currently selected track
 EXERCISE_DEFS.filter(d=>d.type==='numeric').forEach(def=>{
-  const btn = document.getElementById(def.id+'-check');
-  const feedback = document.getElementById(def.id+'-feedback');
-  if(!btn) return;
-  (def.excelFields || []).forEach(id=>document.getElementById(id).addEventListener('input', ()=>markExerciseIncomplete(def.id)));
-  btn.addEventListener('click', ()=>{
-    const values = def.fields.map(fid=>+document.getElementById(fid).value);
-    if(values.some(v=>Number.isNaN(v))){
-      feedback.textContent = 'Fill in every box before checking.';
-      feedback.className = 'feedback incorrect';
-      return;
-    }
-    const correctAnswers = def.answers(currentTrack);
-    const tol = def.tol;
-    const numbersCorrect = values.every((v,i)=> Math.abs(v-correctAnswers[i]) <= tol[i]);
-    const refs = checkExcelRefs(def);
-    if(numbersCorrect && refs.ok){
-      const refText = refs.values.length ? ` | Excel: ${refs.values.map(normalizeExcelRef).join(', ')}` : '';
-      feedback.textContent = (refs.values.length ? 'Correct — both the calculation and Excel address check are right. ' : 'Correct — nice work. ') + 'Teaching point: ' + exerciseTeachingHint(def.id);
-      feedback.className = 'feedback correct';
-      markExerciseDone(def.id, def.summary(values) + refText, values, refs.values.map(normalizeExcelRef));
-    } else if(numbersCorrect && !refs.ok){
-      feedback.textContent = 'Your calculation is correct, but the Excel cell/range address is not. Check the workbook layout and try again. Teaching hint: '+exerciseTeachingHint(def.id);
-      feedback.className = 'feedback incorrect';
-      markExerciseIncomplete(def.id);
-    } else {
-      feedback.textContent = 'Not quite — check the calculation and the Excel address fields, then try again. Teaching hint: '+exerciseTeachingHint(def.id);
-      feedback.className = 'feedback incorrect';
-      markExerciseIncomplete(def.id);
-    }
+  const btn=document.getElementById(def.id+'-check'),feedback=document.getElementById(def.id+'-feedback');if(!btn)return;
+  (def.excelFields||[]).forEach(id=>document.getElementById(id).addEventListener('input',()=>markExerciseIncomplete(def.id)));
+  btn.addEventListener('click',async()=>{
+    const values=def.fields.map(fid=>+document.getElementById(fid).value);
+    if(values.some(v=>Number.isNaN(v))){feedback.textContent='Fill in every box before checking.';feedback.className='feedback incorrect';return;}
+    const correctAnswers=def.answers(currentTrack),tol=def.tol,numbersCorrect=values.every((v,i)=>Math.abs(v-correctAnswers[i])<=tol[i]),refs=checkExcelRefs(def),allCorrect=numbersCorrect&&refs.ok;
+    if(allCorrect){const refText=refs.values.length?` | Excel: ${refs.values.map(normalizeExcelRef).join(', ')}`:'';feedback.textContent=(refs.values.length?'Correct — both the calculation and Excel address check are right. ':'Correct — nice work. ')+'Teaching point: '+exerciseTeachingHint(def.id);feedback.className='feedback correct';markExerciseDone(def.id,def.summary(values)+refText,values,refs.values.map(normalizeExcelRef));}
+    else if(numbersCorrect&&!refs.ok){feedback.textContent='Your calculation is correct, but the Excel cell/range address is not. Check the workbook layout and try again. Teaching hint: '+exerciseTeachingHint(def.id);feedback.className='feedback incorrect';markExerciseIncomplete(def.id);}
+    else{feedback.textContent='Not quite — check the calculation and the Excel address fields, then try again. Teaching hint: '+exerciseTeachingHint(def.id);feedback.className='feedback incorrect';markExerciseIncomplete(def.id);}
+    const fallback=feedback.textContent;feedback.innerHTML=escapeAiHtml(fallback)+'<div class="ai-coach-pending">Preparing personalized teaching feedback…</div>';
+    const studentParts=def.fields.map((fid,i)=>`${fid}: ${values[i]}`);if(refs.values.length)studentParts.push('Excel references: '+refs.values.join(', '));
+    const correctParts=['Correct numerical answer(s): '+correctAnswers.join(', ')];if(refs.expected?.length)correctParts.push('Correct Excel reference(s): '+refs.expected.join(', '));correctParts.push(exerciseTeachingHint(def.id));
+    const ai=await requestAiTeaching({mode:'deterministic',questionKey:def.id.toUpperCase(),questionText:exercisePromptText(def.id),studentAnswer:studentParts.join(' | '),deterministicCorrect:allCorrect,correctAnswer:correctParts.join(' | ')});
+    feedback.innerHTML=escapeAiHtml(fallback)+(renderAiTeaching(ai)||'');
   });
 });
 
