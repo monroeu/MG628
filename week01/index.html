@@ -503,7 +503,7 @@ code{overflow-wrap:anywhere}
 .feedback.teaching-feedback{margin-top:12px;padding:12px 14px;border-radius:6px;line-height:1.55;font-weight:500}.feedback.teaching-feedback.correct{background:#eef9f3;border:1px solid #b9dec9;color:#155c39}.feedback.teaching-feedback.incorrect{background:#fff4f2;border:1px solid #efc3bc;color:#7c2d24}.feedback .answer-label{display:block;margin-bottom:5px;font-weight:800}.feedback .why-label{font-weight:800}.teaching-cycle{border:1px solid var(--rule);background:var(--white);padding:16px 18px;margin:18px 0}.teaching-cycle strong{color:var(--teal)}.teaching-cycle ol{margin:8px 0 0;padding-left:22px}.teaching-cycle li{margin-bottom:5px}.participation-locked{opacity:.72}.participation-locked::after{content:'Sign in above to submit required participation work.';display:block;margin-top:8px;font-family:var(--font-mono);font-size:11px;color:var(--danger)}
 @media(max-width:640px){.participation-status-strip{margin:0;border-left:0;border-right:0;gap:10px;padding:8px 12px}.participation-status-strip .metric span{font-size:8px}.participation-status-strip strong{font-size:12px}.saved-indicator{min-width:72px;font-size:10px}.central-identity-grid{grid-template-columns:1fr}.resume-strip{top:0;margin:0 10px}.auth-grid{grid-template-columns:1fr}}
 </style>
-<!-- Build: week01-excel-starter-kit-2026-10-04.2 -->
+<!-- Build: week01-content-rubric-validation-2026-10-05.1 -->
 </head>
 <body>
 <nav class="course-topbar" aria-label="MG628 course navigation">
@@ -697,6 +697,7 @@ code{overflow-wrap:anywhere}
         <div class="exercise-bar"><span>EXERCISE 1 — REQUIRED FOR PARTICIPATION</span><span class="status" id="ex1-status">not started</span></div>
         <div class="exercise-body">
           <label for="ex1-input">Describe one perishable-inventory decision from your own life, work, or the news — something with a real overcapacity/undercapacity trade-off — and say what happens to unused capacity (its "salvage value").</label>
+          <p class="gate-note"><strong>Checked for:</strong> a specific perishable decision, too-much risk, too-little risk, and what happens to unused capacity/salvage value.</p>
           <textarea id="ex1-input" aria-describedby="ex1-count ex1-feedback" placeholder="e.g., A hotel holding rooms for a conference that under-books…"></textarea>
           <div class="char-count" id="ex1-count">0 characters</div>
           <div class="exercise-row"><button class="run" id="ex1-check" type="button">Check Answer</button></div>
@@ -763,6 +764,7 @@ code{overflow-wrap:anywhere}
         <div class="exercise-bar"><span>EXERCISE 2 — REQUIRED FOR PARTICIPATION</span><span class="status" id="ex2-status">not started</span></div>
         <div class="exercise-body">
           <label for="ex2-input">In your workbook, raise the fixed setup cost (F) noticeably — for example, to $65 on the Coffee Shop model or $700 on the Flu Clinic model — and leave Q and D at their forecast values. In your own words: why does this one-cell change ripple through every formula below it, and what does that tell you about how the breakeven demand from Section 08 would move?</label>
+          <p class="gate-note"><strong>Checked for:</strong> fixed-cost change → total-cost/profit impact → higher breakeven demand, plus the correct Excel addresses.</p>
           <textarea id="ex2-input" aria-describedby="ex2-count ex2-feedback" placeholder="Type your explanation here…"></textarea>
           <div class="char-count" id="ex2-count">0 characters</div>
           <div class="excel-address-check">
@@ -1282,6 +1284,7 @@ code{overflow-wrap:anywhere}
         <div class="exercise-bar"><span>EXERCISE 9 — REQUIRED FOR PARTICIPATION</span><span class="status" id="ex9-status">not started</span></div>
         <div class="exercise-body">
           <label for="ex9-input">Using the toggle above, compare the Coffee Shop and Flu Clinic critical ratios. In 3–4 sentences: which one should tolerate more overstocking, and why? Then name one non-price strategy from this page (or your own idea) that fits your recommendation.</label>
+          <p class="gate-note"><strong>Checked for:</strong> comparison of both scenarios, correct overstock direction, underage/overage reasoning, and one non-price strategy.</p>
           <textarea id="ex9-input" aria-describedby="ex9-count ex9-feedback" placeholder="Type your answer here…"></textarea>
           <div class="char-count" id="ex9-count">0 characters</div>
           <div class="exercise-row"><button class="run" id="ex9-check" type="button">Check Answer</button></div>
@@ -1801,74 +1804,148 @@ function checkExcelRefs(def){
   return {ok, values, expected};
 }
 
-// text (reflective) exercises: students explicitly check each response before it counts
-const TEXT_EXERCISE_FEEDBACK={
+// text / reflective exercises: question-specific rubric validation before an answer counts
+function normalizeResponseText(value){
+  return String(value||'')
+    .toLowerCase()
+    .replace(/[’‘]/g,"'")
+    .replace(/[^a-z0-9%$.' -]+/g,' ')
+    .replace(/\s+/g,' ')
+    .trim();
+}
+function hasAny(text, terms){
+  const t=normalizeResponseText(text);
+  return terms.some(term=>{
+    const n=normalizeResponseText(term);
+    return n && t.includes(n);
+  });
+}
+function obviousNonAnswer(text){
+  const t=normalizeResponseText(text);
+  if(!t) return true;
+  const bad=[
+    "i don't know","i do not know","dont know","do not understand","no idea","not sure how to answer",
+    "i am testing","im testing","testing only","test answer","this is a test","n/a","na answer","skip this",
+    "i cannot answer","i can't answer","don't understand the question","do not understand the question"
+  ];
+  if(hasAny(t,bad)) return true;
+  const words=t.split(/\s+/).filter(Boolean);
+  if(words.length<5) return true;
+  const unique=new Set(words);
+  if(words.length>=8 && unique.size<=3) return true;
+  return false;
+}
+
+const TEXT_RUBRICS={
   ex1:{
-    correct:'Your response is complete enough to save. A strong answer names a genuinely perishable decision, explains both the too-much and too-little risk, and states what happens to unused capacity or its salvage value.',
-    hint:'Name one real decision where unused capacity expires or loses value. Then explain what happens if you prepare too much and what happens if you prepare too little.'
+    minLen:55,
+    criteria:[
+      {name:'a specific perishable inventory or time-limited capacity decision', terms:['inventory','muffin','food','meal','bread','produce','flower','hotel','room','flight','airline','seat','ticket','vaccine','dose','clinic','appointment','mri','nurse','staff','hospital bed','bed','capacity','reservation','rental','event seat','parking','shift','fresh product']},
+      {name:'what happens when there is too much capacity or inventory', terms:['too much','overcapacity','overstock','excess','leftover','unused','unsold','idle','empty','vacant','waste','wasted','spoil','spoils','expired','expires']},
+      {name:'what happens when there is too little capacity or inventory', terms:['too little','undercapacity','understock','shortage','stockout','not enough','run out','runs out','missed sale','lost sale','turn away','turned away','unmet demand','wait','waiting','delay','cannot serve','can\'t serve']},
+      {name:'what happens to unused capacity or its salvage value', terms:['salvage','discount','discounted','resell','resale','donate','donated','throw away','discard','waste','lost','zero value','no value','partial recovery','unused capacity','expires','expire','gone for good']}
+    ],
+    success:'Meets requirements — you identified a perishable decision and addressed the overcapacity, undercapacity, and unused-capacity/salvage-value parts of the question.'
   },
   ex9:{
-    correct:'Checked. Under the numbers used on this page, the Coffee Shop critical ratio is about 92%, while the Flu Clinic is about 78.6%. That means the Coffee Shop model is more willing to risk some overstock because shortage is much more expensive relative to leftover inventory. Your non-price strategy should fit the decision logic—for example better forecasting, reservations/preorders, scheduling, or a waitlist/capacity-management approach.',
-    hint:'Compare the two critical ratios first. Then say which setting should tolerate more overstock, explain why using underage versus overage cost, and name one non-price strategy.'
+    minLen:90,
+    criteria:[
+      {name:'both the Coffee Shop and Flu Clinic (or both critical ratios)', custom:t=>(hasAny(t,['coffee','cafe','muffin'])&&hasAny(t,['flu','clinic','vaccine','healthcare'])) || (hasAny(t,['92%','92 percent','0.92'])&&hasAny(t,['78.6%','78.6 percent','78.6','0.786']))},
+      {name:'the correct comparison — the Coffee Shop tolerates more overstocking', custom:t=>/coffee|cafe|muffin/.test(normalizeResponseText(t)) && hasAny(t,['more overstock','more leftover','tolerate more','accept more','more willing to overstock','higher overstock'])},
+      {name:'why, using the underage/shortage versus overage/leftover trade-off', custom:t=>hasAny(t,['underage','shortage','stockout','lost sale','missed sale','too little']) && hasAny(t,['overage','overstock','leftover','excess','too much','salvage','critical ratio'])},
+      {name:'one non-price strategy', terms:['forecast','forecasting','preorder','pre-order','reservation','reserve','bundle','bundling','waitlist','schedule','scheduling','cross-train','cross train','telehealth','appointment reminder','capacity management','demand management','staffing flexibility','transfer','redirect']}
+    ],
+    success:'Meets requirements — you made the correct comparison, supported it with the underage/overage logic, and proposed a relevant non-price strategy.'
   }
 };
+
+const EX2_RUBRIC={
+  minLen:65,
+  criteria:[
+    {name:'the fixed/setup cost change', terms:['fixed cost','fixed setup cost','setup cost']},
+    {name:'how that input flows into total cost and profit/formulas', custom:t=>hasAny(t,['total cost','cost formula','all formulas','formula','dependent','depends','ripple','update']) && hasAny(t,['profit','daily profit','total cost'])},
+    {name:'breakeven demand', terms:['breakeven','break-even','break even']},
+    {name:'the correct direction — higher fixed cost pushes breakeven demand higher', custom:t=>hasAny(t,['increase','increases','increased','rise','rises','higher','go up','moves up','more demand'])}
+  ],
+  success:'Meets requirements — you explained the dependency chain and correctly concluded that a higher fixed cost requires higher breakeven demand.'
+};
+
+function evaluateRubric(text,rubric){
+  const raw=String(text||'').trim();
+  if(obviousNonAnswer(raw)) return {ok:false,reason:'This looks like a test/non-answer rather than a response to the question.'};
+  if(raw.length<(rubric.minLen||0)) return {ok:false,reason:`Add more explanation. Aim for at least ${rubric.minLen} characters so your reasoning is clear.`};
+  const missing=[];
+  for(const c of rubric.criteria||[]){
+    const ok=c.custom?!!c.custom(raw):hasAny(raw,c.terms||[]);
+    if(!ok) missing.push(c.name);
+  }
+  return missing.length?{ok:false,missing}:{ok:true};
+}
+function rubricFeedback(result,rubric){
+  if(result.ok) return rubric.success||'Meets requirements.';
+  if(result.reason) return 'Needs revision — '+result.reason;
+  return 'Needs revision — your answer is missing: '+result.missing.join('; ')+'. Revise your answer and press Check Answer again.';
+}
+
 EXERCISE_DEFS.filter(d=>d.type==='text').forEach(def=>{
-  const input = document.getElementById(def.id+'-input');
-  const count = document.getElementById(def.id+'-count');
-  const feedback = document.getElementById(def.id+'-feedback');
-  const btn = document.getElementById(def.id+'-check');
-  if(!input||!btn) return;
-  input.addEventListener('input', ()=>{
+  const input=document.getElementById(def.id+'-input');
+  const count=document.getElementById(def.id+'-count');
+  const feedback=document.getElementById(def.id+'-feedback');
+  const btn=document.getElementById(def.id+'-check');
+  if(!input||!btn)return;
+  const rubric=TEXT_RUBRICS[def.id];
+  input.addEventListener('input',()=>{
     const len=input.value.trim().length;
-    if(count) count.textContent=len+' characters';
+    if(count)count.textContent=len+' characters';
     markExerciseIncomplete(def.id);
-    feedback.textContent='When you are ready, press Check Answer. Open-ended responses are checked against the required ideas, not for identical wording.';
+    feedback.textContent='When ready, press Check Answer. This response is checked against the required ideas, not just its length.';
     feedback.className='feedback';
   });
-  btn.addEventListener('click', ()=>{
+  btn.addEventListener('click',()=>{
     const text=input.value.trim();
-    if(text.length<def.minLen){
-      feedback.textContent=`Not yet — write at least ${def.minLen} characters. `+(TEXT_EXERCISE_FEEDBACK[def.id]?.hint||'Add enough explanation to show your reasoning.');
-      feedback.className='feedback incorrect';
-      markExerciseIncomplete(def.id);
-      return;
-    }
-    feedback.textContent='Correct/complete — '+(TEXT_EXERCISE_FEEDBACK[def.id]?.correct||'Your response addresses the required task.');
-    feedback.className='feedback correct';
+    const result=evaluateRubric(text,rubric||{minLen:def.minLen||20,criteria:[]});
+    feedback.textContent=rubricFeedback(result,rubric||{});
+    feedback.className='feedback '+(result.ok?'correct':'incorrect');
+    if(!result.ok){markExerciseIncomplete(def.id);return;}
     markExerciseDone(def.id,text,text);
   });
 });
 
-// Exercise 2 combines a written explanation with required Excel cell/range naming.
+// Exercise 2 combines a rubric-checked written explanation with required Excel cell/range naming.
 EXERCISE_DEFS.filter(d=>d.type==='textExcel').forEach(def=>{
-  const input = document.getElementById(def.id+'-input');
-  const count = document.getElementById(def.id+'-count');
-  const feedback = document.getElementById(def.id+'-feedback');
-  const btn = document.getElementById(def.id+'-check');
-  input.addEventListener('input', ()=>{
-    if(count) count.textContent = input.value.trim().length + ' characters';
+  const input=document.getElementById(def.id+'-input');
+  const count=document.getElementById(def.id+'-count');
+  const feedback=document.getElementById(def.id+'-feedback');
+  const btn=document.getElementById(def.id+'-check');
+  input.addEventListener('input',()=>{
+    if(count)count.textContent=input.value.trim().length+' characters';
     markExerciseIncomplete(def.id);
+    feedback.textContent='When ready, press Check Answer. Your explanation and the Excel addresses will both be checked.';
+    feedback.className='feedback';
   });
-  def.excelFields.forEach(id=>document.getElementById(id).addEventListener('input', ()=>markExerciseIncomplete(def.id)));
-  btn.addEventListener('click', ()=>{
-    const text = input.value.trim();
-    const refs = checkExcelRefs(def);
-    if(text.length < def.minLen){
-      feedback.textContent = `Write at least ${def.minLen} characters in your explanation, then try again.`;
-      feedback.className = 'feedback incorrect';
+  def.excelFields.forEach(id=>document.getElementById(id).addEventListener('input',()=>markExerciseIncomplete(def.id)));
+  btn.addEventListener('click',()=>{
+    const text=input.value.trim();
+    const content=evaluateRubric(text,EX2_RUBRIC);
+    const refs=checkExcelRefs(def);
+    if(!content.ok){
+      feedback.textContent=rubricFeedback(content,EX2_RUBRIC);
+      feedback.className='feedback incorrect';
       markExerciseIncomplete(def.id);
       return;
     }
     if(!refs.ok){
-      feedback.textContent = 'Your explanation is long enough, but one or more Excel addresses are not correct. Check the workbook layout above and try again. Teaching hint: '+exerciseTeachingHint(def.id);
-      feedback.className = 'feedback incorrect';
+      const wrong=[];
+      refs.values.forEach((v,i)=>{if(normalizeExcelRef(v)!==normalizeExcelRef(refs.expected[i]))wrong.push(def.excelFields[i]);});
+      feedback.textContent='Your explanation meets the content requirements, but one or more Excel addresses are not correct. Recheck the six-input block, Fixed Cost, Q, and Demand addresses, then try again.';
+      feedback.className='feedback incorrect';
       markExerciseIncomplete(def.id);
       return;
     }
-    const refSummary = refs.values.map(normalizeExcelRef).join(', ');
-    feedback.textContent = 'Correct — explanation and Excel addresses verified. Teaching point: '+exerciseTeachingHint(def.id);
-    feedback.className = 'feedback correct';
-    markExerciseDone(def.id, `${text} | Excel addresses: ${refSummary}`, text, refs.values.map(normalizeExcelRef));
+    const refSummary=refs.values.map(normalizeExcelRef).join(', ');
+    feedback.textContent='Meets requirements — explanation and Excel addresses verified. '+EX2_RUBRIC.success;
+    feedback.className='feedback correct';
+    markExerciseDone(def.id,`${text} | Excel addresses: ${refSummary}`,text,refs.values.map(normalizeExcelRef));
   });
 });
 
