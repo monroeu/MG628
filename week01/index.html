@@ -510,6 +510,7 @@ code{overflow-wrap:anywhere}
 @media(max-width:640px){.participation-status-strip{margin:0;border-left:0;border-right:0;gap:10px;padding:8px 12px}.participation-status-strip .metric span{font-size:8px}.participation-status-strip strong{font-size:12px}.saved-indicator{min-width:72px;font-size:10px}.central-identity-grid{grid-template-columns:1fr}.resume-strip{top:0;margin:0 10px}.auth-grid{grid-template-columns:1fr}}
 </style>
 <!-- Build: week01-ai-teaching-layer-2026-10-05.1 -->
+<!-- Build: week01-no-paste-short-answers-2026-10-05.2 -->
 </head>
 <body>
 <nav class="course-topbar" aria-label="MG628 course navigation">
@@ -705,6 +706,7 @@ code{overflow-wrap:anywhere}
           <label for="ex1-input">Describe one perishable-inventory decision from your own life, work, or the news — something with a real overcapacity/undercapacity trade-off — and say what happens to unused capacity (its "salvage value").</label>
           <p class="gate-note"><strong>Checked for:</strong> a specific perishable decision, too-much risk, too-little risk, and what happens to unused capacity/salvage value.</p>
           <textarea id="ex1-input" aria-describedby="ex1-count ex1-feedback" placeholder="e.g., A hotel holding rooms for a conference that under-books…"></textarea>
+          <p class="gate-note short-answer-no-paste"><strong>Type your response in your own words.</strong> Pasting is disabled for this short-answer question.</p>
           <div class="char-count" id="ex1-count">0 characters</div>
           <div class="exercise-row"><button class="run" id="ex1-check" type="button">Check Answer</button></div>
           <div class="feedback" id="ex1-feedback" aria-live="polite"></div>
@@ -772,6 +774,7 @@ code{overflow-wrap:anywhere}
           <label for="ex2-input">In your workbook, raise the fixed setup cost (F) noticeably — for example, to $65 on the Coffee Shop model or $700 on the Flu Clinic model — and leave Q and D at their forecast values. In your own words: why does this one-cell change ripple through every formula below it, and what does that tell you about how the breakeven demand from Section 08 would move?</label>
           <p class="gate-note"><strong>Checked for:</strong> fixed-cost change → total-cost/profit impact → higher breakeven demand, plus the correct Excel addresses.</p>
           <textarea id="ex2-input" aria-describedby="ex2-count ex2-feedback" placeholder="Type your explanation here…"></textarea>
+          <p class="gate-note short-answer-no-paste"><strong>Type your response in your own words.</strong> Pasting is disabled for this short-answer question.</p>
           <div class="char-count" id="ex2-count">0 characters</div>
           <div class="excel-address-check">
             <p class="mini-title">EXCEL ADDRESS CHECK — REQUIRED</p>
@@ -1292,6 +1295,7 @@ code{overflow-wrap:anywhere}
           <label for="ex9-input">Using the toggle above, compare the Coffee Shop and Flu Clinic critical ratios. In 3–4 sentences: which one should tolerate more overstocking, and why? Then name one non-price strategy from this page (or your own idea) that fits your recommendation.</label>
           <p class="gate-note"><strong>Checked for:</strong> comparison of both scenarios, correct overstock direction, underage/overage reasoning, and one non-price strategy.</p>
           <textarea id="ex9-input" aria-describedby="ex9-count ex9-feedback" placeholder="Type your answer here…"></textarea>
+          <p class="gate-note short-answer-no-paste"><strong>Type your response in your own words.</strong> Pasting is disabled for this short-answer question.</p>
           <div class="char-count" id="ex9-count">0 characters</div>
           <div class="exercise-row"><button class="run" id="ex9-check" type="button">Check Answer</button></div>
           <div class="feedback" id="ex9-feedback" aria-live="polite"></div>
@@ -2598,6 +2602,51 @@ function updateHero(Q,D,params){
 document.getElementById('hero-track-toggle').innerHTML = trackToggleHTML('hero');
 document.getElementById('rail-track-toggle').innerHTML = trackToggleHTML('rail');
 wireTrackToggles();
+
+
+// ---------- short-answer originality control ----------
+(function blockShortAnswerPaste(){
+  const shortAnswerIds=['ex1-input','ex2-input','ex9-input'];
+
+  shortAnswerIds.forEach(id=>{
+    const box=document.getElementById(id);
+    if(!box || box.dataset.noPasteWired==='1') return;
+
+    box.dataset.noPasteWired='1';
+
+    box.addEventListener('paste',event=>{
+      event.preventDefault();
+
+      const exerciseId=id.replace('-input','');
+      const feedback=document.getElementById(exerciseId+'-feedback');
+
+      if(feedback){
+        feedback.textContent='Pasting is disabled for this short-answer response. Please type your answer in your own words.';
+        feedback.className='feedback incorrect';
+      }
+
+      const live=document.getElementById('liveAnnounce');
+      if(live){
+        live.textContent='Pasting is disabled for this short-answer response. Please type your answer in your own words.';
+      }
+    });
+
+    box.addEventListener('drop',event=>{
+      const types=event.dataTransfer?.types ? Array.from(event.dataTransfer.types) : [];
+      if(types.includes('text/plain')){
+        event.preventDefault();
+
+        const exerciseId=id.replace('-input','');
+        const feedback=document.getElementById(exerciseId+'-feedback');
+
+        if(feedback){
+          feedback.textContent='Dragging text into this short-answer box is disabled. Please type your answer in your own words.';
+          feedback.className='feedback incorrect';
+        }
+      }
+    });
+  });
+})();
 
 </script>
 
