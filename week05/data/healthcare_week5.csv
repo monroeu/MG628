@@ -1,0 +1,51 @@
+Department,Facility,Physician_ID,Patient_Admissions,Average_Cost_per_Patient,Total_Billing
+Oncology,Downtown Campus,DR-008,12,2314.68,27776.16
+Orthopedics,North Clinic,DR-004,18,1492.53,26865.54
+Pediatrics,North Clinic,DR-003,25,2382.8,59570.0
+Orthopedics,Downtown Campus,DR-003,8,1416.1,11328.8
+Orthopedics,West Medical Center,DR-018,15,4282.04,64230.6
+Emergency,East Wing Hospital,DR-012,22,3100.5,68211.0
+Cardiology,North Clinic,DR-009,19,4850.25,92154.75
+Pediatrics,Downtown Campus,DR-007,31,1876.42,58169.02
+Emergency,West Medical Center,DR-015,28,2945.8,82502.4
+Cardiology,East Wing Hospital,DR-011,14,5234.75,73286.5
+Oncology,North Clinic,DR-006,9,3456.9,31112.1
+Orthopedics,Downtown Campus,DR-014,11,1628.35,17911.85
+Emergency,North Clinic,DR-002,35,2789.25,97623.75
+Pediatrics,West Medical Center,DR-016,22,2145.6,47203.2
+Cardiology,Downtown Campus,DR-005,17,4692.3,79769.1
+Oncology,East Wing Hospital,DR-013,7,3892.15,27245.05
+Orthopedics,North Clinic,DR-019,13,1534.8,19952.4
+Emergency,Downtown Campus,DR-001,42,3012.45,126522.9
+Pediatrics,East Wing Hospital,DR-010,28,2234.55,62567.4
+Cardiology,West Medical Center,DR-017,12,5123.4,61480.8
+Oncology,West Medical Center,DR-020,10,3245.75,32457.5
+Pediatrics,Downtown Campus,DR-007,27,1956.3,52820.1
+Emergency,East Wing Hospital,DR-012,38,3156.9,119962.2
+Orthopedics,West Medical Center,DR-018,16,4105.2,65683.2
+Cardiology,North Clinic,DR-009,21,4923.6,103395.6
+Oncology,Downtown Campus,DR-008,14,2487.35,34822.9
+Pediatrics,North Clinic,DR-003,24,2298.7,55168.8
+Emergency,West Medical Center,DR-015,31,2867.4,88889.4
+Orthopedics,Downtown Campus,DR-014,9,1589.25,14303.25
+Cardiology,East Wing Hospital,DR-011,16,5089.8,81436.8
+Oncology,North Clinic,DR-006,11,3678.5,40463.5
+Emergency,Downtown Campus,DR-001,45,3089.75,139038.75
+Pediatrics,West Medical Center,DR-016,26,2076.85,53998.1
+Orthopedics,North Clinic,DR-004,20,1467.9,29358.0
+Cardiology,Downtown Campus,DR-005,18,4756.2,85611.6
+Oncology,East Wing Hospital,DR-013,8,3967.25,31738.0
+Emergency,North Clinic,DR-002,33,2834.6,93541.8
+Pediatrics,East Wing Hospital,DR-010,29,2189.45,63494.05
+Orthopedics,West Medical Center,DR-018,14,4198.65,58781.1
+Cardiology,West Medical Center,DR-017,13,5234.9,68053.7
+Oncology,West Medical Center,DR-020,12,3312.8,39753.6
+Pediatrics,Downtown Campus,DR-007,30,1923.55,57706.5
+Emergency,East Wing Hospital,DR-012,25,3078.35,76958.75
+Orthopedics,Downtown Campus,DR-003,10,1445.75,14457.5
+Cardiology,North Clinic,DR-009,20,4889.4,97788.0
+Oncology,Downtown Campus,DR-008,13,2398.9,31186.7
+Pediatrics,North Clinic,DR-003,23,2341.95,53864.85
+Emergency,West Medical Center,DR-015,29,2912.7,84468.3
+Orthopedics,North Clinic,DR-019,15,1578.4,23676.0
+Cardiology,East Wing Hospital,DR-011,15,5167.55,77513.25
