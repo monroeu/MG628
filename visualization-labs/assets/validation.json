@@ -1,0 +1,16 @@
+{
+  "admissions": 500,
+  "alos": 3.83,
+  "readmission": 11.6,
+  "avg_cost": 12728.15,
+  "housing_projects": 74,
+  "housing_budget": 145860000,
+  "housing_spent": 79937212.94,
+  "housing_util": 54.8,
+  "housing_units": 985,
+  "housing_target": 1919,
+  "customers": 100,
+  "income": 66574.52,
+  "spending": 43.86,
+  "stores": 306
+}

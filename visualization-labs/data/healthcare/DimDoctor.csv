@@ -1,0 +1,21 @@
+DoctorID,DoctorName,Specialty,Department
+DR-001,Dr. Sarah Johnson,Cardiology,Cardiac Care
+DR-002,Dr. Michael Chen,Cardiology,Cardiac Care
+DR-003,Dr. Emily Rodriguez,Internal Medicine,General Medicine
+DR-004,Dr. James Wilson,Internal Medicine,General Medicine
+DR-005,Dr. Lisa Park,Orthopedics,Surgery
+DR-006,Dr. Robert Martinez,Orthopedics,Surgery
+DR-007,Dr. Amanda Foster,Pulmonology,Respiratory Care
+DR-008,Dr. David Kim,Pulmonology,Respiratory Care
+DR-009,Dr. Jennifer Lewis,Neurology,Neuroscience
+DR-010,Dr. Christopher Brown,Neurology,Neuroscience
+DR-011,Dr. Maria Gonzalez,Gastroenterology,Digestive Health
+DR-012,Dr. William Thompson,Gastroenterology,Digestive Health
+DR-013,Dr. Rachel Adams,Oncology,Cancer Center
+DR-014,Dr. Daniel Harris,Oncology,Cancer Center
+DR-015,Dr. Stephanie White,Emergency Medicine,Emergency
+DR-016,Dr. Kevin Moore,Emergency Medicine,Emergency
+DR-017,Dr. Nicole Taylor,Nephrology,Kidney Care
+DR-018,Dr. Brian Jackson,Nephrology,Kidney Care
+DR-019,Dr. Angela Clark,Endocrinology,Diabetes & Metabolism
+DR-020,Dr. Jason Lee,Endocrinology,Diabetes & Metabolism

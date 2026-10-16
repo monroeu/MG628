@@ -1,0 +1,151 @@
+PatientID,Name,Age,Gender,InsuranceProvider,ChronicCondition
+P-001,John Mitchell,43,Male,Kaiser,COPD
+P-002,George Mitchell,74,Male,Medicare,Hypertension
+P-003,John Garcia,24,Male,Humana,Diabetes
+P-004,Joshua Gonzalez,63,Male,Medicare,Depression
+P-005,Stephanie Smith,84,Female,Medicare,Hypertension
+P-006,Richard Carter,39,Male,Blue Cross,Hypertension
+P-007,Matthew Thompson,70,Male,Medicare,Heart Failure
+P-008,Gary Harris,20,Male,Blue Cross,None
+P-009,Donna Gonzalez,63,Female,Cigna,None
+P-010,Ryan Anderson,64,Male,United Healthcare,None
+P-011,Elizabeth White,64,Female,Medicaid,None
+P-012,Joshua Campbell,88,Male,Kaiser,Asthma
+P-013,Cynthia Green,43,Female,Medicare,Heart Failure
+P-014,Jeffrey Williams,64,Male,Medicaid,Diabetes
+P-015,Gary Torres,28,Male,Kaiser,None
+P-016,Barbara Taylor,73,Female,Medicare,Diabetes
+P-017,Melissa Nguyen,68,Female,Medicare,Arthritis
+P-018,David Allen,79,Male,Humana,Chronic Kidney Disease
+P-019,Brian Hernandez,58,Male,Humana,None
+P-020,Michelle Robinson,44,Female,Medicare,None
+P-021,George Wright,46,Male,Blue Cross,Asthma
+P-022,Elizabeth Robinson,44,Female,Blue Cross,Hypertension
+P-023,Ryan Green,27,Male,Cigna,None
+P-024,Matthew Carter,76,Male,Aetna,Hypertension
+P-025,Ashley Johnson,21,Female,Cigna,COPD
+P-026,Joseph Torres,71,Male,Aetna,None
+P-027,David Nelson,53,Male,Medicaid,Chronic Kidney Disease
+P-028,Susan Wright,68,Female,Medicare,None
+P-029,Laura King,39,Female,Blue Cross,COPD
+P-030,Daniel Johnson,74,Male,Cigna,Diabetes
+P-031,Michael Rivera,19,Male,United Healthcare,Asthma
+P-032,Jennifer Allen,71,Female,Aetna,Diabetes
+P-033,Ronald Torres,71,Male,Medicare,None
+P-034,William Miller,31,Male,Medicare,Diabetes
+P-035,Sharon Campbell,39,Female,Aetna,Arthritis
+P-036,Stephanie Miller,42,Female,Aetna,Asthma
+P-037,Barbara Ramirez,44,Female,Medicare,None
+P-038,Steven Scott,37,Male,Humana,Asthma
+P-039,Gary Carter,69,Male,United Healthcare,Asthma
+P-040,Susan Sanchez,41,Female,Humana,Hypertension
+P-041,Sarah Robinson,91,Female,Cigna,Hypertension
+P-042,Richard Jackson,24,Male,Medicaid,None
+P-043,Ronald Lee,91,Male,United Healthcare,None
+P-044,Robert Allen,58,Male,Aetna,None
+P-045,George Thomas,30,Male,Blue Cross,Depression
+P-046,Kevin Garcia,54,Male,Aetna,COPD
+P-047,Cynthia Taylor,46,Female,Private Pay,Depression
+P-048,Barbara Nelson,50,Female,Aetna,Hypertension
+P-049,Steven Flores,38,Male,Medicare,Diabetes
+P-050,Barbara Thompson,67,Female,Medicare,Hypertension
+P-051,Steven Wright,76,Male,Medicare,Hypertension
+P-052,Cynthia Nelson,64,Female,Private Pay,None
+P-053,Ronald Scott,65,Male,Aetna,Hypertension
+P-054,Timothy Perez,72,Male,Medicare,Heart Failure
+P-055,Laura Brown,64,Female,Aetna,None
+P-056,Daniel Roberts,90,Male,Medicare,Hypertension
+P-057,Emily Smith,21,Female,United Healthcare,Diabetes
+P-058,Jeffrey White,35,Male,Aetna,None
+P-059,Charles White,62,Male,Medicaid,COPD
+P-060,Matthew Roberts,49,Male,Kaiser,None
+P-061,Ryan Hernandez,49,Male,Medicaid,Arthritis
+P-062,Stephanie Clark,79,Female,Medicare,Heart Failure
+P-063,Sharon Williams,90,Female,Medicare,Diabetes
+P-064,Karen Anderson,36,Female,Medicare,Arthritis
+P-065,Sarah Jones,88,Female,Medicaid,Hypertension
+P-066,Mary Davis,41,Female,United Healthcare,Arthritis
+P-067,William Hill,89,Male,Aetna,Heart Failure
+P-068,Anthony Torres,24,Male,Medicaid,Arthritis
+P-069,Andrew Wright,69,Male,Medicare,Hypertension
+P-070,Michelle Lee,72,Female,Medicare,Hypertension
+P-071,Lisa Sanchez,60,Female,United Healthcare,Heart Failure
+P-072,Carol Harris,55,Female,United Healthcare,None
+P-073,Emily Smith,45,Female,Cigna,Heart Failure
+P-074,Sandra Lewis,91,Female,Blue Cross,Heart Failure
+P-075,George Garcia,27,Male,Blue Cross,None
+P-076,Jeffrey Carter,45,Male,Private Pay,Hypertension
+P-077,John Williams,78,Male,Medicaid,COPD
+P-078,Margaret Green,71,Female,Medicare,Diabetes
+P-079,David Adams,39,Male,United Healthcare,None
+P-080,Jason Hall,34,Male,United Healthcare,None
+P-081,Gary Davis,92,Male,Humana,Chronic Kidney Disease
+P-082,Deborah Lewis,49,Female,Medicare,Arthritis
+P-083,Ronald Walker,63,Male,Kaiser,Depression
+P-084,Dorothy Thomas,85,Female,Medicare,Diabetes
+P-085,Thomas Perez,80,Male,Medicare,Hypertension
+P-086,Joseph Harris,58,Male,Kaiser,COPD
+P-087,Lisa Wright,57,Female,Medicare,Heart Failure
+P-088,Betty Roberts,91,Female,Medicare,Diabetes
+P-089,Matthew Martin,93,Male,Blue Cross,Heart Failure
+P-090,Paul Anderson,71,Male,Medicare,Hypertension
+P-091,Lisa Nelson,80,Female,United Healthcare,Chronic Kidney Disease
+P-092,Gary Sanchez,80,Male,Medicare,Diabetes
+P-093,Elizabeth Brown,82,Female,Medicaid,COPD
+P-094,Lisa Perez,84,Female,Cigna,Hypertension
+P-095,Paul Johnson,37,Male,Medicare,Hypertension
+P-096,Edward Adams,19,Male,Aetna,Hypertension
+P-097,Kevin Martinez,40,Male,United Healthcare,None
+P-098,Steven Hall,26,Male,Humana,None
+P-099,Edward Hernandez,27,Male,Aetna,Asthma
+P-100,Donna Baker,48,Female,United Healthcare,None
+P-101,William Hall,27,Male,Aetna,Hypertension
+P-102,Matthew Wright,58,Male,United Healthcare,Obesity
+P-103,Mary Clark,69,Female,Medicare,COPD
+P-104,Amanda Martinez,41,Female,Aetna,None
+P-105,Sandra Ramirez,26,Female,Private Pay,Asthma
+P-106,Laura Lewis,74,Female,Medicare,Hypertension
+P-107,Lisa Johnson,46,Female,Blue Cross,Diabetes
+P-108,Matthew Taylor,75,Male,Blue Cross,Hypertension
+P-109,Andrew Gonzalez,91,Male,Blue Cross,Heart Failure
+P-110,Timothy Walker,56,Male,Aetna,None
+P-111,Jessica Sanchez,45,Female,Cigna,None
+P-112,Emily King,29,Female,Medicaid,None
+P-113,Amanda Robinson,83,Female,Blue Cross,Diabetes
+P-114,Ronald Gonzalez,28,Male,Aetna,None
+P-115,Richard Mitchell,44,Male,Aetna,None
+P-116,Linda Gonzalez,67,Female,Medicaid,None
+P-117,Mary Rivera,40,Female,United Healthcare,Hypertension
+P-118,Joshua Jackson,76,Male,Blue Cross,Hypertension
+P-119,Ashley Walker,32,Female,United Healthcare,None
+P-120,Sharon Walker,68,Female,Humana,Heart Failure
+P-121,Kenneth Green,40,Male,United Healthcare,None
+P-122,Jennifer Thomas,69,Female,Humana,Diabetes
+P-123,Edward King,85,Male,Cigna,Hypertension
+P-124,Karen Torres,19,Female,Medicaid,None
+P-125,Thomas Nelson,20,Male,United Healthcare,None
+P-126,James Smith,50,Male,Cigna,None
+P-127,Patricia Anderson,78,Female,Medicare,Hypertension
+P-128,Gary Taylor,59,Male,United Healthcare,Chronic Kidney Disease
+P-129,Brian Martinez,58,Male,Cigna,Hypertension
+P-130,Jason Martin,50,Male,Cigna,Asthma
+P-131,Amanda Sanchez,91,Female,Medicare,Diabetes
+P-132,Jennifer Hill,95,Female,Medicare,Arthritis
+P-133,Mary Garcia,76,Female,Medicare,COPD
+P-134,Donna Williams,90,Female,Medicare,Chronic Kidney Disease
+P-135,Elizabeth Nguyen,58,Female,Cigna,Hypertension
+P-136,Margaret Perez,86,Female,Medicare,None
+P-137,Amanda Young,77,Female,Medicare,Hypertension
+P-138,Jennifer Lee,88,Female,Humana,Heart Failure
+P-139,George Wright,57,Male,Aetna,Hypertension
+P-140,Michelle Carter,50,Female,United Healthcare,COPD
+P-141,Emily Rodriguez,79,Female,Aetna,None
+P-142,Brian Hill,65,Male,Medicare,Diabetes
+P-143,Joshua Clark,59,Male,Humana,Hypertension
+P-144,Brian Martinez,33,Male,Medicaid,Asthma
+P-145,Rebecca Walker,70,Female,Medicare,None
+P-146,Anthony Gonzalez,58,Male,Medicare,Asthma
+P-147,Lisa Allen,65,Female,Medicare,None
+P-148,Sharon Martinez,87,Female,Medicare,Diabetes
+P-149,Emily Carter,86,Female,Humana,Depression
+P-150,Timothy Thomas,77,Male,Medicare,None

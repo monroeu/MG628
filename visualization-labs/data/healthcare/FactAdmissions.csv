@@ -1,0 +1,501 @@
+AdmissionID,PatientID,DoctorID,FacilityID,AdmissionDate,DischargeDate,LengthOfStay,AdmissionType,Diagnosis,Cost,ReadmissionFlag,WasReadmission
+ADM-10001,P-062,DR-002,West Community Hospital,2024-07-14,2024-07-21,7,Emergency,Myocardial Infarction,41924.05,0,0
+ADM-10002,P-011,DR-020,West Community Hospital,2024-01-19,2024-01-23,4,Elective,Hypoglycemia,11066.16,0,0
+ADM-10003,P-041,DR-013,East Wing Facility,2024-02-21,2024-02-24,3,Emergency,Biopsy,12611.59,0,0
+ADM-10004,P-113,DR-004,Downtown Campus,2024-09-26,2024-09-29,3,Emergency,Anemia,10681.78,0,0
+ADM-10005,P-052,DR-004,North Medical Center,2024-07-28,2024-07-30,2,Elective,Pneumonia,6522.77,0,0
+ADM-10006,P-007,DR-001,Downtown Campus,2024-08-28,2024-08-31,3,Emergency,Atrial Fibrillation,14356.74,0,0
+ADM-10007,P-008,DR-010,East Wing Facility,2024-11-15,2024-11-22,7,Emergency,Migraine,18143.26,0,0
+ADM-10008,P-114,DR-013,East Wing Facility,2024-09-30,2024-10-08,8,Urgent,Chemotherapy,19947.24,0,0
+ADM-10009,P-058,DR-006,West Community Hospital,2024-10-04,2024-10-08,4,Elective,Spine Surgery,9593.77,1,0
+ADM-10010,P-055,DR-010,North Medical Center,2024-11-19,2024-11-26,7,Emergency,Stroke,29958.32,0,0
+ADM-10011,P-053,DR-004,North Medical Center,2024-02-16,2024-02-19,3,Emergency,Dehydration,10299.03,0,0
+ADM-10012,P-074,DR-001,Downtown Campus,2024-08-15,2024-08-18,3,Elective,Heart Failure,10186.46,1,0
+ADM-10013,P-048,DR-010,Downtown Campus,2024-01-24,2024-01-29,5,Emergency,Migraine,15337.86,0,0
+ADM-10014,P-079,DR-005,East Wing Facility,2024-07-02,2024-07-06,4,Elective,Hip Fracture,9559.44,0,0
+ADM-10015,P-133,DR-007,North Medical Center,2024-09-28,2024-10-01,3,Elective,Asthma Attack,8759.03,0,0
+ADM-10016,P-031,DR-008,North Medical Center,2024-03-30,2024-04-03,4,Elective,Asthma Attack,9736.86,1,0
+ADM-10017,P-079,DR-007,North Medical Center,2024-09-11,2024-09-12,1,Elective,Bronchitis,3685.12,0,0
+ADM-10018,P-102,DR-011,North Medical Center,2024-08-24,2024-08-26,2,Elective,Pancreatitis,6508.36,0,0
+ADM-10019,P-035,DR-014,East Wing Facility,2024-01-05,2024-01-09,4,Emergency,Palliative Care,13512.61,0,0
+ADM-10020,P-095,DR-009,East Wing Facility,2024-10-06,2024-10-09,3,Urgent,Neuropathy,8367.69,0,0
+ADM-10021,P-002,DR-014,East Wing Facility,2024-10-27,2024-10-29,2,Elective,Palliative Care,6508.32,0,0
+ADM-10022,P-136,DR-008,East Wing Facility,2024-08-21,2024-08-23,2,Emergency,Bronchitis,8511.74,0,0
+ADM-10023,P-076,DR-017,West Community Hospital,2024-09-04,2024-09-06,2,Elective,Dialysis,6164.1,0,0
+ADM-10024,P-059,DR-007,East Wing Facility,2024-10-21,2024-10-25,4,Elective,Bronchitis,9465.08,0,0
+ADM-10025,P-071,DR-001,Downtown Campus,2024-07-21,2024-07-28,7,Urgent,Myocardial Infarction,28386.23,0,0
+ADM-10026,P-037,DR-007,Downtown Campus,2024-11-06,2024-11-12,6,Urgent,Pulmonary Embolism,16423.37,0,0
+ADM-10027,P-115,DR-020,North Medical Center,2024-11-06,2024-11-12,6,Urgent,Thyroid Storm,14621.77,0,0
+ADM-10028,P-139,DR-013,North Medical Center,2024-11-13,2024-11-15,2,Elective,Cancer Treatment,6803.79,0,0
+ADM-10029,P-111,DR-014,Downtown Campus,2024-11-17,2024-11-21,4,Urgent,Cancer Treatment,10481.37,0,0
+ADM-10030,P-120,DR-002,West Community Hospital,2024-01-18,2024-01-20,2,Elective,Myocardial Infarction,10770.88,0,0
+ADM-10031,P-054,DR-002,Downtown Campus,2024-05-31,2024-06-02,2,Elective,Atrial Fibrillation,7999.75,0,0
+ADM-10032,P-049,DR-003,North Medical Center,2024-04-12,2024-04-14,2,Emergency,Anemia,8959.02,1,0
+ADM-10033,P-015,DR-008,East Wing Facility,2024-09-28,2024-10-01,3,Elective,Pulmonary Embolism,7551.85,0,0
+ADM-10034,P-094,DR-018,North Medical Center,2024-05-11,2024-05-18,7,Emergency,Electrolyte Imbalance,25617.13,0,0
+ADM-10035,P-022,DR-015,East Wing Facility,2024-06-22,2024-06-23,1,Emergency,Cardiac Arrest,6668.1,0,0
+ADM-10036,P-053,DR-014,Downtown Campus,2024-03-13,2024-03-21,8,Urgent,Palliative Care,17879.29,0,1
+ADM-10037,P-044,DR-003,West Community Hospital,2024-10-12,2024-10-14,2,Elective,Sepsis,5686.4,0,0
+ADM-10038,P-106,DR-020,Downtown Campus,2024-05-15,2024-05-19,4,Urgent,Adrenal Crisis,12705.4,0,0
+ADM-10039,P-091,DR-017,East Wing Facility,2024-05-14,2024-05-16,2,Emergency,UTI Complicated,11422.24,0,0
+ADM-10040,P-017,DR-003,Downtown Campus,2024-04-29,2024-05-05,6,Emergency,Dehydration,14890.48,0,0
+ADM-10041,P-008,DR-012,East Wing Facility,2024-11-08,2024-11-14,6,Urgent,Colitis,15754.4,0,0
+ADM-10042,P-072,DR-015,West Community Hospital,2024-06-03,2024-06-06,3,Emergency,Trauma,10998.57,0,0
+ADM-10043,P-031,DR-008,North Medical Center,2024-01-24,2024-01-26,2,Elective,COPD Exacerbation,6584.54,0,0
+ADM-10044,P-106,DR-007,West Community Hospital,2024-02-29,2024-03-02,2,Emergency,Respiratory Failure,10112.32,0,0
+ADM-10045,P-038,DR-008,North Medical Center,2024-07-17,2024-07-21,4,Urgent,Pulmonary Embolism,11602.42,0,0
+ADM-10046,P-019,DR-006,West Community Hospital,2024-10-27,2024-10-31,4,Elective,Fracture Repair,9984.11,0,0
+ADM-10047,P-004,DR-017,West Community Hospital,2024-02-20,2024-02-23,3,Transfer,Dialysis,11480.83,0,0
+ADM-10048,P-121,DR-001,West Community Hospital,2024-05-23,2024-05-26,3,Elective,Hypertensive Crisis,8615.33,1,0
+ADM-10049,P-105,DR-008,North Medical Center,2024-08-15,2024-08-17,2,Elective,Respiratory Failure,7305.32,0,0
+ADM-10050,P-005,DR-002,East Wing Facility,2024-02-20,2024-02-21,1,Elective,Atrial Fibrillation,5609.27,0,0
+ADM-10051,P-001,DR-007,East Wing Facility,2024-02-01,2024-02-08,7,Emergency,Respiratory Failure,24709.14,0,0
+ADM-10052,P-128,DR-017,Downtown Campus,2024-08-20,2024-08-24,4,Urgent,Dialysis,14158.48,1,0
+ADM-10053,P-009,DR-001,Downtown Campus,2024-01-26,2024-02-02,7,Emergency,Atrial Fibrillation,18798.88,0,0
+ADM-10054,P-117,DR-004,North Medical Center,2024-10-16,2024-10-19,3,Emergency,Sepsis,10783.07,0,0
+ADM-10055,P-007,DR-002,North Medical Center,2024-10-27,2024-10-29,2,Transfer,Hypertensive Crisis,11491.83,1,0
+ADM-10056,P-098,DR-018,East Wing Facility,2024-03-16,2024-03-20,4,Elective,Dialysis,10757.58,0,0
+ADM-10057,P-051,DR-016,Downtown Campus,2024-05-21,2024-05-26,5,Elective,Severe Infection,12382.77,0,0
+ADM-10058,P-080,DR-008,North Medical Center,2024-10-03,2024-10-05,2,Emergency,Asthma Attack,7939.68,0,0
+ADM-10059,P-010,DR-018,Downtown Campus,2024-01-14,2024-01-18,4,Elective,Dialysis,10759.11,0,0
+ADM-10060,P-081,DR-018,North Medical Center,2024-10-28,2024-10-29,1,Emergency,Electrolyte Imbalance,7720.75,0,0
+ADM-10061,P-066,DR-008,East Wing Facility,2024-01-27,2024-01-30,3,Elective,Asthma Attack,8232.26,0,0
+ADM-10062,P-028,DR-011,Downtown Campus,2024-02-02,2024-02-04,2,Elective,Cirrhosis,5702.05,0,0
+ADM-10063,P-058,DR-019,Downtown Campus,2024-08-19,2024-08-20,1,Transfer,Thyroid Storm,5853.78,0,0
+ADM-10064,P-068,DR-010,Downtown Campus,2024-09-23,2024-09-24,1,Elective,TIA,4808.38,0,0
+ADM-10065,P-037,DR-007,Downtown Campus,2024-09-02,2024-09-04,2,Elective,COPD Exacerbation,5922.08,0,0
+ADM-10066,P-076,DR-015,Downtown Campus,2024-09-08,2024-09-13,5,Emergency,Cardiac Arrest,21536.91,0,1
+ADM-10067,P-102,DR-013,Downtown Campus,2024-02-11,2024-02-12,1,Elective,Palliative Care,4010.34,0,0
+ADM-10068,P-042,DR-013,Downtown Campus,2024-03-05,2024-03-11,6,Emergency,Cancer Treatment,16908.27,0,0
+ADM-10069,P-060,DR-002,East Wing Facility,2024-07-14,2024-07-16,2,Elective,Hypertensive Crisis,6500.04,0,0
+ADM-10070,P-065,DR-003,East Wing Facility,2024-08-20,2024-08-23,3,Emergency,General Weakness,12777.33,0,0
+ADM-10071,P-138,DR-001,Downtown Campus,2024-02-28,2024-02-29,1,Elective,Chest Pain,5987.43,0,0
+ADM-10072,P-070,DR-016,North Medical Center,2024-08-08,2024-08-12,4,Transfer,Severe Infection,11910.12,0,0
+ADM-10073,P-052,DR-012,West Community Hospital,2024-06-22,2024-06-26,4,Emergency,Pancreatitis,13218.96,0,0
+ADM-10074,P-112,DR-010,West Community Hospital,2024-02-18,2024-02-25,7,Urgent,Neuropathy,16577.81,0,0
+ADM-10075,P-087,DR-001,East Wing Facility,2024-07-10,2024-07-18,8,Urgent,Myocardial Infarction,34630.25,0,0
+ADM-10076,P-051,DR-012,Downtown Campus,2024-02-16,2024-02-21,5,Emergency,Cirrhosis,16487.56,0,0
+ADM-10077,P-095,DR-020,West Community Hospital,2024-02-19,2024-02-23,4,Urgent,Diabetic Ketoacidosis,10611.15,0,0
+ADM-10078,P-092,DR-020,North Medical Center,2024-10-11,2024-10-24,13,Transfer,Thyroid Storm,47223.72,1,0
+ADM-10079,P-021,DR-008,East Wing Facility,2024-03-03,2024-03-05,2,Emergency,Pulmonary Embolism,8589.7,0,0
+ADM-10080,P-007,DR-001,Downtown Campus,2024-05-27,2024-05-30,3,Elective,Chest Pain,11301.68,0,0
+ADM-10081,P-126,DR-015,Downtown Campus,2024-10-22,2024-10-24,2,Elective,Acute Injury,6122.02,0,0
+ADM-10082,P-029,DR-007,West Community Hospital,2024-04-24,2024-04-28,4,Elective,Asthma Attack,9754.73,0,0
+ADM-10083,P-028,DR-003,East Wing Facility,2024-02-28,2024-02-29,1,Emergency,Dehydration,5627.52,0,1
+ADM-10084,P-142,DR-004,North Medical Center,2024-08-07,2024-08-10,3,Elective,General Weakness,8007.51,0,0
+ADM-10085,P-052,DR-019,Downtown Campus,2024-11-07,2024-11-11,4,Urgent,Diabetes Management,12387.54,0,0
+ADM-10086,P-064,DR-004,Downtown Campus,2024-04-02,2024-04-08,6,Emergency,Dehydration,19337.56,0,0
+ADM-10087,P-097,DR-020,East Wing Facility,2024-06-28,2024-07-03,5,Emergency,Thyroid Storm,13615.57,1,0
+ADM-10088,P-094,DR-010,West Community Hospital,2024-02-05,2024-02-11,6,Emergency,Seizure,21020.84,0,0
+ADM-10089,P-066,DR-018,Downtown Campus,2024-09-28,2024-09-30,2,Emergency,Kidney Failure,8420.58,0,0
+ADM-10090,P-047,DR-012,West Community Hospital,2024-06-23,2024-06-27,4,Emergency,Cirrhosis,13064.08,0,0
+ADM-10091,P-002,DR-002,East Wing Facility,2024-10-17,2024-10-20,3,Emergency,Myocardial Infarction,12867.85,0,0
+ADM-10092,P-056,DR-015,North Medical Center,2024-03-21,2024-03-24,3,Elective,Trauma,7843.25,0,0
+ADM-10093,P-083,DR-017,Downtown Campus,2024-05-19,2024-05-27,8,Urgent,Kidney Failure,20324.03,0,0
+ADM-10094,P-044,DR-003,West Community Hospital,2024-11-06,2024-11-08,2,Emergency,Anemia,7647.53,0,1
+ADM-10095,P-123,DR-020,North Medical Center,2024-09-19,2024-09-21,2,Elective,Thyroid Storm,8015.26,1,0
+ADM-10096,P-043,DR-013,Downtown Campus,2024-05-25,2024-05-26,1,Elective,Palliative Care,5035.07,0,0
+ADM-10097,P-143,DR-013,West Community Hospital,2024-09-26,2024-10-01,5,Urgent,Biopsy,12820.65,0,0
+ADM-10098,P-072,DR-015,North Medical Center,2024-07-21,2024-07-24,3,Emergency,Trauma,9080.89,0,0
+ADM-10099,P-060,DR-010,Downtown Campus,2024-04-14,2024-04-16,2,Transfer,Stroke,11729.23,0,0
+ADM-10100,P-133,DR-008,North Medical Center,2024-05-10,2024-05-18,8,Urgent,Asthma Attack,20174.54,0,0
+ADM-10101,P-055,DR-009,Downtown Campus,2024-09-11,2024-09-14,3,Urgent,Stroke,11815.68,0,0
+ADM-10102,P-036,DR-007,North Medical Center,2024-07-13,2024-07-14,1,Elective,Asthma Attack,4427.5,0,0
+ADM-10103,P-120,DR-001,East Wing Facility,2024-02-06,2024-02-08,2,Urgent,Atrial Fibrillation,7834.43,0,1
+ADM-10104,P-149,DR-006,West Community Hospital,2024-01-10,2024-01-13,3,Elective,Hip Fracture,10330.0,0,0
+ADM-10105,P-124,DR-003,East Wing Facility,2024-10-21,2024-10-24,3,Elective,Pneumonia,8060.59,0,0
+ADM-10106,P-056,DR-006,West Community Hospital,2024-05-28,2024-05-29,1,Elective,Joint Pain,5442.86,1,0
+ADM-10107,P-118,DR-018,East Wing Facility,2024-03-28,2024-04-04,7,Emergency,Kidney Failure,19355.36,0,0
+ADM-10108,P-071,DR-002,West Community Hospital,2024-07-04,2024-07-06,2,Elective,Hypertensive Crisis,7156.71,1,0
+ADM-10109,P-083,DR-009,North Medical Center,2024-08-11,2024-08-17,6,Urgent,Stroke,22544.42,0,0
+ADM-10110,P-148,DR-003,Downtown Campus,2024-07-21,2024-07-26,5,Elective,General Weakness,15084.42,0,0
+ADM-10111,P-070,DR-014,North Medical Center,2024-06-19,2024-06-23,4,Emergency,Tumor Management,13524.2,0,0
+ADM-10112,P-112,DR-011,Downtown Campus,2024-09-28,2024-10-01,3,Elective,GI Bleeding,8134.61,0,0
+ADM-10113,P-142,DR-020,East Wing Facility,2024-11-26,2024-11-30,4,Emergency,Thyroid Storm,11013.99,0,0
+ADM-10114,P-037,DR-004,Downtown Campus,2024-03-15,2024-03-17,2,Elective,Sepsis,6567.48,0,0
+ADM-10115,P-117,DR-015,North Medical Center,2024-02-08,2024-02-10,2,Elective,Overdose,5357.43,0,0
+ADM-10116,P-143,DR-008,West Community Hospital,2024-10-15,2024-10-18,3,Emergency,Bronchitis,10058.03,0,1
+ADM-10117,P-059,DR-008,East Wing Facility,2024-11-17,2024-11-19,2,Urgent,Bronchitis,7568.26,0,1
+ADM-10118,P-113,DR-004,Downtown Campus,2024-08-28,2024-09-06,9,Transfer,Anemia,34066.11,0,0
+ADM-10119,P-025,DR-008,East Wing Facility,2024-10-29,2024-11-01,3,Urgent,Respiratory Failure,14044.51,1,0
+ADM-10120,P-093,DR-008,Downtown Campus,2024-06-07,2024-06-14,7,Emergency,Pulmonary Embolism,23630.43,0,0
+ADM-10121,P-015,DR-010,Downtown Campus,2024-07-07,2024-07-16,9,Urgent,Stroke,32244.76,0,0
+ADM-10122,P-091,DR-018,Downtown Campus,2024-11-10,2024-11-16,6,Emergency,Kidney Failure,27750.04,0,0
+ADM-10123,P-014,DR-004,West Community Hospital,2024-10-24,2024-10-25,1,Urgent,Anemia,4570.46,0,0
+ADM-10124,P-119,DR-011,West Community Hospital,2024-10-19,2024-10-21,2,Emergency,GI Bleeding,8901.0,0,0
+ADM-10125,P-012,DR-007,West Community Hospital,2024-09-13,2024-09-14,1,Emergency,Respiratory Failure,8430.16,0,0
+ADM-10126,P-058,DR-012,West Community Hospital,2024-02-22,2024-02-27,5,Urgent,GI Bleeding,12382.61,0,0
+ADM-10127,P-031,DR-008,Downtown Campus,2024-09-15,2024-09-21,6,Emergency,Respiratory Failure,27246.69,0,0
+ADM-10128,P-069,DR-019,North Medical Center,2024-08-12,2024-08-14,2,Emergency,Diabetic Ketoacidosis,7400.74,0,0
+ADM-10129,P-053,DR-005,North Medical Center,2024-07-05,2024-07-08,3,Elective,Fracture Repair,7785.38,0,0
+ADM-10130,P-022,DR-010,West Community Hospital,2024-07-28,2024-07-29,1,Emergency,Migraine,6226.12,0,0
+ADM-10131,P-113,DR-020,Downtown Campus,2024-11-19,2024-11-22,3,Emergency,Diabetes Management,10783.64,0,0
+ADM-10132,P-068,DR-009,East Wing Facility,2024-02-18,2024-02-24,6,Emergency,Stroke,24463.92,0,0
+ADM-10133,P-074,DR-002,East Wing Facility,2024-05-09,2024-05-17,8,Emergency,Chest Pain,29824.88,0,0
+ADM-10134,P-027,DR-017,North Medical Center,2024-06-19,2024-06-21,2,Elective,AKI,8643.21,1,0
+ADM-10135,P-074,DR-002,East Wing Facility,2024-06-07,2024-06-15,8,Emergency,Atrial Fibrillation,30373.15,0,1
+ADM-10136,P-087,DR-002,North Medical Center,2024-10-31,2024-11-01,1,Emergency,Chest Pain,7677.58,0,0
+ADM-10137,P-049,DR-003,East Wing Facility,2024-10-13,2024-10-22,9,Urgent,Pneumonia,19611.19,0,0
+ADM-10138,P-147,DR-010,North Medical Center,2024-09-26,2024-09-28,2,Elective,Migraine,5329.84,0,0
+ADM-10139,P-133,DR-007,East Wing Facility,2024-01-10,2024-01-11,1,Urgent,Bronchitis,5700.3,0,0
+ADM-10140,P-093,DR-007,North Medical Center,2024-06-23,2024-06-29,6,Urgent,Asthma Attack,16598.69,0,1
+ADM-10141,P-012,DR-007,North Medical Center,2024-04-25,2024-04-27,2,Elective,Bronchitis,7161.95,0,0
+ADM-10142,P-130,DR-007,Downtown Campus,2024-05-31,2024-06-02,2,Elective,Asthma Attack,5518.18,0,0
+ADM-10143,P-086,DR-007,Downtown Campus,2024-06-21,2024-06-22,1,Emergency,COPD Exacerbation,6045.99,0,0
+ADM-10144,P-143,DR-005,North Medical Center,2024-11-01,2024-11-04,3,Elective,Fracture Repair,7966.23,0,1
+ADM-10145,P-111,DR-013,North Medical Center,2024-11-15,2024-11-17,2,Elective,Cancer Treatment,5589.55,0,0
+ADM-10146,P-080,DR-016,West Community Hospital,2024-01-23,2024-01-28,5,Emergency,Overdose,15705.84,0,0
+ADM-10147,P-090,DR-001,West Community Hospital,2024-11-08,2024-11-09,1,Elective,Atrial Fibrillation,4525.44,0,0
+ADM-10148,P-125,DR-016,North Medical Center,2024-09-30,2024-10-04,4,Elective,Cardiac Arrest,13966.53,0,0
+ADM-10149,P-042,DR-003,North Medical Center,2024-07-07,2024-07-10,3,Elective,Anemia,9073.03,0,0
+ADM-10150,P-083,DR-008,West Community Hospital,2024-08-24,2024-08-26,2,Emergency,Pulmonary Embolism,8074.3,0,1
+ADM-10151,P-062,DR-001,West Community Hospital,2024-03-23,2024-03-25,2,Elective,Chest Pain,9217.79,0,0
+ADM-10152,P-096,DR-012,North Medical Center,2024-05-08,2024-05-09,1,Transfer,Colitis,6709.7,1,0
+ADM-10153,P-108,DR-001,East Wing Facility,2024-10-10,2024-10-11,1,Emergency,Chest Pain,6684.45,0,0
+ADM-10154,P-063,DR-020,Downtown Campus,2024-05-25,2024-06-01,7,Emergency,Diabetes Management,19568.5,1,0
+ADM-10155,P-097,DR-010,East Wing Facility,2024-08-18,2024-08-19,1,Emergency,Seizure,5938.59,0,0
+ADM-10156,P-052,DR-013,West Community Hospital,2024-02-16,2024-02-20,4,Emergency,Cancer Treatment,11620.85,0,0
+ADM-10157,P-015,DR-009,West Community Hospital,2024-06-27,2024-06-29,2,Emergency,Seizure,7137.16,0,0
+ADM-10158,P-145,DR-009,Downtown Campus,2024-07-21,2024-07-25,4,Urgent,Neuropathy,13313.98,0,0
+ADM-10159,P-084,DR-019,West Community Hospital,2024-02-11,2024-02-13,2,Elective,Hypoglycemia,6765.7,0,0
+ADM-10160,P-026,DR-012,East Wing Facility,2024-02-20,2024-02-22,2,Urgent,GI Bleeding,6596.71,0,0
+ADM-10161,P-006,DR-011,North Medical Center,2024-03-11,2024-03-16,5,Emergency,Bowel Obstruction,14359.15,1,0
+ADM-10162,P-071,DR-002,North Medical Center,2024-08-28,2024-08-31,3,Emergency,Chest Pain,12377.92,0,0
+ADM-10163,P-058,DR-005,Downtown Campus,2024-01-10,2024-01-13,3,Elective,Hip Fracture,8630.73,0,0
+ADM-10164,P-075,DR-017,West Community Hospital,2024-02-26,2024-03-01,4,Transfer,Dialysis,11918.86,0,0
+ADM-10165,P-028,DR-005,East Wing Facility,2024-03-03,2024-03-07,4,Emergency,Knee Replacement,11610.39,1,1
+ADM-10166,P-121,DR-011,West Community Hospital,2024-02-02,2024-02-08,6,Emergency,Cirrhosis,16702.74,0,0
+ADM-10167,P-107,DR-020,Downtown Campus,2024-11-19,2024-11-24,5,Emergency,Adrenal Crisis,15674.22,0,0
+ADM-10168,P-051,DR-013,North Medical Center,2024-05-29,2024-05-31,2,Emergency,Cancer Treatment,10167.51,0,0
+ADM-10169,P-086,DR-007,East Wing Facility,2024-05-03,2024-05-05,2,Elective,Pulmonary Embolism,6074.35,0,0
+ADM-10170,P-028,DR-014,Downtown Campus,2024-09-25,2024-09-30,5,Transfer,Cancer Treatment,18269.29,0,0
+ADM-10171,P-142,DR-019,Downtown Campus,2024-07-18,2024-07-23,5,Urgent,Diabetic Ketoacidosis,15798.01,0,0
+ADM-10172,P-100,DR-011,West Community Hospital,2024-07-10,2024-07-15,5,Urgent,GI Bleeding,15339.0,0,0
+ADM-10173,P-025,DR-008,East Wing Facility,2024-02-04,2024-02-10,6,Urgent,COPD Exacerbation,16770.12,0,0
+ADM-10174,P-012,DR-007,East Wing Facility,2024-03-09,2024-03-14,5,Elective,COPD Exacerbation,13885.1,1,0
+ADM-10175,P-119,DR-016,East Wing Facility,2024-11-25,2024-11-28,3,Urgent,Severe Infection,8138.17,0,0
+ADM-10176,P-038,DR-008,West Community Hospital,2024-11-19,2024-11-25,6,Urgent,Bronchitis,14677.48,0,0
+ADM-10177,P-122,DR-003,Downtown Campus,2024-08-22,2024-08-25,3,Elective,Sepsis,6987.07,1,0
+ADM-10178,P-013,DR-001,Downtown Campus,2024-04-12,2024-04-15,3,Emergency,Atrial Fibrillation,13176.37,0,0
+ADM-10179,P-147,DR-009,East Wing Facility,2024-09-20,2024-09-21,1,Emergency,Migraine,5355.37,0,0
+ADM-10180,P-126,DR-015,West Community Hospital,2024-05-09,2024-05-12,3,Elective,Severe Infection,8390.71,1,0
+ADM-10181,P-104,DR-014,East Wing Facility,2024-07-01,2024-07-09,8,Urgent,Cancer Treatment,22880.67,0,0
+ADM-10182,P-136,DR-020,East Wing Facility,2024-05-19,2024-05-21,2,Elective,Diabetic Ketoacidosis,7465.62,0,0
+ADM-10183,P-053,DR-009,West Community Hospital,2024-07-23,2024-07-24,1,Elective,Migraine,4258.97,0,1
+ADM-10184,P-101,DR-018,East Wing Facility,2024-04-05,2024-04-08,3,Urgent,UTI Complicated,9445.17,0,0
+ADM-10185,P-012,DR-008,East Wing Facility,2024-09-22,2024-09-27,5,Urgent,Bronchitis,17567.21,0,0
+ADM-10186,P-131,DR-004,West Community Hospital,2024-02-10,2024-02-11,1,Transfer,Pneumonia,6331.68,0,0
+ADM-10187,P-131,DR-004,East Wing Facility,2024-06-13,2024-06-18,5,Emergency,Sepsis,19696.57,1,0
+ADM-10188,P-099,DR-007,East Wing Facility,2024-06-05,2024-06-09,4,Emergency,Respiratory Failure,15368.93,0,0
+ADM-10189,P-036,DR-007,North Medical Center,2024-08-15,2024-08-16,1,Urgent,Bronchitis,5585.74,0,0
+ADM-10190,P-120,DR-001,East Wing Facility,2024-11-10,2024-11-14,4,Elective,Heart Failure,11087.88,0,0
+ADM-10191,P-130,DR-008,Downtown Campus,2024-02-08,2024-02-11,3,Emergency,Respiratory Failure,12793.65,0,0
+ADM-10192,P-137,DR-003,East Wing Facility,2024-09-19,2024-09-25,6,Emergency,Anemia,20705.16,0,0
+ADM-10193,P-082,DR-009,Downtown Campus,2024-03-14,2024-03-16,2,Elective,Seizure,6179.22,0,0
+ADM-10194,P-094,DR-006,Downtown Campus,2024-03-05,2024-03-08,3,Elective,Joint Pain,7998.77,1,1
+ADM-10195,P-075,DR-014,East Wing Facility,2024-07-15,2024-07-19,4,Transfer,Tumor Management,14163.81,0,0
+ADM-10196,P-077,DR-007,North Medical Center,2024-08-18,2024-08-19,1,Emergency,COPD Exacerbation,6670.47,0,0
+ADM-10197,P-088,DR-019,West Community Hospital,2024-02-09,2024-02-19,10,Emergency,Thyroid Storm,32809.77,0,0
+ADM-10198,P-102,DR-007,East Wing Facility,2024-07-22,2024-07-27,5,Emergency,Pulmonary Embolism,14412.99,0,0
+ADM-10199,P-099,DR-007,North Medical Center,2024-02-28,2024-02-29,1,Transfer,Respiratory Failure,9687.03,1,0
+ADM-10200,P-001,DR-008,West Community Hospital,2024-09-22,2024-09-24,2,Elective,Asthma Attack,6512.1,0,0
+ADM-10201,P-089,DR-001,Downtown Campus,2024-05-14,2024-05-15,1,Emergency,Hypertensive Crisis,7874.64,0,0
+ADM-10202,P-084,DR-019,North Medical Center,2024-11-09,2024-11-14,5,Urgent,Adrenal Crisis,15634.02,0,0
+ADM-10203,P-099,DR-007,North Medical Center,2024-03-03,2024-03-05,2,Elective,Bronchitis,5315.27,0,1
+ADM-10204,P-004,DR-016,West Community Hospital,2024-03-29,2024-04-02,4,Elective,Trauma,8795.37,0,0
+ADM-10205,P-121,DR-008,Downtown Campus,2024-06-12,2024-06-15,3,Elective,Bronchitis,7435.37,0,0
+ADM-10206,P-034,DR-019,East Wing Facility,2024-06-02,2024-06-06,4,Emergency,Diabetic Ketoacidosis,13771.3,0,0
+ADM-10207,P-002,DR-015,East Wing Facility,2024-09-17,2024-09-19,2,Elective,Overdose,6743.48,0,0
+ADM-10208,P-148,DR-004,North Medical Center,2024-05-01,2024-05-06,5,Urgent,Sepsis,17582.91,0,0
+ADM-10209,P-121,DR-008,East Wing Facility,2024-10-10,2024-10-15,5,Emergency,COPD Exacerbation,15304.39,0,0
+ADM-10210,P-059,DR-007,North Medical Center,2024-11-09,2024-11-11,2,Emergency,Bronchitis,8435.37,0,0
+ADM-10211,P-024,DR-003,East Wing Facility,2024-07-22,2024-07-27,5,Urgent,Pneumonia,15238.27,0,0
+ADM-10212,P-103,DR-007,West Community Hospital,2024-07-28,2024-08-01,4,Emergency,Bronchitis,12634.83,0,0
+ADM-10213,P-073,DR-001,North Medical Center,2024-06-11,2024-06-14,3,Transfer,Heart Failure,13725.64,0,0
+ADM-10214,P-074,DR-001,West Community Hospital,2024-09-21,2024-09-29,8,Urgent,Chest Pain,31972.04,0,0
+ADM-10215,P-007,DR-002,North Medical Center,2024-03-07,2024-03-14,7,Transfer,Hypertensive Crisis,28353.26,0,0
+ADM-10216,P-032,DR-020,Downtown Campus,2024-09-22,2024-09-23,1,Elective,Diabetic Ketoacidosis,4575.0,0,0
+ADM-10217,P-143,DR-002,North Medical Center,2024-06-14,2024-06-18,4,Urgent,Atrial Fibrillation,11057.1,0,0
+ADM-10218,P-029,DR-007,East Wing Facility,2024-09-22,2024-09-28,6,Urgent,Asthma Attack,16895.33,0,0
+ADM-10219,P-002,DR-009,East Wing Facility,2024-04-10,2024-04-14,4,Emergency,Stroke,16238.68,0,0
+ADM-10220,P-116,DR-011,East Wing Facility,2024-03-05,2024-03-09,4,Emergency,Colitis,13597.46,0,0
+ADM-10221,P-136,DR-007,Downtown Campus,2024-09-14,2024-09-15,1,Emergency,Pulmonary Embolism,6150.27,0,0
+ADM-10222,P-077,DR-007,North Medical Center,2024-03-28,2024-04-04,7,Emergency,Pulmonary Embolism,23320.92,0,0
+ADM-10223,P-069,DR-004,East Wing Facility,2024-10-15,2024-10-19,4,Urgent,General Weakness,12282.38,1,0
+ADM-10224,P-143,DR-012,Downtown Campus,2024-01-24,2024-01-26,2,Emergency,GI Bleeding,8147.83,0,0
+ADM-10225,P-080,DR-014,East Wing Facility,2024-11-29,2024-12-01,2,Emergency,Biopsy,8851.81,0,0
+ADM-10226,P-022,DR-016,West Community Hospital,2024-11-12,2024-11-14,2,Emergency,Severe Infection,7508.73,0,0
+ADM-10227,P-115,DR-003,East Wing Facility,2024-11-24,2024-11-26,2,Emergency,Anemia,8008.93,0,1
+ADM-10228,P-147,DR-010,North Medical Center,2024-07-26,2024-07-29,3,Urgent,Neuropathy,10249.7,0,0
+ADM-10229,P-086,DR-007,Downtown Campus,2024-03-21,2024-03-27,6,Emergency,COPD Exacerbation,15995.56,0,0
+ADM-10230,P-060,DR-003,West Community Hospital,2024-04-14,2024-04-17,3,Emergency,Anemia,9450.9,0,0
+ADM-10231,P-001,DR-007,East Wing Facility,2024-06-12,2024-06-14,2,Emergency,Asthma Attack,7439.62,0,0
+ADM-10232,P-050,DR-019,West Community Hospital,2024-03-07,2024-03-09,2,Elective,Thyroid Storm,5639.93,0,0
+ADM-10233,P-008,DR-011,Downtown Campus,2024-06-12,2024-06-15,3,Emergency,Colitis,9221.59,0,0
+ADM-10234,P-025,DR-007,East Wing Facility,2024-08-18,2024-08-26,8,Emergency,COPD Exacerbation,21389.74,0,0
+ADM-10235,P-136,DR-019,Downtown Campus,2024-05-28,2024-05-31,3,Elective,Diabetic Ketoacidosis,9550.26,0,0
+ADM-10236,P-070,DR-011,West Community Hospital,2024-05-07,2024-05-11,4,Elective,Colitis,9772.48,0,0
+ADM-10237,P-035,DR-020,East Wing Facility,2024-10-22,2024-10-24,2,Elective,Hypoglycemia,5491.13,0,0
+ADM-10238,P-119,DR-002,North Medical Center,2024-09-12,2024-09-17,5,Transfer,Atrial Fibrillation,16264.81,0,0
+ADM-10239,P-001,DR-008,West Community Hospital,2024-06-06,2024-06-15,9,Emergency,Bronchitis,25153.16,0,0
+ADM-10240,P-040,DR-001,West Community Hospital,2024-09-15,2024-09-17,2,Elective,Heart Failure,5773.05,0,0
+ADM-10241,P-021,DR-008,North Medical Center,2024-10-25,2024-10-27,2,Elective,Asthma Attack,6393.91,0,0
+ADM-10242,P-013,DR-001,East Wing Facility,2024-09-10,2024-09-18,8,Emergency,Heart Failure,29468.0,0,0
+ADM-10243,P-071,DR-001,East Wing Facility,2024-10-01,2024-10-02,1,Emergency,Chest Pain,6130.65,1,0
+ADM-10244,P-090,DR-003,West Community Hospital,2024-03-09,2024-03-12,3,Emergency,Pneumonia,10786.88,0,0
+ADM-10245,P-059,DR-008,West Community Hospital,2024-07-06,2024-07-07,1,Elective,Respiratory Failure,5410.32,1,0
+ADM-10246,P-142,DR-019,North Medical Center,2024-07-04,2024-07-11,7,Urgent,Diabetic Ketoacidosis,20602.42,0,0
+ADM-10247,P-063,DR-004,West Community Hospital,2024-09-15,2024-09-18,3,Elective,Pneumonia,9473.72,0,0
+ADM-10248,P-010,DR-014,East Wing Facility,2024-11-15,2024-11-19,4,Emergency,Biopsy,11819.0,0,0
+ADM-10249,P-080,DR-014,North Medical Center,2024-02-19,2024-02-21,2,Urgent,Chemotherapy,7374.33,0,0
+ADM-10250,P-150,DR-018,East Wing Facility,2024-03-14,2024-03-20,6,Emergency,Electrolyte Imbalance,20637.89,0,0
+ADM-10251,P-146,DR-008,West Community Hospital,2024-09-13,2024-09-18,5,Emergency,Pulmonary Embolism,13401.36,1,0
+ADM-10252,P-070,DR-010,North Medical Center,2024-06-19,2024-06-24,5,Urgent,Stroke,19278.05,0,0
+ADM-10253,P-031,DR-007,West Community Hospital,2024-03-17,2024-03-18,1,Emergency,Pulmonary Embolism,5319.65,0,0
+ADM-10254,P-091,DR-018,North Medical Center,2024-06-16,2024-06-19,3,Urgent,AKI,14950.31,0,0
+ADM-10255,P-011,DR-016,North Medical Center,2024-07-20,2024-07-23,3,Elective,Acute Injury,7767.99,0,0
+ADM-10256,P-095,DR-004,East Wing Facility,2024-09-16,2024-09-20,4,Urgent,Dehydration,10933.25,0,0
+ADM-10257,P-033,DR-011,West Community Hospital,2024-10-15,2024-10-17,2,Elective,Colitis,6451.27,0,0
+ADM-10258,P-115,DR-013,East Wing Facility,2024-06-18,2024-06-20,2,Elective,Chemotherapy,6416.84,0,0
+ADM-10259,P-056,DR-019,East Wing Facility,2024-11-18,2024-11-27,9,Urgent,Adrenal Crisis,25023.14,1,0
+ADM-10260,P-141,DR-020,East Wing Facility,2024-10-23,2024-10-30,7,Urgent,Adrenal Crisis,23956.22,0,0
+ADM-10261,P-045,DR-013,West Community Hospital,2024-03-28,2024-04-02,5,Emergency,Chemotherapy,16990.35,0,0
+ADM-10262,P-133,DR-007,West Community Hospital,2024-03-16,2024-03-24,8,Emergency,Pulmonary Embolism,23013.68,0,0
+ADM-10263,P-001,DR-008,Downtown Campus,2024-10-20,2024-10-22,2,Elective,Asthma Attack,6928.88,0,0
+ADM-10264,P-089,DR-001,North Medical Center,2024-01-10,2024-01-13,3,Elective,Heart Failure,11963.83,0,0
+ADM-10265,P-107,DR-004,North Medical Center,2024-07-30,2024-08-06,7,Transfer,Anemia,21346.31,0,0
+ADM-10266,P-126,DR-018,West Community Hospital,2024-02-01,2024-02-03,2,Emergency,UTI Complicated,9018.31,0,0
+ADM-10267,P-001,DR-008,North Medical Center,2024-10-14,2024-10-18,4,Emergency,Pulmonary Embolism,13089.99,0,0
+ADM-10268,P-034,DR-020,West Community Hospital,2024-06-09,2024-06-13,4,Urgent,Adrenal Crisis,10736.68,0,1
+ADM-10269,P-130,DR-007,East Wing Facility,2024-10-06,2024-10-08,2,Transfer,Bronchitis,8888.29,0,0
+ADM-10270,P-085,DR-018,West Community Hospital,2024-04-08,2024-04-17,9,Urgent,Electrolyte Imbalance,25474.48,0,0
+ADM-10271,P-025,DR-008,East Wing Facility,2024-04-25,2024-04-28,3,Elective,Respiratory Failure,10324.89,0,0
+ADM-10272,P-009,DR-001,East Wing Facility,2024-04-16,2024-04-19,3,Emergency,Myocardial Infarction,13259.05,0,0
+ADM-10273,P-104,DR-006,East Wing Facility,2024-09-02,2024-09-06,4,Urgent,Joint Pain,11098.96,0,0
+ADM-10274,P-052,DR-020,East Wing Facility,2024-03-03,2024-03-10,7,Urgent,Thyroid Storm,18308.35,0,1
+ADM-10275,P-111,DR-007,West Community Hospital,2024-07-21,2024-07-22,1,Elective,Pulmonary Embolism,4016.98,0,0
+ADM-10276,P-069,DR-014,East Wing Facility,2024-01-22,2024-01-26,4,Emergency,Cancer Treatment,14206.41,0,0
+ADM-10277,P-084,DR-020,East Wing Facility,2024-08-14,2024-08-19,5,Emergency,Diabetic Ketoacidosis,16624.74,0,0
+ADM-10278,P-121,DR-020,North Medical Center,2024-04-13,2024-04-14,1,Elective,Adrenal Crisis,4499.74,0,0
+ADM-10279,P-144,DR-007,East Wing Facility,2024-03-11,2024-03-19,8,Emergency,Respiratory Failure,27620.75,0,0
+ADM-10280,P-110,DR-020,North Medical Center,2024-05-04,2024-05-06,2,Emergency,Diabetes Management,8041.73,1,0
+ADM-10281,P-120,DR-001,North Medical Center,2024-11-22,2024-11-28,6,Urgent,Hypertensive Crisis,17149.01,1,1
+ADM-10282,P-069,DR-018,West Community Hospital,2024-06-18,2024-06-20,2,Elective,Kidney Failure,6345.22,0,0
+ADM-10283,P-113,DR-019,North Medical Center,2024-01-03,2024-01-06,3,Emergency,Diabetic Ketoacidosis,13186.57,0,0
+ADM-10284,P-103,DR-008,West Community Hospital,2024-11-30,2024-12-02,2,Elective,Asthma Attack,7001.93,0,0
+ADM-10285,P-099,DR-007,West Community Hospital,2024-11-29,2024-12-07,8,Urgent,Bronchitis,17917.43,0,0
+ADM-10286,P-024,DR-014,East Wing Facility,2024-05-26,2024-06-04,9,Emergency,Tumor Management,26760.15,0,0
+ADM-10287,P-017,DR-020,North Medical Center,2024-09-30,2024-10-04,4,Urgent,Diabetic Ketoacidosis,9993.8,0,0
+ADM-10288,P-100,DR-013,North Medical Center,2024-08-01,2024-08-03,2,Elective,Chemotherapy,6811.6,0,1
+ADM-10289,P-055,DR-011,Downtown Campus,2024-07-22,2024-07-30,8,Transfer,Pancreatitis,23795.32,0,0
+ADM-10290,P-050,DR-001,East Wing Facility,2024-01-20,2024-01-22,2,Emergency,Atrial Fibrillation,8240.44,1,0
+ADM-10291,P-028,DR-008,Downtown Campus,2024-06-20,2024-06-24,4,Emergency,Pulmonary Embolism,13277.67,0,0
+ADM-10292,P-070,DR-014,West Community Hospital,2024-03-09,2024-03-15,6,Urgent,Biopsy,15805.25,0,0
+ADM-10293,P-012,DR-007,East Wing Facility,2024-04-08,2024-04-13,5,Urgent,Bronchitis,16415.65,0,0
+ADM-10294,P-004,DR-008,North Medical Center,2024-08-22,2024-08-26,4,Urgent,Respiratory Failure,16869.33,0,0
+ADM-10295,P-045,DR-001,Downtown Campus,2024-06-21,2024-06-26,5,Emergency,Atrial Fibrillation,14681.07,0,0
+ADM-10296,P-101,DR-014,North Medical Center,2024-03-30,2024-04-04,5,Urgent,Biopsy,12182.01,0,0
+ADM-10297,P-129,DR-008,West Community Hospital,2024-09-20,2024-09-22,2,Elective,Bronchitis,5473.67,0,0
+ADM-10298,P-028,DR-017,Downtown Campus,2024-04-04,2024-04-09,5,Emergency,UTI Complicated,13682.94,0,0
+ADM-10299,P-110,DR-003,East Wing Facility,2024-05-07,2024-05-12,5,Emergency,Anemia,15540.66,1,1
+ADM-10300,P-095,DR-019,North Medical Center,2024-08-16,2024-08-19,3,Urgent,Adrenal Crisis,8750.74,0,0
+ADM-10301,P-112,DR-009,East Wing Facility,2024-10-25,2024-10-30,5,Emergency,Migraine,15408.97,0,1
+ADM-10302,P-011,DR-007,East Wing Facility,2024-11-30,2024-12-05,5,Transfer,COPD Exacerbation,16555.13,0,0
+ADM-10303,P-087,DR-001,Downtown Campus,2024-03-01,2024-03-02,1,Elective,Atrial Fibrillation,6154.76,0,0
+ADM-10304,P-018,DR-017,West Community Hospital,2024-09-14,2024-09-16,2,Elective,Dialysis,8378.65,0,0
+ADM-10305,P-096,DR-018,Downtown Campus,2024-11-23,2024-11-26,3,Elective,Electrolyte Imbalance,7327.97,0,0
+ADM-10306,P-128,DR-018,East Wing Facility,2024-11-10,2024-11-16,6,Transfer,Electrolyte Imbalance,22653.28,0,0
+ADM-10307,P-077,DR-007,West Community Hospital,2024-03-19,2024-03-21,2,Emergency,Asthma Attack,9251.1,0,0
+ADM-10308,P-105,DR-008,East Wing Facility,2024-07-31,2024-08-01,1,Emergency,Pulmonary Embolism,5432.03,0,0
+ADM-10309,P-134,DR-018,North Medical Center,2024-05-06,2024-05-13,7,Urgent,UTI Complicated,24084.27,0,0
+ADM-10310,P-030,DR-019,Downtown Campus,2024-09-26,2024-09-27,1,Emergency,Diabetes Management,5487.49,0,0
+ADM-10311,P-126,DR-019,Downtown Campus,2024-10-15,2024-10-23,8,Transfer,Thyroid Storm,20499.25,0,0
+ADM-10312,P-075,DR-014,North Medical Center,2024-10-20,2024-10-23,3,Emergency,Biopsy,10748.74,0,0
+ADM-10313,P-108,DR-007,East Wing Facility,2024-09-23,2024-09-25,2,Elective,Asthma Attack,7721.82,0,0
+ADM-10314,P-102,DR-016,West Community Hospital,2024-02-16,2024-02-23,7,Transfer,Overdose,21604.49,0,0
+ADM-10315,P-088,DR-019,Downtown Campus,2024-08-20,2024-08-21,1,Transfer,Adrenal Crisis,7290.54,1,0
+ADM-10316,P-052,DR-009,West Community Hospital,2024-10-15,2024-10-17,2,Emergency,Neuropathy,8199.5,1,0
+ADM-10317,P-076,DR-002,East Wing Facility,2024-01-12,2024-01-17,5,Elective,Chest Pain,9929.13,0,0
+ADM-10318,P-134,DR-017,North Medical Center,2024-10-23,2024-10-25,2,Emergency,Kidney Failure,12010.39,1,0
+ADM-10319,P-028,DR-018,East Wing Facility,2024-02-02,2024-02-03,1,Emergency,UTI Complicated,5402.98,0,0
+ADM-10320,P-108,DR-016,Downtown Campus,2024-08-29,2024-09-01,3,Urgent,Trauma,9991.62,1,0
+ADM-10321,P-027,DR-017,North Medical Center,2024-03-10,2024-03-17,7,Transfer,UTI Complicated,26173.25,0,0
+ADM-10322,P-094,DR-019,East Wing Facility,2024-07-14,2024-07-16,2,Transfer,Adrenal Crisis,9789.26,0,0
+ADM-10323,P-084,DR-020,West Community Hospital,2024-02-11,2024-02-16,5,Emergency,Adrenal Crisis,16966.87,0,0
+ADM-10324,P-061,DR-019,North Medical Center,2024-11-30,2024-12-07,7,Transfer,Diabetes Management,23470.95,0,0
+ADM-10325,P-092,DR-004,North Medical Center,2024-10-02,2024-10-08,6,Transfer,Pneumonia,22433.53,0,0
+ADM-10326,P-095,DR-002,North Medical Center,2024-01-02,2024-01-05,3,Elective,Atrial Fibrillation,7480.86,0,0
+ADM-10327,P-043,DR-008,West Community Hospital,2024-10-05,2024-10-06,1,Elective,Respiratory Failure,7375.12,0,0
+ADM-10328,P-018,DR-017,North Medical Center,2024-05-06,2024-05-14,8,Emergency,UTI Complicated,36200.25,0,0
+ADM-10329,P-118,DR-016,East Wing Facility,2024-04-06,2024-04-09,3,Elective,Overdose,10376.88,0,1
+ADM-10330,P-034,DR-020,Downtown Campus,2024-08-02,2024-08-08,6,Emergency,Diabetic Ketoacidosis,15246.67,0,0
+ADM-10331,P-049,DR-020,North Medical Center,2024-04-15,2024-04-21,6,Elective,Diabetic Ketoacidosis,14196.26,1,0
+ADM-10332,P-129,DR-006,Downtown Campus,2024-08-16,2024-08-21,5,Urgent,Fracture Repair,13065.59,0,0
+ADM-10333,P-119,DR-009,North Medical Center,2024-01-23,2024-01-25,2,Elective,Stroke,7911.68,0,0
+ADM-10334,P-044,DR-003,North Medical Center,2024-01-29,2024-02-01,3,Elective,Sepsis,7481.54,0,0
+ADM-10335,P-061,DR-006,North Medical Center,2024-10-21,2024-10-25,4,Urgent,Spine Surgery,10635.42,0,0
+ADM-10336,P-126,DR-012,East Wing Facility,2024-05-01,2024-05-04,3,Emergency,Colitis,9364.37,0,0
+ADM-10337,P-014,DR-004,North Medical Center,2024-07-30,2024-08-04,5,Urgent,Sepsis,15590.89,0,0
+ADM-10338,P-035,DR-010,North Medical Center,2024-11-16,2024-11-22,6,Urgent,Stroke,25232.87,0,1
+ADM-10339,P-004,DR-005,West Community Hospital,2024-01-25,2024-01-29,4,Elective,Fracture Repair,8407.75,0,0
+ADM-10340,P-072,DR-017,East Wing Facility,2024-08-01,2024-08-02,1,Emergency,UTI Complicated,5091.5,0,1
+ADM-10341,P-076,DR-014,West Community Hospital,2024-04-04,2024-04-09,5,Emergency,Tumor Management,14750.61,0,0
+ADM-10342,P-131,DR-020,North Medical Center,2024-04-25,2024-05-05,10,Urgent,Adrenal Crisis,29309.75,0,0
+ADM-10343,P-036,DR-007,West Community Hospital,2024-01-30,2024-02-02,3,Transfer,Asthma Attack,10558.62,0,0
+ADM-10344,P-029,DR-007,North Medical Center,2024-07-17,2024-07-18,1,Emergency,Bronchitis,4929.0,0,0
+ADM-10345,P-067,DR-002,East Wing Facility,2024-11-27,2024-12-03,6,Urgent,Atrial Fibrillation,25593.81,1,0
+ADM-10346,P-044,DR-006,East Wing Facility,2024-02-17,2024-02-18,1,Urgent,Joint Pain,5787.12,0,1
+ADM-10347,P-037,DR-011,Downtown Campus,2024-05-17,2024-05-23,6,Emergency,Pancreatitis,15615.34,0,0
+ADM-10348,P-131,DR-003,Downtown Campus,2024-02-07,2024-02-10,3,Elective,General Weakness,8441.98,0,0
+ADM-10349,P-066,DR-011,North Medical Center,2024-09-02,2024-09-05,3,Emergency,Colitis,10061.26,0,0
+ADM-10350,P-147,DR-008,East Wing Facility,2024-01-08,2024-01-11,3,Elective,Respiratory Failure,11299.66,0,0
+ADM-10351,P-136,DR-007,Downtown Campus,2024-09-02,2024-09-09,7,Transfer,Asthma Attack,24341.92,0,0
+ADM-10352,P-018,DR-017,North Medical Center,2024-07-22,2024-07-24,2,Elective,AKI,8771.97,0,0
+ADM-10353,P-083,DR-017,East Wing Facility,2024-05-24,2024-05-28,4,Urgent,AKI,11912.35,0,0
+ADM-10354,P-073,DR-002,East Wing Facility,2024-06-06,2024-06-07,1,Emergency,Hypertensive Crisis,7818.57,0,0
+ADM-10355,P-114,DR-014,West Community Hospital,2024-08-26,2024-08-29,3,Emergency,Biopsy,9400.68,0,0
+ADM-10356,P-034,DR-020,East Wing Facility,2024-04-14,2024-04-22,8,Emergency,Adrenal Crisis,20719.36,0,0
+ADM-10357,P-141,DR-015,Downtown Campus,2024-10-15,2024-10-18,3,Urgent,Cardiac Arrest,16469.75,0,0
+ADM-10358,P-038,DR-007,Downtown Campus,2024-05-13,2024-05-15,2,Emergency,Asthma Attack,7587.44,0,0
+ADM-10359,P-026,DR-009,West Community Hospital,2024-05-31,2024-06-08,8,Urgent,TIA,18223.12,0,0
+ADM-10360,P-045,DR-006,North Medical Center,2024-07-13,2024-07-15,2,Emergency,Spine Surgery,8056.35,0,1
+ADM-10361,P-004,DR-014,West Community Hospital,2024-10-08,2024-10-11,3,Emergency,Cancer Treatment,9179.76,0,0
+ADM-10362,P-132,DR-020,East Wing Facility,2024-09-07,2024-09-17,10,Transfer,Thyroid Storm,37544.58,0,0
+ADM-10363,P-025,DR-007,West Community Hospital,2024-03-27,2024-03-28,1,Urgent,Bronchitis,5338.56,0,0
+ADM-10364,P-017,DR-006,North Medical Center,2024-03-12,2024-03-14,2,Elective,Spine Surgery,6781.25,0,0
+ADM-10365,P-144,DR-008,North Medical Center,2024-10-04,2024-10-05,1,Emergency,Bronchitis,6349.62,0,0
+ADM-10366,P-110,DR-010,Downtown Campus,2024-02-08,2024-02-16,8,Transfer,Stroke,31715.99,0,0
+ADM-10367,P-059,DR-008,Downtown Campus,2024-07-30,2024-07-31,1,Emergency,COPD Exacerbation,5531.51,1,1
+ADM-10368,P-016,DR-003,Downtown Campus,2024-03-18,2024-03-19,1,Elective,Sepsis,3976.69,1,0
+ADM-10369,P-095,DR-001,West Community Hospital,2024-07-10,2024-07-13,3,Elective,Hypertensive Crisis,6820.19,1,0
+ADM-10370,P-027,DR-018,West Community Hospital,2024-09-06,2024-09-09,3,Elective,AKI,9170.23,1,0
+ADM-10371,P-069,DR-018,West Community Hospital,2024-01-07,2024-01-11,4,Emergency,AKI,11552.2,1,0
+ADM-10372,P-069,DR-014,East Wing Facility,2024-01-09,2024-01-12,3,Elective,Tumor Management,7336.96,0,0
+ADM-10373,P-022,DR-008,North Medical Center,2024-02-24,2024-02-26,2,Emergency,Bronchitis,6965.88,0,0
+ADM-10374,P-092,DR-003,North Medical Center,2024-05-03,2024-05-10,7,Urgent,General Weakness,23893.16,0,0
+ADM-10375,P-136,DR-018,East Wing Facility,2024-06-30,2024-07-06,6,Urgent,AKI,18613.33,0,0
+ADM-10376,P-044,DR-008,Downtown Campus,2024-07-10,2024-07-14,4,Emergency,Bronchitis,11553.14,0,0
+ADM-10377,P-126,DR-015,North Medical Center,2024-04-25,2024-04-27,2,Emergency,Cardiac Arrest,9885.02,0,0
+ADM-10378,P-054,DR-002,Downtown Campus,2024-02-17,2024-02-18,1,Elective,Heart Failure,5942.33,0,0
+ADM-10379,P-147,DR-001,West Community Hospital,2024-01-29,2024-01-30,1,Transfer,Chest Pain,6068.56,0,1
+ADM-10380,P-125,DR-014,Downtown Campus,2024-09-12,2024-09-15,3,Elective,Cancer Treatment,6874.07,0,0
+ADM-10381,P-129,DR-017,Downtown Campus,2024-09-27,2024-10-01,4,Emergency,Electrolyte Imbalance,13799.69,0,0
+ADM-10382,P-067,DR-001,North Medical Center,2024-10-17,2024-10-23,6,Urgent,Atrial Fibrillation,25359.28,0,0
+ADM-10383,P-056,DR-018,Downtown Campus,2024-05-23,2024-06-01,9,Urgent,Kidney Failure,28813.01,0,0
+ADM-10384,P-071,DR-001,Downtown Campus,2024-04-01,2024-04-03,2,Elective,Hypertensive Crisis,7068.28,0,0
+ADM-10385,P-026,DR-014,Downtown Campus,2024-04-16,2024-04-23,7,Emergency,Tumor Management,21828.11,0,0
+ADM-10386,P-017,DR-018,Downtown Campus,2024-06-02,2024-06-04,2,Elective,UTI Complicated,5712.72,0,0
+ADM-10387,P-017,DR-019,West Community Hospital,2024-10-03,2024-10-05,2,Emergency,Hypoglycemia,7872.42,0,0
+ADM-10388,P-050,DR-009,Downtown Campus,2024-09-13,2024-09-18,5,Urgent,Seizure,15564.63,0,0
+ADM-10389,P-024,DR-015,Downtown Campus,2024-02-20,2024-02-23,3,Emergency,Acute Injury,10199.82,0,0
+ADM-10390,P-092,DR-004,East Wing Facility,2024-11-05,2024-11-08,3,Elective,Pneumonia,8311.27,0,0
+ADM-10391,P-056,DR-008,West Community Hospital,2024-06-16,2024-06-22,6,Emergency,Pulmonary Embolism,16953.9,1,1
+ADM-10392,P-089,DR-002,West Community Hospital,2024-09-08,2024-09-11,3,Elective,Myocardial Infarction,15975.59,1,0
+ADM-10393,P-124,DR-020,West Community Hospital,2024-08-09,2024-08-11,2,Emergency,Diabetes Management,8376.02,0,0
+ADM-10394,P-044,DR-019,West Community Hospital,2024-02-13,2024-02-20,7,Urgent,Diabetes Management,18005.82,0,0
+ADM-10395,P-149,DR-016,North Medical Center,2024-02-07,2024-02-14,7,Emergency,Acute Injury,21923.8,1,1
+ADM-10396,P-146,DR-008,West Community Hospital,2024-11-20,2024-11-24,4,Emergency,Asthma Attack,13973.69,0,0
+ADM-10397,P-127,DR-010,East Wing Facility,2024-07-03,2024-07-06,3,Elective,Neuropathy,9843.96,1,0
+ADM-10398,P-146,DR-007,East Wing Facility,2024-08-15,2024-08-18,3,Emergency,COPD Exacerbation,10914.78,0,0
+ADM-10399,P-058,DR-006,Downtown Campus,2024-03-08,2024-03-12,4,Transfer,Spine Surgery,13986.17,0,0
+ADM-10400,P-026,DR-019,West Community Hospital,2024-10-12,2024-10-18,6,Urgent,Adrenal Crisis,16573.14,0,0
+ADM-10401,P-147,DR-015,Downtown Campus,2024-01-14,2024-01-18,4,Urgent,Cardiac Arrest,14298.75,0,0
+ADM-10402,P-033,DR-001,Downtown Campus,2024-11-01,2024-11-04,3,Elective,Hypertensive Crisis,7212.98,0,1
+ADM-10403,P-023,DR-006,West Community Hospital,2024-01-07,2024-01-09,2,Elective,Spine Surgery,5581.92,0,0
+ADM-10404,P-082,DR-014,Downtown Campus,2024-10-13,2024-10-14,1,Elective,Palliative Care,3655.72,0,0
+ADM-10405,P-108,DR-012,North Medical Center,2024-07-13,2024-07-16,3,Elective,Pancreatitis,10195.53,0,0
+ADM-10406,P-099,DR-008,East Wing Facility,2024-05-17,2024-05-24,7,Emergency,Respiratory Failure,27328.97,0,0
+ADM-10407,P-083,DR-011,North Medical Center,2024-08-10,2024-08-13,3,Emergency,GI Bleeding,8955.02,0,0
+ADM-10408,P-015,DR-019,West Community Hospital,2024-02-09,2024-02-15,6,Emergency,Thyroid Storm,15547.5,0,0
+ADM-10409,P-086,DR-008,West Community Hospital,2024-10-31,2024-11-02,2,Elective,Asthma Attack,5558.93,0,0
+ADM-10410,P-110,DR-001,Downtown Campus,2024-03-10,2024-03-12,2,Emergency,Chest Pain,8136.03,0,1
+ADM-10411,P-146,DR-008,East Wing Facility,2024-11-13,2024-11-18,5,Urgent,Bronchitis,14831.21,0,0
+ADM-10412,P-136,DR-008,West Community Hospital,2024-06-20,2024-06-25,5,Urgent,Respiratory Failure,23998.23,0,0
+ADM-10413,P-098,DR-007,North Medical Center,2024-06-02,2024-06-04,2,Urgent,Pulmonary Embolism,6728.18,0,0
+ADM-10414,P-053,DR-018,West Community Hospital,2024-06-09,2024-06-13,4,Elective,Dialysis,10477.9,0,0
+ADM-10415,P-112,DR-014,East Wing Facility,2024-05-29,2024-06-02,4,Urgent,Palliative Care,11406.49,0,0
+ADM-10416,P-042,DR-020,North Medical Center,2024-06-15,2024-06-19,4,Emergency,Adrenal Crisis,11881.55,0,0
+ADM-10417,P-121,DR-009,East Wing Facility,2024-02-28,2024-02-29,1,Emergency,Neuropathy,5805.37,0,0
+ADM-10418,P-053,DR-001,North Medical Center,2024-10-08,2024-10-11,3,Emergency,Atrial Fibrillation,11276.14,1,0
+ADM-10419,P-099,DR-008,North Medical Center,2024-08-12,2024-08-15,3,Urgent,Bronchitis,10023.54,0,0
+ADM-10420,P-028,DR-005,West Community Hospital,2024-09-12,2024-09-16,4,Elective,Hip Fracture,9797.28,0,0
+ADM-10421,P-026,DR-018,North Medical Center,2024-05-09,2024-05-12,3,Elective,Electrolyte Imbalance,7927.4,0,0
+ADM-10422,P-107,DR-004,West Community Hospital,2024-02-07,2024-02-10,3,Elective,Anemia,7886.07,0,0
+ADM-10423,P-036,DR-008,West Community Hospital,2024-10-25,2024-10-28,3,Urgent,Pulmonary Embolism,8843.67,0,0
+ADM-10424,P-094,DR-006,West Community Hospital,2024-10-05,2024-10-06,1,Transfer,Fracture Repair,5933.02,1,0
+ADM-10425,P-099,DR-007,Downtown Campus,2024-02-25,2024-02-28,3,Emergency,Respiratory Failure,13631.45,0,0
+ADM-10426,P-011,DR-010,North Medical Center,2024-11-27,2024-12-03,6,Urgent,Migraine,16746.74,0,0
+ADM-10427,P-117,DR-019,West Community Hospital,2024-06-18,2024-06-22,4,Emergency,Diabetes Management,12320.77,0,0
+ADM-10428,P-078,DR-020,Downtown Campus,2024-01-06,2024-01-07,1,Elective,Adrenal Crisis,4218.31,1,0
+ADM-10429,P-017,DR-013,North Medical Center,2024-08-16,2024-08-17,1,Elective,Cancer Treatment,4890.32,0,0
+ADM-10430,P-051,DR-014,North Medical Center,2024-06-25,2024-07-02,7,Urgent,Palliative Care,21018.89,0,1
+ADM-10431,P-114,DR-002,Downtown Campus,2024-05-31,2024-06-03,3,Elective,Chest Pain,6979.66,0,0
+ADM-10432,P-043,DR-007,Downtown Campus,2024-03-13,2024-03-18,5,Emergency,COPD Exacerbation,18174.28,0,0
+ADM-10433,P-079,DR-008,West Community Hospital,2024-04-15,2024-04-21,6,Urgent,Respiratory Failure,23773.01,0,0
+ADM-10434,P-147,DR-009,West Community Hospital,2024-02-19,2024-02-22,3,Elective,Migraine,9041.08,0,0
+ADM-10435,P-035,DR-005,East Wing Facility,2024-02-04,2024-02-06,2,Transfer,Joint Pain,8625.92,0,0
+ADM-10436,P-018,DR-017,Downtown Campus,2024-06-24,2024-07-01,7,Emergency,Kidney Failure,24586.85,0,0
+ADM-10437,P-038,DR-007,North Medical Center,2024-09-21,2024-09-23,2,Emergency,Asthma Attack,6740.81,0,0
+ADM-10438,P-071,DR-002,East Wing Facility,2024-10-13,2024-10-21,8,Urgent,Atrial Fibrillation,25214.96,0,0
+ADM-10439,P-058,DR-003,North Medical Center,2024-07-26,2024-07-27,1,Emergency,Anemia,5861.2,0,0
+ADM-10440,P-139,DR-010,West Community Hospital,2024-07-21,2024-07-26,5,Urgent,Seizure,15657.22,1,0
+ADM-10441,P-056,DR-003,North Medical Center,2024-08-18,2024-08-21,3,Elective,General Weakness,8720.39,0,0
+ADM-10442,P-135,DR-010,Downtown Campus,2024-04-19,2024-04-23,4,Emergency,Neuropathy,11447.22,0,0
+ADM-10443,P-131,DR-004,Downtown Campus,2024-10-01,2024-10-06,5,Emergency,Pneumonia,17617.65,0,0
+ADM-10444,P-051,DR-014,North Medical Center,2024-08-22,2024-08-25,3,Elective,Tumor Management,8911.81,1,0
+ADM-10445,P-062,DR-002,East Wing Facility,2024-11-01,2024-11-07,6,Emergency,Chest Pain,25558.51,0,0
+ADM-10446,P-116,DR-002,Downtown Campus,2024-06-27,2024-07-01,4,Elective,Chest Pain,8297.48,0,0
+ADM-10447,P-117,DR-013,North Medical Center,2024-06-01,2024-06-07,6,Urgent,Palliative Care,15540.56,0,0
+ADM-10448,P-056,DR-020,Downtown Campus,2024-03-09,2024-03-14,5,Elective,Diabetes Management,14629.83,0,0
+ADM-10449,P-129,DR-015,East Wing Facility,2024-02-29,2024-03-01,1,Emergency,Overdose,6095.5,0,0
+ADM-10450,P-148,DR-004,West Community Hospital,2024-08-02,2024-08-03,1,Emergency,Sepsis,6812.05,0,0
+ADM-10451,P-037,DR-012,West Community Hospital,2024-08-04,2024-08-06,2,Emergency,Colitis,8354.63,0,0
+ADM-10452,P-055,DR-003,North Medical Center,2024-10-11,2024-10-14,3,Urgent,General Weakness,10589.81,0,0
+ADM-10453,P-150,DR-003,North Medical Center,2024-04-05,2024-04-08,3,Urgent,Dehydration,11906.08,0,1
+ADM-10454,P-086,DR-007,Downtown Campus,2024-07-02,2024-07-04,2,Emergency,Bronchitis,7334.54,0,0
+ADM-10455,P-069,DR-017,North Medical Center,2024-04-09,2024-04-17,8,Urgent,UTI Complicated,19416.18,0,0
+ADM-10456,P-068,DR-008,West Community Hospital,2024-07-28,2024-08-04,7,Urgent,Pulmonary Embolism,18297.44,0,0
+ADM-10457,P-117,DR-010,West Community Hospital,2024-09-07,2024-09-09,2,Elective,Neuropathy,5925.28,0,0
+ADM-10458,P-117,DR-015,Downtown Campus,2024-04-22,2024-04-29,7,Emergency,Severe Infection,17536.63,0,0
+ADM-10459,P-132,DR-005,North Medical Center,2024-10-02,2024-10-04,2,Emergency,Spine Surgery,9206.15,0,1
+ADM-10460,P-050,DR-003,West Community Hospital,2024-10-08,2024-10-10,2,Elective,Anemia,6910.16,0,1
+ADM-10461,P-058,DR-004,Downtown Campus,2024-05-17,2024-05-21,4,Elective,General Weakness,10764.03,0,0
+ADM-10462,P-102,DR-006,Downtown Campus,2024-08-13,2024-08-16,3,Emergency,Spine Surgery,9090.09,0,0
+ADM-10463,P-050,DR-014,Downtown Campus,2024-11-30,2024-12-03,3,Elective,Palliative Care,8655.33,0,0
+ADM-10464,P-125,DR-017,Downtown Campus,2024-08-18,2024-08-21,3,Elective,Electrolyte Imbalance,7464.94,0,0
+ADM-10465,P-104,DR-003,West Community Hospital,2024-03-01,2024-03-05,4,Transfer,Pneumonia,12799.05,0,0
+ADM-10466,P-053,DR-009,North Medical Center,2024-10-28,2024-11-02,5,Emergency,Seizure,16481.58,0,1
+ADM-10467,P-057,DR-020,West Community Hospital,2024-03-25,2024-03-26,1,Emergency,Diabetes Management,6229.55,0,0
+ADM-10468,P-017,DR-020,North Medical Center,2024-01-31,2024-02-01,1,Emergency,Hypoglycemia,5591.85,0,0
+ADM-10469,P-057,DR-020,East Wing Facility,2024-11-01,2024-11-02,1,Emergency,Diabetes Management,5272.3,0,0
+ADM-10470,P-144,DR-007,East Wing Facility,2024-05-28,2024-06-02,5,Emergency,Respiratory Failure,21989.13,0,0
+ADM-10471,P-103,DR-008,Downtown Campus,2024-03-10,2024-03-16,6,Urgent,Pulmonary Embolism,17515.97,0,0
+ADM-10472,P-131,DR-003,Downtown Campus,2024-05-21,2024-05-26,5,Urgent,Anemia,17993.55,0,0
+ADM-10473,P-016,DR-019,North Medical Center,2024-05-07,2024-05-10,3,Elective,Hypoglycemia,7963.69,1,0
+ADM-10474,P-085,DR-015,North Medical Center,2024-07-20,2024-07-22,2,Elective,Acute Injury,7659.02,0,0
+ADM-10475,P-120,DR-001,East Wing Facility,2024-11-17,2024-11-18,1,Emergency,Hypertensive Crisis,7728.89,0,0
+ADM-10476,P-087,DR-002,Downtown Campus,2024-11-20,2024-11-23,3,Transfer,Chest Pain,12296.59,0,0
+ADM-10477,P-075,DR-014,West Community Hospital,2024-09-20,2024-09-25,5,Urgent,Chemotherapy,14076.03,0,0
+ADM-10478,P-113,DR-003,West Community Hospital,2024-09-06,2024-09-11,5,Transfer,Dehydration,17239.46,0,0
+ADM-10479,P-017,DR-002,Downtown Campus,2024-08-22,2024-08-26,4,Elective,Heart Failure,8410.7,0,0
+ADM-10480,P-120,DR-001,Downtown Campus,2024-09-30,2024-10-04,4,Elective,Myocardial Infarction,16326.93,0,0
+ADM-10481,P-135,DR-017,North Medical Center,2024-09-10,2024-09-16,6,Urgent,UTI Complicated,13730.84,0,0
+ADM-10482,P-148,DR-004,East Wing Facility,2024-10-07,2024-10-13,6,Urgent,Dehydration,17725.09,0,0
+ADM-10483,P-023,DR-019,West Community Hospital,2024-06-24,2024-07-02,8,Transfer,Diabetes Management,26772.01,0,0
+ADM-10484,P-135,DR-004,Downtown Campus,2024-02-20,2024-02-27,7,Urgent,Pneumonia,17361.33,0,0
+ADM-10485,P-091,DR-017,Downtown Campus,2024-03-04,2024-03-10,6,Elective,UTI Complicated,17563.67,0,0
+ADM-10486,P-105,DR-007,West Community Hospital,2024-08-21,2024-08-27,6,Urgent,Asthma Attack,16484.71,1,1
+ADM-10487,P-140,DR-007,North Medical Center,2024-03-08,2024-03-10,2,Urgent,Bronchitis,6956.51,0,0
+ADM-10488,P-054,DR-001,North Medical Center,2024-05-20,2024-05-26,6,Emergency,Myocardial Infarction,31515.64,1,0
+ADM-10489,P-104,DR-015,East Wing Facility,2024-02-12,2024-02-13,1,Elective,Acute Injury,4070.08,0,0
+ADM-10490,P-051,DR-012,Downtown Campus,2024-07-21,2024-07-28,7,Urgent,Pancreatitis,21163.8,0,0
+ADM-10491,P-066,DR-019,West Community Hospital,2024-02-16,2024-02-22,6,Urgent,Hypoglycemia,17387.54,0,0
+ADM-10492,P-112,DR-010,North Medical Center,2024-09-01,2024-09-06,5,Urgent,Stroke,20772.6,1,0
+ADM-10493,P-076,DR-017,North Medical Center,2024-09-22,2024-09-27,5,Emergency,AKI,15735.16,0,0
+ADM-10494,P-126,DR-013,Downtown Campus,2024-06-24,2024-06-29,5,Urgent,Chemotherapy,11769.94,0,0
+ADM-10495,P-081,DR-017,North Medical Center,2024-09-01,2024-09-03,2,Elective,UTI Complicated,9729.93,1,0
+ADM-10496,P-009,DR-002,Downtown Campus,2024-02-22,2024-03-01,8,Emergency,Chest Pain,21105.89,0,0
+ADM-10497,P-138,DR-001,East Wing Facility,2024-03-11,2024-03-17,6,Urgent,Myocardial Infarction,30754.8,0,1
+ADM-10498,P-047,DR-009,North Medical Center,2024-02-05,2024-02-10,5,Urgent,Seizure,15069.82,0,0
+ADM-10499,P-083,DR-016,North Medical Center,2024-08-13,2024-08-19,6,Emergency,Trauma,18469.61,0,0
+ADM-10500,P-121,DR-009,North Medical Center,2024-07-29,2024-08-01,3,Elective,Seizure,7745.23,0,0
