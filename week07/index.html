@@ -289,7 +289,7 @@ if(kind==='utility'){draw.innerHTML=`<div class="v-split"><div><strong>Hospital 
  if(kind==='map'){draw.innerHTML=`<div class="v-conceptmap">${['Question','Probability','Expected value','Downside risk','Statistical evidence','Utility','Recommendation'].map((x,i)=>`${i?'<b aria-hidden="true">→</b>':''}<span>${x}</span>`).join('')}</div>`;result.textContent='A strong recommendation is the conclusion of an evidence chain. State the decision, evidence, cost-control action and limits.';return;}
 }
 for(const [prefix,info] of Object.entries(labs)){
- const candidates=[...document.querySelectorAll('.concept')]; const article=candidates.find(el=>el.querySelector('h3')?.textContent.trim().startsWith(prefix+'.'));
+ const candidates=[...document.querySelectorAll('.concept')]; const article=candidates.find(el=>el.querySelector('h3')?.textContent.trim().startsWith(prefix+' '));
  if(!article)continue;
  const box=document.createElement('aside');box.className='visual-lab';box.setAttribute('aria-label',info.title);box.innerHTML=`<h4>👁 Visual explanation · ${info.title}</h4><p class="v-caption">${info.desc}</p>${create(info.kind)}<div class="v-callout"><strong>Pause and predict:</strong> Before changing the diagram, explain what you expect to happen, then check the result.</div>`;
  const heading=article.querySelector('h3');heading.after(box);paint(box,info.kind);
