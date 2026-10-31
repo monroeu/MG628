@@ -27,6 +27,11 @@ pre code{background:none;padding:0;font-size:inherit}
 pre.code{background:var(--code-bg);border:1px solid var(--border)}
 pre.out{background:var(--out-bg);border:1px solid var(--border)}
 .cell{margin:1rem 0 1.25rem}
+.codehead{display:flex;align-items:flex-end;justify-content:space-between;gap:8px}
+.copy{min-height:44px;min-width:76px;padding:0 14px;margin:.25rem 0 .25rem;border:1px solid var(--border);border-radius:22px;background:var(--card);color:var(--fg);font:600 .88rem system-ui,-apple-system,sans-serif;cursor:pointer;touch-action:manipulation}
+.copy:hover{border-color:var(--accent2)}
+.copy:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.copy.done{background:var(--accent2);color:var(--bg);border-color:var(--accent2)}
 .label{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:.6rem 0 .2rem}
 img{display:block;max-width:100%;height:auto;margin:.5rem 0 1rem;border-radius:8px;background:#fff;padding:4px}
 .table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:.5rem 0 1rem;border:1px solid var(--border);border-radius:8px}
@@ -65,7 +70,7 @@ details.toc[open] .menu{display:block}
 </ol>
 <p><strong>Find your scenario:</strong> Part A is Business (TechFlow premium onboarding), Part B is Healthcare Administration (telehealth recovery app), and Part C is Public Administration (Fast-Track vocational training). Every part follows the same seven tasks, so reading another track's part is good extra practice.</p>
 <p><strong>Running it in Google Colab:</strong> choose <strong>Runtime → Run all</strong>, or run cells from the top with <strong>Shift + Enter</strong>. The data loads directly from the MG628 GitHub. Use <strong>File → Save a copy in Drive</strong> if you want to experiment.</p>
-<p><strong>How to use it:</strong> compare it with your own notebook. Where your numbers differ, find the step where they diverge. Where your wording differs, check that your answer covers the same points: the number, the decision, the plain-English meaning, the practical size, and a limitation.</p></section><div class="cell"><div class="label">Code</div><pre class="code"><code>import pandas as pd
+<p><strong>How to use it:</strong> compare it with your own notebook. Where your numbers differ, find the step where they diverge. Where your wording differs, check that your answer covers the same points: the number, the decision, the plain-English meaning, the practical size, and a limitation.</p></section><div class="cell"><div class="codehead"><span class="label">Code</span><button type="button" class="copy" aria-label="Copy code to clipboard">Copy</button></div><pre class="code"><code>import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy import stats
@@ -74,7 +79,7 @@ import statsmodels.api as sm
 
 BASE_URL = (
     &quot;https://raw.githubusercontent.com/&quot;
-    &quot;GITHUB_USER/GITHUB_REPO/main/&quot;
+    &quot;monroeu/MG628/main/week08/&quot;
 )
 DATA = {
     &quot;Business&quot;: BASE_URL + &quot;business_conversion_data.csv&quot;,
@@ -108,7 +113,7 @@ def cohens_d(treatment, control):
 <li><code>describe()</code> gives the range of each numeric column. Check that scores stay between 1 and 10 and that dollar amounts are plausible (no negatives).</li>
 <li><code>value_counts()</code> on <code>Group</code> confirms the 150/150 split.</li>
 <li><strong>Tip:</strong> in a notebook, call <code>df.info()</code> on its own line. Wrapping it in <code>print()</code> also prints an extra <code>None</code>.</li>
-</ul></section><div class="cell"><div class="label">Code</div><pre class="code"><code>df = pd.read_csv(DATA[&quot;Business&quot;])
+</ul></section><div class="cell"><div class="codehead"><span class="label">Code</span><button type="button" class="copy" aria-label="Copy code to clipboard">Copy</button></div><pre class="code"><code>df = pd.read_csv(DATA[&quot;Business&quot;])
 display(df.head(10))
 df.info()
 display(df.describe())
@@ -291,7 +296,7 @@ dtype: int64
 <li><strong>Calculate the differences yourself:</strong> Treatment mean − Control mean, for both variables. Always state the order of subtraction.</li>
 <li><strong>Interpret direction carefully.</strong> For monthly spend, higher is better.</li>
 </ol>
-<p><strong>Remember:</strong> these are <em>descriptive</em> statistics. They describe these 300 customers but don't yet tell you whether the gap would hold for everyone. That's what Tasks 3 and 4 test.</p></section><div class="cell"><div class="label">Code</div><pre class="code"><code>summary_stats = (
+<p><strong>Remember:</strong> these are <em>descriptive</em> statistics. They describe these 300 customers but don't yet tell you whether the gap would hold for everyone. That's what Tasks 3 and 4 test.</p></section><div class="cell"><div class="codehead"><span class="label">Code</span><button type="button" class="copy" aria-label="Copy code to clipboard">Copy</button></div><pre class="code"><code>summary_stats = (
     df.groupby(&quot;Group&quot;)
     .agg(
         {
@@ -367,7 +372,7 @@ Monthly_Spend difference (Treatment - Control): $53.45
 <li><strong>Check the variance assumption</strong> with Levene's test, and compare with Welch's version.</li>
 <li><strong>Report the size of the effect,</strong> not only the p-value: the raw difference in points and Cohen's d (difference ÷ pooled SD; about 0.2 small, 0.5 medium, 0.8 large).</li>
 <li><strong>Very small p-values</strong> print as 0.0000; report them as p &lt; 0.0001.</li>
-</ol></section><div class="cell"><div class="label">Code</div><pre class="code"><code>control_s = df[df[&quot;Group&quot;] == &quot;Control&quot;][
+</ol></section><div class="cell"><div class="codehead"><span class="label">Code</span><button type="button" class="copy" aria-label="Copy code to clipboard">Copy</button></div><pre class="code"><code>control_s = df[df[&quot;Group&quot;] == &quot;Control&quot;][
     &quot;Satisfaction_Score&quot;
 ]
 treatment_s = df[df[&quot;Group&quot;] == &quot;Treatment&quot;][
@@ -416,7 +421,7 @@ Cohen&#x27;s d: 0.97
 <li><strong>Meaning:</strong> "We are 95% confident the true average monthly spend for all customers like these lies between L and U." The interval describes the <em>average</em>, not individual customers.</li>
 <li><strong>Overlap:</strong> if the two intervals don't overlap, that is clear evidence of a real difference. Overlapping intervals are only a clue, not proof of no difference.</li>
 <li><strong>For decisions,</strong> a confidence interval for the <em>difference</em> is even more useful. It is included below as an extra.</li>
-</ol></section><div class="cell"><div class="label">Code</div><pre class="code"><code>control_y = df[df[&quot;Group&quot;] == &quot;Control&quot;][&quot;Monthly_Spend&quot;]
+</ol></section><div class="cell"><div class="codehead"><span class="label">Code</span><button type="button" class="copy" aria-label="Copy code to clipboard">Copy</button></div><pre class="code"><code>control_y = df[df[&quot;Group&quot;] == &quot;Control&quot;][&quot;Monthly_Spend&quot;]
 treatment_y = df[df[&quot;Group&quot;] == &quot;Treatment&quot;][
     &quot;Monthly_Spend&quot;
 ]
@@ -467,7 +472,7 @@ Difference (Treatment - Control): $53.45, approx. 95% CI [$46.05, $60.86]
    - <strong>R²:</strong> the share of the variation in monthly spend the model explains (not "accuracy").</li>
 <li><strong>Signs matter:</strong> here a positive coefficient is good news (higher monthly spend).</li>
 <li><strong>Why both effects matter:</strong> if the group effect stays significant after controlling for the score, the program adds value <em>beyond</em> making people happier.</li>
-</ol></section><div class="cell"><div class="label">Code</div><pre class="code"><code>df[&quot;Group_Treatment&quot;] = (
+</ol></section><div class="cell"><div class="codehead"><span class="label">Code</span><button type="button" class="copy" aria-label="Copy code to clipboard">Copy</button></div><pre class="code"><code>df[&quot;Group_Treatment&quot;] = (
     df[&quot;Group&quot;] == &quot;Treatment&quot;
 ).astype(int)
 X = sm.add_constant(
@@ -520,7 +525,7 @@ Group_Treatment: beta = 32.21, p = 6.507e-22
 <li><strong>Box plot:</strong> the box spans Q1 to Q3 (the middle half), the line is the median, the whiskers reach the furthest point within 1.5 × IQR, and dots are outliers. Compare medians, box widths (consistency), and outliers.</li>
 <li><strong>Template fix:</strong> in the assignment's code, <code>df.boxplot(by='Group')</code> opens a new figure and leaves the second subplot empty. Pass <code>ax=</code> to keep both charts side by side, as below.</li>
 <li><strong>Connect it to the decision:</strong> say what the pattern means for the program, not only what the chart shows.</li>
-</ul></section><div class="cell"><div class="label">Code</div><pre class="code"><code>fig, ax = plt.subplots(2, 1, figsize=(7, 9))
+</ul></section><div class="cell"><div class="codehead"><span class="label">Code</span><button type="button" class="copy" aria-label="Copy code to clipboard">Copy</button></div><pre class="code"><code>fig, ax = plt.subplots(2, 1, figsize=(7, 9))
 bins = np.linspace(1, 10, 11)
 ax[0].hist(
     control_s,
@@ -573,7 +578,7 @@ Treatment: median 8.00, IQR 2.00, share scoring 8+: 51.3%
 <li><strong>Pull the key numbers</strong> from Tasks 2–5. Don't introduce new ones.</li>
 <li><strong>Do the cost-benefit math.</strong> Cost: $50 per customer, one-time. Benefit: the Task 2 spending difference, per month. Break-even: months = cost ÷ monthly gain. Then test the <strong>low end</strong> of the confidence interval for the difference. If the decision still holds there, it's robust.</li>
 <li><strong>Name the assumptions:</strong> spending persists beyond month two, the pilot customers resemble future ones, and consultant capacity scales.</li>
-</ol></section><div class="cell"><div class="label">Code</div><pre class="code"><code>cost = 50
+</ol></section><div class="cell"><div class="codehead"><span class="label">Code</span><button type="button" class="copy" aria-label="Copy code to clipboard">Copy</button></div><pre class="code"><code>cost = 50
 gain = treatment_y.mean() - control_y.mean()
 low = 46.06  # low end of the 95% CI for the difference (Task 4)
 print(
@@ -612,7 +617,7 @@ First-year net impact for 1,000 customers, if the gain lasts 12 months: $591,454
 <li><code>describe()</code> gives the range of each numeric column. Check that scores stay between 1 and 10 and that dollar amounts are plausible (no negatives).</li>
 <li><code>value_counts()</code> on <code>Group</code> confirms the 150/150 split.</li>
 <li><strong>Tip:</strong> in a notebook, call <code>df.info()</code> on its own line. Wrapping it in <code>print()</code> also prints an extra <code>None</code>.</li>
-</ul></section><div class="cell"><div class="label">Code</div><pre class="code"><code>df = pd.read_csv(DATA[&quot;Healthcare&quot;])
+</ul></section><div class="cell"><div class="codehead"><span class="label">Code</span><button type="button" class="copy" aria-label="Copy code to clipboard">Copy</button></div><pre class="code"><code>df = pd.read_csv(DATA[&quot;Healthcare&quot;])
 display(df.head(10))
 df.info()
 display(df.describe())
@@ -795,7 +800,7 @@ dtype: int64
 <li><strong>Calculate the differences yourself:</strong> Treatment mean − Control mean, for both variables. Always state the order of subtraction.</li>
 <li><strong>Interpret direction carefully.</strong> For recovery cost, lower is better (lower costs are the goal).</li>
 </ol>
-<p><strong>Remember:</strong> these are <em>descriptive</em> statistics. They describe these 300 patients but don't yet tell you whether the gap would hold for everyone. That's what Tasks 3 and 4 test.</p></section><div class="cell"><div class="label">Code</div><pre class="code"><code>summary_stats = (
+<p><strong>Remember:</strong> these are <em>descriptive</em> statistics. They describe these 300 patients but don't yet tell you whether the gap would hold for everyone. That's what Tasks 3 and 4 test.</p></section><div class="cell"><div class="codehead"><span class="label">Code</span><button type="button" class="copy" aria-label="Copy code to clipboard">Copy</button></div><pre class="code"><code>summary_stats = (
     df.groupby(&quot;Group&quot;)
     .agg(
         {
@@ -871,7 +876,7 @@ Recovery_Cost difference (Treatment - Control): $-356.57
 <li><strong>Check the variance assumption</strong> with Levene's test, and compare with Welch's version.</li>
 <li><strong>Report the size of the effect,</strong> not only the p-value: the raw difference in points and Cohen's d (difference ÷ pooled SD; about 0.2 small, 0.5 medium, 0.8 large).</li>
 <li><strong>Very small p-values</strong> print as 0.0000; report them as p &lt; 0.0001.</li>
-</ol></section><div class="cell"><div class="label">Code</div><pre class="code"><code>control_s = df[df[&quot;Group&quot;] == &quot;Control&quot;][
+</ol></section><div class="cell"><div class="codehead"><span class="label">Code</span><button type="button" class="copy" aria-label="Copy code to clipboard">Copy</button></div><pre class="code"><code>control_s = df[df[&quot;Group&quot;] == &quot;Control&quot;][
     &quot;Satisfaction_Score&quot;
 ]
 treatment_s = df[df[&quot;Group&quot;] == &quot;Treatment&quot;][
@@ -920,7 +925,7 @@ Cohen&#x27;s d: 0.66
 <li><strong>Meaning:</strong> "We are 95% confident the true average recovery cost for all patients like these lies between L and U." The interval describes the <em>average</em>, not individual patients.</li>
 <li><strong>Overlap:</strong> if the two intervals don't overlap, that is clear evidence of a real difference. Overlapping intervals are only a clue, not proof of no difference.</li>
 <li><strong>For decisions,</strong> a confidence interval for the <em>difference</em> is even more useful. It is included below as an extra.</li>
-</ol></section><div class="cell"><div class="label">Code</div><pre class="code"><code>control_y = df[df[&quot;Group&quot;] == &quot;Control&quot;][&quot;Recovery_Cost&quot;]
+</ol></section><div class="cell"><div class="codehead"><span class="label">Code</span><button type="button" class="copy" aria-label="Copy code to clipboard">Copy</button></div><pre class="code"><code>control_y = df[df[&quot;Group&quot;] == &quot;Control&quot;][&quot;Recovery_Cost&quot;]
 treatment_y = df[df[&quot;Group&quot;] == &quot;Treatment&quot;][
     &quot;Recovery_Cost&quot;
 ]
@@ -971,7 +976,7 @@ Difference (Treatment - Control): $-356.57, approx. 95% CI [$-414.02, $-299.12]
    - <strong>R²:</strong> the share of the variation in recovery cost the model explains (not "accuracy").</li>
 <li><strong>Signs matter:</strong> for costs, a negative coefficient is good news (it lowers cost).</li>
 <li><strong>Why both effects matter:</strong> if the group effect stays significant after controlling for the score, the program adds value <em>beyond</em> making people happier.</li>
-</ol></section><div class="cell"><div class="label">Code</div><pre class="code"><code>df[&quot;Group_Treatment&quot;] = (
+</ol></section><div class="cell"><div class="codehead"><span class="label">Code</span><button type="button" class="copy" aria-label="Copy code to clipboard">Copy</button></div><pre class="code"><code>df[&quot;Group_Treatment&quot;] = (
     df[&quot;Group&quot;] == &quot;Treatment&quot;
 ).astype(int)
 X = sm.add_constant(
@@ -1024,7 +1029,7 @@ Group_Treatment: beta = -234.66, p = 9.732e-25
 <li><strong>Box plot:</strong> the box spans Q1 to Q3 (the middle half), the line is the median, the whiskers reach the furthest point within 1.5 × IQR, and dots are outliers. Compare medians, box widths (consistency), and outliers.</li>
 <li><strong>Template fix:</strong> in the assignment's code, <code>df.boxplot(by='Group')</code> opens a new figure and leaves the second subplot empty. Pass <code>ax=</code> to keep both charts side by side, as below.</li>
 <li><strong>Connect it to the decision:</strong> say what the pattern means for the program, not only what the chart shows.</li>
-</ul></section><div class="cell"><div class="label">Code</div><pre class="code"><code>fig, ax = plt.subplots(2, 1, figsize=(7, 9))
+</ul></section><div class="cell"><div class="codehead"><span class="label">Code</span><button type="button" class="copy" aria-label="Copy code to clipboard">Copy</button></div><pre class="code"><code>fig, ax = plt.subplots(2, 1, figsize=(7, 9))
 bins = np.linspace(1, 10, 11)
 ax[0].hist(
     control_s,
@@ -1078,7 +1083,7 @@ Treatment: median 8.30, IQR 1.40, share scoring 8+: 62.0%
 <li><strong>Cost-benefit math.</strong> The assignment asks <em>you</em> to estimate the implementation costs. State them clearly as assumptions; the grader looks for reasonable, explained estimates, not one "right" number. Then: annual savings = savings per patient × patients per year; break-even patients = implementation cost ÷ savings per patient.</li>
 <li><strong>Weigh patient experience and safety</strong> alongside the dollars.</li>
 <li><strong>Note:</strong> the assignment's "$50 per customer" line belongs to the business scenario; healthcare uses your own implementation estimates.</li>
-</ol></section><div class="cell"><div class="label">Code</div><pre class="code"><code>saving = (
+</ol></section><div class="cell"><div class="codehead"><span class="label">Code</span><button type="button" class="copy" aria-label="Copy code to clipboard">Copy</button></div><pre class="code"><code>saving = (
     control_y.mean() - treatment_y.mean()
 )  # per patient
 # Illustrative assumptions: replace with your own, and explain them
@@ -1125,7 +1130,7 @@ Break-even: 280 patients
 <li><code>describe()</code> gives the range of each numeric column. Check that scores stay between 1 and 10 and that dollar amounts are plausible (no negatives).</li>
 <li><code>value_counts()</code> on <code>Group</code> confirms the 150/150 split.</li>
 <li><strong>Tip:</strong> in a notebook, call <code>df.info()</code> on its own line. Wrapping it in <code>print()</code> also prints an extra <code>None</code>.</li>
-</ul></section><div class="cell"><div class="label">Code</div><pre class="code"><code>df = pd.read_csv(DATA[&quot;Public Administration&quot;])
+</ul></section><div class="cell"><div class="codehead"><span class="label">Code</span><button type="button" class="copy" aria-label="Copy code to clipboard">Copy</button></div><pre class="code"><code>df = pd.read_csv(DATA[&quot;Public Administration&quot;])
 display(df.head(10))
 df.info()
 display(df.describe())
@@ -1308,7 +1313,7 @@ dtype: int64
 <li><strong>Calculate the differences yourself:</strong> Treatment mean − Control mean, for both variables. Always state the order of subtraction.</li>
 <li><strong>Interpret direction carefully.</strong> For monthly income, higher is better.</li>
 </ol>
-<p><strong>Remember:</strong> these are <em>descriptive</em> statistics. They describe these 300 participants but don't yet tell you whether the gap would hold for everyone. That's what Tasks 3 and 4 test.</p></section><div class="cell"><div class="label">Code</div><pre class="code"><code>summary_stats = (
+<p><strong>Remember:</strong> these are <em>descriptive</em> statistics. They describe these 300 participants but don't yet tell you whether the gap would hold for everyone. That's what Tasks 3 and 4 test.</p></section><div class="cell"><div class="codehead"><span class="label">Code</span><button type="button" class="copy" aria-label="Copy code to clipboard">Copy</button></div><pre class="code"><code>summary_stats = (
     df.groupby(&quot;Group&quot;)
     .agg(
         {
@@ -1395,7 +1400,7 @@ Annual income difference: $8,609.18
 <li><strong>Check the variance assumption</strong> with Levene's test, and compare with Welch's version.</li>
 <li><strong>Report the size of the effect,</strong> not only the p-value: the raw difference in points and Cohen's d (difference ÷ pooled SD; about 0.2 small, 0.5 medium, 0.8 large).</li>
 <li><strong>Very small p-values</strong> print as 0.0000; report them as p &lt; 0.0001.</li>
-</ol></section><div class="cell"><div class="label">Code</div><pre class="code"><code>control_s = df[df[&quot;Group&quot;] == &quot;Control&quot;][
+</ol></section><div class="cell"><div class="codehead"><span class="label">Code</span><button type="button" class="copy" aria-label="Copy code to clipboard">Copy</button></div><pre class="code"><code>control_s = df[df[&quot;Group&quot;] == &quot;Control&quot;][
     &quot;Confidence_Score&quot;
 ]
 treatment_s = df[df[&quot;Group&quot;] == &quot;Treatment&quot;][
@@ -1444,7 +1449,7 @@ Cohen&#x27;s d: 0.88
 <li><strong>Meaning:</strong> "We are 95% confident the true average monthly income for all participants like these lies between L and U." The interval describes the <em>average</em>, not individual participants.</li>
 <li><strong>Overlap:</strong> if the two intervals don't overlap, that is clear evidence of a real difference. Overlapping intervals are only a clue, not proof of no difference.</li>
 <li><strong>For decisions,</strong> a confidence interval for the <em>difference</em> is even more useful. It is included below as an extra.</li>
-</ol></section><div class="cell"><div class="label">Code</div><pre class="code"><code>control_y = df[df[&quot;Group&quot;] == &quot;Control&quot;][&quot;Monthly_Income&quot;]
+</ol></section><div class="cell"><div class="codehead"><span class="label">Code</span><button type="button" class="copy" aria-label="Copy code to clipboard">Copy</button></div><pre class="code"><code>control_y = df[df[&quot;Group&quot;] == &quot;Control&quot;][&quot;Monthly_Income&quot;]
 treatment_y = df[df[&quot;Group&quot;] == &quot;Treatment&quot;][
     &quot;Monthly_Income&quot;
 ]
@@ -1501,7 +1506,7 @@ Difference (Treatment - Control): $717.43, approx. 95% CI [$612.05, $822.81]
    - <strong>R²:</strong> the share of the variation in monthly income the model explains (not "accuracy").</li>
 <li><strong>Signs matter:</strong> here a positive coefficient is good news (higher monthly income).</li>
 <li><strong>Why both effects matter:</strong> if the group effect stays significant after controlling for the score, the program adds value <em>beyond</em> making people more confident.</li>
-</ol></section><div class="cell"><div class="label">Code</div><pre class="code"><code>df[&quot;Group_Treatment&quot;] = (
+</ol></section><div class="cell"><div class="codehead"><span class="label">Code</span><button type="button" class="copy" aria-label="Copy code to clipboard">Copy</button></div><pre class="code"><code>df[&quot;Group_Treatment&quot;] = (
     df[&quot;Group&quot;] == &quot;Treatment&quot;
 ).astype(int)
 X = sm.add_constant(
@@ -1561,7 +1566,7 @@ Group_Treatment: beta = 458.71, p = 5.484e-21
 <li><strong>Box plot:</strong> the box spans Q1 to Q3 (the middle half), the line is the median, the whiskers reach the furthest point within 1.5 × IQR, and dots are outliers. Compare medians, box widths (consistency), and outliers.</li>
 <li><strong>Template fix:</strong> in the assignment's code, <code>df.boxplot(by='Group')</code> opens a new figure and leaves the second subplot empty. Pass <code>ax=</code> to keep both charts side by side, as below.</li>
 <li><strong>Connect it to the decision:</strong> say what the pattern means for the program, not only what the chart shows.</li>
-</ul></section><div class="cell"><div class="label">Code</div><pre class="code"><code>fig, ax = plt.subplots(2, 1, figsize=(7, 9))
+</ul></section><div class="cell"><div class="codehead"><span class="label">Code</span><button type="button" class="copy" aria-label="Copy code to clipboard">Copy</button></div><pre class="code"><code>fig, ax = plt.subplots(2, 1, figsize=(7, 9))
 bins = np.linspace(1, 10, 11)
 ax[0].hist(
     control_s,
@@ -1613,7 +1618,7 @@ Treatment: median 7.55, IQR 2.07, share scoring 8+: 42.7%
 <li><strong>Economic analysis.</strong> Monthly increase = Task 2 difference; annual increase = monthly × 12; payback months = $5,000 ÷ monthly increase; annual ROI = annual increase ÷ $5,000 × 100.</li>
 <li><strong>Self-sufficiency analysis.</strong> Estimate the share of each group earning above $3,200. You can count it directly from the data, or estimate it from the mean and SD with a normal distribution; both are shown below.</li>
 <li><strong>Policy decision:</strong> a clear yes or no, the primary reason, two or three limitations, and the extra data that would strengthen the case.</li>
-</ol></section><div class="cell"><div class="label">Code</div><pre class="code"><code>gain_m = treatment_y.mean() - control_y.mean()
+</ol></section><div class="cell"><div class="codehead"><span class="label">Code</span><button type="button" class="copy" aria-label="Copy code to clipboard">Copy</button></div><pre class="code"><code>gain_m = treatment_y.mean() - control_y.mean()
 cost = 5000
 print(
     f&quot;Monthly increase: ${gain_m:,.2f};  annual increase: &quot;
@@ -1676,7 +1681,25 @@ Additional participants reaching self-sufficiency per 150 enrolled: about 85
 </main>
 <a class="totop" href="#top" aria-label="Back to top">↑</a>
 <script>
+function copyText(t){
+  if(navigator.clipboard&&window.isSecureContext){return navigator.clipboard.writeText(t).catch(()=>fallback(t));}
+  return Promise.resolve(fallback(t));
+}
+function fallback(t){
+  const ta=document.createElement('textarea');ta.value=t;ta.setAttribute('readonly','');
+  ta.style.position='fixed';ta.style.top='-1000px';document.body.appendChild(ta);
+  ta.select();ta.setSelectionRange(0,t.length);
+  let ok=false;try{ok=document.execCommand('copy');}catch(e){}
+  document.body.removeChild(ta);if(!ok)throw new Error('copy failed');
+}
+document.querySelectorAll('.copy').forEach(btn=>btn.addEventListener('click',()=>{
+  const code=btn.closest('.cell').querySelector('pre.code code').innerText;
+  Promise.resolve().then(()=>copyText(code)).then(()=>{btn.textContent='Copied';btn.classList.add('done');},
+    ()=>{btn.textContent='Select & copy';const r=document.createRange();r.selectNodeContents(btn.closest('.cell').querySelector('pre.code code'));const s=getSelection();s.removeAllRanges();s.addRange(r);})
+   .finally(()=>setTimeout(()=>{btn.textContent='Copy';btn.classList.remove('done');},1800));
+}));
 document.querySelectorAll('.menu a').forEach(a=>a.addEventListener('click',()=>a.closest('details').removeAttribute('open')));
+
 </script>
 </body>
 </html>
