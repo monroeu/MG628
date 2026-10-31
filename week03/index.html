@@ -147,7 +147,7 @@ img,svg,video,canvas{max-width:100%;height:auto}
 <style>@media print{body>*:not(.wrap):not(.print-report){display:none!important} body>.wrap.grid{display:none!important}.print-report{display:block!important;white-space:pre-wrap;font:11px/1.45 ui-monospace,monospace;padding:20px}}.print-report{display:none}</style></head>
 <body class="lesson-locked">
 <!-- Verified historical-account recovery (read-only) -->
-<div id="verified-history-link" style="margin:12px auto;max-width:1050px;padding:14px;border:1px solid #bdd1d8;background:#f5fafd;border-radius:8px;font-family:Arial,sans-serif"><strong>Returning student?</strong> Your earlier participation under the original student account is preserved. <a href="/MG628/recovery/" target="_blank" rel="noopener">Open Verified Historical Participation Recovery</a> to review and download it using your existing Student Portal session. This does not change your current guest answers.</div>
+<section id="mg628-historical-recovery" style="max-width:1080px;margin:14px auto;padding:18px;background:#f4f8ff;border:2px solid #6b98b4;border-radius:12px"><strong>Restore verified previous work — Week 03</strong><p>After starting this lab, sign into the Monroe Student Portal in this browser to authorize recovery of your previous submissions. Your existing guest answers will be preserved.</p><button type="button" style="background:#1c617f;color:white;border:0;padding:10px 18px;border-radius:7px">Restore my original answers</button><p class="mg628-historical-status" role="status">Original authenticated records are not imported automatically from a roster match.</p><div class="mg628-historical-details" hidden></div></section><div id="verified-history-link" style="margin:12px auto;max-width:1050px;padding:14px;border:1px solid #bdd1d8;background:#f5fafd;border-radius:8px;font-family:Arial,sans-serif"><strong>Returning student?</strong> Your earlier participation under the original student account is preserved. <a href="/MG628/recovery/" target="_blank" rel="noopener">Open Verified Historical Participation Recovery</a> to review and download it using your existing Student Portal session. This does not change your current guest answers.</div>
 <pre id="printReport" class="print-report"></pre>
 <header class="top"><div class="wrap"><div class="eyebrow">Monroe University · MG628</div><h1>Week 3 Participation — Data Structures &amp; Data Sources</h1><p>Structured, semi-structured, and unstructured data · SQL vs. NoSQL · ERP/CRM/SCM · APIs · ETL · warehousing · governance · Business and Healthcare case analysis</p><p>Professor Fomba Kassoh · Data Analysis for Managerial Decision-Making</p></div></header>
 <div class="toolbar"><div class="wrap"><a class="btn" href="../index.html">Home</a><a class="btn" href="../week01/">Weeks 1–2</a><a class="btn primary" href="./" aria-current="page">Week 3</a><a class="btn" href="../instructor/">Instructor</a><button class="btn" id="top-print" type="button">Print / Save PDF</button><button class="btn gold" id="top-download" type="button">Download My Work</button><button class="btn" onclick="resetAll()">Reset</button><div class="progress-shell"><div class="progress-label"><span>Participation progress</span><b id="pct">0%</b></div><div class="bar"><span id="bar"></span></div></div></div></div>
@@ -397,6 +397,53 @@ section.addEventListener('change',async()=>{clear();selectedSection=section.valu
 picker.addEventListener('change',()=>{selectedStudent=picker.value;selectedName=picker.selectedOptions[0]?.textContent||'';name.value=selectedStudent?selectedName:'';verified=false;message('Enter your Student ID, then start participation.')});
 sid.addEventListener('input',()=>{verified=false});
 start.addEventListener('click',async ev=>{if(verified||verifying)return;ev.preventDefault();ev.stopImmediatePropagation();if(!selectedSection||!selectedStudent||!sid.value.trim()){message('Choose your section and name, then enter your Student ID.');return}verifying=true;message('Checking your entry against the MG628 roster...');try{const result=await request('match',{section_id:selectedSection,student_ref:selectedStudent,student_id:sid.value.trim()});if(!result.matched){message('The selected name and Student ID do not match this section roster. No progress was changed.');return}verified=true;name.value=result.name||selectedName;message('Roster match confirmed. Starting the lab...',true);start.click()}catch(e){message('Unable to verify roster: '+e.message)}finally{verifying=false}},true);
+})();
+</script><script>
+(function(){'use strict';
+const WEEK='03', API='https://irnrjzeejalbbqdrbzmj.supabase.co/functions/v1/mg628-verified-history';
+const slug=WEEK==='01'?'order-quantity-weeks-1-2':'week-'+WEEK+'-';
+const panel=document.getElementById('mg628-historical-recovery');if(!panel)return;
+const status=panel.querySelector('.mg628-historical-status'),button=panel.querySelector('button'),details=panel.querySelector('.mg628-historical-details');
+function text(s){status.textContent=s}
+function token(){try{const raw=localStorage.getItem('sb-irnrjzeejalbbqdrbzmj-auth-token');const v=JSON.parse(raw||'null');return v?.access_token||v?.currentSession?.access_token||''}catch{return ''}}
+function identity(){const id=(document.querySelector('#auth-student-id,#studentId')?.value||'').trim();return id}
+function show(week){details.replaceChildren();const title=document.createElement('h4');title.textContent='Verified historical answers: '+(week.title||'Week '+WEEK);details.append(title);
+const info=document.createElement('p');info.textContent=`${week.cards.length} cards · ${week.mcq.length} MCQs · ${week.written.length} written responses recovered from original Supabase account.`;details.append(info);
+const ul=document.createElement('ol');for(const m of week.mcq){const li=document.createElement('li');li.textContent=(m.prompt||m.key)+' — selected '+String(m.selected_answer||'').toUpperCase()+' ('+(m.is_correct?'correct':'incorrect')+')';ul.append(li)}details.append(ul);
+for(const w of week.written){const b=document.createElement('div'),h=document.createElement('strong'),p=document.createElement('pre');h.textContent=w.prompt||w.key;p.style.whiteSpace='pre-wrap';p.textContent=w.response_text||'';b.append(h,p);details.append(b)}details.hidden=false}
+function patch(week){let patched=0; // Update visible question controls using exact database question keys; never replace existing guest responses.
+for(const m of week.mcq){const key=m.key;if(!key)continue;
+const box=[...document.querySelectorAll('[data-question-key]')].find(x=>x.dataset.questionKey===key);
+if(!box)continue;let radios=box.querySelectorAll('input[type=radio]');if(!radios.length)continue;
+if([...radios].some(x=>x.checked)||box.dataset.submitted==='1')continue;
+const radio=[...radios].find(x=>String(x.value).toLowerCase()===String(m.selected_answer).toLowerCase());if(!radio)continue;
+radio.checked=true;radios.forEach(x=>x.disabled=true);box.dataset.historicalRestored='true';const note=document.createElement('div');note.style.cssText='padding:8px;margin:6px 0;background:#e5f5e9;border-left:4px solid #16845c';note.textContent='Restored verified original attempt: '+String(m.selected_answer).toUpperCase()+' ('+(m.is_correct?'correct':'incorrect')+').';box.append(note);patched++;
+}
+return patched}
+button.addEventListener('click',async()=>{
+const t=token();if(!t){text('Historical answers require a verified Student Portal session in this browser. Open the Student Portal, sign in, then return and click Restore again.');return}
+button.disabled=true;text('Checking original account and recovering participation...');
+try{const r=await fetch(API,{method:'POST',headers:{'content-type':'application/json','Authorization':'Bearer '+t}});const j=await r.json();if(!r.ok||j.error)throw Error(j.error||'Recovery request failed');
+const current=identity();if(!current||current!==String(j.profile?.institutional_id||'')){text('Account mismatch: sign into the same Student Portal account as the Student ID selected above. No answers were changed.');return}
+const data=(j.weeks||[]).filter(x=>WEEK==='01'?x.slug===slug:x.slug.startsWith(slug)).sort((a,b)=>String(b.last_activity_at||'').localeCompare(String(a.last_activity_at||'')));
+if(!data.length){text('No previous authenticated record for this student and week. Current guest work remains unchanged.');return}
+const week=data[0];show(week);const patched=patch(week);
+// Week 3 can merge into native guest report and dashboard via its existing state functions.
+if(WEEK==='03'&&typeof answeredQuestions!=='undefined'&&typeof openedCards!=='undefined'&&typeof saveNow==='function'){
+ for(const m of week.mcq){if(m.key&&!answeredQuestions[m.key])answeredQuestions[m.key]={choice:String(m.selected_answer||'').toLowerCase(),correct:!!m.is_correct,explanation:'Restored from verified original participation.'}}
+ for(const c of week.cards){if(c.key)openedCards.add(c.key)}
+ if(typeof renderProgress==='function')renderProgress();saveNow();
+}
+// Week 7 has Map/Set-based native state and render methods.
+if(WEEK==='07'&&typeof answered!=='undefined'&&typeof opened!=='undefined'&&typeof saved!=='undefined'&&typeof renderAll==='function'){
+ for(const m of week.mcq){if(m.key&&!answered.has(m.key))answered.set(m.key,{selected_answer:String(m.selected_answer||'').toLowerCase(),is_correct:!!m.is_correct,explanation:'Restored from original verified session.'})}
+ for(const c of week.cards){if(c.key)opened.add(c.key)}
+ for(const w of week.written){if(w.key&&!String(saved.get(w.key)||'').trim())saved.set(w.key,w.response_text||'')}
+ if(typeof saveLocal==='function')saveLocal();renderAll();
+}
+text(`Verified historical record recovered: ${week.mcq.length} MCQ answers, ${week.cards.length} cards and ${week.written.length} written responses. ${patched} visible MCQ selections were restored. Existing guest selections were not overwritten.`);
+}catch(e){text('Could not recover original answers: '+e.message)}finally{button.disabled=false}
+});
 })();
 </script></body>
 </html>
