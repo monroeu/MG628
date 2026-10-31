@@ -145,7 +145,10 @@ img,svg,video,canvas{max-width:100%;height:auto}
 </style>
 
 <style>@media print{body>*:not(.wrap):not(.print-report){display:none!important} body>.wrap.grid{display:none!important}.print-report{display:block!important;white-space:pre-wrap;font:11px/1.45 ui-monospace,monospace;padding:20px}}.print-report{display:none}</style></head>
-<body class="lesson-locked"><pre id="printReport" class="print-report"></pre>
+<body class="lesson-locked">
+<!-- Verified historical-account recovery (read-only) -->
+<div id="verified-history-link" style="margin:12px auto;max-width:1050px;padding:14px;border:1px solid #bdd1d8;background:#f5fafd;border-radius:8px;font-family:Arial,sans-serif"><strong>Returning student?</strong> Your earlier participation under the original student account is preserved. <a href="/MG628/recovery/" target="_blank" rel="noopener">Open Verified Historical Participation Recovery</a> to review and download it using your existing Student Portal session. This does not change your current guest answers.</div>
+<pre id="printReport" class="print-report"></pre>
 <header class="top"><div class="wrap"><div class="eyebrow">Monroe University · MG628</div><h1>Week 3 Participation — Data Structures &amp; Data Sources</h1><p>Structured, semi-structured, and unstructured data · SQL vs. NoSQL · ERP/CRM/SCM · APIs · ETL · warehousing · governance · Business and Healthcare case analysis</p><p>Professor Fomba Kassoh · Data Analysis for Managerial Decision-Making</p></div></header>
 <div class="toolbar"><div class="wrap"><a class="btn" href="../index.html">Home</a><a class="btn" href="../week01/">Weeks 1–2</a><a class="btn primary" href="./" aria-current="page">Week 3</a><a class="btn" href="../instructor/">Instructor</a><button class="btn" id="top-print" type="button">Print / Save PDF</button><button class="btn gold" id="top-download" type="button">Download My Work</button><button class="btn" onclick="resetAll()">Reset</button><div class="progress-shell"><div class="progress-label"><span>Participation progress</span><b id="pct">0%</b></div><div class="bar"><span id="bar"></span></div></div></div></div>
 <div class="wrap grid">
@@ -338,5 +341,49 @@ document.addEventListener('visibilitychange',()=>{tickLast=Date.now();if(documen
 window.addEventListener('beforeunload',()=>{if(student.id)try{localStorage.setItem(key(),JSON.stringify(collect()))}catch(e){}});
 showTrack();lockLesson();renderPractice();refreshPracticeDashboard();renderProgress();
 </script><script src="../assets/week-auto-activate.js" defer></script>
+<script id="mg628-recovery-v3">
+/* Non-destructive restore before the original lab start handler.
+   A Student ID is never used to retrieve another browser's private cloud record. */
+(()=>{
+ const WEEK='03', ENDPOINT='https://irnrjzeejalbbqdrbzmj.supabase.co/functions/v1/guest-participation-api';
+ const FLAG='__mg628RecoveryBypass'+WEEK;
+ async function call(action,extra){const r=await fetch(ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action,...extra})});const v=await r.json();if(!r.ok||v.error)throw Error(v.error||'HTTP '+r.status);return v}
+ const status=document.createElement('div');status.id='recoveryStatusWeek'+WEEK;status.setAttribute('role','status');status.style.cssText='font:14px/1.5 Arial,sans-serif;background:#eef7f4;border-left:4px solid #13735f;padding:10px;margin:10px 0';status.textContent='Recovery check available when you start.';
+ const btn=document.getElementById('auth-start');if(!btn)return;btn.parentElement.appendChild(status);
+ btn.addEventListener('click',async event=>{
+  if(window[FLAG]){window[FLAG]=false;return}
+  event.preventDefault();event.stopImmediatePropagation();
+  let key='',identity='';
+  try{
+   identity=document.getElementById('auth-student-id')?.value.trim()||'';key='mg628:week03:guest:'+identity;
+  }catch(_e){}
+  // If user has not yet entered an ID, let original validation show its message.
+  if(identity&&key){
+    const tokenKeys=[key+':token',key+'-token'];
+    if(WEEK==='04')tokenKeys.unshift(key+'-token');
+    if(WEEK==='01'){try{const old=JSON.parse(localStorage.getItem(key)||'null');if(old?.token)tokenKeys.unshift('__inline:'+old.token)}catch(_e){}}
+    let tok='';for(const k of tokenKeys){if(k.startsWith('__inline:'))tok=k.slice(9);else tok=localStorage.getItem(k)||sessionStorage.getItem(k)||'';if(tok)break}
+    if(tok){
+      try{const result=await call('load',{guest_token:tok});const remote=result.draft?.payload||result.payload||null;
+        const local=JSON.parse(localStorage.getItem(key)||'null');
+        if(remote&&typeof remote==='object'){
+          const remoteId=remote.student_id||remote.identity?.student_id||remote.identity?.institutional_id||remote.id||'';
+          if(remoteId&&String(remoteId)!==identity)throw Error('Identity mismatch: cloud draft not applied');
+          const localTime=Date.parse(local?.updated_at||local?.saved_at||local?.timestamp||0)||0;
+          const remoteTime=Date.parse(remote.updated_at||remote.saved_at||remote.timestamp||0)||0;
+          if(!local||(remoteTime>0&&remoteTime>localTime)){
+             const toStore=WEEK==='01'?{...remote,token:tok}:remote;
+             localStorage.setItem(key,JSON.stringify(toStore));status.textContent='Previous cloud progress recovered before starting.';
+          }else status.textContent='Previous local work retained (cloud is not newer).';
+          // Normalize existing saved token location so the page resumes the same draft.
+          if(WEEK!=='01')localStorage.setItem(key+':token',tok);
+        }
+      }catch(e){status.textContent='Cloud recovery unavailable; existing local work is preserved. '+e.message}
+    }else status.textContent='No earlier cloud token on this browser. Your existing local work will be retained.';
+  }
+  window[FLAG]=true;btn.click();
+ },true);
+})();
+</script>
 </body>
 </html>
