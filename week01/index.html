@@ -506,16 +506,13 @@ code{overflow-wrap:anywhere}
 .participation-status-strip .metric{display:flex;flex-direction:column;align-items:flex-end;line-height:1.1}.participation-status-strip .metric span{font-size:9px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-soft);font-weight:700}.participation-status-strip strong{font-size:14px}.saved-indicator{color:var(--ink-soft);min-width:94px;text-align:right}.saved-indicator.ok{color:var(--teal);font-weight:700}
 .central-identity{margin-top:14px;padding:13px;background:var(--teal-soft);border-left:4px solid var(--teal)}.central-identity-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-top:8px}.central-identity-grid span{display:block;font-family:var(--font-mono);font-size:10px;color:var(--ink-soft);text-transform:uppercase}.server-badge{display:inline-block;padding:3px 7px;border:1px solid #8ab7ae;background:#f4fbf8;font-family:var(--font-mono);font-size:10px;font-weight:700;border-radius:999px}.gate-note{font-size:13px;color:var(--ink-soft);margin:8px 0 0}
 .resume-strip{position:sticky;top:54px;z-index:44;max-width:760px;margin:8px auto 0;padding:9px 12px;background:#eef9fb;border:1px solid #9cc8c0;box-shadow:0 3px 10px rgba(0,0,0,.08);display:flex;align-items:center;justify-content:space-between;gap:10px}.resume-strip button{min-height:40px}.resume-strip.hidden{display:none!important}
-.feedback.teaching-feedback{margin-top:12px;padding:12px 14px;border-radius:6px;line-height:1.55;font-weight:500}.feedback.teaching-feedback.correct{background:#eef9f3;border:1px solid #b9dec9;color:#155c39}.feedback.teaching-feedback.incorrect{background:#fff4f2;border:1px solid #efc3bc;color:#7c2d24}.feedback .answer-label{display:block;margin-bottom:5px;font-weight:800}.feedback .why-label{font-weight:800}.teaching-cycle{border:1px solid var(--rule);background:var(--white);padding:16px 18px;margin:18px 0}.teaching-cycle strong{color:var(--teal)}.teaching-cycle ol{margin:8px 0 0;padding-left:22px}.teaching-cycle li{margin-bottom:5px}.participation-locked{opacity:.72}.participation-locked::after{content:'Enter your full name and Student ID above to begin.';display:block;margin-top:8px;font-family:var(--font-mono);font-size:11px;color:var(--danger)}
+.feedback.teaching-feedback{margin-top:12px;padding:12px 14px;border-radius:6px;line-height:1.55;font-weight:500}.feedback.teaching-feedback.correct{background:#eef9f3;border:1px solid #b9dec9;color:#155c39}.feedback.teaching-feedback.incorrect{background:#fff4f2;border:1px solid #efc3bc;color:#7c2d24}.feedback .answer-label{display:block;margin-bottom:5px;font-weight:800}.feedback .why-label{font-weight:800}.teaching-cycle{border:1px solid var(--rule);background:var(--white);padding:16px 18px;margin:18px 0}.teaching-cycle strong{color:var(--teal)}.teaching-cycle ol{margin:8px 0 0;padding-left:22px}.teaching-cycle li{margin-bottom:5px}.participation-locked{opacity:.72}.participation-locked::after{content:'Sign in above to submit required participation work.';display:block;margin-top:8px;font-family:var(--font-mono);font-size:11px;color:var(--danger)}
 @media(max-width:640px){.participation-status-strip{margin:0;border-left:0;border-right:0;gap:10px;padding:8px 12px}.participation-status-strip .metric span{font-size:8px}.participation-status-strip strong{font-size:12px}.saved-indicator{min-width:72px;font-size:10px}.central-identity-grid{grid-template-columns:1fr}.resume-strip{top:0;margin:0 10px}.auth-grid{grid-template-columns:1fr}}
 </style>
 <!-- Build: week01-ai-teaching-layer-2026-10-05.1 -->
 <!-- Build: week01-no-paste-short-answers-2026-10-05.2 -->
 </head>
 <body>
-<!-- Verified historical-account recovery (read-only) -->
-<div id="verified-history-link" style="margin:12px auto;max-width:1050px;padding:14px;border:1px solid #bdd1d8;background:#f5fafd;border-radius:8px;font-family:Arial,sans-serif"><strong>Returning student?</strong> Your earlier participation under the original student account is preserved. <a href="/MG628/recovery/" target="_blank" rel="noopener">Open Verified Historical Participation Recovery</a> to review and download it using your existing Student Portal session. This does not change your current guest answers.</div>
-
 <nav class="course-topbar" aria-label="MG628 course navigation">
   <div class="mg628-nav-inner">
     <a class="mg628-brand" href="/MG628/">MG628</a>
@@ -531,7 +528,7 @@ code{overflow-wrap:anywhere}
   <div class="metric"><span>Assignment progress</span><strong id="stdProgressText">0%</strong></div>
   <div class="metric"><span>Knowledge checks</span><strong id="stdQuestionText">0/15</strong></div>
   <div class="metric"><span>Learning checks</span><strong id="stdCardText">0/40</strong></div>
-  <div class="saved-indicator" id="stdSavedText">Not started</div>
+  <div class="saved-indicator" id="stdSavedText">Not signed in</div>
 </div>
 <div style="max-width:1180px;margin:0 auto;padding:6px 16px 0;font:12px/1.45 var(--font-mono);color:var(--ink-soft)">Learning checks = 30 flip cards + 10 section self-checks. All 40 must be opened for verified completion.</div>
 <div class="resume-strip hidden" id="resumeStrip"><span><strong>Resume where you left off?</strong><br><span style="font-size:12px;color:var(--ink-soft)">Your last position on this device was saved automatically.</span></span><button class="run" id="resumeBtn" type="button">Resume</button></div>
@@ -582,15 +579,27 @@ code{overflow-wrap:anywhere}
       <p style="font-size:13px;color:var(--ink-soft);margin:10px 0 0;"><strong>Using your own workbook?</strong> Select cell <code>A5</code>, then use the copy button above and paste. The copied block places the six inputs in rows 5–10, leaves rows 11–12 blank, and places the core model formulas in rows 13–17 so the addresses match this participation lesson.</p>
     </section>
 
-    <div class="auth-panel" id="authPanel" aria-label="Required student identification">
-      <h3>Student Identification — No Password Required</h3>
-      <p>Enter your <strong>full name and Monroe University Student ID</strong> to begin. This is not a verified login. Your learning record is saved as a guest draft, not an official verified grade.</p>
+    <div class="auth-panel" id="authPanel" aria-label="Student sign in and participation status">
+      <h3>Student Login</h3>
+      <p style="margin-bottom:12px;">Use your <strong>Monroe University Student ID</strong>. This is the same centralized account used across Professor Kassoh participation courses. Your name, school email, course, term, and section are resolved from the instructor roster and cannot be changed here.</p>
       <div class="auth-grid" id="authFields">
-        <div><label for="auth-full-name"><strong>Full name (required)</strong></label><input id="auth-full-name" type="text" autocomplete="name" maxlength="120" required placeholder="First and last name"></div>
-        <div><label for="auth-student-id"><strong>Student ID (required)</strong></label><input id="auth-student-id" type="text" inputmode="numeric" autocomplete="off" maxlength="30" required placeholder="Monroe University Student ID"></div>
+        <div><label for="auth-student-id"><strong>Student ID</strong></label><input id="auth-student-id" type="text" inputmode="numeric" autocomplete="username" placeholder="Monroe University Student ID"></div>
+        <div><label for="auth-password"><strong>Password</strong></label><input id="auth-password" type="password" autocomplete="current-password" minlength="8" placeholder="At least 8 characters"></div>
       </div>
-      <div class="auth-actions"><button class="run" id="guest-start" type="button">Start Participation Lab</button></div>
-      <div id="auth-status" class="auth-status" role="status" aria-live="polite">Enter both required fields to activate the participation activities.</div>
+      <p class="gate-note" id="accountHelp">First visit? Enter your Student ID, choose a password of at least 8 characters, then select <strong>Create account</strong>. Once signed in, the same Supabase session can be reused by your other Professor Kassoh participation pages.</p>
+      <div class="auth-actions"><button class="run" id="auth-signin" type="button">Sign in</button><button class="chip" id="auth-signup" type="button">Create account</button><button class="chip" id="auth-signout" type="button" hidden>Sign out</button></div>
+      <div id="auth-status" class="auth-status" aria-live="polite">Sign in before completing required participation items. Work completed while signed out cannot be credited.</div>
+      <div id="academic-identity" class="central-identity" hidden>
+        <span class="server-badge">Roster verified</span>
+        <div class="central-identity-grid">
+          <div><span>Student</span><strong id="ai-student">—</strong></div>
+          <div><span>School email</span><strong id="ai-email">—</strong></div>
+          <div><span>Course</span><strong id="ai-course">—</strong></div>
+          <div><span>Term</span><strong id="ai-term">—</strong></div>
+          <div><span>Section</span><strong id="ai-section">—</strong></div>
+          <div><span>Student ID</span><strong id="ai-student-id">—</strong></div>
+        </div>
+      </div>
       <div id="server-progress" class="server-progress" hidden></div>
     </div>
     <div class="hero-ticket" id="heroTicket" role="group" aria-label="Live model preview, updates as you use Section 3">
@@ -1340,25 +1349,25 @@ code{overflow-wrap:anywhere}
     <section class="step" id="submit" style="border-top:none; padding-top:0;">
       <div class="step-head"><span class="step-num" aria-hidden="true">✓</span></div>
       <h2>Record your participation</h2>
-      <p>Enter your full name and Student ID above before beginning. You can download a personal participation PDF at any stage. Guest participation is not automatically verified for the official gradebook.</p>
+      <p>Sign in above before beginning. As you open required self-checks and complete each exercise, your activity is saved to the instructor-controlled Supabase database. When finished, choose <strong>Record participation</strong> to verify the authoritative server record and generate your Blackboard receipt.</p>
       <p id="footerProgress" style="font-family:var(--font-mono); font-size:14px;">0 / 9 exercises completed.</p>
 
       <div class="widget" id="wSubmit">
-        <div class="widget-bar"><span>PARTICIPATION SUBMISSION</span><span>Password-free guest draft · unverified</span></div>
+        <div class="widget-bar"><span>PARTICIPATION SUBMISSION</span><span>Supabase-backed · section and semester aware</span></div>
         <div class="widget-body">
           <div class="grid2">
             <div class="control">
-              <label for="submit-name" style="font-weight:600; display:block; margin-bottom:6px;">Your name <span style="font-weight:400;color:var(--ink-soft)">(entered above)</span></label>
+              <label for="submit-name" style="font-weight:600; display:block; margin-bottom:6px;">Your name <span style="font-weight:400;color:var(--ink-soft)">(from roster)</span></label>
               <input type="text" id="submit-name" autocomplete="name" required style="width:100%; font-family:var(--font-body); font-size:15px; border:1px solid var(--ink); background:var(--paper); padding:9px 11px;">
             </div>
             <div class="control">
-              <label for="submit-email" style="font-weight:600; display:block; margin-bottom:6px;">Student ID <span style="font-weight:400;color:var(--ink-soft)">(entered above)</span></label>
-              <input type="text" id="submit-email" readonly placeholder="Student ID" style="width:100%; font-family:var(--font-body); font-size:15px; border:1px solid var(--ink); background:var(--paper); padding:9px 11px;">
+              <label for="submit-email" style="font-weight:600; display:block; margin-bottom:6px;">School email <span style="font-weight:400;color:var(--ink-soft)">(from roster)</span></label>
+              <input type="email" id="submit-email" autocomplete="email" required placeholder="student@example.edu" style="width:100%; font-family:var(--font-body); font-size:15px; border:1px solid var(--ink); background:var(--paper); padding:9px 11px;">
             </div>
           </div>
           <div class="presets">
-            <button class="run" id="submit-direct" type="button">Save guest participation</button>
-            <button class="chip" id="submit-receipt" type="button" disabled>Verified receipt unavailable in guest mode</button>
+            <button class="run" id="submit-direct" type="button">Record participation</button>
+            <button class="chip" id="submit-receipt" type="button" disabled>Download Blackboard Receipt PDF</button>
             <button class="chip" id="submit-generate" type="button">Generate personal copy</button>
             <button class="chip" id="submit-copy" type="button" disabled>Copy personal copy</button>
             <button class="chip" id="submit-download" type="button" disabled>Download Participation PDF</button>
@@ -1377,7 +1386,7 @@ code{overflow-wrap:anywhere}
     </section>
 
     <p style="margin-top:44px;">
-    Built for MG628 — Data Analysis for Managerial Decisions. <strong>Learning-standard upgrade:</strong> required name and Student ID identification without a password, one-attempt knowledge checks with teaching feedback, resume support, and server-backed progress.  Guest participation can be saved and downloaded, but is not equivalent to a roster-verified instructor record. This page remains a companion to the Excel workbook, not a replacement for it.
+    Built for MG628 — Data Analysis for Managerial Decisions. <strong>Learning-standard upgrade:</strong> centralized Student ID login, roster-resolved identity, persistent Supabase session, one-attempt knowledge checks with teaching feedback, resume support, and server-backed progress.  Signed-in participation activity is stored automatically in Supabase and separated by academic term, course, and section. Blackboard receives a receipt that points to the authoritative server record. This page remains a companion to the Excel workbook, not a replacement for it.
     </p>
   </footer>
 
@@ -1400,18 +1409,6 @@ const SELF_CHECK_KEYS=['SELF-01','SELF-02','SELF-03','SELF-04','SELF-05','SELF-0
 const STUDENT_AUTH_API=SUPABASE_URL+'/functions/v1/student-auth-api';
 const STANDARD_TOTAL_QUESTIONS=15, STANDARD_TOTAL_CARDS=40;
 let rosterVerified=false, scrollSaveTimer=null;
-let guestIdentity=null, guestToken=null, guestStartedAt=null, guestSeconds=0, guestLastTick=Date.now(), guestSaveTimer=null;
-const GUEST_API=SUPABASE_URL+'/functions/v1/guest-participation-api';
-const GUEST_STORE='mg628:week01:guest:v1';
-const guestAnswers={};
-function guestElapsed(){if(!guestIdentity)return guestSeconds;const now=Date.now();guestSeconds+=Math.max(0,Math.min(60,(now-guestLastTick)/1000));guestLastTick=now;return guestSeconds;}
-function guestSnapshot(){return {identity:guestIdentity,started_at:guestStartedAt,elapsed_seconds:Math.round(guestElapsed()),track:currentTrack,card_keys:[...participationSeenCards],mc_answers:guestAnswers,exercises:typeof exerciseState!=='undefined'?exerciseState:{},last_updated:new Date().toISOString()};}
-async function guestApi(action,payload={}){const r=await fetch(GUEST_API,{method:'POST',headers:{'Content-Type':'application/json','apikey':SUPABASE_PUBLISHABLE_KEY},body:JSON.stringify({action,...payload})});const d=await r.json();if(!r.ok||d.error)throw Error(d.error||'Guest service unavailable');return d;}
-function queueGuestSave(){if(!guestIdentity)return;standardProgress();clearTimeout(guestSaveTimer);guestSaveTimer=setTimeout(saveGuest,1000);}
-async function saveGuest(){if(!guestIdentity)return;const snap=guestSnapshot();try{localStorage.setItem(GUEST_STORE,JSON.stringify({token:guestToken,...snap}));if(guestToken){await guestApi('save',{guest_token:guestToken,payload:snap});standardMarkSaved();}else{const e=document.getElementById('stdSavedText');if(e)e.textContent='Saved on device';}}catch(e){console.warn('Guest remote save failed; local backup retained',e);const t=document.getElementById('stdSavedText');if(t)t.textContent='Saved on device (cloud unavailable)';}}
-async function beginGuest(name,id,restore=false){name=String(name||'').trim().replace(/\s+/g,' ');id=String(id||'').trim();if(name.length<3||!name.includes(' ')||!/^[0-9A-Za-z-]{4,30}$/.test(id))throw Error('Enter your full first and last name and a valid Student ID.');guestIdentity={full_name:name,student_id:id,course_code:COURSE_CODE,assignment:ASSIGNMENT_CODE};guestStartedAt=guestStartedAt||new Date().toISOString();guestLastTick=Date.now();document.getElementById('submit-name').value=name;document.getElementById('submit-email').value=id;setParticipationGate(true);setAuthStatus('Participation enabled. No password required. This guest record is not a verified official grade.','ok');document.getElementById('guest-start').textContent='Update Student Details';document.getElementById('submit-download').disabled=false;document.getElementById('submit-copy').disabled=false;document.getElementById('submit-generate').disabled=false;try{if(!guestToken){const r=await guestApi('start',{course_code:'MG628',lab_slug:'week01'});guestToken=r.guest_token;}queueGuestSave();}catch(e){setAuthStatus('Participation enabled; saved locally. Cloud guest recording unavailable: '+e.message,'err');queueGuestSave();}}
-function restoreGuest(){try{const raw=JSON.parse(localStorage.getItem(GUEST_STORE)||'null');if(!raw?.identity)return;guestToken=raw.token||null;guestStartedAt=raw.started_at||null;guestSeconds=Number(raw.elapsed_seconds)||0;Object.assign(guestAnswers,raw.mc_answers||{});for(const k of raw.card_keys||[])participationSeenCards.add(k);if(raw.track==='health')setTrack('health');for(const [k,v] of Object.entries(raw.exercises||{})){if(typeof exerciseState!=='undefined')exerciseState[k]=v;}document.getElementById('auth-full-name').value=raw.identity.full_name||'';document.getElementById('auth-student-id').value=raw.identity.student_id||'';beginGuest(raw.identity.full_name,raw.identity.student_id,true).then(()=>{for(const [key,v] of Object.entries(guestAnswers)){const q=document.querySelector('.mc-card[data-question-key="'+key+'"]');if(q){const opt=q.querySelector('input[value="'+v.selected_answer+'"]');if(opt)opt.checked=true;q.dataset.submitted='1';q.querySelectorAll('input').forEach(e=>e.disabled=true);const btn=ensureMcCheckButton(q);btn.disabled=true;btn.textContent='Checked';const fb=q.querySelector('.mc-feedback');fb.innerHTML=teachingFeedbackHtml(q,v);fb.className='mc-feedback teaching-feedback '+(v.is_correct?'correct':'incorrect');}}for(const k of participationSeenCards){const card=document.querySelector('.study-flip[data-card-key="'+k+'"]');if(card)card.classList.add('flipped');}for(const d of EXERCISE_DEFS){const v=exerciseState[d.id];if(v?.done){const st=document.getElementById(d.id+'-status');if(st){st.textContent='complete';st.classList.add('done');}const def=EXERCISE_DEFS.find(e=>e.id===d.id);if(def?.type.startsWith('text')){const el=document.getElementById(d.id+'-input');if(el&&typeof v.raw==='string')el.value=v.raw;}}}updateExerciseProgress();standardProgress();});}catch(e){console.warn('Could not restore guest draft',e);}}
-
 const TEACHING_FEEDBACK={
 'W12-MC01':{correct:'b',why:'Actual sales are constrained twice: customers cannot buy more than they demand, and the business cannot sell more units than it has available. MIN(D,Q) enforces both limits at once.',others:'MAX would choose the larger value and can create impossible sales. D-Q and Q-D measure a difference, not feasible sales.',remember:'Sales are capped by the smaller of demand and available quantity.'},
 'W12-MC02':{correct:'b',why:'Q-D measures excess supply, but when demand exceeds quantity that difference becomes negative. MAX(0,Q-D) keeps leftovers economically and physically feasible.',others:'The formula does not convert units, force equality, or calculate probability; it simply prevents an impossible negative leftover.',remember:'Use MAX(0, …) when the business quantity cannot logically fall below zero.'},
@@ -1444,8 +1441,7 @@ function standardMarkSaveError(){const e=document.getElementById('stdSavedText')
 function standardProgress(){
   const qAnswered=document.querySelectorAll('.mc-card[data-question-key][data-submitted="1"]').length;
   const cards=participationSeenCards.size;
-  const exercisesDone=(typeof EXERCISE_DEFS!=='undefined'&&typeof exerciseState!=='undefined')?EXERCISE_DEFS.filter(d=>exerciseState[d.id]?.done).length:0;
-  const pct=guestIdentity?100*(0.25*Math.min(cards,40)/40+0.40*qAnswered/15+0.35*exercisesDone/9):Number(backendCompletion?.completion_percentage??0);
+  const pct=Number(backendCompletion?.completion_percentage??0);
   const a=document.getElementById('stdProgressText'),q=document.getElementById('stdQuestionText'),c=document.getElementById('stdCardText');
   if(a)a.textContent=Math.max(0,Math.min(100,pct)).toFixed(0)+'%';if(q)q.textContent=qAnswered+'/'+STANDARD_TOTAL_QUESTIONS;if(c)c.textContent=Math.min(cards,STANDARD_TOTAL_CARDS)+'/'+STANDARD_TOTAL_CARDS;
 }
@@ -1551,9 +1547,9 @@ async function bootstrapStudent(){
     setAuthStatus('Roster verified: '+(sec?.course?.code||COURSE_CODE)+' '+(sec?.section_code||'')+' · '+(sec?.term?.name||'')+'. Checking for previously saved work…','ok');const resumed=await resumeOrStartBackendSession();setAuthStatus((resumed?'Saved work restored. ':'Participation recording started. ')+'Recording is active for '+(sec?.course?.code||COURSE_CODE)+' '+(sec?.section_code||'')+' · '+(sec?.term?.name||'')+'.','ok');standardMarkSaved();standardProgress();setTimeout(offerResume,150);
   }catch(e){rosterVerified=false;setParticipationGate(false);setAuthStatus(e.message||'Could not initialize participation recording.','err');console.error(e);}
 }
-async function recordSelfCheck(key,quiet=false){participationSeenCards.add(key);if(guestIdentity){queueGuestSave();return;}if(!backendSession)return;try{const r=await invokeParticipation({action:'card_opened',session_id:backendSession.id,card_key:key});renderServerProgress(r.completion);standardMarkSaved();standardProgress();}catch(e){if(!quiet)setAuthStatus('A self-check could not be recorded. '+(e.message||''),'err');}}
+async function recordSelfCheck(key,quiet=false){participationSeenCards.add(key);if(!backendSession)return;try{const r=await invokeParticipation({action:'card_opened',session_id:backendSession.id,card_key:key});renderServerProgress(r.completion);standardMarkSaved();standardProgress();}catch(e){if(!quiet)setAuthStatus('A self-check could not be recorded. '+(e.message||''),'err');}}
 function scheduleExerciseSync(id){clearTimeout(syncTimers.get(id));syncTimers.set(id,setTimeout(()=>syncExerciseNow(id),500));}
-async function syncExerciseNow(id){if(guestIdentity){queueGuestSave();return true;}if(!backendSession)return;const st=exerciseState[id],key=id.toUpperCase();standardMarkSaving();try{const r=await invokeParticipation({action:'save_worksheet',session_id:backendSession.id,worksheet_key:key,response_text:st?.done?(st.summary||'Completed'):null,response_json:st?.done?{raw:st.raw??null,excel_refs:st.excel??[],summary:st.summary||'',track:currentTrack}:null});renderServerProgress(r.completion);standardMarkSaved();return true;}catch(e){standardMarkSaveError();setAuthStatus('Could not save '+key+' to the server: '+(e.message||e)+'. Your answer remains on this page; press Check Answer again to retry.','err');return false;}}
+async function syncExerciseNow(id){if(!backendSession)return;const st=exerciseState[id],key=id.toUpperCase();standardMarkSaving();try{const r=await invokeParticipation({action:'save_worksheet',session_id:backendSession.id,worksheet_key:key,response_text:st?.done?(st.summary||'Completed'):null,response_json:st?.done?{raw:st.raw??null,excel_refs:st.excel??[],summary:st.summary||'',track:currentTrack}:null});renderServerProgress(r.completion);standardMarkSaved();return true;}catch(e){standardMarkSaveError();setAuthStatus('Could not save '+key+' to the server: '+(e.message||e)+'. Your answer remains on this page; press Check Answer again to retry.','err');return false;}}
 
 
 
@@ -1569,13 +1565,25 @@ function ensureMcCheckButton(q){
 }
 function restoreKnowledgeResponses(rows){const latest=new Map((rows||[]).map(r=>[r.question_key,r]));document.querySelectorAll('.mc-card[data-question-key]').forEach(q=>{const btn=ensureMcCheckButton(q);const r=latest.get(q.dataset.questionKey);if(!r)return;const v=String(r.selected_answer??'').toLowerCase();const radio=q.querySelector(`input[value="${CSS.escape(v)}"]`);if(radio)radio.checked=true;q.dataset.submitted='1';q.querySelectorAll('input[type=radio]').forEach(x=>x.disabled=true);btn.disabled=true;btn.textContent='Checked';const fb=q.querySelector('.mc-feedback');if(fb){fb.innerHTML=teachingFeedbackHtml(q,r);fb.className='mc-feedback teaching-feedback '+(r.is_correct?'correct':'incorrect')}});standardProgress();}
 async function answerKnowledge(q,radio){
- const fb=q.querySelector('.mc-feedback'),btn=ensureMcCheckButton(q);
- if(q.dataset.submitted==='1')return;
- if(!guestIdentity){fb.textContent='Enter your full name and Student ID at the top to begin.';return;}
- const key=q.dataset.questionKey,lesson=TEACHING_FEEDBACK[key],selected=radio.value;
- const result={selected_answer:selected,correct_answer:lesson.correct,is_correct:selected===lesson.correct,explanation:lesson.why};
- guestAnswers[key]=result;q.dataset.submitted='1';q.querySelectorAll('input').forEach(e=>e.disabled=true);btn.disabled=true;btn.textContent='Checked';
- fb.innerHTML=teachingFeedbackHtml(q,result);fb.className='mc-feedback teaching-feedback '+(result.is_correct?'correct':'incorrect');queueGuestSave();
+  const fb=q.querySelector('.mc-feedback'),btn=ensureMcCheckButton(q);
+  if(q.dataset.submitted==='1')return;
+  if(!backendSession||!rosterVerified){fb.textContent='Sign in and wait for roster verification before answering.';fb.className='mc-feedback incorrect';return}
+  q.querySelectorAll('input[type=radio]').forEach(x=>x.disabled=true);btn.disabled=true;btn.textContent='Checking…';
+  try{
+    const r=await invokeParticipation({action:'answer_knowledge',session_id:backendSession.id,question_key:q.dataset.questionKey,selected_answer:radio.value});
+    const saved={...r,selected_answer:r.selected_answer??radio.value,correct_answer:r.correct_answer??TEACHING_FEEDBACK[q.dataset.questionKey]?.correct};
+    q.dataset.submitted='1';
+    fb.innerHTML=teachingFeedbackHtml(q,saved)+'<div class="ai-coach-pending">Preparing personalized teaching feedback…</div>';
+    fb.className='mc-feedback teaching-feedback '+(r.is_correct?'correct':'incorrect');
+    btn.textContent='Checked';renderServerProgress(r.completion);standardMarkSaved();
+    const choices=[...q.querySelectorAll('.mc-choice')];
+    const selectedLabel=choices.find(x=>x.querySelector('input')?.value===String(saved.selected_answer))?.textContent.trim()||String(saved.selected_answer||'');
+    const correctLabel=choices.find(x=>x.querySelector('input')?.value===String(saved.correct_answer))?.textContent.trim()||String(saved.correct_answer||'');
+    const ai=await requestAiTeaching({mode:'deterministic',questionKey:q.dataset.questionKey,questionText:q.querySelector('h4')?.textContent||'',studentAnswer:selectedLabel,deterministicCorrect:!!r.is_correct,correctAnswer:correctLabel+' — '+(TEACHING_FEEDBACK[q.dataset.questionKey]?.why||r.explanation||'')});
+    const aiHtml=renderAiTeaching(ai);
+    fb.innerHTML=teachingFeedbackHtml(q,saved)+(aiHtml||'');
+  }catch(e){q.querySelectorAll('input[type=radio]').forEach(x=>x.disabled=false);btn.disabled=false;btn.textContent='Check Answer';fb.textContent='Your answer was not recorded, so the question remains unlocked. '+(e.message||String(e));fb.className='mc-feedback incorrect'}
+  finally{standardProgress()}
 }
 document.querySelectorAll('.study-flip[data-card-key]').forEach(c=>{const go=async()=>{c.classList.toggle('flipped');if(c.classList.contains('flipped'))await recordSelfCheck(c.dataset.cardKey)};c.addEventListener('click',go);c.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();go()}})});
 document.querySelectorAll('.mc-card[data-question-key]').forEach(q=>{
@@ -1682,7 +1690,7 @@ function setTrack(track){
     });
   });
   trackListeners.forEach(fn=>fn(track));
-  if(guestIdentity)queueGuestSave();
+  if(backendSession && signedInUser) startBackendSession().catch(e=>setAuthStatus(e.message||String(e),'err'));
   document.getElementById('liveAnnounce').textContent = `Switched to the ${TRACKS[track].label} scenario. All sections now use ${TRACKS[track].name}'s numbers.`;
 }
 function trackToggleHTML(idSuffix){
@@ -2014,8 +2022,8 @@ function completionGapMessage(c){
   const directBtn=document.getElementById('submit-direct'),receiptBtn=document.getElementById('submit-receipt'),genBtn=document.getElementById('submit-generate'),copyBtn=document.getElementById('submit-copy'),dlBtn=document.getElementById('submit-download'),nameInput=document.getElementById('submit-name'),emailInput=document.getElementById('submit-email'),output=document.getElementById('submit-output'),footerCode=document.getElementById('footerCode'),feedback=document.getElementById('submit-feedback'),receiptPanel=document.getElementById('receiptPanel'),receiptText=document.getElementById('receiptText');
   let signedReceipt=null;
   const doneCount=()=>EXERCISE_DEFS.filter(d=>exerciseState[d.id]?.done).length;
-  function buildText(){let lines=['MG628 — Order Quantity Tutorial — Personal Copy','Name: '+(nameInput.value.trim()||'(name not entered)'),'Student ID: '+(emailInput.value.trim()||'(ID not entered)'),'Scenario used: '+TRACKS[currentTrack].name+' ('+TRACKS[currentTrack].label+')','Generated: '+new Date().toLocaleString(),'Exercises completed: '+doneCount()+' / '+EXERCISE_DEFS.length,''];EXERCISE_DEFS.forEach((d,i)=>{const st=exerciseState[d.id];lines.push('Exercise '+(i+1)+': '+(st?.done?'COMPLETE':'not completed'));lines.push(st?.summary?'  '+st.summary.replace(/\n/g,'\n  '):'  (no answer recorded)');lines.push('');});return lines.join('\n');}
-  directBtn.addEventListener('click',async()=>{if(!guestIdentity){feedback.textContent='Enter full name and Student ID first.';feedback.className='feedback incorrect';return;}await saveGuest();feedback.textContent='Guest participation saved. Download your personal PDF below. This is not an instructor-verified Blackboard receipt.';feedback.className='feedback correct';});
+  function buildText(){let lines=['MG628 — Order Quantity Tutorial — Personal Copy','Name: '+(nameInput.value.trim()||'(name not entered)'),'Email: '+(emailInput.value.trim()||'(email not entered)'),'Scenario used: '+TRACKS[currentTrack].name+' ('+TRACKS[currentTrack].label+')','Generated: '+new Date().toLocaleString(),'Exercises completed: '+doneCount()+' / '+EXERCISE_DEFS.length,''];EXERCISE_DEFS.forEach((d,i)=>{const st=exerciseState[d.id];lines.push('Exercise '+(i+1)+': '+(st?.done?'COMPLETE':'not completed'));lines.push(st?.summary?'  '+st.summary.replace(/\n/g,'\n  '):'  (no answer recorded)');lines.push('');});return lines.join('\n');}
+  directBtn.addEventListener('click',async()=>{if(!signedInUser||!backendSession){feedback.textContent='Sign in at the top of the page and wait for your roster to be verified before recording participation.';feedback.className='feedback incorrect';return;}directBtn.disabled=true;directBtn.textContent='Verifying server record…';try{for(const d of EXERCISE_DEFS)await syncExerciseNow(d.id);for(const key of participationSeenCards)await recordSelfCheck(key,true);const r=await invokeParticipation({action:'recalculate_completion',session_id:backendSession.id});backendCompletion=r.completion;renderServerProgress(r.completion);if(r.completion.status!=='complete')throw new Error('Server record is '+r.completion.completion_percentage+'% complete: '+completionGapMessage(r.completion)+'.');signedReceipt={session_id:backendSession.id,verification_code:r.completion.verification_code,received_at_iso:r.completion.completed_at||r.completion.calculated_at,course:COURSE_CODE,assignment:ASSIGNMENT_CODE,student_name:nameInput.value.trim()||signedInUser.user_metadata?.full_name||'',student_email:signedInUser.email||''};receiptText.innerHTML='<strong>Session:</strong> <code>'+signedReceipt.session_id+'</code><br><strong>Verification:</strong> <code>'+signedReceipt.verification_code+'</code><br><strong>Recorded:</strong> '+new Date(signedReceipt.received_at_iso).toLocaleString();receiptPanel.hidden=false;receiptBtn.disabled=false;feedback.textContent='Participation verified by Supabase. Download the Blackboard receipt below.';feedback.className='feedback correct';directBtn.textContent='Participation verified';}catch(e){feedback.textContent=e.message||String(e);feedback.className='feedback incorrect';directBtn.disabled=false;directBtn.textContent='Record participation';}});
   function pdfReady(){return !!(window.jspdf&&window.jspdf.jsPDF);}
   function safeFilePart(v){return String(v||'student').replace(/[^a-z0-9]+/gi,'-').replace(/^-+|-+$/g,'').toLowerCase()||'student';}
   function addWrapped(doc,text,x,y,maxWidth,lineHeight=5){
@@ -2034,7 +2042,6 @@ function completionGapMessage(c){
     }
   }
   function downloadParticipationPdf(){
-    if(!guestIdentity){feedback.textContent='Enter your full name and Student ID before downloading.';feedback.className='feedback incorrect';return;}
     if(!pdfReady()){feedback.textContent='PDF library did not load. Refresh the page and try again.';feedback.className='feedback incorrect';return;}
     const {jsPDF}=window.jspdf;const doc=new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
     const student=nameInput.value.trim()||signedInUser?.user_metadata?.full_name||'Student';
@@ -2042,13 +2049,12 @@ function completionGapMessage(c){
     doc.setProperties({title:'MG628 Participation - '+student,subject:'MG628 Weeks 1-2 Participation',author:'Monroe University - MG628'});
     doc.setFillColor(23,35,29);doc.rect(0,0,210,28,'F');doc.setTextColor(255);doc.setFont('helvetica','bold');doc.setFontSize(17);doc.text('MG628 Participation Record',14,12);doc.setFontSize(10);doc.setFont('helvetica','normal');doc.text('Weeks 1-2 - Decision Models and Order Quantity',14,20);
     doc.setTextColor(25);let y=38;doc.setFont('helvetica','bold');doc.setFontSize(11);doc.text('Student information',14,y);y+=7;doc.setFont('helvetica','normal');doc.setFontSize(10);
-    const meta=[['Name',student],['Student ID',email],['Scenario',TRACKS[currentTrack].name+' ('+TRACKS[currentTrack].label+')'],['Generated',new Date().toLocaleString()],['Exercises completed',doneCount()+' / '+EXERCISE_DEFS.length],['Participation completion',document.getElementById('stdProgressText').textContent],['Flip cards and self-checks opened',participationSeenCards.size+' / 40'],['MC questions answered',Object.keys(guestAnswers).length+' / 15'],['MC correct',Object.values(guestAnswers).filter(a=>a.is_correct).length+' / 15'],['Time spent (minutes)',String(Math.round(guestElapsed()/60))],['Record status','Guest, not instructor-verified']];
+    const meta=[['Name',student],['School email',email],['Scenario',TRACKS[currentTrack].name+' ('+TRACKS[currentTrack].label+')'],['Generated',new Date().toLocaleString()],['Exercises completed',doneCount()+' / '+EXERCISE_DEFS.length]];
     if(backendOffering?.section){meta.push(['Section',backendOffering.section.title||backendOffering.section.section_code||'']);}
     for(const [k,v] of meta){doc.setFont('helvetica','bold');doc.text(k+':',14,y);doc.setFont('helvetica','normal');y=addWrapped(doc,v,47,y,145,5);y+=1;}
     y+=3;doc.setDrawColor(180);doc.line(14,y,196,y);y+=8;doc.setFont('helvetica','bold');doc.setFontSize(12);doc.text('Exercise record',14,y);y+=8;doc.setFontSize(10);
-    EXERCISE_DEFS.forEach((d,i)=>{const st=exerciseState[d.id];if(y>264){doc.addPage();y=18;}doc.setFont('helvetica','bold');doc.text('Exercise '+(i+1)+' - '+(st?.done?'COMPLETE':'IN PROGRESS'),14,y);y+=5;doc.setFont('helvetica','normal');const fields=[...(d.fields||[]),...(d.excelFields||[])];if(d.type==='text'||d.type==='textExcel')fields.unshift(d.id+'-input');const typed=fields.map(id=>{const el=document.getElementById(id);return el&&String(el.value||'').trim()?id+': '+el.value.trim():'';}).filter(Boolean);const summary=st?.summary||(typed.length?'Unsubmitted draft':'(no answer recorded)');y=addWrapped(doc,summary,18,y,174,4.7);for(const entry of typed)y=addWrapped(doc,entry,18,y,174,4.7);y+=5;});
+    EXERCISE_DEFS.forEach((d,i)=>{const st=exerciseState[d.id];if(y>264){doc.addPage();y=18;}doc.setFont('helvetica','bold');doc.text('Exercise '+(i+1)+' - '+(st?.done?'COMPLETE':'NOT COMPLETE'),14,y);y+=5;doc.setFont('helvetica','normal');const summary=st?.summary||'(no answer recorded)';y=addWrapped(doc,summary,18,y,174,4.7);y+=5;});
     if(signedReceipt){if(y>240){doc.addPage();y=18;}doc.setDrawColor(180);doc.line(14,y,196,y);y+=8;doc.setFont('helvetica','bold');doc.setFontSize(12);doc.text('Server verification',14,y);y+=7;doc.setFontSize(10);doc.setFont('helvetica','normal');const vr=[['Completion time',new Date(signedReceipt.received_at_iso).toLocaleString()],['Supabase session ID',signedReceipt.session_id],['Verification code',signedReceipt.verification_code]];for(const [k,v] of vr){doc.setFont('helvetica','bold');doc.text(k+':',14,y);doc.setFont('helvetica','normal');y=addWrapped(doc,v,52,y,140,5);y+=1;}}
-    y+=5;doc.setFont('helvetica','bold');y=addWrapped(doc,'MC responses (including unsubmitted selections)',14,y,180,6);doc.setFont('helvetica','normal');document.querySelectorAll('.mc-card[data-question-key]').forEach(q=>{const key=q.dataset.questionKey,ans=guestAnswers[key],draft=q.querySelector('input[type=radio]:checked');if(ans)y=addWrapped(doc,key+': '+String(ans.selected_answer).toUpperCase()+' - '+(ans.is_correct?'correct':'incorrect'),16,y,176,5);else if(draft)y=addWrapped(doc,key+': '+draft.value.toUpperCase()+' (not yet checked)',16,y,176,5);});
     addPdfFooter(doc,'MG628 - Student Participation Record');doc.save('MG628-Participation-'+safeFilePart(student)+'.pdf');
     feedback.textContent='Participation PDF downloaded.';feedback.className='feedback correct';
   }
@@ -2581,14 +2587,15 @@ function updateHero(Q,D,params){
 })();
 
 
-// ---------- Password-free participation identification ----------
+// ---------- Centralized Student ID authentication ----------
 (function(){
- document.getElementById('guest-start').addEventListener('click',async()=>{
-  try{await beginGuest(document.getElementById('auth-full-name').value,document.getElementById('auth-student-id').value);}catch(e){setAuthStatus(e.message,'err');}
- });
- setParticipationGate(false);
- restoreGuest();
- setInterval(()=>{if(guestIdentity){guestElapsed();queueGuestSave();}},30000);
+  const signin=document.getElementById('auth-signin'),signup=document.getElementById('auth-signup'),signout=document.getElementById('auth-signout');
+  let signUpBusy=false;
+  signin.addEventListener('click',async()=>{try{setAuthStatus('Signing in with Student ID…');const data=await centralizedStudentAuth('login');await applyCentralSession(data);}catch(e){setAuthStatus(e.message||String(e),'err')}});
+  signup.addEventListener('click',async()=>{if(signUpBusy)return;try{signUpBusy=true;signup.disabled=true;signup.textContent='Creating account…';setAuthStatus('Checking the instructor roster and creating your centralized student account…');const data=await centralizedStudentAuth('register');await applyCentralSession(data);}catch(e){setAuthStatus(e.message||String(e),'err')}finally{signUpBusy=false;signup.disabled=false;signup.textContent='Create account'}});
+  signout.addEventListener('click',async()=>{await sb.auth.signOut();await bootstrapStudent();});
+  sb.auth.onAuthStateChange((event,session)=>{signedInUser=session?.user||null;if(event==='SIGNED_IN'||event==='TOKEN_REFRESHED'||event==='USER_UPDATED'||event==='SIGNED_OUT')setTimeout(()=>bootstrapStudent(),0)});
+  setParticipationGate(false);sb.auth.getSession().then(({data})=>{signedInUser=data.session?.user||null;bootstrapStudent();});
 })();
 
 // wire up every track toggle rendered above, and mount the hero/rail ones
@@ -2643,49 +2650,5 @@ wireTrackToggles();
 
 </script>
 
-<script id="mg628-recovery-v3">
-/* Non-destructive restore before the original lab start handler.
-   A Student ID is never used to retrieve another browser's private cloud record. */
-(()=>{
- const WEEK='01', ENDPOINT='https://irnrjzeejalbbqdrbzmj.supabase.co/functions/v1/guest-participation-api';
- const FLAG='__mg628RecoveryBypass'+WEEK;
- async function call(action,extra){const r=await fetch(ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action,...extra})});const v=await r.json();if(!r.ok||v.error)throw Error(v.error||'HTTP '+r.status);return v}
- const status=document.createElement('div');status.id='recoveryStatusWeek'+WEEK;status.setAttribute('role','status');status.style.cssText='font:14px/1.5 Arial,sans-serif;background:#eef7f4;border-left:4px solid #13735f;padding:10px;margin:10px 0';status.textContent='Recovery check available when you start.';
- const btn=document.getElementById('guest-start');if(!btn)return;btn.parentElement.appendChild(status);
- btn.addEventListener('click',async event=>{
-  if(window[FLAG]){window[FLAG]=false;return}
-  event.preventDefault();event.stopImmediatePropagation();
-  let key='',identity='';
-  try{
-   key=GUEST_STORE;identity=document.getElementById('auth-student-id')?.value.trim()||'';
-  }catch(_e){}
-  // If user has not yet entered an ID, let original validation show its message.
-  if(identity&&key){
-    const tokenKeys=[key+':token',key+'-token'];
-    if(WEEK==='04')tokenKeys.unshift(key+'-token');
-    if(WEEK==='01'){try{const old=JSON.parse(localStorage.getItem(key)||'null');if(old?.token)tokenKeys.unshift('__inline:'+old.token)}catch(_e){}}
-    let tok='';for(const k of tokenKeys){if(k.startsWith('__inline:'))tok=k.slice(9);else tok=localStorage.getItem(k)||sessionStorage.getItem(k)||'';if(tok)break}
-    if(tok){
-      try{const result=await call('load',{guest_token:tok});const remote=result.draft?.payload||result.payload||null;
-        const local=JSON.parse(localStorage.getItem(key)||'null');
-        if(remote&&typeof remote==='object'){
-          const remoteId=remote.student_id||remote.identity?.student_id||remote.identity?.institutional_id||remote.id||'';
-          if(remoteId&&String(remoteId)!==identity)throw Error('Identity mismatch: cloud draft not applied');
-          const localTime=Date.parse(local?.updated_at||local?.saved_at||local?.timestamp||0)||0;
-          const remoteTime=Date.parse(remote.updated_at||remote.saved_at||remote.timestamp||0)||0;
-          if((!local||String(local?.identity?.student_id||'')===identity)&&( !local||(remoteTime>0&&remoteTime>localTime) )){
-             const toStore=WEEK==='01'?{...remote,token:tok}:remote;
-             localStorage.setItem(key,JSON.stringify(toStore));status.textContent='Previous cloud progress recovered before starting.';
-          }else status.textContent='Previous local work retained (cloud is not newer).';
-          // Normalize existing saved token location so the page resumes the same draft.
-          if(WEEK!=='01')localStorage.setItem(key+':token',tok);
-        }
-      }catch(e){status.textContent='Cloud recovery unavailable; existing local work is preserved. '+e.message}
-    }else status.textContent='No earlier cloud token on this browser. Your existing local work will be retained.';
-  }
-  window[FLAG]=true;btn.click();
- },true);
-})();
-</script>
 </body>
 </html>
