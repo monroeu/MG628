@@ -73,7 +73,7 @@ pre{font-size:.88rem;overflow-x:auto;-webkit-overflow-scrolling:touch}.mock-dash
 <section class="section" id="knowledge"><h2>8. Multiple-Choice Knowledge Checks</h2><p>Correct answers unlock a teaching checkpoint. Incorrect answers get a hint without revealing the answer immediately.</p><div id="mc" class="mc-grid"></div></section>
 <section class="section" id="discussion"><h2>9. Discussion Preparation</h2>
 <div class="plain-language"><h3>How to explain visualization without sounding technical</h3><p>For the discussion, imagine you are explaining your dashboard to a manager who does not care about DAX or software menus. Start with the decision, then the evidence, then the visual.</p><ol class="beginner-steps"><li><strong>Decision:</strong> What does the manager need to decide or investigate?</li><li><strong>Evidence:</strong> What number or comparison helps answer that question?</li><li><strong>Visual:</strong> What picture makes the comparison easiest to understand?</li><li><strong>Limitation:</strong> What could make the result incomplete or misleading?</li></ol></div><p class="lead">The Week 6 discussion asks how Power BI or Tableau can turn raw data into strategic insight, and what can undermine the accuracy or relevance of those visuals.</p><div class="grid2"><label>Decision scenario<textarea data-answer="W6-DISC01" rows="5" placeholder="In your major, identify the decision-maker, the decision, one KPI, the most useful visual, the insight it could reveal, and one accuracy/relevance risk."></textarea></label><div class="optional"><h3>Optional Business/MBA extension</h3><p>No separate formal MBA Week 6 assignment specification was supplied. For discussion practice only, use the customer-segmentation CSV to consider an <strong>Annual Income vs Spending Score</strong> scatter plot, regional customer counts, and loyalty-status composition.</p><a class="btn" href="data/business/Customer_Segmentation_Data.csv" download>Download optional customer segmentation data</a></div></div></section>
-<section class="section" id="submit"><h2>10. Reflection & Verified Participation</h2><label>Required reflection<textarea data-answer="W6-REF01" rows="5" placeholder="Which visual in your major's Week 6 assignment is most decision-useful, what evidence will it display, and what limitation must you communicate before a manager acts on it?"></textarea></label><div class="actions"><button class="primary" id="generate" disabled>Generate participation record</button><button id="copy" disabled>Copy</button><button id="download" disabled>Download PDF</button></div><pre id="submission" class="submission">Complete the required work to generate a verified Week 6 receipt.</pre></section>
+<section class="section" id="submit"><h2>10. Reflection & Verified Participation</h2><label>Required reflection<textarea data-answer="W6-REF01" rows="5" placeholder="Which visual in your major's Week 6 assignment is most decision-useful, what evidence will it display, and what limitation must you communicate before a manager acts on it?"></textarea></label><div class="actions"><button class="primary" id="generate" disabled>Generate participation record</button><button id="copy" disabled>Copy</button><button id="download" disabled>Download verified PDF</button><button type="button" id="downloadAny" class="primary">Download My Work (PDF) — Anytime</button></div><pre id="submission" class="submission">Complete the required work to generate a verified Week 6 receipt.</pre></section>
 </main></div><footer><div class="wrap"><strong>MG628 · Week 6</strong> · Data Visualization & Dashboard Decision-Making</div></footer>
 <script>
 const SUPABASE_URL='https://irnrjzeejalbbqdrbzmj.supabase.co';
@@ -125,6 +125,54 @@ MC score: ${r.completion.score_percentage??'pending'}%
 Status: ${r.completion.status}
 Verification: ${r.completion.verification_code||'pending'}
 Recorded: ${new Date().toLocaleString()}`;$('#copy').disabled=$('#download').disabled=false;setAuth(r.completion.status==='complete'?'Week 6 participation verified by Supabase.':'Your work is saved, but required Week 6 items remain incomplete.',r.completion.status==='complete'?'ok':'bad')}catch(e){setAuth(errMsg(e),'bad')}}
+
+ // Unified PDF download: works at 0% and does not require the live-practice gate.
+ // The authenticated resume endpoint provides the authoritative saved answers.
+ async function downloadAnyStage(){
+  const button=$('#downloadAny');button.disabled=true;
+  try{
+   let saved=null;
+   if(session?.id&&offering?.id){
+    // Read-only snapshot, no recalculate/finalize call, and no grade mutation.
+    try{saved=await api({action:'resume_session',offering_id:offering.id})}
+    catch(e){console.warn('Cloud snapshot unavailable; using current page responses:',e)}
+   }
+   const c=saved?.completion||completion||{};
+   const sc=new Set(saved?.card_keys||[]);
+   const answers=new Map((saved?.knowledge_responses||[]).map(x=>[String(x.question_key),x]));
+   const written=new Map((saved?.worksheet_responses||[]).map(x=>[String(x.question_key),x]));
+   const cards=CARDS.map(item=>({key:item.key,title:item.title,visited:sc.size?sc.has(item.key):!!document.querySelector('[data-card-key="'+item.key+'"].flipped')}));
+   const mcqs=MC.map(q=>{
+    const cloud=answers.get(q.key),dom=document.querySelector('input[name="'+q.key+'"]:checked');
+    const selected=cloud?.selected_answer??dom?.value??'';
+    return {key:q.key,prompt:q.prompt,selected:selected?(q.options[selected]||selected):'Not answered',correctness:cloud?.is_correct??(selected?selected===q.correct:null)};
+   });
+   const textActivities=$$('[data-answer]').map(el=>({key:el.dataset.answer,prompt:el.closest('label')?.textContent?.trim().slice(0,130)||el.dataset.answer,response:written.get(el.dataset.answer)?.response_text??el.value??''}));
+   const tr=session?.track||trackValue(),defs=[...LIVE.shared,...(tr==='health'?LIVE.health:tr==='business'?LIVE.business:[])];
+   const exercises=defs.map(d=>({key:d.key,title:d.title,status:String(written.get(d.key)?.response_text||'').startsWith('PASSED|week06-live')||livePassed.has(d.key)?'Passed / recorded':'Not yet recorded'}));
+   const completionNum=c.completion_percentage;
+   const data={
+    course:'MG628',lab:'Week 6 — Data Visualization & Dashboard Decision-Making',
+    student_name:user?.full_name||'Not signed in',student_id:user?.institutional_id||$('#studentId').value.trim()||'Not signed in',
+    section:offering?.section?.section_code||$('#authSummary').textContent?.match(/MG628-([A-Za-z0-9]+)/)?.[1]||'',
+    term:offering?.section?.term?.name||'Fall 2026',status:session?.status||c.status||(session?'In progress':'Not signed in'),
+    completion_percent:completionNum??null,grade:c.participation_grade??null,
+    verification_code:c.verification_code||'',
+    cards_summary:cards.filter(a=>a.visited).length+'/'+cards.length,
+    mcq_summary:mcqs.filter(a=>a.selected!=='Not answered').length+'/'+mcqs.length,
+    written_summary:textActivities.filter(a=>String(a.response).trim()).length+'/'+textActivities.length,
+    exercise_summary:exercises.filter(a=>a.status.startsWith('Passed')).length+'/'+exercises.length,
+    cards,mcqs,written:textActivities,exercises,
+    time_note:'Cumulative active time not tracked by this lab; no duration asserted',
+    notes:saved?'Student activity restored from Supabase.':'Current browser snapshot; server snapshot not available or student not signed in.'
+   };
+   if(!window.MonroeParticipationPDF)throw new Error('Shared PDF reporter missing. Verify ../shared/participation-pdf.js is published.');
+   window.MonroeParticipationPDF.download(data);
+   setAuth('Your participation PDF was generated. Downloading does not submit or finalize your assignment.','ok');
+  }catch(e){setAuth('PDF download failed: '+errMsg(e),'bad')}
+  finally{button.disabled=false}
+ }
+ $('#downloadAny').addEventListener('click',downloadAnyStage);
 $('#generate').onclick=finalize;$('#copy').onclick=()=>navigator.clipboard.writeText($('#submission').textContent);$('#download').onclick=()=>{const {jsPDF}=window.jspdf,doc=new jsPDF({unit:'pt',format:'letter'});doc.setFont('helvetica','bold');doc.setFontSize(16);doc.text('MG628 Week 6 Participation',54,58);doc.setFont('helvetica','normal');doc.setFontSize(11);doc.text(doc.splitTextToSize($('#submission').textContent,500),54,88);doc.save('MG628_Week6_Participation.pdf')};
 renderCards();renderMC();renderLive();
 // Mobile-first navigation: populate the compact jump menu from the actual page sections.
