@@ -1,0 +1,21 @@
+/* Monroe standard login presentation: visual layer only, no authentication override. */
+.monroe-login-standard{background:#fbfaf4!important;color:#122019!important;border:1px solid #27816b!important;border-radius:5px!important;padding:18px!important;box-shadow:none!important;max-width:100%;font-family:Arial,Helvetica,sans-serif!important}
+.monroe-login-standard h2,.monroe-login-standard h3{font-family:Georgia,serif!important;font-size:1.2rem!important;color:#102b26!important;margin:0 0 10px!important}
+.monroe-login-standard .monroe-login-explainer{font-size:.9rem;line-height:1.55;margin:0 0 12px}
+.monroe-login-standard input[type=text],.monroe-login-standard input[type=password],.monroe-login-standard input:not([type]){font-size:16px!important;min-height:44px!important;border-radius:0!important;max-width:100%!important}
+.monroe-login-standard button{min-height:40px;border-radius:0!important;font-size:.87rem!important}
+.monroe-login-standard .monroe-login-fields{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:14px!important}
+.monroe-login-standard .monroe-login-fields>div,.monroe-login-standard .monroe-login-fields>label{min-width:0}
+.monroe-login-standard .monroe-login-fields label{display:block;font-size:.9rem;font-weight:700;margin-bottom:5px}
+.monroe-login-standard .monroe-login-fields input{display:block;width:100%!important}
+.monroe-login-standard .monroe-login-buttons{display:flex!important;flex-wrap:wrap;gap:8px;align-items:center;margin:10px 0}
+.monroe-login-standard .monroe-login-recovery{margin:10px 0;font-size:.85rem}
+.monroe-login-standard .monroe-login-recovery a{color:#075b49!important;text-decoration:underline!important;font-weight:700}
+.monroe-login-standard .monroe-login-recovery small{display:block;color:#53645a;margin-top:3px}
+.monroe-login-standard .monroe-login-roster{background:#dcebe5;border-left:4px solid #1c7963;margin-top:12px;padding:10px 12px;overflow-wrap:anywhere}
+.monroe-login-standard .monroe-login-roster-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:8px}
+.monroe-login-standard .monroe-login-roster-label{display:block;font-size:.66rem;color:#52675d;text-transform:uppercase;letter-spacing:.04em}
+.monroe-login-standard .monroe-login-roster-value{display:block;font-size:.87rem;font-weight:700}
+.monroe-login-standard .monroe-login-verified{font-size:.7rem;color:#0d604a;background:#fff;border:1px solid #7bac9b;padding:3px 8px;border-radius:18px;display:inline-block}
+.monroe-login-standard .monroe-login-progress{background:#e5eff0;border-left:4px solid #2e716d;padding:9px 11px;font-size:.82rem;margin-top:8px}
+@media(max-width:600px){.monroe-login-standard{padding:14px!important}.monroe-login-standard .monroe-login-fields,.monroe-login-standard .monroe-login-roster-grid{grid-template-columns:1fr!important}.monroe-login-standard button{min-height:44px}}
