@@ -1,18 +1,32 @@
-/* Monroe University centralized active study time v1.2.
-   Credits foreground, recently interactive time only. Server remains authoritative. */
+/* Monroe University centralized active study time v1.3.
+   Credits foreground, recently interactive time only. Server remains authoritative.
+   Changes from v1.2 (same server API, same request format):
+   1. Keeps the time that passes while a heartbeat is in flight (v1.2 dropped it every 15 s).
+   2. Carries fractions of a second forward instead of discarding them (v1.2 rounded down every 15 s).
+   3. On the tick that detects 90 s of inactivity, credits the time up to the idle boundary.
+   4. If a heartbeat fails, keeps up to 60 s of earned time and resends it (max 20 s per request).
+   5. Optional config.engaged(): return true while the student is genuinely engaged without
+      touching the page (e.g. narration audio playing in the visible tab). Pages that use it
+      must also run their own presence check (see the CS650 lab).
+   6. Only one tab per session earns time; a second open tab cannot double-count.
+   7. Uses a monotonic clock, so changing the computer's clock cannot add or remove time. */
 (function (root) {
   'use strict';
   const BASE = 'https://irnrjzeejalbbqdrbzmj.supabase.co/functions/v1/participation-active-time';
-  const STEP = 15000, IDLE = 90000, WARN = 60000, MAX_GAP = 30000;
+  const STEP = 15000, IDLE = 90000, WARN = 60000, MAX_GAP = 30000, MAX_SEND = 20, MAX_BACKLOG = 60;
+  const mono = () => (root.performance && performance.now ? performance.now() : Date.now());
   root.MonroeActiveTime = root.MonroeActiveTime || {};
 
   function init(config) {
     if (!config || typeof config.session !== 'function' || typeof config.token !== 'function') return null;
     if (root.MonroeActiveTime.current) root.MonroeActiveTime.current.stop();
+    const engaged = typeof config.engaged === 'function' ? config.engaged : () => false;
+    const tabId = (root.crypto && crypto.randomUUID) ? crypto.randomUUID() : String(Math.random());
 
-    let lastAction = Date.now(), lastTick = Date.now(), lastUserEvent = 0;
+    let lastAction = mono(), lastTick = mono(), lastUserEvent = 0;
     let busy = false, stopped = false, awaitingInteraction = document.hidden;
     let lastSession = '', currentSeconds = null, generation = 0;
+    let earnedMs = 0;            // earned but not yet sent (includes fractions of a second)
     const panel = document.createElement('aside');
     panel.setAttribute('aria-live', 'polite');
     panel.style.cssText = 'position:fixed;right:12px;bottom:12px;z-index:99999;background:#123e32;color:white;padding:10px 14px;border-radius:8px;max-width:300px;font:13px/1.4 Arial,sans-serif;box-shadow:0 2px 8px #0003;display:none';
@@ -22,31 +36,45 @@
     warning.style.marginTop = '5px';
     panel.append(heading, warning);
     document.body.append(panel);
-
     const show = text => { warning.textContent = text; panel.style.display = 'block'; };
     const hide = () => { panel.style.display = 'none'; };
 
-    function interaction(ev) {
-      if (stopped || document.hidden || ev.isTrusted === false) return;
-      const now = Date.now();
-      if (ev.type === 'mousemove' && now - lastUserEvent < 4000) return;
-      lastUserEvent = now;
+    // ---- one earning tab per session (prevents double counting across tabs/windows) ----
+    const lockKey = id => 'monroe-active-time-owner:' + id;
+    function ownsLock(id, claim) {
+      try {
+        const raw = localStorage.getItem(lockKey(id));
+        const cur = raw ? JSON.parse(raw) : null;
+        const fresh = cur && Date.now() - cur.t < 2 * STEP;
+        if (cur && cur.tab !== tabId && fresh && !claim) return false;
+        localStorage.setItem(lockKey(id), JSON.stringify({ tab: tabId, t: Date.now() }));
+        return true;
+      } catch (_) { return true; } // storage blocked: fall back to v1.2 behaviour
+    }
+
+    function markActive(now) {
       const wasPaused = awaitingInteraction || now - lastAction >= IDLE;
-      // Never include the time spent paused or in another tab.
-      if (wasPaused) lastTick = now;
+      if (wasPaused) lastTick = now;  // never include paused or hidden time
       awaitingInteraction = false;
       lastAction = now;
       hide();
     }
-    const events = ['pointerdown', 'keydown', 'scroll', 'touchstart', 'mousemove'];
-    events.forEach(type => document.addEventListener(type, interaction, { passive: true }));
+    function interaction(ev) {
+      if (stopped || document.hidden || ev.isTrusted === false) return;
+      const now = mono();
+      if (ev.type === 'mousemove' && now - lastUserEvent < 4000) return;
+      lastUserEvent = now;
+      markActive(now);
+      const id = config.session();
+      if (id) ownsLock(id, true);      // the tab the student is using takes over earning
+    }
+    const events = ['pointerdown', 'keydown', 'scroll', 'touchstart', 'mousemove', 'wheel'];
+    events.forEach(type => document.addEventListener(type, interaction, { passive: true, capture: true }));
 
     function visibilityChange() {
-      lastTick = Date.now();
+      lastTick = mono();
       awaitingInteraction = true;
       hide();
-      // Explicitly require an interaction, even if tab was hidden for <90 seconds.
-      // In-flight heartbeat cannot accrue any hidden time because it was bounded at dispatch.
     }
     document.addEventListener('visibilitychange', visibilityChange);
 
@@ -61,70 +89,63 @@
       if (!response.ok) return null;
       return response.json();
     }
+    function publish(id, v) {
+      if (v && Number.isFinite(v.active_seconds)) {
+        currentSeconds = v.active_seconds;
+        document.dispatchEvent(new CustomEvent('monroe:active-time', { detail: { sessionId: id, seconds: currentSeconds } }));
+      }
+    }
 
     async function tick() {
-      const now = Date.now(), from = lastTick;
-      lastTick = now;
-      if (stopped || busy || document.hidden) return;
+      if (stopped || busy) return;                 // in-flight request: keep accumulating, lose nothing
+      const now = mono(), from = lastTick;
+      if (document.hidden) { lastTick = now; return; }
       const id = config.session();
-      if (!id) { lastSession = ''; currentSeconds = null; awaitingInteraction = true; return; }
+      if (!id) { lastSession = ''; currentSeconds = null; awaitingInteraction = true; earnedMs = 0; lastTick = now; return; }
       if (id !== lastSession) {
-        lastSession = id;
-        currentSeconds = null;
-        generation++;
-        // Start with a clean timestamp; old session intervals cannot transfer.
-        lastTick = now;
-        lastAction = now;
-        awaitingInteraction = document.hidden;
-        busy = true;
-        const thisGeneration = generation;
-        try {
-          const v = await request('read', 0, id);
-          if (!stopped && thisGeneration === generation && v && Number.isFinite(v.active_seconds)) {
-            currentSeconds = v.active_seconds;
-            document.dispatchEvent(new CustomEvent('monroe:active-time', { detail: { sessionId: id, seconds: currentSeconds } }));
-          }
-        } finally { busy = false; lastTick = Date.now(); }
+        lastSession = id; currentSeconds = null; generation++; earnedMs = 0;
+        lastTick = now; lastAction = now; awaitingInteraction = document.hidden;
+        busy = true; const g = generation;
+        try { const v = await request('read', 0, id); if (!stopped && g === generation) publish(id, v); }
+        catch (_) {} finally { busy = false; }
         return;
       }
-      const idle = now - lastAction;
-      if (awaitingInteraction || idle >= IDLE) {
-        awaitingInteraction = true;
+      if (!awaitingInteraction && engaged()) lastAction = now;   // e.g. narration playing in this visible tab
+      lastTick = now;
+      if (now - from > MAX_GAP || now <= from) return;            // sleep, throttling, clock oddities earn nothing
+      if (!awaitingInteraction) {
+        const idle = now - lastAction;
+        const eligibleEnd = Math.min(now, lastAction + IDLE);     // never credit past the idle boundary
+        if (eligibleEnd > from && ownsLock(id, false)) earnedMs = Math.min(earnedMs + (eligibleEnd - from), MAX_BACKLOG * 1000);
+        if (idle >= IDLE) { awaitingInteraction = true; show('Study-time credit paused. Interact with the lab to resume.'); }
+        else if (idle >= WARN) show('No activity detected. Your timer will pause after 90 seconds without interaction.');
+      } else {
         show('Study-time credit paused. Interact with the lab to resume.');
-        return;
       }
-      if (idle >= WARN) show('No activity detected. Your timer will pause after 90 seconds without interaction.');
-      // Clock jumps, sleep, and throttled intervals earn no time.
-      if (now - from > MAX_GAP || now <= from) return;
-      // Do not credit beyond the 90-second idle boundary, even on the last tick.
-      const eligibleEnd = Math.min(now, lastAction + IDLE);
-      const seconds = Math.max(0, Math.min(20, Math.floor((eligibleEnd - from) / 1000)));
+      const seconds = Math.min(MAX_SEND, Math.floor(earnedMs / 1000));
       if (!seconds) return;
-      busy = true;
-      const thisGeneration = generation;
+      busy = true; const g = generation;
       try {
         const v = await request('heartbeat', seconds, id);
-        if (!stopped && thisGeneration === generation && v && Number.isFinite(v.active_seconds)) {
-          currentSeconds = v.active_seconds;
-          document.dispatchEvent(new CustomEvent('monroe:active-time', { detail: { sessionId: id, seconds: currentSeconds } }));
-        }
-      } catch (_) { /* Network errors must not fabricate study time. */ }
-      finally { busy = false; lastTick = Date.now(); }
+        if (!stopped && g === generation && v) { earnedMs -= seconds * 1000; publish(id, v); }
+      } catch (_) { /* keep earnedMs; it is resent next tick (backlog capped at 60 s) */ }
+      finally { busy = false; }
     }
 
     const clock = setInterval(tick, STEP);
     const tracker = {
       stop() {
         if (stopped) return;
-        stopped = true;
-        generation++;
+        stopped = true; generation++;
         clearInterval(clock);
-        events.forEach(type => document.removeEventListener(type, interaction));
+        events.forEach(type => document.removeEventListener(type, interaction, { capture: true }));
         document.removeEventListener('visibilitychange', visibilityChange);
         panel.remove();
         if (root.MonroeActiveTime.current === tracker) root.MonroeActiveTime.current = null;
       },
-      getSeconds() { return currentSeconds; }
+      getSeconds() { return currentSeconds; },
+      // for pages with their own presence check: call when the student confirms they are there
+      confirmPresence() { markActive(mono()); }
     };
     root.MonroeActiveTime.current = tracker;
     return tracker;
