@@ -496,6 +496,18 @@ code{overflow-wrap:anywhere}
   .ai-coach-card .ai-label{font-weight:800}
   .ai-coach-card .ai-retry{margin-top:7px;font-style:italic}
   .ai-coach-pending{color:var(--ink-soft);font-family:var(--font-mono);font-size:12px;margin-top:8px}
+
+/* Week 1 navigation fix: the legacy sticky rail must never overlay lesson or submission. */
+@media (min-width:881px){
+  .shell{grid-template-columns:minmax(0,760px)!important;max-width:820px!important;gap:0!important;}
+  .shell>.rail{display:none!important;}
+  .shell>.hero,.shell>footer{grid-column:1!important;}
+}
+.week01-jump{border:1px solid var(--rule);background:var(--white);padding:10px 14px;margin:8px 0 24px;max-width:100%;}
+.week01-jump summary{cursor:pointer;font-weight:700;color:var(--teal);}
+.week01-jump .jump-items{display:grid;grid-template-columns:repeat(auto-fit,minmax(175px,1fr));gap:7px 12px;margin-top:12px;}
+.week01-jump a{display:block;font-size:14px;text-decoration:none;padding:5px 2px;}
+.week01-jump a:hover{text-decoration:underline;}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.4/dist/umd/supabase.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jspdf@4.2.1/dist/jspdf.umd.min.js"></script>
@@ -505,7 +517,7 @@ code{overflow-wrap:anywhere}
 .participation-status-strip{max-width:1100px;margin:10px auto 0;padding:9px 18px;display:flex;justify-content:flex-end;gap:18px;align-items:center;font-family:var(--font-mono);font-size:12px;background:rgba(251,249,241,.95);border:1px solid var(--rule)}
 .participation-status-strip .metric{display:flex;flex-direction:column;align-items:flex-end;line-height:1.1}.participation-status-strip .metric span{font-size:9px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-soft);font-weight:700}.participation-status-strip strong{font-size:14px}.saved-indicator{color:var(--ink-soft);min-width:94px;text-align:right}.saved-indicator.ok{color:var(--teal);font-weight:700}
 .central-identity{margin-top:14px;padding:13px;background:var(--teal-soft);border-left:4px solid var(--teal)}.central-identity-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-top:8px}.central-identity-grid span{display:block;font-family:var(--font-mono);font-size:10px;color:var(--ink-soft);text-transform:uppercase}.server-badge{display:inline-block;padding:3px 7px;border:1px solid #8ab7ae;background:#f4fbf8;font-family:var(--font-mono);font-size:10px;font-weight:700;border-radius:999px}.gate-note{font-size:13px;color:var(--ink-soft);margin:8px 0 0}
-.resume-strip{position:sticky;top:54px;z-index:44;max-width:760px;margin:8px auto 0;padding:9px 12px;background:#eef9fb;border:1px solid #9cc8c0;box-shadow:0 3px 10px rgba(0,0,0,.08);display:flex;align-items:center;justify-content:space-between;gap:10px}.resume-strip button{min-height:40px}.resume-strip.hidden{display:none!important}
+.resume-strip{position:relative;top:auto;z-index:2;max-width:760px;margin:8px auto 0;padding:9px 12px;background:#eef9fb;border:1px solid #9cc8c0;box-shadow:0 3px 10px rgba(0,0,0,.08);display:flex;align-items:center;justify-content:space-between;gap:10px}.resume-strip button{min-height:40px}.resume-strip.hidden{display:none!important}
 .feedback.teaching-feedback{margin-top:12px;padding:12px 14px;border-radius:6px;line-height:1.55;font-weight:500}.feedback.teaching-feedback.correct{background:#eef9f3;border:1px solid #b9dec9;color:#155c39}.feedback.teaching-feedback.incorrect{background:#fff4f2;border:1px solid #efc3bc;color:#7c2d24}.feedback .answer-label{display:block;margin-bottom:5px;font-weight:800}.feedback .why-label{font-weight:800}.teaching-cycle{border:1px solid var(--rule);background:var(--white);padding:16px 18px;margin:18px 0}.teaching-cycle strong{color:var(--teal)}.teaching-cycle ol{margin:8px 0 0;padding-left:22px}.teaching-cycle li{margin-bottom:5px}.participation-locked{opacity:.72}.participation-locked::after{content:'Sign in above to submit required participation work.';display:block;margin-top:8px;font-family:var(--font-mono);font-size:11px;color:var(--danger)}
 @media(max-width:640px){.participation-status-strip{margin:0;border-left:0;border-right:0;gap:10px;padding:8px 12px}.participation-status-strip .metric span{font-size:8px}.participation-status-strip strong{font-size:12px}.saved-indicator{min-width:72px;font-size:10px}.central-identity-grid{grid-template-columns:1fr}.resume-strip{top:0;margin:0 10px}.auth-grid{grid-template-columns:1fr}}
 </style>
@@ -515,6 +527,7 @@ code{overflow-wrap:anywhere}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="../shared/participation-pdf.js"></script>
 <script>window.MONROE_PDF_CONFIG={"course": "MG628", "week": "01", "lab": "MG628 Weeks 1–2 Participation — Decision Models & Order Quantity — MG628", "term": "Fall 2026"};</script>
+<script defer src="../shared/active-time.js"></script>
 <script defer src="../shared/participation-adapter.js"></script>
 
 <!-- Standard Monroe student-login presentation (preserves existing authentication) -->
@@ -541,7 +554,7 @@ code{overflow-wrap:anywhere}
   <div class="saved-indicator" id="stdSavedText">Not signed in</div>
 </div>
 <div style="max-width:1180px;margin:0 auto;padding:6px 16px 0;font:12px/1.45 var(--font-mono);color:var(--ink-soft)">Learning checks = 30 flip cards + 10 section self-checks. All 40 must be opened for verified completion.</div>
-<div class="resume-strip hidden" id="resumeStrip"><span><strong>Resume where you left off?</strong><br><span style="font-size:12px;color:var(--ink-soft)">Your last position on this device was saved automatically.</span></span><button class="run" id="resumeBtn" type="button">Resume</button></div>
+<div class="resume-strip hidden" id="resumeStrip"><span><strong>Resume where you left off?</strong><br><span style="font-size:12px;color:var(--ink-soft)">Your last position on this device was saved automatically.</span></span><button class="run" id="resumeBtn" type="button">Resume</button><button class="chip" id="dismissResumeBtn" type="button" aria-label="Dismiss resume reminder">Dismiss</button></div>
 
 <a class="skip-link" href="#main-content">Skip to main content</a>
 <div class="progress-fill" id="progressFill" aria-hidden="true"></div>
@@ -639,6 +652,9 @@ code{overflow-wrap:anywhere}
   </nav>
 
   <main id="main-content" tabindex="-1">
+    <details class="week01-jump" aria-label="Lesson section navigation"><summary>Jump to a lesson section</summary><div class="jump-items">
+     <a href="#lecture">00 · Lecture foundation</a><a href="#s1">01 · Perishable problem</a><a href="#s2">02 · Naming your inputs</a><a href="#s3">03 · Capping logic</a><a href="#s4">04 · Scenario analysis</a><a href="#s5">05 · Demand probabilities</a><a href="#s6">06 · Expected profit</a><a href="#s7">07 · Underage and overage</a><a href="#s8">08 · Breakeven</a><a href="#s9">09 · Beyond profit</a><a href="#study-cards">Flip cards and MCQs</a><a href="#submit">Participation and PDF</a>
+    </div></details>
     <section class="step" id="lecture">
       <div class="step-head"><span class="step-num">00</span></div>
       <h2>Lecture foundation: how managers turn data into decisions</h2>
@@ -1360,38 +1376,49 @@ code{overflow-wrap:anywhere}
     <section class="step" id="submit" style="border-top:none; padding-top:0;">
       <div class="step-head"><span class="step-num" aria-hidden="true">✓</span></div>
       <h2>Record your participation</h2>
-      <p>Sign in above before beginning. As you open required self-checks and complete each exercise, your activity is saved to the instructor-controlled Supabase database. When finished, choose <strong>Record participation</strong> to verify the authoritative server record and generate your Blackboard receipt.</p>
+      <p>Sign in above before beginning. As you open required self-checks and complete each exercise, your activity is saved to the instructor-controlled Supabase database. When finished, choose <strong>Verify completed participation</strong> to refresh your authoritative Supabase completion record. You can download your participation report at any stage.</p>
       <p id="footerProgress" style="font-family:var(--font-mono); font-size:14px;">0 / 9 exercises completed.</p>
 
-      <div class="widget" id="wSubmit">
-        <div class="widget-bar"><span>PARTICIPATION SUBMISSION</span><span>Supabase-backed · section and semester aware</span></div>
-        <div class="widget-body">
-          <div class="grid2">
-            <div class="control">
-              <label for="submit-name" style="font-weight:600; display:block; margin-bottom:6px;">Your name <span style="font-weight:400;color:var(--ink-soft)">(from roster)</span></label>
-              <input type="text" id="submit-name" autocomplete="name" required style="width:100%; font-family:var(--font-body); font-size:15px; border:1px solid var(--ink); background:var(--paper); padding:9px 11px;">
-            </div>
-            <div class="control">
-              <label for="submit-email" style="font-weight:600; display:block; margin-bottom:6px;">School email <span style="font-weight:400;color:var(--ink-soft)">(from roster)</span></label>
-              <input type="email" id="submit-email" autocomplete="email" required placeholder="student@example.edu" style="width:100%; font-family:var(--font-body); font-size:15px; border:1px solid var(--ink); background:var(--paper); padding:9px 11px;">
-            </div>
-          </div>
-          <div class="presets">
-            <button class="run" id="submit-direct" type="button">Record participation</button>
-            <button class="chip" id="submit-receipt" type="button" disabled>Download Blackboard Receipt PDF</button>
-            <button class="chip" id="submit-generate" type="button">Generate personal copy</button>
-            <button class="chip" id="submit-copy" type="button" disabled>Copy personal copy</button>
-            <button class="chip" id="submit-download" type="button" disabled>Download Participation PDF</button>
-          </div>
-          <div class="feedback" id="submit-feedback" aria-live="polite" style="margin-top:10px;"></div>
-          <div id="receiptPanel" hidden class="box health" style="margin-top:14px;">
-            <span class="tag">BLACKBOARD RECEIPT READY</span>
-            <p id="receiptText" style="margin-bottom:0;"></p>
-          </div>
-          <div id="footerCode" hidden style="margin-top:14px;">
-            <label for="submit-output" style="font-weight:600; display:block; margin-bottom:6px;">Your submission text (copyable backup)</label>
-            <textarea id="submit-output" readonly style="width:100%; min-height:220px; font-family:var(--font-mono); font-size:13px; border:1px solid var(--ink); background:var(--paper); padding:12px;"></textarea>
-          </div>
+<style>
+.w12-receipt{background:#fff;border:1px solid #d9e4ed;border-radius:14px;box-shadow:0 5px 22px #10233c12;padding:24px;margin:22px 0;font:14px/1.55 Arial,sans-serif;color:#203345}
+.w12-receipt h3{font:700 22px Georgia,serif;color:#064b3a;margin:0 0 12px}
+.w12-receipt p{margin:7px 0 12px}.w12-receipt-notice{border-left:3px solid #cf9b33;background:#fff8ed;padding:10px;margin:13px 0}
+.w12-receipt-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin:12px 0}
+.w12-receipt-grid>div{border:1px solid #d7e4df;border-radius:7px;padding:9px 10px;background:#fafcfb;overflow-wrap:anywhere}
+.w12-receipt-grid small{display:block;font:700 10px Arial,sans-serif;color:#075d4d;letter-spacing:.04em}
+.w12-receipt-grid span{display:block;margin-top:3px;font:13px Arial,sans-serif}
+.w12-receipt-download{border:1px solid #b7d6cc;background:#f0f8f4;padding:11px;border-radius:3px;margin:13px 0}
+.w12-receipt-download p{font-size:11px;margin:5px 0 0}.w12-receipt-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.w12-receipt .feedback:empty{display:none}
+@media(max-width:520px){.w12-receipt{padding:15px}.w12-receipt-grid{grid-template-columns:1fr}}
+</style>
+      <div class="w12-receipt" id="wSubmit">
+        <h3>Participation Receipt</h3>
+        <p>When all required Weeks 1–2 items are complete, verify your recorded participation. Your Supabase record remains the authoritative record. You may download your work at any stage.</p>
+        <div id="w12-receipt-notice" class="w12-receipt-notice">Sign in to view your saved participation status.</div>
+        <div class="w12-receipt-grid" aria-label="Student participation details">
+          <div><small>STUDENT</small><span id="w12-receipt-student">Not signed in</span></div>
+          <div><small>STUDENT ID</small><span id="w12-receipt-id">—</span></div>
+          <div><small>TRACK</small><span id="w12-receipt-track">—</span></div>
+          <div><small>STATUS</small><span id="w12-receipt-status">NOT STARTED</span></div>
+          <div><small>COMPLETION</small><span id="w12-receipt-completion">0%</span></div>
+          <div><small>VERIFICATION</small><span id="w12-receipt-verification">Pending completion</span></div>
+        </div>
+        <div id="mg628-anytime-pdf" class="w12-receipt-download">
+          <div id="mg628-anytime-pdf-target"></div>
+          <p id="mg628-anytime-pdf-help" role="status">Preparing the anytime PDF report…</p>
+        </div>
+        <div class="w12-receipt-actions">
+          <button class="run" id="submit-direct" type="button">Generate Receipt</button>
+          <button class="chip" id="w12-print" type="button" onclick="window.print()">Print / Save PDF</button>
+        </div>
+        <div class="feedback" id="submit-feedback" aria-live="polite"></div>
+        <div id="receiptPanel" hidden class="box health" style="margin-top:14px;"><span class="tag">VERIFIED RECEIPT READY</span><p id="receiptText"></p></div>
+        <div hidden aria-hidden="true">
+          <input id="submit-name"><input id="submit-email">
+          <button id="submit-receipt" disabled></button><button id="submit-generate"></button>
+          <button id="submit-copy" disabled></button><button id="submit-download" disabled></button>
+          <textarea id="submit-output"></textarea><div id="footerCode" hidden></div>
         </div>
       </div>
     </section>
@@ -1414,6 +1441,24 @@ const ASSIGNMENT_CODE = 'ORDER_QUANTITY_WEEKS_1_2';
 const ASSIGNMENT_SLUG = 'order-quantity-weeks-1-2';
 const ASSIGNMENT_VERSION = 2; // preserved so existing published offering and saved work continue to match
 const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+// Shared 90-second inactivity tracker. Session IDs always come from the authenticated
+// participation-api response, never from editable page inputs or localStorage.
+(function connectMonroeStudyTime(){
+  const start=()=>{
+    if(!window.MonroeActiveTime?.init || window.MonroeActiveTime.current) return;
+    window.MonroeActiveTime.init({
+      session:()=>rosterVerified && signedInUser && backendSession ? backendSession.id : null,
+      token:async()=>{
+        if(!rosterVerified || !signedInUser || !backendSession) return null;
+        const {data,error}=await sb.auth.getSession();
+        return error ? null : (data?.session?.access_token||null);
+      }
+    });
+  };
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',start,{once:true});
+  else start();
+})();
+
 let backendSession=null, backendOffering=null, backendCompletion=null, signedInUser=null;
 const participationSeenCards=new Set(), syncTimers=new Map();
 const SELF_CHECK_KEYS=['SELF-01','SELF-02','SELF-03','SELF-04','SELF-05','SELF-06','SELF-07','SELF-08','SELF-09A','SELF-09B'];
@@ -1487,7 +1532,23 @@ function teachingFeedbackHtml(q,response){
   return '<span class="answer-label">'+head+'</span><span class="why-label">Teaching explanation:</span> '+(lesson.why||response.explanation||'Review the concept above.')+'<br><br><span class="why-label">Why the other choices do not fit:</span> '+(lesson.others||'Compare each alternative with the managerial rule above.')+'<br><br><span class="why-label">Remember:</span> '+(lesson.remember||'Explain the rule in words before writing the formula.');
 }
 function exerciseTeachingHint(id){return EXERCISE_TEACHING[id]||'';}
-function offerResume(){if(!signedInUser)return;const raw=localStorage.getItem('mg628:w12:scroll:'+signedInUser.id);if(!raw)return;try{const y=Number(JSON.parse(raw).y||0);if(y>650){const strip=document.getElementById('resumeStrip');strip.classList.remove('hidden');document.getElementById('resumeBtn').onclick=()=>{window.scrollTo({top:y,behavior:'smooth'});strip.classList.add('hidden')}}}catch(_){}}
+function offerResume(){
+ if(!signedInUser)return;
+ const strip=document.getElementById('resumeStrip');
+ const key='mg628:w12:scroll:'+signedInUser.id;
+ const raw=localStorage.getItem(key);
+ if(!raw||!strip)return;
+ try{
+  const y=Number(JSON.parse(raw).y||0);
+  if(y<=650)return;
+  strip.classList.remove('hidden');
+  const dismiss=()=>strip.classList.add('hidden');
+  document.getElementById('resumeBtn').onclick=()=>{dismiss();window.scrollTo({top:y,behavior:'smooth'});};
+  document.getElementById('dismissResumeBtn').onclick=dismiss;
+  const onScroll=()=>{if(window.scrollY>200){dismiss();window.removeEventListener('scroll',onScroll);}};
+  window.addEventListener('scroll',onScroll,{passive:true});
+ }catch(_){}
+}
 window.addEventListener('scroll',()=>{clearTimeout(scrollSaveTimer);scrollSaveTimer=setTimeout(()=>{if(signedInUser)localStorage.setItem('mg628:w12:scroll:'+signedInUser.id,JSON.stringify({y:window.scrollY,at:Date.now()}))},400)},{passive:true});
 
 async function invokeParticipation(body){const {data,error}=await sb.functions.invoke('participation-api',{body});if(error)throw error;if(data?.error)throw new Error(data.error);return data;}
@@ -1516,6 +1577,54 @@ function exercisePromptText(id){const box=document.getElementById(id);if(!box)re
 function setAuthStatus(message,kind=''){const el=document.getElementById('auth-status');if(!el)return;el.textContent=message;el.className='auth-status'+(kind?' '+kind:'');}
 function renderServerProgress(c){backendCompletion=c||backendCompletion;const el=document.getElementById('server-progress');if(!el)return;if(!backendCompletion){el.hidden=true;standardProgress();return;}el.hidden=false;el.innerHTML='Server record: <strong>'+String(backendCompletion.completion_percentage??0)+'%</strong> · learning checks '+String(backendCompletion.cards_completed??backendCompletion.study_cards_completed??0)+'/'+String(backendCompletion.cards_required??backendCompletion.study_cards_required??STANDARD_TOTAL_CARDS)+' · MC '+String(backendCompletion.questions_answered??0)+'/'+String(backendCompletion.questions_required??STANDARD_TOTAL_QUESTIONS)+' ('+String(backendCompletion.questions_correct??0)+' first-attempt correct) · exercises '+(backendCompletion.worksheet_completed?'complete':'in progress')+' · reflection '+(backendCompletion.reflection_completed?'complete':'in progress')+' · status <strong>'+String(backendCompletion.status||'incomplete').toUpperCase()+'</strong>';standardProgress();}
 async function startBackendSession(){if(!signedInUser||!backendOffering)return;const r=await invokeParticipation({action:'start_session',offering_id:backendOffering.id,track:currentTrack});backendSession=r.session;backendCompletion=r.completion;renderServerProgress(r.completion);for(const key of participationSeenCards)await recordSelfCheck(key,true);if(typeof EXERCISE_DEFS!=='undefined')for(const d of EXERCISE_DEFS)if(exerciseState[d.id]?.done)await syncExerciseNow(d.id);}
+
+/* Authenticated report bridge: populated from this lab's existing Supabase session.
+   No grades are calculated or altered by reporting. */
+window.MonroeReportContext = async function(){
+  if (!rosterVerified || !signedInUser || !backendSession?.id) {
+    throw new Error('Sign in and wait for roster verification before downloading a verified report.');
+  }
+  const {data:authData,error:authError}=await sb.auth.getSession();
+  if(authError || !authData?.session?.access_token) throw new Error('Session expired. Please sign in again.');
+  const token=authData.session.access_token;
+  const response=await fetch(SUPABASE_URL+'/functions/v1/participation-active-time',{
+    method:'POST',
+    headers:{'Content-Type':'application/json','apikey':SUPABASE_PUBLISHABLE_KEY,'Authorization':'Bearer '+token},
+    body:JSON.stringify({action:'read',session_id:backendSession.id})
+  });
+  const time=await response.json().catch(()=>null);
+  if(!response.ok || time?.error)throw new Error('Cannot verify server study time: '+(time?.error||response.status));
+  const enrolledId=document.getElementById('ai-student-id')?.textContent?.trim();
+  const enteredId=document.getElementById('auth-student-id')?.value?.trim();
+  const actualId=(enrolledId&&!/^(roster verified|—)$/i.test(enrolledId))?enrolledId:
+    ((enteredId&&/^\d{4,15}$/.test(enteredId))?enteredId:null);
+  const completion=backendCompletion||{};
+  const savedKeys=new Set(participationSeenCards);
+  const cards=[...document.querySelectorAll('.study-flip[data-card-key]')];
+  const exerciseItems=(typeof EXERCISE_DEFS!=='undefined'?EXERCISE_DEFS:[]).map(def=>({
+    key:def.id,title:document.querySelector('#'+def.id+' label')?.textContent?.trim()?.slice(0,140)||def.id,
+    status:exerciseState?.[def.id]?.done?'Response saved — validation not confirmed':'No completed response saved'
+  }));
+  return {
+    student_name:document.getElementById('ai-student')?.textContent?.trim()||'Roster-verified student',
+    student_id:actualId||'Unavailable in verified roster',
+    section:document.getElementById('ai-section')?.textContent?.trim()||'Not reported',
+    term:document.getElementById('ai-term')?.textContent?.trim()||'Not reported',
+    status:String(completion.status||'incomplete').toUpperCase(),
+    completion_percent:Number.isFinite(Number(completion.completion_percentage))?Number(completion.completion_percentage):null,
+    grade:completion.participation_grade??null,
+    active_time_seconds:time?.measurement==='tracked'&&Number.isSafeInteger(time.active_seconds)?time.active_seconds:null,
+    active_time_verified:time?.measurement==='tracked'&&Number.isSafeInteger(time.active_seconds),
+    active_time_source:time?.measurement==='tracked'?'supabase':null,
+    cards:cards.map((el,i)=>({key:el.dataset.cardKey,title:el.querySelector('.study-front h3')?.textContent?.trim()||'Card '+(i+1),visited:savedKeys.has(el.dataset.cardKey)})),
+    cards_summary:cards.length?(cards.filter(el=>savedKeys.has(el.dataset.cardKey)).length+'/'+cards.length):'Not detected',
+    exercises:exerciseItems,
+    exercise_summary:exerciseItems.length?(exerciseItems.filter(el=>el.status.startsWith('Response saved')).length+'/'+exerciseItems.length+' responses saved (not independently validated)'):'Not detected',
+    mcq_summary:(completion.questions_answered==null?'Not reported':String(completion.questions_answered)+'/'+String(completion.questions_required??15)),
+    notes:'Cumulative active time and completion information were retrieved using this student’s authenticated Supabase session. Saved exercise responses are not equivalent to validated completion. This PDF does not submit or change grades.'
+  };
+};
+
 function restoreExerciseFromServer(item){
   if(!item?.question_key)return;
   const id=String(item.question_key).toLowerCase(),def=(typeof EXERCISE_DEFS!=='undefined'?EXERCISE_DEFS.find(d=>d.id===id):null);
@@ -2034,7 +2143,7 @@ function completionGapMessage(c){
   let signedReceipt=null;
   const doneCount=()=>EXERCISE_DEFS.filter(d=>exerciseState[d.id]?.done).length;
   function buildText(){let lines=['MG628 — Order Quantity Tutorial — Personal Copy','Name: '+(nameInput.value.trim()||'(name not entered)'),'Email: '+(emailInput.value.trim()||'(email not entered)'),'Scenario used: '+TRACKS[currentTrack].name+' ('+TRACKS[currentTrack].label+')','Generated: '+new Date().toLocaleString(),'Exercises completed: '+doneCount()+' / '+EXERCISE_DEFS.length,''];EXERCISE_DEFS.forEach((d,i)=>{const st=exerciseState[d.id];lines.push('Exercise '+(i+1)+': '+(st?.done?'COMPLETE':'not completed'));lines.push(st?.summary?'  '+st.summary.replace(/\n/g,'\n  '):'  (no answer recorded)');lines.push('');});return lines.join('\n');}
-  directBtn.addEventListener('click',async()=>{if(!signedInUser||!backendSession){feedback.textContent='Sign in at the top of the page and wait for your roster to be verified before recording participation.';feedback.className='feedback incorrect';return;}directBtn.disabled=true;directBtn.textContent='Verifying server record…';try{for(const d of EXERCISE_DEFS)await syncExerciseNow(d.id);for(const key of participationSeenCards)await recordSelfCheck(key,true);const r=await invokeParticipation({action:'recalculate_completion',session_id:backendSession.id});backendCompletion=r.completion;renderServerProgress(r.completion);if(r.completion.status!=='complete')throw new Error('Server record is '+r.completion.completion_percentage+'% complete: '+completionGapMessage(r.completion)+'.');signedReceipt={session_id:backendSession.id,verification_code:r.completion.verification_code,received_at_iso:r.completion.completed_at||r.completion.calculated_at,course:COURSE_CODE,assignment:ASSIGNMENT_CODE,student_name:nameInput.value.trim()||signedInUser.user_metadata?.full_name||'',student_email:signedInUser.email||''};receiptText.innerHTML='<strong>Session:</strong> <code>'+signedReceipt.session_id+'</code><br><strong>Verification:</strong> <code>'+signedReceipt.verification_code+'</code><br><strong>Recorded:</strong> '+new Date(signedReceipt.received_at_iso).toLocaleString();receiptPanel.hidden=false;receiptBtn.disabled=false;feedback.textContent='Participation verified by Supabase. Download the Blackboard receipt below.';feedback.className='feedback correct';directBtn.textContent='Participation verified';}catch(e){feedback.textContent=e.message||String(e);feedback.className='feedback incorrect';directBtn.disabled=false;directBtn.textContent='Record participation';}});
+  directBtn.addEventListener('click',async()=>{if(!signedInUser||!backendSession){feedback.textContent='Sign in at the top of the page and wait for your roster to be verified before recording participation.';feedback.className='feedback incorrect';return;}directBtn.disabled=true;directBtn.textContent='Verifying server record…';try{for(const d of EXERCISE_DEFS)await syncExerciseNow(d.id);for(const key of participationSeenCards)await recordSelfCheck(key,true);const r=await invokeParticipation({action:'recalculate_completion',session_id:backendSession.id});backendCompletion=r.completion;renderServerProgress(r.completion);if(r.completion.status!=='complete')throw new Error('Server record is '+r.completion.completion_percentage+'% complete: '+completionGapMessage(r.completion)+'.');signedReceipt={session_id:backendSession.id,verification_code:r.completion.verification_code,received_at_iso:r.completion.completed_at||r.completion.calculated_at,course:COURSE_CODE,assignment:ASSIGNMENT_CODE,student_name:nameInput.value.trim()||signedInUser.user_metadata?.full_name||'',student_email:signedInUser.email||''};receiptText.innerHTML='<strong>Session:</strong> <code>'+signedReceipt.session_id+'</code><br><strong>Verification:</strong> <code>'+signedReceipt.verification_code+'</code><br><strong>Recorded:</strong> '+new Date(signedReceipt.received_at_iso).toLocaleString();receiptPanel.hidden=false;receiptBtn.disabled=false;feedback.textContent='Participation verified by Supabase. Use the participation report above for your standardized PDF receipt.';feedback.className='feedback correct';directBtn.textContent='Participation verified';}catch(e){feedback.textContent=e.message||String(e);feedback.className='feedback incorrect';directBtn.disabled=false;directBtn.textContent='Verify completed participation';}});
   function pdfReady(){return !!(window.jspdf&&window.jspdf.jsPDF);}
   function safeFilePart(v){return String(v||'student').replace(/[^a-z0-9]+/gi,'-').replace(/^-+|-+$/g,'').toLowerCase()||'student';}
   function addWrapped(doc,text,x,y,maxWidth,lineHeight=5){
@@ -2659,6 +2768,46 @@ wireTrackToggles();
   });
 })();
 
+</script>
+<script>
+/* Place the existing shared anytime-PDF control in the visible submission area.
+   The adapter remains responsible for collecting the report and verified time. */
+(function(){
+ function refreshReceipt(){
+   const value=(id,fallback='—')=>{const v=document.getElementById(id)?.textContent?.trim();return v&&v!=='—'?v:fallback};
+   const put=(id,val)=>{const e=document.getElementById(id);if(e)e.textContent=String(val)};
+   const c=typeof backendCompletion!=='undefined'?backendCompletion:null;
+   const user=typeof signedInUser!=='undefined'?signedInUser:null;
+   const active=!!(typeof backendSession!=='undefined'&&backendSession&&user);
+   put('w12-receipt-student',active?value('ai-student',user?.user_metadata?.full_name||'Roster verified'):'Not signed in');
+   put('w12-receipt-id',active?value('ai-student-id','Roster verified'):'—');
+   put('w12-receipt-track',active?(typeof currentTrack!=='undefined'&&currentTrack==='health'?'Healthcare / Flu Clinic':'Business / Coffee Shop'):'—');
+   put('w12-receipt-status',active?String(c?.status||(c?'IN PROGRESS':'STARTED')).toUpperCase():'NOT STARTED');
+   put('w12-receipt-completion',active&&c?String(c.completion_percentage??0)+'%':'0%');
+   put('w12-receipt-verification',active&&c?.verification_code?c.verification_code:'Pending completion');
+   const note=document.getElementById('w12-receipt-notice');
+   if(note)note.textContent=!active?'Sign in to view your saved participation status.':c?.status==='complete'?'Your participation is complete and verified by Supabase.':'Complete the required learning checks, MCQs and exercises to generate a verified receipt. You may download your work now.';
+ }
+ window.updateW12Receipt=refreshReceipt;
+ const oldProgress=window.renderServerProgress;
+ if(typeof oldProgress==='function')window.renderServerProgress=function(...args){const result=oldProgress.apply(this,args);refreshReceipt();return result};
+ document.addEventListener('change',()=>refreshReceipt());
+ setInterval(refreshReceipt,2500);
+ function placePdf(){
+   const target=document.getElementById('mg628-anytime-pdf-target');
+   const existing=document.querySelector('[data-pdf-report-ui]');
+   const status=document.getElementById('mg628-anytime-pdf-help');
+   if(target&&existing){
+     target.appendChild(existing);
+     existing.style.margin='8px 0';existing.style.maxWidth='100%';
+     const button=existing.querySelector('#monroe-shared-pdf-button');
+     if(button)button.textContent='Download My Work (PDF) — Anytime';
+     if(status)status.textContent='Your report is a read-only snapshot. Downloading it does not submit or change your grade.';
+   }else if(status){status.textContent='PDF control did not load. Check that the shared participation scripts are available.';}
+ }
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>{placePdf();refreshReceipt()});
+ else {placePdf();refreshReceipt()}
+})();
 </script>
 
 </body>
