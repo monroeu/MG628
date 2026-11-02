@@ -245,6 +245,7 @@ footer{padding:20px var(--mobile-pad)}
 <script src="../shared/participation-pdf.js"></script>
 <script>window.MONROE_PDF_CONFIG={"course": "MG628", "week": "04", "lab": "MG628 Week 4 Participation - Data Cleaning with Excel, SQL &amp; Python", "term": "Fall 2026"};</script>
 <script defer src="../shared/participation-adapter.js"></script>
+<script defer src="../shared/active-time.js"></script>
 
 <!-- Standard Monroe student-login presentation (preserves existing authentication) -->
 <link rel="stylesheet" href="../shared/student-login-standard.css">
@@ -874,6 +875,23 @@ const ASSIGNMENT_SLUG='week-04-data-wrangling';
 const ASSIGNMENT_VERSION=1;
 const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
 let signedInUser=null,backendOffering=null,backendSession=null,backendCompletion=null,restoring=false;
+// Reuse the single centralized tracker already tested in Week 3.
+(function connectMonroeStudyTime(){
+  function start(){
+    if(!window.MonroeActiveTime?.init || window.MonroeActiveTime.current)return;
+    window.MonroeActiveTime.init({
+      session:()=>signedInUser && backendSession?.id ? backendSession.id : null,
+      token:async()=>{
+        if(!signedInUser || !backendSession?.id)return null;
+        const {data,error}=await sb.auth.getSession();
+        return error?null:(data?.session?.access_token||null);
+      }
+    });
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});
+  else start();
+})();
+
 const steps=[...document.querySelectorAll('.step')],nav=document.getElementById('nav');
 const jump=document.getElementById('jumpSection');steps.forEach((s,i)=>{const label=s.dataset.title;const b=document.createElement('button');b.textContent=label;b.onclick=()=>s.scrollIntoView({behavior:'smooth',block:'start'});nav.appendChild(b);const o=document.createElement('option');o.value=s.id;o.textContent=label;jump.appendChild(o)});jump.addEventListener('change',()=>{const target=document.getElementById(jump.value);if(target)target.scrollIntoView({behavior:'smooth',block:'start'})});
 const navBtns=[...nav.querySelectorAll('button')];const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)navBtns.forEach((b,i)=>b.classList.toggle('active',steps[i]===e.target))}),{threshold:.25});steps.forEach(s=>obs.observe(s));

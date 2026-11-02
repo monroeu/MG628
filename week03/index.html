@@ -113,7 +113,13 @@ img,svg,video,canvas{max-width:100%;height:auto}
 }
 
 
-</style><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.4/dist/umd/supabase.min.js"></script>
+</style>
+<style id="monroe-week03-nav-fix">
+@media(min-width:901px){.side{position:static!important;top:auto!important;align-self:start!important}}
+.step{scroll-margin-top:110px}
+#monroe-shared-pdf-button{font-size:14px}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.4/dist/umd/supabase.min.js"></script>
 <style id="student-id-upgrade-styles">
 .auth-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.auth-actions .btn{min-width:120px;justify-content:center}
 .auth-note{margin-top:9px;font-size:.86rem;color:var(--muted)}.account-chip{display:inline-flex;gap:6px;align-items:center;padding:5px 9px;border-radius:999px;background:var(--soft);font-size:.82rem;font-weight:750}
@@ -143,12 +149,18 @@ img,svg,video,canvas{max-width:100%;height:auto}
 .practice-group-title{margin:24px 0 8px;padding-top:16px;border-top:2px solid var(--green);color:var(--green)}
 @media(max-width:700px){.practice-meter-grid,.exercise-context{grid-template-columns:1fr}.practice-card-head{display:block}.practice-status{display:block;margin-top:4px}}
 </style>
+<style id="mg628-week03-report-usability">
+body.w3-authenticated #authFields,body.w3-authenticated #auth-signin,body.w3-authenticated #auth-signup{display:none!important}
+body.w3-authenticated #authPanel .auth-note{display:none!important}
+#receiptGrid[hidden]{display:grid!important}#receiptGrid{display:grid!important}
+</style>
 
 <!-- Monroe centralized PDF (non-invasive page adapter) -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="../shared/participation-pdf.js"></script>
 <script>window.MONROE_PDF_CONFIG={"course": "MG628", "week": "03", "lab": "MG628 Week 3 Participation — Data Structures &amp; Data Sources", "term": "Fall 2026"};</script>
 <script defer src="../shared/participation-adapter.js"></script>
+<script defer src="../shared/active-time.js"></script>
 
 <!-- Standard Monroe student-login presentation (preserves existing authentication) -->
 <link rel="stylesheet" href="../shared/student-login-standard.css">
@@ -282,11 +294,27 @@ TXN012,U789,money_transfer,4000,failed</div>
 <footer>MG628 · Data Analysis for Managerial Decision-Making · Week 3 Participation</footer>
 <script>
 const SUPABASE_URL='https://irnrjzeejalbbqdrbzmj.supabase.co';
-const SUPABASE_PUBLISHABLE_KEY='sb_publishable_xJjMYypzVaM4AS8v2zoxUw_B0rQBEp1';
+const SUPABASE_PUBLISHABLE_KEY='sb_publishable_aj2vpjfJrSMvjTxcKuC0pQ_pf7JbDo2';
 const ASSIGNMENT_SLUG='week-03-data-structures';
 const ASSIGNMENT_VERSION=1;
 const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
 let signedInUser=null, backendOffering=null, backendSession=null, backendCompletion=null, restoring=false, bootstrapData=null;
+// Study-time starts only after Week 3's authenticated Supabase session exists.
+(function connectMonroeStudyTime(){
+ const start=()=>{
+  if(!window.MonroeActiveTime?.init || window.MonroeActiveTime.current)return;
+  window.MonroeActiveTime.init({
+   session:()=>signedInUser && backendSession?.id ? backendSession.id : null,
+   token:async()=>{
+    if(!signedInUser || !backendSession?.id)return null;
+    const {data,error}=await sb.auth.getSession();
+    return error?null:(data?.session?.access_token||null);
+   }
+  });
+ };
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
+})();
+
 
 let practicePassed=new Set(),practiceAttempts=new Map();
 const SHARED_PRACTICE=['W3-LIVE01','W3-LIVE02','W3-LIVE03','W3-LIVE04','W3-LIVE05','W3-LIVE06','W3-LIVE07'];
@@ -330,14 +358,25 @@ async function api(payload){const {data:{session}}=await sb.auth.getSession();if
 async function studentAuth(action,student_id,password){const res=await fetch(`${SUPABASE_URL}/functions/v1/student-auth-api`,{method:'POST',headers:{'Content-Type':'application/json','apikey':SUPABASE_PUBLISHABLE_KEY},body:JSON.stringify({action,student_id,password})});let j={};try{j=await res.json()}catch{}if(!res.ok||j.error)throw new Error(j.error||'Unable to complete account request.');return j}
 function trackForBackend(){const t=document.getElementById('track').value;return t.startsWith('mpa-')?t.replace('mpa-',''):t}
 function showTrack(){const v=document.getElementById('track').value,b=v==='business'||v==='mpa-business',h=v==='health'||v==='mpa-health';document.getElementById('businessBox').classList.toggle('show',b);document.getElementById('healthBox').classList.toggle('show',h);document.getElementById('chooseTrack').style.display=(b||h)?'none':'block'}
-function renderProgress(c){backendCompletion=c||null;const pct=Number(c?.completion_percentage||0);document.getElementById('pct').textContent=pct+'%';document.getElementById('bar').style.width=pct+'%';const p=document.getElementById('server-progress');p.textContent=c?`Saved: ${c.cards_completed||0}/${c.cards_required||0} cards · ${c.questions_answered||0}/${c.questions_required||0} knowledge checks (${c.questions_correct||0} correct) · ${c.worksheet_completed?'worksheet complete':'worksheet in progress'} · ${c.reflection_completed?'reflection complete':'reflection in progress'} · ${pct}% overall`:''}
-function setSignedInUI(on){document.getElementById('auth-signin').hidden=on;document.getElementById('auth-signup').hidden=on;document.getElementById('auth-signout').hidden=!on;document.getElementById('auth-student-id').disabled=on;document.getElementById('auth-password').disabled=on}
-async function resolveAssignment(){bootstrapData=await api({action:'bootstrap'});signedInUser=bootstrapData.user;const offerings=(bootstrapData.offerings||[]).filter(o=>o.assignment?.slug===ASSIGNMENT_SLUG&&Number(o.assignment?.version)===ASSIGNMENT_VERSION);if(!offerings.length)throw new Error('Your roster does not include an active MG628 Week 3 offering. Contact Professor Kassoh.');backendOffering=offerings[0];const enrollment=(bootstrapData.enrollments||[]).find(e=>e.section_id===backendOffering.section_id);const section=enrollment?.section;const name=signedInUser?.full_name||'Student';const sid=signedInUser?.institutional_id||document.getElementById('auth-student-id').value.trim();document.getElementById('auth-summary').innerHTML=`<span class="account-chip">${name}</span> ${sid?' · Student ID '+sid:''} ${section?' · '+(section.course?.code||'MG628')+'-'+(section.section_code||''):''}`;setSignedInUI(true);const r=await api({action:'resume_session',offering_id:backendOffering.id});if(r.session){backendSession=r.session;await restore(r);unlockLesson();setAuth('Saved Week 3 work restored from Supabase.','ok')}else{backendSession=null;lockLesson();setAuth('Roster verified. Choose your academic track to begin Week 3.','ok');if(trackForBackend())await startOrResume(false)}}
-async function startOrResume(forceStart=false){if(!backendOffering||!signedInUser)return false;const existing=await api({action:'resume_session',offering_id:backendOffering.id});if(existing.session&&!forceStart){backendSession=existing.session;await restore(existing);return true}const tr=trackForBackend();if(!tr)throw new Error('Choose your academic track first.');const r=await api({action:'start_session',offering_id:backendOffering.id,track:tr});backendSession=r.session;renderProgress(r.completion);renderPractice();unlockLesson();setAuth('Participation recording started for your selected track.','ok');return false}
-async function restore(r){restoring=true;backendSession=r.session;const t=r.session?.track;if(t){const sel=document.getElementById('track');if(!sel.value||trackForBackend()!==t)sel.value=t;showTrack()}const saved=new Map((r.worksheet_responses||[]).map(x=>[x.question_key,x.response_text||'']));document.querySelectorAll('[data-answer]').forEach(el=>{if(saved.has(el.dataset.answer))el.value=saved.get(el.dataset.answer)});const opened=new Set(r.card_keys||[]);document.querySelectorAll('.flip[data-card-key]').forEach(c=>{if(opened.has(c.dataset.cardKey))c.classList.add('flipped')});restoreKnowledge(r.knowledge_responses||[]);restorePractice(saved);renderPractice();restorePractice(saved);renderProgress(r.completion);unlockLesson();restoring=false}
+function updateWeek3Summary(){
+ const c=backendCompletion||{};
+ const put=(id,value)=>{const el=document.getElementById(id);if(el)el.textContent=String(value)};
+ put('receiptStudent',signedInUser?.full_name||'Not signed in');
+ put('receiptStudentId',signedInUser?.institutional_id||'Not available');
+ put('receiptTrack',backendSession?.track||'Not selected');
+ put('receiptStatus',c.status?String(c.status).toUpperCase():'In progress');
+ put('receiptCompletion',Number.isFinite(Number(c.completion_percentage))?Number(c.completion_percentage)+'%':'Not yet recorded');
+ put('receiptVerification',c.verification_code||'Pending completion');
+ const grid=document.getElementById('receiptGrid');if(grid)grid.hidden=false;
+}
+function renderProgress(c){backendCompletion=c||null;updateWeek3Summary();const pct=Number(c?.completion_percentage||0);document.getElementById('pct').textContent=pct+'%';document.getElementById('bar').style.width=pct+'%';const p=document.getElementById('server-progress');p.textContent=c?`Saved: ${c.cards_completed||0}/${c.cards_required||0} cards · ${c.questions_answered||0}/${c.questions_required||0} knowledge checks (${c.questions_correct||0} correct) · ${c.worksheet_completed?'worksheet complete':'worksheet in progress'} · ${c.reflection_completed?'reflection complete':'reflection in progress'} · ${pct}% overall`:''}
+function setSignedInUI(on){document.body.classList.toggle('w3-authenticated',!!on);document.getElementById('auth-signin').hidden=on;document.getElementById('auth-signup').hidden=on;document.getElementById('auth-signout').hidden=!on;document.getElementById('auth-student-id').disabled=on;document.getElementById('auth-password').disabled=on}
+async function resolveAssignment(){bootstrapData=await api({action:'bootstrap'});signedInUser=bootstrapData.user;const offerings=(bootstrapData.offerings||[]).filter(o=>o.assignment?.slug===ASSIGNMENT_SLUG&&Number(o.assignment?.version)===ASSIGNMENT_VERSION);if(!offerings.length)throw new Error('Your roster does not include an active MG628 Week 3 offering. Contact Professor Kassoh.');backendOffering=offerings[0];const enrollment=(bootstrapData.enrollments||[]).find(e=>e.section_id===backendOffering.section_id);const section=enrollment?.section;const name=signedInUser?.full_name||'Student';const sid=signedInUser?.institutional_id||document.getElementById('auth-student-id').value.trim();const loginSid=document.getElementById('auth-student-id');if(sid&&loginSid){loginSid.value=String(sid);loginSid.setAttribute('autocomplete','off');}document.getElementById('auth-password').value='';document.getElementById('auth-summary').innerHTML=`<span class="account-chip">${name}</span> ${sid?' · Student ID '+sid:''} ${section?' · '+(section.course?.code||'MG628')+'-'+(section.section_code||''):''}`;setSignedInUI(true);updateWeek3Summary();const r=await api({action:'resume_session',offering_id:backendOffering.id});if(r.session){backendSession=r.session;await restore(r);updateWeek3Summary();unlockLesson();setAuth('Saved Week 3 work restored from Supabase.','ok')}else{backendSession=null;lockLesson();setAuth('Roster verified. Choose your academic track to begin Week 3.','ok');if(trackForBackend())await startOrResume(false)}}
+async function startOrResume(forceStart=false){if(!backendOffering||!signedInUser)return false;const existing=await api({action:'resume_session',offering_id:backendOffering.id});if(existing.session&&!forceStart){backendSession=existing.session;await restore(existing);return true}const tr=trackForBackend();if(!tr)throw new Error('Choose your academic track first.');const r=await api({action:'start_session',offering_id:backendOffering.id,track:tr});backendSession=r.session;renderProgress(r.completion);updateWeek3Summary();renderPractice();unlockLesson();setAuth('Participation recording started for your selected track.','ok');return false}
+async function restore(r){restoring=true;backendSession=r.session;updateWeek3Summary();const t=r.session?.track;if(t){const sel=document.getElementById('track');if(!sel.value||trackForBackend()!==t)sel.value=t;showTrack()}const saved=new Map((r.worksheet_responses||[]).map(x=>[x.question_key,x.response_text||'']));document.querySelectorAll('[data-answer]').forEach(el=>{if(saved.has(el.dataset.answer))el.value=saved.get(el.dataset.answer)});const opened=new Set(r.card_keys||[]);document.querySelectorAll('.flip[data-card-key]').forEach(c=>{if(opened.has(c.dataset.cardKey))c.classList.add('flipped')});restoreKnowledge(r.knowledge_responses||[]);restorePractice(saved);renderPractice();restorePractice(saved);renderProgress(r.completion);unlockLesson();restoring=false}
 async function signInStudent(mode){const sid=document.getElementById('auth-student-id').value.trim(),pw=document.getElementById('auth-password').value;if(!sid)return setAuth('Enter your Student ID.','err');if(pw.length<8)return setAuth('Password must be at least 8 characters.','err');try{setAuth(mode==='register'?'Creating your roster-verified account…':'Signing in…');const r=await studentAuth(mode,sid,pw);if(r.session){await sb.auth.setSession({access_token:r.session.access_token,refresh_token:r.session.refresh_token});await resolveAssignment()}else setAuth(r.message||'Account created. Please sign in.','ok')}catch(e){setAuth(msg(e),'err')}}
 document.getElementById('auth-signin').onclick=()=>signInStudent('login');document.getElementById('auth-signup').onclick=()=>signInStudent('register');
-document.getElementById('auth-signout').onclick=async()=>{await sb.auth.signOut();signedInUser=backendOffering=backendSession=backendCompletion=bootstrapData=null;practicePassed.clear();setSignedInUI(false);lockLesson();document.getElementById('auth-summary').textContent='Sign in with your Student ID and password. Your section and saved work are resolved automatically.';document.getElementById('server-progress').textContent='';document.getElementById('pct').textContent='0%';document.getElementById('bar').style.width='0';setAuth('Signed out. Supabase-saved work remains on your account.','ok')};
+document.getElementById('auth-signout').onclick=async()=>{await sb.auth.signOut();signedInUser=backendOffering=backendSession=backendCompletion=bootstrapData=null;practicePassed.clear();setSignedInUI(false);updateWeek3Summary();lockLesson();document.getElementById('auth-summary').textContent='Sign in with your Student ID and password. Your section and saved work are resolved automatically.';document.getElementById('server-progress').textContent='';document.getElementById('pct').textContent='0%';document.getElementById('bar').style.width='0';setAuth('Signed out. Supabase-saved work remains on your account.','ok')};
 async function saveAnswer(el){if(restoring||!backendSession)return;const v=el.value.trim();try{const r=await api({action:'save_worksheet',session_id:backendSession.id,worksheet_key:el.dataset.answer,response_text:v||null});renderProgress(r.completion)}catch(e){setAuth(msg(e),'err')}}
 let timers=new WeakMap();document.querySelectorAll('[data-answer]').forEach(el=>el.addEventListener('input',()=>{clearTimeout(timers.get(el));timers.set(el,setTimeout(()=>saveAnswer(el),600))}));
 document.querySelectorAll('.flip[data-card-key]').forEach(c=>{const f=c.querySelector('.front'),b=c.querySelector('.back');if(f&&!f.querySelector('.card-state'))f.insertAdjacentHTML('beforeend','<span class="card-state">Tap to reveal</span>');if(b&&!b.querySelector('.card-state'))b.insertAdjacentHTML('beforeend','<span class="card-state">Tap to hide</span>');const flip=async()=>{c.classList.toggle('flipped');if(c.classList.contains('flipped')&&backendSession&&!restoring){try{const r=await api({action:'card_opened',session_id:backendSession.id,card_key:c.dataset.cardKey});renderProgress(r.completion)}catch(e){setAuth(msg(e),'err')}}};c.onclick=flip;c.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();flip()}}});
@@ -358,6 +397,87 @@ Verification: ${c.verification_code||'pending'}
 Recorded: ${recorded}`;document.getElementById('submissionOutput').textContent=text;document.getElementById('receiptGrid').hidden=false;document.getElementById('receiptStudent').textContent=name;document.getElementById('receiptStudentId').textContent=sid;document.getElementById('receiptTrack').textContent=backendSession.track;document.getElementById('receiptStatus').textContent=c.status;document.getElementById('receiptCompletion').textContent=c.completion_percentage+'%';document.getElementById('receiptVerification').textContent=c.verification_code||'pending';document.getElementById('copyBtn').disabled=false;document.getElementById('downloadBtn').disabled=false;document.getElementById('status').textContent=c.status==='complete'?'Week 3 participation verified by Supabase.':'Your work is saved, but required Week 3 items are still incomplete.';setAuth(c.status==='complete'?'Week 3 participation verified by Supabase.':'Work saved. Complete the remaining required items.',c.status==='complete'?'ok':'')}catch(e){setAuth(msg(e),'err')}}
 document.getElementById('generateBtn').onclick=finalize;document.getElementById('copyBtn').onclick=async()=>navigator.clipboard.writeText(document.getElementById('submissionOutput').textContent);document.getElementById('downloadBtn').onclick=()=>{const blob=new Blob([document.getElementById('submissionOutput').textContent],{type:'text/plain'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='MG628_Week3_Participation_Receipt.txt';a.click();URL.revokeObjectURL(a.href)};document.getElementById('pdfBtn').onclick=()=>window.print();
 function resetAll(){if(confirm('Clear only the visible browser state? Supabase-saved participation will remain and restore after sign-in.'))location.reload()}
+
+// The shared PDF adapter requests fresh trusted context on each download.
+// This does not modify the Week 3 grade or saved participation data.
+window.MonroeReportContext=async function(){
+ if(!signedInUser || !backendSession?.id || !backendOffering?.id){
+  throw new Error('Sign in and start or resume the roster-verified Week 3 session first.');
+ }
+ const {data:authData,error:authError}=await sb.auth.getSession();
+ const token=authData?.session?.access_token;
+ if(authError||!token)throw new Error('Your session has expired. Sign in again.');
+ const readTime=async bearer=>fetch(SUPABASE_URL+'/functions/v1/participation-active-time',{
+  method:'POST',headers:{'Content-Type':'application/json','apikey':SUPABASE_PUBLISHABLE_KEY,'Authorization':'Bearer '+bearer},
+  body:JSON.stringify({action:'read',session_id:backendSession.id})
+ });
+ let [timeResponse,saved]=await Promise.all([
+  readTime(token),api({action:'resume_session',offering_id:backendOffering.id})
+ ]);
+ if(timeResponse.status===401){
+  const refreshed=await sb.auth.refreshSession();
+  const newToken=refreshed.data?.session?.access_token;
+  if(!refreshed.error&&newToken){try{timeResponse=await readTime(newToken)}catch(e){timeResponse=null}}else timeResponse=null;
+ }
+ let time=null;
+ try{if(timeResponse?.ok)time=await timeResponse.json()}catch(e){}
+ // The report is always downloadable; a failed time read must never be claimed as verified.
+ const timeUnavailable=!timeResponse?.ok||!time||!!time.error;
+ if(!saved?.session || saved.session.id!==backendSession.id)throw new Error('Could not validate the current Week 3 participation record.');
+ const completion=saved.completion||backendCompletion||{};
+ const section=(bootstrapData?.enrollments||[]).find(e=>e.section_id===backendOffering.section_id)?.section;
+ const savedCards=new Set(saved.card_keys||[]);
+ const cards=[...document.querySelectorAll('.flip[data-card-key]')].map((node,i)=>({
+  key:node.dataset.cardKey,title:node.querySelector('.front h3')?.textContent?.trim()||'Flip card '+(i+1),
+  visited:savedCards.has(node.dataset.cardKey)
+ }));
+ const savedQuestions=new Map((saved.knowledge_responses||[]).map(x=>[x.question_key,x]));
+ const mcqs=[...document.querySelectorAll('.mc-card-strong[data-question-key]')].map((node,i)=>{
+  const record=savedQuestions.get(node.dataset.questionKey);
+  const selected=record?node.querySelector('input[value="'+CSS.escape(String(record.selected_answer||''))+'"]'):null;
+  return {key:node.dataset.questionKey,prompt:node.querySelector('h4')?.textContent?.trim()||'Question '+(i+1),
+   selected:record?(selected?.closest('label')?.textContent?.trim()||String(record.selected_answer)):'Not answered',
+   correctness:record?.is_correct===true?true:record?.is_correct===false?false:null};
+ });
+ const responseMap=new Map((saved.worksheet_responses||[]).map(x=>[x.question_key,String(x.response_text||'')]));
+ const written=[...document.querySelectorAll('textarea[data-answer]')].filter(node=>node.closest('.trackbox')?.classList.contains('show') || !node.closest('.trackbox')).map((node,i)=>({
+  key:node.dataset.answer,prompt:node.closest('.field')?.querySelector('label')?.textContent?.trim()||'Written response '+(i+1),
+  response:responseMap.get(node.dataset.answer)||''
+ }));
+ const required=typeof currentPracticeKeys==='function'?currentPracticeKeys():[];
+ const exercises=required.map(key=>({key,title:practiceDefs.find(d=>d.key===key)?.title||key,
+  status:String(responseMap.get(key)||'').startsWith('PASSED|')?'Passed — saved in Supabase':'Not passed'}));
+ const tracked=time?.measurement==='tracked'&&Number.isSafeInteger(time.active_seconds)&&time.active_seconds>=0;
+ const studentId=String(signedInUser.institutional_id||document.getElementById('auth-student-id')?.value||'').trim();
+ return {
+  student_name:signedInUser.full_name||'Roster-verified student',student_id:studentId||'Unavailable',
+  section:section?.section_code||'Not reported',term:section?.term?.name||section?.term||'Fall 2026',
+  status:String(completion.status||'incomplete').toUpperCase(),
+  completion_percent:Number.isFinite(Number(completion.completion_percentage))?Number(completion.completion_percentage):null,
+  grade:completion.participation_grade??null,
+  active_time_seconds:tracked?time.active_seconds:null,active_time_verified:tracked,active_time_source:tracked?'supabase':null,
+  cards,cards_summary:cards.filter(x=>x.visited).length+'/'+cards.length,
+  mcqs,mcq_summary:mcqs.filter(x=>x.selected!=='Not answered').length+'/'+mcqs.length,
+  written,written_summary:written.filter(x=>x.response.trim()).length+'/'+written.length,
+  exercises,exercise_summary:exercises.filter(x=>x.status.startsWith('Passed')).length+'/'+exercises.length+' verified practice passes',
+  notes:'Identity, completion and saved activities are retrieved for this authenticated Week 3 session. '+(timeUnavailable?'Cumulative active time could not be verified in this download; no time has been assumed. ':'Cumulative active time was queried from the server. ')+'An exercise is marked passed only when its saved response has the PASSED marker. Downloading does not submit or change a grade.'
+ };
+};
+
+// Move the existing shared PDF button into the Week 3 participation receipt.
+// The student may download before assignment completion.
+document.addEventListener('DOMContentLoaded',()=>{
+ const target=document.getElementById('submit');
+ const place=()=>{
+  const report=document.querySelector('[data-pdf-report-ui]');
+  if(!target||!report)return false;
+  const intro=target.querySelector('.no-print.auth-actions');
+  if(intro)target.insertBefore(report,intro);else target.appendChild(report);
+  return true;
+ };
+ if(!place())setTimeout(place,0);
+});
+
 showTrack();setSignedInUI(false);lockLesson();renderPractice();refreshPracticeDashboard();(async()=>{try{const {data:{session}}=await sb.auth.getSession();if(session)await resolveAssignment()}catch(e){setAuth(msg(e),'err')}})();
 </script><script src="../assets/week-auto-activate.js" defer></script>
 </body>
