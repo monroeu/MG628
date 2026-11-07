@@ -27,6 +27,19 @@
   const STATUS_RE = /^(COMING\s+SOON|AVAILABLE\s+NOW|PARTICIPATION\s+CLOSED|OPENS\s+LATER|CHECKING[.…]*)$/i;
   let refreshTimer = null;
   let lastStatusMap = null;
+  // Weekly pages that are not participation assignments (for example the lecture labs) can declare
+  // <meta name="mg628-availability" content="open"> to appear as available without a published offering.
+  const openCache = new Map();
+  async function pageIsOpen(folder) {
+    if (openCache.has(folder)) return openCache.get(folder);
+    let open = false;
+    try {
+      const r = await fetch(new URL(`${folder}/index.html`, CONFIG.homeBase).href, { cache: 'no-store', credentials: 'same-origin' });
+      if (r.ok) open = /<meta\s+name=["']mg628-availability["']\s+content=["']open["']/i.test(await r.text());
+    } catch (_) { open = false; }
+    openCache.set(folder, open);
+    return open;
+  }
 
   function weekFolder(weekNumber) {
     return `${CONFIG.folderPrefix}${String(weekNumber).padStart(CONFIG.digits, '0')}`;
@@ -186,6 +199,17 @@
         rendered.push(state);
       }
     }
+    for (let n = 1; n <= 15; n++) {
+      const folder = `week${String(n).padStart(2, '0')}`;
+      if (statusMap.has(folder) || !(await pageIsOpen(folder))) continue;
+      const link = document.createElement('a');
+      link.href = new URL(`${folder}/`, CONFIG.homeBase).href;
+      link.textContent = `Week ${n}`;
+      link.dataset.weekFolder = folder;
+      if (samePath(link.href)) link.setAttribute('aria-current', 'page');
+      rendered.push(link);
+    }
+    rendered.sort((a, b) => weekNumberFromFolder(a.dataset.weekFolder) - weekNumberFromFolder(b.dataset.weekFolder));
     host.replaceChildren(...rendered);
   }
 
@@ -230,7 +254,7 @@
     const fileExists=await exists(weekIndexUrl(item.week)); if(fileExists===null)return;
     if(fileExists===false){setComingSoon(item.card,item.week);return}
     const backend=statusMap?statusMap.get(weekFolder(item.week).toLowerCase()):null;
-    if(!backend){setComingSoon(item.card,item.week);return}
+    if(!backend){if(await pageIsOpen(weekFolder(item.week).toLowerCase()))setAvailable(item.card,item.week);else setComingSoon(item.card,item.week);return}
     if(backend.status==='available'&&backend.published)setAvailable(item.card,item.week);
     else if(backend.status==='scheduled'&&backend.published)setScheduled(item.card,item.week);
     else setClosed(item.card,item.week);
